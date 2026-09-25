@@ -1,6 +1,5 @@
 import { MDXProvider } from "@mdx-js/react";
-import { Terminal } from "@moyarich/console";
-import { moyaForgeComponents } from "@moyarich/moyaforge";
+import { Console, Terminal } from "@moyarich/console";
 
 function Demo({ children }) {
   return <section data-demo>{children}</section>;
@@ -11,7 +10,7 @@ function PlaygroundCallout({ children }) {
 }
 
 const components = {
-  ...moyaForgeComponents,
+  Console,
   Terminal,
   Demo,
   Callout: PlaygroundCallout,
