@@ -16,4 +16,3 @@ export function defineMoyaForgeConfig(config = {}) {
   };
 }
 
-export { moyaForgeComponents } from "./components.js";
