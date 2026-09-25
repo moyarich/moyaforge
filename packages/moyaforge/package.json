@@ -3,8 +3,7 @@
   "version": "0.2.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.js",
-    "./components": "./src/components.js"
+    ".": "./src/index.js"
   },
   "files": [
     "src",
