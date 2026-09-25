@@ -3,82 +3,45 @@
 Reusable infrastructure for MoyaForge-powered documentation sites and interactive
 playgrounds.
 
-Consuming repositories continue to own their docs, API pages, examples, and
-playground source. MoyaForge owns reusable parsing, configuration, rendering
-plumbing, and deployment infrastructure.
+MoyaForge uses the standard MDX component/provider model rather than maintaining a
+separate component registry.
 
-## MDX
-
-MoyaForge compiles MDX with `@mdx-js/mdx`.
-
-```js
-import { compileMdx } from "@moyarich/moyaforge";
-
-const compiled = await compileMdx(source, {
-  remarkPlugins: [],
-  rehypePlugins: [],
-});
-```
-
-Processor options are forwarded to `@mdx-js/mdx`, so consumers can configure
-their own remark and rehype plugins.
-
-## Registering components
-
-Create a registry with MoyaForge-provided components, then register application
-components:
+## MDX components
 
 ```jsx
-import { createMdxComponentRegistry } from "@moyarich/moyaforge";
+import { MDXProvider } from "@mdx-js/react";
+import {
+  createMdxComponents,
+  moyaForgeComponents,
+} from "@moyarich/moyaforge";
 
-const components = createMdxComponentRegistry({
-  Callout: MoyaForgeCallout,
-  CodeBlock: MoyaForgeCodeBlock,
+const components = createMdxComponents(moyaForgeComponents, {
+  Demo,
+  Callout: ProjectCallout,
 });
 
-components.register({
-  Demo: Demo,
-});
+<MDXProvider components={components}>
+  <Page />
+</MDXProvider>;
 ```
 
-## Overriding MoyaForge components
+Consumer components are applied after MoyaForge defaults, so a component with the same
+name overrides the built-in implementation.
 
-User registrations are applied after MoyaForge defaults. A component registered
-with the same MDX name replaces the MoyaForge implementation:
-
-```jsx
-components.register({
-  Callout: MyCallout,
-});
-
-const mdxComponents = components.get();
-```
-
-Per-render overrides are also supported:
-
-```jsx
-const mdxComponents = components.resolve({
-  CodeBlock: ProjectCodeBlock,
-});
-```
-
-This gives consumers three levels of composition:
-
-1. MoyaForge defaults.
-2. Consumer-registered components.
-3. Per-render overrides.
-
-Later levels win.
+Consumers can also use the same component map with the MDX v3
+`useMDXComponents` convention.
 
 ## Repository layout
 
-The default consuming-repository layout remains:
+MoyaForge keeps reusable infrastructure in `packages/moyaforge`. The repository's
+own usage examples live in `apps/playground`.
+
+A consuming repository can keep its own content wherever it wants. The defaults are:
 
 ```text
-packages/playground/src/
+apps/playground/src/
 docs/
 api/
 ```
 
-Use `defineMoyaForgeConfig()` to override paths without moving
-repository-owned content into MoyaForge.
+Use `defineMoyaForgeConfig()` to override those paths.
