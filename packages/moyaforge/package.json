@@ -1,6 +1,6 @@
 {
   "name": "@moyarich/moyaforge",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "exports": {
     ".": "./src/index.js"
@@ -13,7 +13,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/moyarich/moyaforge.git",
-    "directory": "packages/MoyaForge"
+    "directory": "packages/moyaforge"
   },
-  "description": "Reusable configuration helpers for repository-owned documentation and playground tooling."
+  "description": "Reusable MDX and documentation infrastructure for MoyaForge-powered sites.",
+  "peerDependencies": {
+    "@mdx-js/react": "^3.1.1",
+    "react": ">=18"
+  }
 }
