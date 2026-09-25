@@ -1,6 +1,6 @@
 import { MDXProvider } from "@mdx-js/react";
 import { Console, Terminal } from "@moyarich/console";
-import * as ColorShower from "@moyarich/vscode-visualize-css-colors";
+import * as ColorShower from "@moyarich/colorshower";
 
 function Demo({ children }) {
   return <section data-demo>{children}</section>;
