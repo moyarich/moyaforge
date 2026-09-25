@@ -1,0 +1,13 @@
+{
+  "name": "moyaforge-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyarich/moyaforge.git"
+  }
+}
