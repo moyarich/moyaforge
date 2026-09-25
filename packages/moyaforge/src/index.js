@@ -16,5 +16,4 @@ export function defineMoyaForgeConfig(config = {}) {
   };
 }
 
-export { createMdxComponents } from "./mdx.js";
 export { moyaForgeComponents } from "./components.js";
