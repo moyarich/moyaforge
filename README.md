@@ -1,10 +1,26 @@
 # MoyaForge
 
 MoyaForge provides reusable infrastructure for repository-owned documentation sites,
-interactive playgrounds, and GitHub Pages deployment.
+interactive playgrounds, MDX rendering, and GitHub Pages deployment.
 
 It does **not** own or generate the files that describe or showcase a consuming
 repository. Those files stay with that repository.
+
+## Package
+
+`packages/moyaforge` is the reusable `@moyarich/moyaforge` package.
+
+It provides:
+
+- MoyaForge configuration helpers.
+- MDX compilation through `@mdx-js/mdx`.
+- A component registry for MDX components.
+- Consumer component registration.
+- Consumer overrides of MoyaForge-provided components.
+- Reusable documentation and playground infrastructure.
+
+MoyaForge components are defaults, not locked implementations. Consumers can
+register a component under the same MDX name to replace the built-in component.
 
 ## Recommended consuming-repository layout
 
@@ -38,8 +54,3 @@ jobs:
 
 The reusable workflow installs dependencies, configures GitHub Pages, runs the caller's
 documentation build, uploads the caller's output directory, and deploys it.
-
-## Package
-
-`packages/MoyaForge` contains shared configuration helpers. It contains no
-Console-specific examples, API pages, documentation, or playground source.

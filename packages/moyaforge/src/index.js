@@ -15,3 +15,9 @@ export function defineMoyaForgeConfig(config = {}) {
     },
   };
 }
+
+export {
+  compileMdx,
+  createMdxComponentRegistry,
+  resolveMdxComponents,
+} from "./mdx.js";

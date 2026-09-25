@@ -1,0 +1,23 @@
+{
+  "name": "@moyarich/moyaforge",
+  "version": "0.2.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./mdx": "./src/mdx.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyarich/moyaforge.git",
+    "directory": "packages/moyaforge"
+  },
+  "description": "Reusable MDX and documentation infrastructure for MoyaForge-powered sites.",
+  "dependencies": {
+    "@mdx-js/mdx": "^3.1.1"
+  }
+}
