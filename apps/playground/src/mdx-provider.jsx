@@ -1,5 +1,5 @@
 import { MDXProvider } from "@mdx-js/react";
-import { consoleMdxComponents } from "@moyarich/console/mdx";
+import { ProcessOutput, RunnableConsole } from "@moyarich/console";
 import {
   createMdxComponents,
   moyaForgeComponents,
@@ -14,7 +14,8 @@ function PlaygroundCallout({ children }) {
 }
 
 const components = createMdxComponents(moyaForgeComponents, {
-  ...consoleMdxComponents,
+  ProcessOutput,
+  RunnableConsole,
   Demo,
   Callout: PlaygroundCallout,
 });
