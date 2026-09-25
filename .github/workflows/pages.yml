@@ -1,0 +1,79 @@
+name: Reusable GitHub Pages
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version used for the documentation build.
+        required: false
+        type: string
+        default: "24"
+      working-directory:
+        description: Directory where install and build commands run.
+        required: false
+        type: string
+        default: "."
+      install-command:
+        description: Dependency installation command.
+        required: false
+        type: string
+        default: "npm ci --include=optional"
+      build-command:
+        description: Command that builds the consuming repository's documentation site.
+        required: false
+        type: string
+        default: "npm run build:playground"
+      artifact-path:
+        description: Built static site directory uploaded to GitHub Pages.
+        required: false
+        type: string
+        default: "packages/playground/dist"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout consuming repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.working-directory }}
+        run: ${{ inputs.install-command }}
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build documentation site
+        working-directory: ${{ inputs.working-directory }}
+        run: ${{ inputs.build-command }}
+        env:
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+          MOYAFORGE_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ inputs.artifact-path }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
