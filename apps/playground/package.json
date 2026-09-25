@@ -8,6 +8,7 @@
     "@moyarich/moyaforge": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@moyarich/console": "github:moyarich/console#feature/use-moyaforge-playground"
+    "@moyarich/console": "github:moyarich/console#feature/use-moyaforge-playground",
+    "@moyarich/vscode-visualize-css-colors": "github:moyarich/colorshower"
   }
 }
