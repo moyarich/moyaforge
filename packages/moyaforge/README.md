@@ -117,3 +117,41 @@ api/
 ```
 
 Use `defineMoyaForgeConfig()` to override them.
+
+
+## Styling components
+
+Import the optional default component styles:
+
+```js
+import "@moyarich/moyaforge/components.css";
+```
+
+Component CSS uses one consistent custom-property contract:
+
+```css
+/* Public consumer API */
+--sidebar-background
+--source-padding
+--demo-border-radius
+--page-max-width
+--toc-color
+--copy-button-background
+--navigation-tree-indent
+
+/* Matching private implementation aliases */
+--_sidebar-background
+--_source-padding
+--_demo-border-radius
+--_page-max-width
+--_toc-color
+--_copy-button-background
+--_navigation-tree-indent
+```
+
+The underscore is the only naming distinction. Consumers set the public
+`--component-*` properties. The matching `--_component-*` properties are
+internal implementation details.
+
+There is no MoyaForge namespace on CSS custom properties. This keeps existing
+themes easy to map without forcing MoyaForge-specific design tokens.
