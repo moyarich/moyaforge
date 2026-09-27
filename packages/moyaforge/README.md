@@ -190,7 +190,7 @@ NavigationTree remain independent components.
 
 ## TypeScript
 
-MoyaForge is a TypeScript React package authored in strict TypeScript. React components live in `src/components/*` and are exported through the component barrel. The package build emits JavaScript and
+MoyaForge is a TypeScript React package authored in strict TypeScript. Each React component owns a directory under `src/components/*/*`, with its implementation and local `index.ts` barrel. The root `components/index.ts` composes those exports. The package build emits JavaScript and
 declaration files to `dist/`, so consumers receive runtime JavaScript together
 with first-class TypeScript types.
 
