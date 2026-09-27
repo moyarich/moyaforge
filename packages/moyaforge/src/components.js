@@ -81,3 +81,122 @@ export function TableOfContents({
     ),
   );
 }
+
+export function Sidebar({ as = "nav", children, contentProps, ...props }) {
+  return h(
+    as,
+    { "data-moyaforge-sidebar": "", ...props },
+    h(
+      "div",
+      { "data-moyaforge-sidebar-content": "", ...contentProps },
+      children,
+    ),
+  );
+}
+
+export function SidebarSection({
+  as = "section",
+  title,
+  count,
+  header,
+  children,
+  ...props
+}) {
+  return h(
+    as,
+    { "data-moyaforge-sidebar-section": "", ...props },
+    header ??
+      (title != null
+        ? h(
+            "header",
+            { "data-moyaforge-sidebar-section-header": "" },
+            h("strong", null, title),
+            count != null
+              ? h("span", { "data-moyaforge-sidebar-count": "" }, count)
+              : null,
+          )
+        : null),
+    children,
+  );
+}
+
+export function SidebarSearch({
+  value,
+  onChange,
+  inputProps,
+  children,
+  ...props
+}) {
+  return h(
+    "label",
+    { "data-moyaforge-sidebar-search": "", ...props },
+    children,
+    h("input", {
+      type: "search",
+      value,
+      onChange,
+      ...inputProps,
+    }),
+  );
+}
+
+export function SidebarGroup({
+  label,
+  count,
+  expanded = true,
+  onToggle,
+  icon,
+  children,
+  renderTrigger,
+  ...props
+}) {
+  const trigger = {
+    label,
+    count,
+    expanded,
+    icon,
+    onToggle,
+  };
+
+  return h(
+    "div",
+    { "data-moyaforge-sidebar-group": "", ...props },
+    renderTrigger
+      ? renderTrigger(trigger)
+      : h(
+          "button",
+          {
+            type: "button",
+            "aria-expanded": expanded,
+            onClick: onToggle,
+          },
+          icon,
+          h("span", null, label),
+          count != null ? h("span", null, count) : null,
+        ),
+    expanded
+      ? h("div", { "data-moyaforge-sidebar-children": "" }, children)
+      : null,
+  );
+}
+
+export function SidebarItem({
+  active,
+  current = "page",
+  onSelect,
+  children,
+  as = "button",
+  ...props
+}) {
+  const elementProps = {
+    "aria-current": active ? current : undefined,
+    ...props,
+  };
+
+  if (as === "button") {
+    elementProps.type ??= "button";
+    elementProps.onClick = onSelect;
+  }
+
+  return h(as, elementProps, children);
+}
