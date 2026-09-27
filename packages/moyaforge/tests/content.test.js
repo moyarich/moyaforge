@@ -2,11 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  buildNavigation,
   createPages,
   filterPages,
   labelFromSegment,
-} from "../src/index.js";
+} from "../src/content.js";
+import { buildNavigation } from "../src/navigation.js";
 
 test("ordered folders become readable labels", () => {
   assert.equal(labelFromSegment("01-getting-started"), "Getting Started");
