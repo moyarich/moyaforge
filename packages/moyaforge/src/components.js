@@ -86,16 +86,20 @@ export function TableOfContents({
   );
 }
 
-export function Sidebar({ as = "nav", children, contentProps, ...props }) {
-  return h(
-    as,
-    { "data-moyaforge-sidebar": "", ...props },
-    h(
-      "div",
-      { "data-moyaforge-sidebar-content": "", ...contentProps },
-      children,
-    ),
-  );
+function SidebarRoot({ as = "nav", children, ...props }) {
+  return h(as, { "data-moyaforge-sidebar": "", ...props }, children);
+}
+
+export function SidebarHeader({ as = "header", children, ...props }) {
+  return h(as, { "data-moyaforge-sidebar-header": "", ...props }, children);
+}
+
+export function SidebarContent({ as = "div", children, ...props }) {
+  return h(as, { "data-moyaforge-sidebar-content": "", ...props }, children);
+}
+
+export function SidebarFooter({ as = "footer", children, ...props }) {
+  return h(as, { "data-moyaforge-sidebar-footer": "", ...props }, children);
 }
 
 export function SidebarSection({
@@ -206,3 +210,12 @@ export function SidebarItem({
 
   return h(as, elementProps, children);
 }
+
+SidebarRoot.Header = SidebarHeader;
+SidebarRoot.Content = SidebarContent;
+SidebarRoot.Section = SidebarSection;
+SidebarRoot.Footer = SidebarFooter;
+SidebarRoot.Group = SidebarGroup;
+SidebarRoot.Item = SidebarItem;
+
+export const Sidebar = SidebarRoot;
