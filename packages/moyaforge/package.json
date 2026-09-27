@@ -26,7 +26,8 @@
     "react": ">=18",
     "react-dom": ">=18",
     "@typefox/monaco-editor-react": ">=8",
-    "monaco-languageclient": ">=11"
+    "monaco-languageclient": ">=11",
+    "@monaco-editor/react": ">=4"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -38,6 +39,7 @@
     "typescript": "^5.9.0",
     "@types/react-dom": "^19.1.0",
     "@typefox/monaco-editor-react": "^8.0.2",
-    "monaco-languageclient": "^11.0.2"
+    "monaco-languageclient": "^11.0.2",
+    "@monaco-editor/react": "^4.7.0"
   }
 }
