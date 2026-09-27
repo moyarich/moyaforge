@@ -34,7 +34,7 @@ export {
   Sidebar,
   SidebarGroup,
   SidebarItem,
-  SidebarSearch,
+  Search,
   SidebarSection,
   Source,
   TableOfContents,
