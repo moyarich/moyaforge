@@ -33,7 +33,8 @@ layout remain under consumer control.
 MoyaForge exports composable primitives including:
 
 - `NavigationTree`
-- `Sidebar`, `SidebarSection`, `SidebarGroup`, `SidebarItem`, and `SidebarSearch`
+- `Sidebar`, `SidebarSection`, `SidebarGroup`, and `SidebarItem`
+- `Search`
 - `TableOfContents`
 - `Page`
 - `Demo`
@@ -132,6 +133,7 @@ Component CSS uses one consistent custom-property contract:
 ```css
 /* Public consumer API */
 --sidebar-background
+--search-background
 --source-padding
 --demo-border-radius
 --page-max-width
@@ -141,6 +143,7 @@ Component CSS uses one consistent custom-property contract:
 
 /* Matching private implementation aliases */
 --_sidebar-background
+--_search-background
 --_source-padding
 --_demo-border-radius
 --_page-max-width
