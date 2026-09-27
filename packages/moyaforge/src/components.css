@@ -138,3 +138,38 @@
   background: var(--_copy-button-background);
   color: var(--_copy-button-color);
 }
+
+
+[data-moyaforge-search] {
+  --search-color: inherit;
+  --search-background: transparent;
+  --search-border-color: currentColor;
+  --search-border-radius: 0;
+  --search-padding: 0.5rem 0.625rem;
+  --search-gap: 0.5rem;
+
+  --_search-color: var(--search-color);
+  --_search-background: var(--search-background);
+  --_search-border-color: var(--search-border-color);
+  --_search-border-radius: var(--search-border-radius);
+  --_search-padding: var(--search-padding);
+  --_search-gap: var(--search-gap);
+
+  display: flex;
+  align-items: center;
+  gap: var(--_search-gap);
+  border: 1px solid var(--_search-border-color);
+  border-radius: var(--_search-border-radius);
+  padding: var(--_search-padding);
+  background: var(--_search-background);
+  color: var(--_search-color);
+}
+
+[data-moyaforge-search] input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+}
