@@ -124,23 +124,25 @@ export function SidebarSection({
   );
 }
 
-export function SidebarSearch({
+export function Search({
   value,
   onChange,
+  icon,
   inputProps,
   children,
   ...props
 }) {
   return h(
     "label",
-    { "data-moyaforge-sidebar-search": "", ...props },
-    children,
+    { "data-moyaforge-search": "", ...props },
+    icon,
     h("input", {
       type: "search",
       value,
       onChange,
       ...inputProps,
     }),
+    children,
   );
 }
 
