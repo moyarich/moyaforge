@@ -21,10 +21,15 @@
   background: var(--_sidebar-background);
 }
 
+[data-moyaforge-sidebar-header],
+[data-moyaforge-sidebar-content],
+[data-moyaforge-sidebar-footer] {
+  padding: var(--_sidebar-padding);
+}
+
 [data-moyaforge-sidebar-content] {
   display: grid;
   gap: var(--_sidebar-gap);
-  padding: var(--_sidebar-padding);
 }
 
 [data-moyaforge-navigation-tree] {
