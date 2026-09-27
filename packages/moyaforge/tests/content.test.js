@@ -5,8 +5,8 @@ import {
   createPages,
   filterPages,
   labelFromSegment,
-} from "../src/content.js";
-import { buildNavigation } from "../src/navigation.js";
+} from "../dist/content.js";
+import { buildNavigation } from "../dist/navigation.js";
 
 test("ordered folders become readable labels", () => {
   assert.equal(labelFromSegment("01-getting-started"), "Getting Started");
@@ -54,4 +54,13 @@ test("filterPages searches labels and navigation paths", () => {
 
   assert.equal(filterPages(pages, "guides").length, 1);
   assert.equal(filterPages(pages, "missing").length, 0);
+});
+
+test("root page.mdx resolves to the index page", () => {
+  const pages = createPages({
+    "./page.mdx": { default: () => null, frontmatter: { label: "Home" } },
+  });
+
+  assert.equal(pages[0].id, "index");
+  assert.deepEqual(pages[0].navPath, []);
 });
