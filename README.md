@@ -35,6 +35,35 @@ api/              # repository-owned API documentation
 A repository can organize those folders differently and pass its own build command and
 artifact path to the reusable workflow.
 
+### Ordered documentation folders
+
+For documentation with explicit navigation order, prefix folders with a number and use
+`page.mdx` as the page entry point:
+
+```text
+docs/
+├── page.mdx
+├── 01-getting-started/
+│   └── page.mdx
+├── 02-guides/
+│   ├── page.mdx
+│   ├── 01-configuration/
+│   │   └── page.mdx
+│   ├── 02-workflows/
+│   │   └── page.mdx
+│   └── 03-deployment/
+│       └── page.mdx
+└── 03-reference/
+    ├── page.mdx
+    ├── 01-cli/
+    │   └── page.mdx
+    └── 02-api/
+        └── page.mdx
+```
+
+The numeric prefixes define sibling order while the folder names keep the hierarchy
+visible in the repository. Each `page.mdx` owns the content for its folder.
+
 ## Reusable GitHub Pages workflow
 
 From a consuming repository:
