@@ -33,7 +33,7 @@ layout remain under consumer control.
 MoyaForge exports composable primitives including:
 
 - `NavigationTree`
-- `Sidebar`, `SidebarSection`, `SidebarGroup`, and `SidebarItem`
+- `Sidebar` with `Header`, `Content`, `Section`, `Footer`, `Group`, and `Item` composition primitives
 - `Search`
 - `TableOfContents`
 - `Page`
@@ -158,3 +158,31 @@ internal implementation details.
 
 There is no MoyaForge namespace on CSS custom properties. This keeps existing
 themes easy to map without forcing MoyaForge-specific design tokens.
+
+
+### Composable sidebar
+
+`Sidebar` does not insert a content wrapper or require navigation behavior. Compose
+only the regions needed by the consuming application:
+
+```jsx
+<Sidebar>
+  <Sidebar.Header>
+    <Search />
+  </Sidebar.Header>
+
+  <Sidebar.Content>
+    <Sidebar.Section title="Guides">
+      <NavigationTree items={guides} />
+    </Sidebar.Section>
+  </Sidebar.Content>
+
+  <Sidebar.Footer>
+    <RepositoryLink />
+  </Sidebar.Footer>
+</Sidebar>
+```
+
+The same primitives are also available as named exports such as
+`SidebarHeader`, `SidebarContent`, and `SidebarFooter`. Search and
+NavigationTree remain independent components.
