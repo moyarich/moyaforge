@@ -199,3 +199,13 @@ npm run typecheck --workspace @moyarich/moyaforge
 npm run build --workspace @moyarich/moyaforge
 npm test --workspace @moyarich/moyaforge
 ```
+
+## Monaco source editor
+
+`MonacoSourceEditor` provides the reusable TypeFox/Monaco editor surface used by
+MoyaForge playgrounds. Consumers supply the VS Code API configuration, including
+extensions, language services, workers, and other service overrides.
+
+Use `createMonacoVscodeConfig()` to compose that configuration without coupling
+MoyaForge to a specific VS Code extension. Extension packages such as a CSS color
+visualizer remain owned by the consuming project.
