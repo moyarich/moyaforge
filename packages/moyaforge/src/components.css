@@ -1,0 +1,180 @@
+/*
+ * Public custom properties use --component-*.
+ * Private implementation aliases use the same name with an underscore:
+ * --_component-*.
+ */
+
+[data-moyaforge-sidebar] {
+  --sidebar-color: inherit;
+  --sidebar-background: transparent;
+  --sidebar-border-color: currentColor;
+  --sidebar-gap: 0.5rem;
+  --sidebar-padding: 0.625rem;
+
+  --_sidebar-color: var(--sidebar-color);
+  --_sidebar-background: var(--sidebar-background);
+  --_sidebar-border-color: var(--sidebar-border-color);
+  --_sidebar-gap: var(--sidebar-gap);
+  --_sidebar-padding: var(--sidebar-padding);
+
+  color: var(--_sidebar-color);
+  background: var(--_sidebar-background);
+}
+
+[data-moyaforge-sidebar-header],
+[data-moyaforge-sidebar-content],
+[data-moyaforge-sidebar-footer] {
+  padding: var(--_sidebar-padding);
+}
+
+[data-moyaforge-sidebar-content] {
+  display: grid;
+  gap: var(--_sidebar-gap);
+}
+
+[data-moyaforge-navigation-tree] {
+  --navigation-tree-gap: 0.125rem;
+  --navigation-tree-indent: 1rem;
+
+  --_navigation-tree-gap: var(--navigation-tree-gap);
+  --_navigation-tree-indent: var(--navigation-tree-indent);
+
+  display: grid;
+  gap: var(--_navigation-tree-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-moyaforge-navigation-tree] [data-moyaforge-navigation-tree] {
+  margin-left: var(--_navigation-tree-indent);
+}
+
+[data-moyaforge-source] {
+  --source-background: transparent;
+  --source-color: inherit;
+  --source-padding: 1rem;
+  --source-border-radius: 0;
+
+  --_source-background: var(--source-background);
+  --_source-color: var(--source-color);
+  --_source-padding: var(--source-padding);
+  --_source-border-radius: var(--source-border-radius);
+
+  margin: 0;
+  padding: var(--_source-padding);
+  border-radius: var(--_source-border-radius);
+  background: var(--_source-background);
+  color: var(--_source-color);
+  overflow: auto;
+}
+
+[data-moyaforge-demo] {
+  --demo-background: transparent;
+  --demo-color: inherit;
+  --demo-padding: 0;
+  --demo-border-radius: 0;
+
+  --_demo-background: var(--demo-background);
+  --_demo-color: var(--demo-color);
+  --_demo-padding: var(--demo-padding);
+  --_demo-border-radius: var(--demo-border-radius);
+
+  padding: var(--_demo-padding);
+  border-radius: var(--_demo-border-radius);
+  background: var(--_demo-background);
+  color: var(--_demo-color);
+}
+
+[data-moyaforge-page] {
+  --page-width: 100%;
+  --page-max-width: none;
+  --page-padding: 0;
+
+  --_page-width: var(--page-width);
+  --_page-max-width: var(--page-max-width);
+  --_page-padding: var(--page-padding);
+
+  width: var(--_page-width);
+  max-width: var(--_page-max-width);
+  padding: var(--_page-padding);
+}
+
+[data-moyaforge-toc] {
+  --toc-color: inherit;
+  --toc-gap: 0.25rem;
+  --toc-indent: 1rem;
+
+  --_toc-color: var(--toc-color);
+  --_toc-gap: var(--toc-gap);
+  --_toc-indent: var(--toc-indent);
+
+  color: var(--_toc-color);
+}
+
+[data-moyaforge-toc] ul {
+  display: grid;
+  gap: var(--_toc-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-moyaforge-toc] [data-level="3"] {
+  margin-left: var(--_toc-indent);
+}
+
+[data-moyaforge-copy-button] {
+  --copy-button-color: inherit;
+  --copy-button-background: transparent;
+  --copy-button-border-color: currentColor;
+  --copy-button-border-radius: 0;
+  --copy-button-padding: 0.375rem 0.625rem;
+
+  --_copy-button-color: var(--copy-button-color);
+  --_copy-button-background: var(--copy-button-background);
+  --_copy-button-border-color: var(--copy-button-border-color);
+  --_copy-button-border-radius: var(--copy-button-border-radius);
+  --_copy-button-padding: var(--copy-button-padding);
+
+  border: 1px solid var(--_copy-button-border-color);
+  border-radius: var(--_copy-button-border-radius);
+  padding: var(--_copy-button-padding);
+  background: var(--_copy-button-background);
+  color: var(--_copy-button-color);
+}
+
+
+[data-moyaforge-search] {
+  --search-color: inherit;
+  --search-background: transparent;
+  --search-border-color: currentColor;
+  --search-border-radius: 0;
+  --search-padding: 0.5rem 0.625rem;
+  --search-gap: 0.5rem;
+
+  --_search-color: var(--search-color);
+  --_search-background: var(--search-background);
+  --_search-border-color: var(--search-border-color);
+  --_search-border-radius: var(--search-border-radius);
+  --_search-padding: var(--search-padding);
+  --_search-gap: var(--search-gap);
+
+  display: flex;
+  align-items: center;
+  gap: var(--_search-gap);
+  border: 1px solid var(--_search-border-color);
+  border-radius: var(--_search-border-radius);
+  padding: var(--_search-padding);
+  background: var(--_search-background);
+  color: var(--_search-color);
+}
+
+[data-moyaforge-search] input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+}
