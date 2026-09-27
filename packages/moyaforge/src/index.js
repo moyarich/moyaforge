@@ -31,6 +31,11 @@ export {
   Demo,
   NavigationTree,
   Page,
+  Sidebar,
+  SidebarGroup,
+  SidebarItem,
+  SidebarSearch,
+  SidebarSection,
   Source,
   TableOfContents,
 } from "./components.js";
