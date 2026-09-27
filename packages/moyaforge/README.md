@@ -33,6 +33,7 @@ layout remain under consumer control.
 MoyaForge exports composable primitives including:
 
 - `NavigationTree`
+- `Sidebar`, `SidebarSection`, `SidebarGroup`, `SidebarItem`, and `SidebarSearch`
 - `TableOfContents`
 - `Page`
 - `Demo`
@@ -41,6 +42,12 @@ MoyaForge exports composable primitives including:
 
 Use them independently. A repository does not need to adopt a MoyaForge shell to
 use a MoyaForge component.
+
+The sidebar primitives intentionally ship without an imposed visual theme. They
+provide accessible structure and composition points for nested navigation,
+collapsible groups, counts, filtering controls, and active items. Consumers can
+keep their own classes, icons, renderers, and CSS. This allows an existing site
+such as Console to migrate to MoyaForge without changing its appearance.
 
 ```jsx
 import {
