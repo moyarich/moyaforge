@@ -3,11 +3,15 @@
   "version": "0.2.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.js",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./components.css": "./src/components.css"
   },
   "files": [
-    "src",
+    "dist",
+    "src/components.css",
     "README.md"
   ],
   "license": "MIT",
@@ -19,9 +23,23 @@
   "description": "Reusable MDX and documentation infrastructure for MoyaForge-powered sites.",
   "peerDependencies": {
     "@mdx-js/react": "^3.1.1",
-    "react": ">=18"
+    "react": ">=18",
+    "react-dom": ">=18",
+    "@typefox/monaco-editor-react": ">=8",
+    "monaco-languageclient": ">=11",
+    "@monaco-editor/react": ">=4"
   },
   "scripts": {
-    "test": "node --test tests/*.test.js"
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test tests/*.test.js"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "typescript": "^5.9.0",
+    "@types/react-dom": "^19.1.0",
+    "@typefox/monaco-editor-react": "^8.0.2",
+    "monaco-languageclient": "^11.0.2",
+    "@monaco-editor/react": "^4.7.0"
   }
 }

@@ -186,3 +186,31 @@ only the regions needed by the consuming application:
 The same primitives are also available as named exports such as
 `SidebarHeader`, `SidebarContent`, and `SidebarFooter`. Search and
 NavigationTree remain independent components.
+
+
+## TypeScript
+
+MoyaForge is a TypeScript React package authored in strict TypeScript. Each React component owns a directory under `src/components/*/*`, with its implementation and local `index.ts` barrel. The root `components/index.ts` composes those exports. The package build emits JavaScript and
+declaration files to `dist/`, so consumers receive runtime JavaScript together
+with first-class TypeScript types.
+
+```sh
+npm run typecheck --workspace @moyarich/moyaforge
+npm run build --workspace @moyarich/moyaforge
+npm test --workspace @moyarich/moyaforge
+```
+
+## Monaco source editor
+
+`Monaco` owns composable multi-file behavior: file tabs, active-file selection,
+draft values, and change callbacks. The editor implementation is supplied with
+`renderEditor`, so the file layer does not depend on a particular Monaco React
+wrapper.
+
+MoyaForge also provides two leaf editor components:
+
+- `TypeFoxSourceEditor` for the TypeFox/VS Code API stack and real VS Code extensions.
+- `ReactMonacoSourceEditor` for the lighter `@monaco-editor/react` stack.
+
+`createMonacoVscodeConfig()` remains available for composing TypeFox extension
+configuration without coupling MoyaForge to any specific extension.
