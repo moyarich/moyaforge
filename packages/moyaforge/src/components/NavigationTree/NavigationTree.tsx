@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import type { PageDescriptor } from "../../content.js";
-import type { NavigationItem } from "../../navigation.js";
+import type { PageDescriptor } from "../../utils/content/index.js";
+import type { NavigationItem } from "../../utils/navigation/index.js";
 
 export interface NavigationTreeProps {
   items: NavigationItem[];
