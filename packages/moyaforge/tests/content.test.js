@@ -5,8 +5,8 @@ import {
   createPages,
   filterPages,
   labelFromSegment,
-} from "../dist/content.js";
-import { buildNavigation } from "../dist/navigation.js";
+} from "../dist/utils/content/index.js";
+import { buildNavigation } from "../dist/utils/navigation/index.js";
 
 test("ordered folders become readable labels", () => {
   assert.equal(labelFromSegment("01-getting-started"), "Getting Started");
