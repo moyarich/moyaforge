@@ -1,12 +1,75 @@
 # @moyarich/moyaforge
 
-Reusable infrastructure for MoyaForge-powered documentation sites and interactive
-playgrounds.
+Reusable helpers and components for repository-owned documentation sites and
+interactive playgrounds.
 
-MoyaForge uses the standard MDX component/provider model rather than maintaining a
-separate component registry.
+MoyaForge provides building blocks rather than requiring one application shell.
+Consumers can use the provided components, compose an optional shell, or build a
+completely custom shell.
+
+## Content helpers
+
+```js
+import {
+  buildNavigation,
+  createPages,
+  filterPages,
+} from "@moyarich/moyaforge";
+
+const modules = import.meta.glob("./docs/**/page.mdx", { eager: true });
+const pages = createPages(modules);
+const navigation = buildNavigation(pages);
+const matches = filterPages(pages, "configuration");
+```
+
+Ordered folder names such as `01-getting-started` and `02-guides` are sorted
+numerically while their generated labels omit the numeric prefix.
+
+The helpers return ordinary data. Routing, selection state, rendering, and shell
+layout remain under consumer control.
+
+## Components
+
+MoyaForge exports composable primitives including:
+
+- `NavigationTree`
+- `TableOfContents`
+- `Page`
+- `Demo`
+- `Source`
+- `CopyButton`
+
+Use them independently. A repository does not need to adopt a MoyaForge shell to
+use a MoyaForge component.
+
+```jsx
+import {
+  NavigationTree,
+  Source,
+  buildNavigation,
+} from "@moyarich/moyaforge";
+
+const navigation = buildNavigation(pages);
+
+export function CustomShell() {
+  return (
+    <MyLayout
+      navigation={
+        <NavigationTree
+          items={navigation}
+          renderLink={(page) => <MyLink page={page} />}
+        />
+      }
+    >
+      <Source code={source} language="css" />
+    </MyLayout>
+  );
+}
+```
 
 ## MDX components
+
+MoyaForge uses the standard MDX component/provider model.
 
 ```jsx
 import { MDXProvider } from "@mdx-js/react";
@@ -16,7 +79,7 @@ import {
 } from "@moyarich/moyaforge";
 
 const components = createMdxComponents(moyaForgeComponents, {
-  Demo,
+  Demo: ProjectDemo,
   Callout: ProjectCallout,
 });
 
@@ -25,18 +88,20 @@ const components = createMdxComponents(moyaForgeComponents, {
 </MDXProvider>;
 ```
 
-Consumer components are applied after MoyaForge defaults, so a component with the same
-name overrides the built-in implementation.
+Consumer overrides are applied after defaults, so repositories can replace any
+provided MDX component.
 
-Consumers can also use the same component map with the MDX v3
-`useMDXComponents` convention.
+## Ownership boundary
+
+MoyaForge owns reusable mechanisms: content discovery helpers, ordered paths,
+navigation data, MDX plumbing, and reusable presentation primitives.
+
+The consuming repository owns its documentation and demo content, branding,
+routing decisions, application-specific behavior, and final shell composition.
 
 ## Repository layout
 
-MoyaForge keeps reusable infrastructure in `packages/moyaforge`. The repository's
-own usage examples live in `apps/playground`.
-
-A consuming repository can keep its own content wherever it wants. The defaults are:
+Content can live wherever the consuming repository chooses. The default paths are:
 
 ```text
 apps/playground/src/
@@ -44,4 +109,4 @@ docs/
 api/
 ```
 
-Use `defineMoyaForgeConfig()` to override those paths.
+Use `defineMoyaForgeConfig()` to override them.
