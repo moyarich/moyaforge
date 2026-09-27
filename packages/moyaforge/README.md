@@ -186,3 +186,16 @@ only the regions needed by the consuming application:
 The same primitives are also available as named exports such as
 `SidebarHeader`, `SidebarContent`, and `SidebarFooter`. Search and
 NavigationTree remain independent components.
+
+
+## TypeScript
+
+MoyaForge is authored in strict TypeScript. The package build emits JavaScript and
+declaration files to `dist/`, so consumers receive runtime JavaScript together
+with first-class TypeScript types.
+
+```sh
+npm run typecheck --workspace @moyarich/moyaforge
+npm run build --workspace @moyarich/moyaforge
+npm test --workspace @moyarich/moyaforge
+```
