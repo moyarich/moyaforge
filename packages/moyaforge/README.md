@@ -202,10 +202,15 @@ npm test --workspace @moyarich/moyaforge
 
 ## Monaco source editor
 
-`MonacoSourceEditor` provides the reusable TypeFox/Monaco editor surface used by
-MoyaForge playgrounds. Consumers supply the VS Code API configuration, including
-extensions, language services, workers, and other service overrides.
+`Monaco` owns composable multi-file behavior: file tabs, active-file selection,
+draft values, and change callbacks. The editor implementation is supplied with
+`renderEditor`, so the file layer does not depend on a particular Monaco React
+wrapper.
 
-Use `createMonacoVscodeConfig()` to compose that configuration without coupling
-MoyaForge to a specific VS Code extension. Extension packages such as a CSS color
-visualizer remain owned by the consuming project.
+MoyaForge also provides two leaf editor components:
+
+- `TypeFoxSourceEditor` for the TypeFox/VS Code API stack and real VS Code extensions.
+- `ReactMonacoSourceEditor` for the lighter `@monaco-editor/react` stack.
+
+`createMonacoVscodeConfig()` remains available for composing TypeFox extension
+configuration without coupling MoyaForge to any specific extension.
