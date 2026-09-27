@@ -1,5 +1,6 @@
 export * from "./CopyButton/index.js";
 export * from "./Demo/index.js";
+export * from "./EmptyState/index.js";
 export * from "./NavigationTree/index.js";
 export * from "./Page/index.js";
 export * from "./Search/index.js";
