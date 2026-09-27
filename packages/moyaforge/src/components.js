@@ -8,7 +8,11 @@ export function CopyButton({ value, children = "Copy", onCopy, ...props }) {
     onCopy?.();
   }
 
-  return h("button", { type: "button", onClick: copy, ...props }, children);
+  return h(
+    "button",
+    { type: "button", "data-moyaforge-copy-button": "", onClick: copy, ...props },
+    children,
+  );
 }
 
 export function NavigationTree({
@@ -19,7 +23,7 @@ export function NavigationTree({
 }) {
   return h(
     "ul",
-    listProps,
+    { "data-moyaforge-navigation-tree": "", ...listProps },
     items.map((item) =>
       h(
         "li",
@@ -36,7 +40,7 @@ export function NavigationTree({
 export function Source({ code, language, children, ...props }) {
   return h(
     "pre",
-    { "data-language": language, ...props },
+    { "data-moyaforge-source": "", "data-language": language, ...props },
     h("code", null, children ?? code),
   );
 }
@@ -46,7 +50,7 @@ export function Demo({ children, ...props }) {
 }
 
 export function Page({ as = "main", children, ...props }) {
-  return h(as, props, children);
+  return h(as, { "data-moyaforge-page": "", ...props }, children);
 }
 
 export function TableOfContents({
@@ -59,7 +63,7 @@ export function TableOfContents({
 
   return h(
     "nav",
-    { "aria-label": "Table of contents", ...props },
+    { "data-moyaforge-toc": "", "aria-label": "Table of contents", ...props },
     h(
       "ul",
       null,
