@@ -41,6 +41,7 @@
     "@types/react-dom": "^19.1.0",
     "@typefox/monaco-editor-react": "^8.0.2",
     "monaco-languageclient": "^11.0.2",
-    "@monaco-editor/react": "^4.7.0"
+    "@monaco-editor/react": "^4.7.0",
+    "@moyarich/console": "^0.1.0"
   }
 }
