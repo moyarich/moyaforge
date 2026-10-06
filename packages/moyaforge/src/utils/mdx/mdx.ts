@@ -1,3 +1,4 @@
+import { Console, Terminal } from "@moyarich/console";
 import type { ComponentType } from "react";
 import {
   CopyButton, Demo, NavigationTree, Page, Search, Sidebar, SidebarContent,
@@ -6,6 +7,7 @@ import {
 } from "../../components/index.js";
 
 export const moyaForgeComponents = Object.freeze({
+  Console, Terminal,
   CopyButton, Demo, NavigationTree, Page, Search, Sidebar, SidebarContent,
   SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem, SidebarSection,
   Source, TableOfContents,
