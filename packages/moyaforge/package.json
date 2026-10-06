@@ -27,7 +27,8 @@
     "react-dom": ">=18",
     "@typefox/monaco-editor-react": ">=8",
     "monaco-languageclient": ">=11",
-    "@monaco-editor/react": ">=4"
+    "@monaco-editor/react": ">=4",
+    "@moyarich/console": "^0.1.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

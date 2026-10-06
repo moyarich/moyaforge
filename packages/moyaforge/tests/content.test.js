@@ -10,6 +10,26 @@ import { buildNavigation } from "../dist/utils/navigation/index.js";
 
 test("ordered folders become readable labels", () => {
   assert.equal(labelFromSegment("01-getting-started"), "Getting Started");
+  assert.equal(labelFromSegment("guides"), "Guides");
+});
+
+test("unnumbered folders are valid and can own nested landing pages", () => {
+  const pages = createPages({
+    "./guides/page.mdx": {
+      default: () => null,
+      frontmatter: { label: "Guides" },
+    },
+    "./guides/configuration/page.mdx": {
+      default: () => null,
+      frontmatter: { label: "Configuration" },
+    },
+  });
+
+  const navigation = buildNavigation(pages);
+
+  assert.equal(navigation[0].label, "Guides");
+  assert.equal(navigation[0].page.label, "Guides");
+  assert.equal(navigation[0].children[0].page.label, "Configuration");
 });
 
 test("createPages preserves numeric folder order and frontmatter", () => {

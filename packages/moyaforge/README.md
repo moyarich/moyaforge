@@ -7,6 +7,10 @@ MoyaForge provides building blocks rather than requiring one application shell.
 Consumers can use the provided components, compose an optional shell, or build a
 completely custom shell.
 
+MoyaForge composes `@moyarich/console` for runnable examples and developer-tool
+output surfaces. Console remains the lower-level package and does not depend on
+MoyaForge.
+
 ## Content helpers
 
 ```js
@@ -22,8 +26,13 @@ const navigation = buildNavigation(pages);
 const matches = filterPages(pages, "configuration");
 ```
 
-Ordered folder names such as `01-getting-started` and `02-guides` are sorted
-numerically while their generated labels omit the numeric prefix.
+Folder names do not require numeric prefixes. Names such as `guides` are valid as-is.
+Prefixes such as `01-getting-started` and `02-guides` are optional ordering hints;
+when present they sort numerically and are omitted from generated labels.
+
+A root `./page.mdx` becomes the section index page. Folder landing pages such as
+`./guides/page.mdx` may coexist with nested pages such as
+`./guides/configuration/page.mdx`.
 
 The helpers return ordinary data. Routing, selection state, rendering, and shell
 layout remain under consumer control.
@@ -96,13 +105,15 @@ const components = createMdxComponents(moyaForgeComponents, {
 </MDXProvider>;
 ```
 
-Consumer overrides are applied after defaults, so repositories can replace any
-provided MDX component.
+The default registry includes MoyaForge primitives plus `Console` and `Terminal`
+from `@moyarich/console`. Consumer overrides are applied after defaults, so
+repositories can replace any provided MDX component.
 
 ## Ownership boundary
 
 MoyaForge owns reusable mechanisms: content discovery helpers, ordered paths,
-navigation data, MDX plumbing, and reusable presentation primitives.
+navigation data, MDX plumbing, runnable playground composition, Console-backed
+developer-tool output surfaces, and reusable presentation primitives.
 
 The consuming repository owns its documentation and demo content, branding,
 routing decisions, application-specific behavior, and final shell composition.

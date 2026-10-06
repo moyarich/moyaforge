@@ -18,6 +18,7 @@ It provides:
 - Consumer component registration.
 - Consumer overrides of MoyaForge-provided components.
 - Reusable documentation and playground infrastructure.
+- Console-backed output surfaces through `@moyarich/console`, with Console kept as the lower-level independent package.
 
 MoyaForge components are defaults, not locked implementations. Consumers can
 register a component under the same MDX name to replace the built-in component.
@@ -37,8 +38,8 @@ artifact path to the reusable workflow.
 
 ### Ordered documentation folders
 
-For documentation with explicit navigation order, prefix folders with a number and use
-`page.mdx` as the page entry point:
+Documentation folders may be named normally or prefixed with a number when explicit
+navigation order is useful. Use `page.mdx` as the page entry point:
 
 ```text
 docs/
@@ -61,8 +62,10 @@ docs/
         └── page.mdx
 ```
 
-The numeric prefixes define sibling order while the folder names keep the hierarchy
-visible in the repository. Each `page.mdx` owns the content for its folder.
+Numeric prefixes are optional ordering hints, not a validity requirement. Both
+`guides/page.mdx` and `02-guides/page.mdx` are valid; the prefixed form is preferred
+when sibling order should be explicit. A root `docs/page.mdx` is the documentation
+landing page, and a folder `page.mdx` may coexist with nested child pages.
 
 ## Reusable GitHub Pages workflow
 
