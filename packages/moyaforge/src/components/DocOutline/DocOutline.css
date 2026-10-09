@@ -1,0 +1,11 @@
+[data-moyaforge-doc-outline] { position: sticky; top: 5rem; align-self: start; max-height: calc(100vh - 6rem); overflow: auto; }
+
+[data-moyaforge-doc-outline-title] { font-size: 0.8rem; font-weight: 700; }
+
+[data-moyaforge-doc-outline] ul { padding: 0; list-style: none; }
+
+[data-moyaforge-doc-outline] a { display: block; padding: 0.35rem 0.5rem; text-decoration: none; color: inherit; opacity: 0.75; }
+
+[data-moyaforge-doc-outline] a[aria-current="location"] { opacity: 1; font-weight: 700; }
+
+[data-moyaforge-doc-outline] [data-level="3"] { padding-left: 1rem; }
