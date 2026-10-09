@@ -1,4 +1,4 @@
-import { Children, isValidElement, useId, useState, type KeyboardEvent, type ReactNode } from "react";
+import { Children, isValidElement, useId, useState, type KeyboardEvent, type ReactElement, type ReactNode } from "react";
 
 export interface CodeTabProps { label: string; children: ReactNode }
 export function CodeTab({ children }: CodeTabProps) { return <>{children}</>; }
@@ -6,7 +6,7 @@ export function CodeTab({ children }: CodeTabProps) { return <>{children}</>; }
 export interface CodeGroupProps { children: ReactNode; label?: string }
 export function CodeGroup({ children, label = "Code examples" }: CodeGroupProps) {
   const tabs = Children.toArray(children)
-    .filter((child): child is React.ReactElement<CodeTabProps> =>
+    .filter((child): child is ReactElement<CodeTabProps> =>
       isValidElement(child) && child.type === CodeTab)
     .map((child) => ({ label: child.props.label, content: child.props.children }));
   const [selected, setSelected] = useState(0);
