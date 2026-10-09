@@ -1,0 +1,27 @@
+[data-moyaforge-search] {
+
+  --_search-color: var(--_search-color);
+  --_search-background: var(--_search-background);
+  --_search-border-color: var(--_search-border-color);
+  --_search-border-radius: var(--_search-border-radius);
+  --_search-padding: var(--_search-padding);
+  --_search-gap: var(--_search-gap);
+
+  display: flex;
+  align-items: center;
+  gap: var(--_search-gap);
+  border: 1px solid var(--_search-border-color);
+  border-radius: var(--_search-border-radius);
+  padding: var(--_search-padding);
+  background: var(--_search-background);
+  color: var(--_search-color);
+}
+
+[data-moyaforge-search] input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+}
