@@ -7,7 +7,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./components.css": "./src/components.css"
+    "./components.css": "./src/components.css",
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    }
   },
   "files": [
     "dist",
@@ -42,6 +46,7 @@
     "@typefox/monaco-editor-react": "^8.0.2",
     "monaco-languageclient": "^11.0.2",
     "@monaco-editor/react": "^4.7.0",
-    "@moyarich/console": "^0.1.0"
+    "@moyarich/console": "^0.1.0",
+    "@types/node": "^24.0.0"
   }
 }
