@@ -1,0 +1,16 @@
+[data-moyaforge-demo] {
+  --demo-background: transparent;
+  --demo-color: inherit;
+  --demo-padding: 0;
+  --demo-border-radius: 0;
+
+  --_demo-background: var(--demo-background);
+  --_demo-color: var(--demo-color);
+  --_demo-padding: var(--demo-padding);
+  --_demo-border-radius: var(--demo-border-radius);
+
+  padding: var(--_demo-padding);
+  border-radius: var(--_demo-border-radius);
+  background: var(--_demo-background);
+  color: var(--_demo-color);
+}
