@@ -1,0 +1,14 @@
+[data-moyaforge-copy-button] {
+
+  --_copy-button-color: var(--_copy-button-color);
+  --_copy-button-background: var(--_copy-button-background);
+  --_copy-button-border-color: var(--_copy-button-border-color);
+  --_copy-button-border-radius: var(--_copy-button-border-radius);
+  --_copy-button-padding: var(--_copy-button-padding);
+
+  border: 1px solid var(--_copy-button-border-color);
+  border-radius: var(--_copy-button-border-radius);
+  padding: var(--_copy-button-padding);
+  background: var(--_copy-button-background);
+  color: var(--_copy-button-color);
+}
