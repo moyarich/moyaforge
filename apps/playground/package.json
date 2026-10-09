@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "@mdx-js/react": "^3.1.1",
-    "@moyarich/moyaforge": "workspace:*",
+    "@moyarich/moyaforge": "*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "@moyarich/console": "^0.1.0",
