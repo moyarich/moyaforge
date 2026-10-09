@@ -2,6 +2,7 @@
   --_code-group-background: var(--code-group-background, #171e30);
   --_code-group-color: var(--code-group-color, #e5e7eb);
   --_code-group-border: var(--code-group-border, #30394d);
+  --_code-group-active-color: var(--code-group-active-color, #a5b4fc);
   overflow: hidden;
   border: 1px solid var(--_code-group-border);
   border-radius: 0.7rem;
@@ -16,7 +17,7 @@
   border-bottom: 1px solid var(--_code-group-border);
 }
 
-[data-moyaforge-code-tabs] button button {
+[data-moyaforge-code-tabs] button {
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
@@ -26,9 +27,9 @@
   font: inherit;
 }
 
-[data-moyaforge-code-tabs] button[aria-selected="true"][aria-selected="true"] { border-bottom-color: #a5b4fc; font-weight: 650; }
+[data-moyaforge-code-tabs] button[aria-selected="true"] { border-bottom-color: var(--_code-group-active-color); font-weight: 650; }
 
-[data-moyaforge-code-tabs] button:focus-visible:focus-visible { outline: 2px solid #a5b4fc; outline-offset: -3px; }
+[data-moyaforge-code-tabs] button:focus-visible { outline: 2px solid var(--_code-group-active-color); outline-offset: -3px; }
 
 [data-moyaforge-code-panel][hidden] { display: none; }
 
