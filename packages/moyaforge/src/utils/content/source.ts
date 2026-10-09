@@ -41,12 +41,13 @@ export function createMoyaForgeSource(collections: Record<string, ContentCollect
       pages.push({ ...descriptor, url, collection: name, sourcePath: collection.dir.replace(/\/$/, "") + "/" + path.replace(/^\.\//, ""), title: String(frontmatter.title ?? descriptor.label), description: typeof frontmatter.description === "string" ? frontmatter.description : undefined, headings });
     }
   }
+  const normalizeUrl = (url: string) => ("/" + url.split("/").filter(Boolean).join("/")).replace(/\\/g, "/");
   const select = (collection?: string) => pages.filter((p) => !collection || p.collection === collection);
   return {
     getPages: (collection) => [...select(collection)],
-    getPage: (url) => pages.find((p) => p.url === url.replace(/\/$/, "") || (url === "/" && p.url === "/")),
+    getPage: (url) => pages.find((p) => p.url === normalizeUrl(url)),
     getPageTree: (collection) => buildNavigation(select(collection)),
-    getTableOfContents: (url) => [...(pages.find((p) => p.url === url)?.headings ?? [])],
+    getTableOfContents: (url) => [...(pages.find((p) => p.url === normalizeUrl(url))?.headings ?? [])],
     getSearchIndex: () => pages.map((p) => ({ url: p.url, title: p.title, description: p.description ?? "", headings: p.headings.map((h) => h.label) })),
   };
 }
