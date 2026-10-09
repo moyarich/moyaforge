@@ -225,3 +225,23 @@ MoyaForge also provides two leaf editor components:
 
 `createMonacoVscodeConfig()` remains available for composing TypeFox extension
 configuration without coupling MoyaForge to any specific extension.
+
+## Integration modes
+
+MoyaForge supports a typed configuration contract for three target integrations:
+
+- `mode: "docs"`: documentation-first website (planned default-site adapter).
+- `mode: "app"`: import the React components and helpers into an existing app.
+- `mode: "hybrid"` (default): a React app with a documentation area and interactive playground.
+
+```ts
+import { defineMoyaForgeConfig } from "@moyarich/moyaforge";
+
+export default defineMoyaForgeConfig({
+  mode: "hybrid",
+  site: { title: "My App", editLink: { repository: "owner/repo" } },
+  content: { docs: "docs", examples: "examples" },
+});
+```
+
+**These modes describe the intended composition, not a complete turnkey docs runtime yet.** The current package exposes components, content/navigation utilities and config. Automated MDX discovery, React Router mounting, Vite integration and a zero-config CLI are next steps; see [framework architecture](../../docs/framework-architecture.md).
