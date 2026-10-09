@@ -3,7 +3,7 @@ import type { ComponentType } from "react";
 import {
   CopyButton, Demo, NavigationTree, Page, Search, Sidebar, SidebarContent,
   SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem, SidebarSection,
-  Source, TableOfContents, CodeGroup, CodeTab, EditPageLink, MonacoCodeGroup,
+  Source, TableOfContents, CodeGroup, CodeTab, EditPageLink, MonacoCodeGroup, DocOutline,
 } from "../../components/index.js";
 
 export const moyaForgeComponents = Object.freeze({
