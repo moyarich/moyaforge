@@ -29,7 +29,7 @@ function runVite(action: string) {
 }
 switch (command) {
   case "init": init(); break;
-  case "dev": runVite("--host" === args[0] ? "dev" : "dev"); break;
+  case "dev": runVite("dev"); break;
   case "build": runVite("build"); break;
   case "preview": runVite("preview"); break;
   default:
