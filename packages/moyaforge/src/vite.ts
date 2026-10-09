@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 
 export interface MoyaForgeViteOptions {
