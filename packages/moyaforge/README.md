@@ -199,6 +199,22 @@ The same primitives are also available as named exports such as
 NavigationTree remain independent components.
 
 
+
+## Component styles and theming
+
+Import `@moyarich/moyaforge/components.css` to load the component styles. This entry point imports the colocated stylesheet for each component. Individual component directories under `src/components/<Component>/` contain their own CSS and React implementation, so the folder can be reused independently with its stylesheet.
+
+Theme variables are public, e.g. `--sidebar-padding`. Component styles resolve them to private aliases with self-contained defaults:
+
+```css
+[data-moyaforge-sidebar] {
+  --_sidebar-padding: var(--sidebar-padding, 0.625rem);
+  /* component rules use var(--_sidebar-padding) */
+}
+```
+
+Override public tokens on an ancestor (such as your app's theme root) or on the component element itself. Do not set a public token to its private alias; that would create a circular reference. Internal derived values also use the `--_component-*` naming convention.
+
 ## TypeScript
 
 MoyaForge is a TypeScript React package authored in strict TypeScript. Each React component owns a directory under `src/components/*/*`, with its implementation and local `index.ts` barrel. The root `components/index.ts` composes those exports. The package build emits JavaScript and
