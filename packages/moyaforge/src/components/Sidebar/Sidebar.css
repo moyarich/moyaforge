@@ -1,0 +1,22 @@
+[data-moyaforge-sidebar] {
+
+  --_sidebar-color: var(--_sidebar-color);
+  --_sidebar-background: var(--_sidebar-background);
+  --_sidebar-border-color: var(--_sidebar-border-color);
+  --_sidebar-gap: var(--_sidebar-gap);
+  --_sidebar-padding: var(--_sidebar-padding);
+
+  color: var(--_sidebar-color);
+  background: var(--_sidebar-background);
+}
+
+[data-moyaforge-sidebar-header],
+[data-moyaforge-sidebar-content],
+[data-moyaforge-sidebar-footer] {
+  padding: var(--_sidebar-padding);
+}
+
+[data-moyaforge-sidebar-content] {
+  display: grid;
+  gap: var(--_sidebar-gap);
+}
