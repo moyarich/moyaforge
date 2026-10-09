@@ -38,7 +38,7 @@ export function createMoyaForgeSource(collections: Record<string, ContentCollect
       const rawHeadings = frontmatter.headings;
       const headings = Array.isArray(rawHeadings) ? rawHeadings.filter((h): h is { id: string; label: string; level: number } =>
         !!h && typeof h === "object" && typeof h.id === "string" && typeof h.label === "string" && typeof h.level === "number") : [];
-      pages.push({ ...descriptor, url, collection: name, sourcePath: collection.dir.replace(/\/$/, "") + "/" + relative + (path.endsWith(".mdx") ? "/page.mdx" : "/page.md"), title: String(frontmatter.title ?? descriptor.label), description: typeof frontmatter.description === "string" ? frontmatter.description : undefined, headings });
+      pages.push({ ...descriptor, url, collection: name, sourcePath: collection.dir.replace(/\/$/, "") + "/" + path.replace(/^\.\//, ""), title: String(frontmatter.title ?? descriptor.label), description: typeof frontmatter.description === "string" ? frontmatter.description : undefined, headings });
     }
   }
   const select = (collection?: string) => pages.filter((p) => !collection || p.collection === collection);
