@@ -1,4 +1,7 @@
 [data-moyaforge-code-group] {
+  --_code-group-background: var(--code-group-background, #171e30);
+  --_code-group-color: var(--code-group-color, #e5e7eb);
+  --_code-group-border: var(--code-group-border, #30394d);
   overflow: hidden;
   border: 1px solid var(--_code-group-border);
   border-radius: 0.7rem;
