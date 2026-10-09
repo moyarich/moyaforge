@@ -9,14 +9,14 @@
   color: var(--_code-group-color);
 }
 
-[data-moyaforge-code-tabs], [data-moyaforge-monaco-tabs] {
+[data-moyaforge-code-tabs] {
   display: flex;
   gap: 0.25rem;
   overflow-x: auto;
   border-bottom: 1px solid var(--_code-group-border);
 }
 
-[data-moyaforge-code-tabs] button, [data-moyaforge-monaco-tabs] button {
+[data-moyaforge-code-tabs] button button {
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
@@ -26,11 +26,9 @@
   font: inherit;
 }
 
-[data-moyaforge-code-tabs] button[aria-selected="true"],
-[data-moyaforge-monaco-tabs] button[aria-selected="true"] { border-bottom-color: #a5b4fc; font-weight: 650; }
+[data-moyaforge-code-tabs] button[aria-selected="true"][aria-selected="true"] { border-bottom-color: #a5b4fc; font-weight: 650; }
 
-[data-moyaforge-code-tabs] button:focus-visible,
-[data-moyaforge-monaco-tabs] button:focus-visible { outline: 2px solid #a5b4fc; outline-offset: -3px; }
+[data-moyaforge-code-tabs] button:focus-visible:focus-visible { outline: 2px solid #a5b4fc; outline-offset: -3px; }
 
 [data-moyaforge-code-panel][hidden] { display: none; }
 
