@@ -1,4 +1,9 @@
-[data-moyaforge-docs-layout] { min-height: 100vh; }
+[data-moyaforge-docs-layout] {
+  --_docs-sidebar-width: var(--docs-sidebar-width, 15rem);
+  --_docs-outline-width: var(--docs-outline-width, 13rem);
+  --_docs-border: var(--docs-border, #e5e7eb);
+  min-height: 100vh;
+}
 
 [data-moyaforge-docs-header] { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; min-height: 4rem; padding: 0 1.5rem; background: var(--docs-header-background, white); border-bottom: 1px solid var(--_docs-border); }
 
