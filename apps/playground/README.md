@@ -20,7 +20,7 @@ MoyaForge now supplies these React components through `moyaForgeComponents`, so 
 
 Example MDX:
 
-```mdx
+````mdx
 <CodeGroup>
   <CodeTab label="npm">
 
@@ -44,6 +44,6 @@ pnpm add @moyarich/moyaforge
 />
 
 <EditPageLink repository="moyarich/moyaforge" path="apps/playground/README.md" />
-```
+````
 
 **Shiki highlighting is a build-time MDX concern**, not a runtime React component. Configure `rehype-pretty-code` (powered by Shiki) or your preferred MDX highlighting plugin in the consuming site's MDX compiler. MoyaForge's code tabs render its compiled output without imposing a specific build tool.
