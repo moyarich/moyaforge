@@ -7,6 +7,7 @@
 @import "./components/CopyButton/CopyButton.css";
 @import "./components/Search/Search.css";
 @import "./components/CodeGroup/CodeGroup.css";
+@import "./components/Monaco/Monaco.css";
 @import "./components/DocOutline/DocOutline.css";
 @import "./components/EditPageLink/EditPageLink.css";
 @import "./components/DocsLayout/DocsLayout.css";
