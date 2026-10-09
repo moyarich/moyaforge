@@ -1,0 +1,10 @@
+[data-moyaforge-page] {
+
+  --_page-width: var(--_page-width);
+  --_page-max-width: var(--_page-max-width);
+  --_page-padding: var(--_page-padding);
+
+  width: var(--_page-width);
+  max-width: var(--_page-max-width);
+  padding: var(--_page-padding);
+}
