@@ -1,8 +1,8 @@
 [data-moyaforge-toc] {
 
-  --_toc-color: var(--_toc-color);
-  --_toc-gap: var(--_toc-gap);
-  --_toc-indent: var(--_toc-indent);
+  --_toc-color: var(--toc-color, inherit);
+  --_toc-gap: var(--toc-gap, 0.25rem);
+  --_toc-indent: var(--toc-indent, 1rem);
 
   color: var(--_toc-color);
 }
