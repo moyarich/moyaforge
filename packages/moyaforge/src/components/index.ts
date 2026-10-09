@@ -1,3 +1,4 @@
+export * from "./DocsLayout/index.js";
 export * from "./DocOutline/index.js";
 export * from "./CodeGroup/index.js";
 export * from "./EditPageLink/index.js";
