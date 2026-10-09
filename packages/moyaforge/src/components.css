@@ -218,3 +218,16 @@
 [data-moyaforge-doc-outline] a[aria-current="location"] { opacity: 1; font-weight: 700; }
 [data-moyaforge-doc-outline] [data-level="3"] { padding-left: 1rem; }
 [data-moyaforge-edit-page] { display: inline-flex; align-items: center; font-size: 0.85rem; }
+
+/* Optional complete documentation shell, without global element selectors. */
+[data-moyaforge-docs-layout] { --docs-sidebar-width: 15rem; --docs-outline-width: 13rem; --docs-border: #e5e7eb; min-height: 100vh; }
+[data-moyaforge-docs-header] { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; min-height: 4rem; padding: 0 1.5rem; background: var(--docs-header-background, white); border-bottom: 1px solid var(--docs-border); }
+[data-moyaforge-docs-columns] { display: grid; grid-template-columns: minmax(0,var(--docs-sidebar-width)) minmax(0,1fr) minmax(0,var(--docs-outline-width)); gap: clamp(1rem,3vw,3rem); max-width: 100rem; margin: auto; }
+[data-moyaforge-docs-sidebar] { position: sticky; top: 4rem; align-self: start; height: calc(100vh - 4rem); overflow-y: auto; padding: 1.5rem; border-right: 1px solid var(--docs-border); }
+[data-moyaforge-docs-sidebar] ul { padding: 0; list-style: none; }
+[data-moyaforge-docs-sidebar] a { display: block; padding: .45rem .55rem; text-decoration: none; color: inherit; }
+[data-moyaforge-docs-sidebar] a[aria-current=page] { font-weight: 700; }
+[data-moyaforge-docs-article] { min-width: 0; padding: 2.5rem 0 5rem; }
+[data-moyaforge-docs-page-footer] { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--docs-border); }
+@media(max-width: 1100px) { [data-moyaforge-docs-columns] { grid-template-columns: minmax(0,var(--docs-sidebar-width)) minmax(0,1fr); padding-right: 1.5rem; } [data-moyaforge-docs-layout] [data-moyaforge-doc-outline] { display: none; } }
+@media(max-width: 700px) { [data-moyaforge-docs-columns] { display: block; padding: 0 1rem; } [data-moyaforge-docs-sidebar] { position: static; height: auto; padding: .75rem 0; border: 0; border-bottom: 1px solid var(--docs-border); } [data-moyaforge-docs-sidebar] ul { display: flex; overflow-x: auto; gap: .4rem; } [data-moyaforge-docs-article] { padding: 1.5rem 0 3rem; } }
