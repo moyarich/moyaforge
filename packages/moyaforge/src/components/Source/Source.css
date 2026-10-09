@@ -1,9 +1,9 @@
 [data-moyaforge-source] {
 
-  --_source-background: var(--_source-background);
-  --_source-color: var(--_source-color);
-  --_source-padding: var(--_source-padding);
-  --_source-border-radius: var(--_source-border-radius);
+  --_source-background: var(--source-background, transparent);
+  --_source-color: var(--source-color, inherit);
+  --_source-padding: var(--source-padding, 1rem);
+  --_source-border-radius: var(--source-border-radius, 0);
 
   margin: 0;
   padding: var(--_source-padding);
