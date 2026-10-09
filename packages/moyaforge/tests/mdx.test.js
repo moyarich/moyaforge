@@ -8,3 +8,9 @@ test("default MDX components include Console output surfaces", () => {
   assert.equal(moyaForgeComponents.Console, Console);
   assert.equal(moyaForgeComponents.Terminal, Terminal);
 });
+
+test("MDX default registry exports documentation components", () => {
+  for (const name of ["CodeGroup", "CodeTab", "DocOutline", "EditPageLink", "MonacoCodeGroup"]) {
+    assert.equal(typeof moyaForgeComponents[name], "function", name);
+  }
+});
