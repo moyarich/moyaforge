@@ -1,0 +1,20 @@
+[data-moyaforge-monaco-tabs] {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--code-group-border, #30394d);
+}
+
+[data-moyaforge-monaco-tabs] button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: inherit;
+  padding: 0.65rem 0.85rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+[data-moyaforge-monaco-tabs] button[aria-selected="true"] { border-bottom-color: #a5b4fc; font-weight: 650; }
+
+[data-moyaforge-monaco-tabs] button:focus-visible { outline: 2px solid #a5b4fc; outline-offset: -3px; }

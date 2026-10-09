@@ -1,0 +1,33 @@
+/*
+ * Public custom properties use --component-*.
+ * Private implementation aliases use the same name with an underscore:
+ * --_component-*.
+ */
+
+[data-moyaforge-sidebar] {
+  --sidebar-color: inherit;
+  --sidebar-background: transparent;
+  --sidebar-border-color: currentColor;
+  --sidebar-gap: 0.5rem;
+  --sidebar-padding: 0.625rem;
+
+  --_sidebar-color: var(--sidebar-color);
+  --_sidebar-background: var(--sidebar-background);
+  --_sidebar-border-color: var(--sidebar-border-color);
+  --_sidebar-gap: var(--sidebar-gap);
+  --_sidebar-padding: var(--sidebar-padding);
+
+  color: var(--_sidebar-color);
+  background: var(--_sidebar-background);
+}
+
+[data-moyaforge-sidebar-header],
+[data-moyaforge-sidebar-content],
+[data-moyaforge-sidebar-footer] {
+  padding: var(--_sidebar-padding);
+}
+
+[data-moyaforge-sidebar-content] {
+  display: grid;
+  gap: var(--_sidebar-gap);
+}
