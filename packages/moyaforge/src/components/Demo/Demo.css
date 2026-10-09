@@ -1,0 +1,12 @@
+[data-moyaforge-demo] {
+
+  --_demo-background: var(--_demo-background);
+  --_demo-color: var(--_demo-color);
+  --_demo-padding: var(--_demo-padding);
+  --_demo-border-radius: var(--_demo-border-radius);
+
+  padding: var(--_demo-padding);
+  border-radius: var(--_demo-border-radius);
+  background: var(--_demo-background);
+  color: var(--_demo-color);
+}
