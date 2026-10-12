@@ -31,7 +31,7 @@ export function createMoyaForgeSource(collections: Record<string, ContentCollect
       const route = relative.split("/").filter(Boolean).map((segment) => segment.replace(/^\d+[-_. ]*/, "")).join("/");
       const url = (base + (route ? "/" + route : "")).replace(/\/+/g, "/");
       const frontmatter = mod.frontmatter ?? {};
-      if (frontmatter.hidden === true) continue;
+      if (frontmatter.hidden === true || frontmatter.navigation === "disabled") continue;
       if (urls.has(url)) throw new Error(`Duplicate MoyaForge route: ${url}`);
       urls.add(url);
       const descriptor = createPageDescriptor(path, mod);
@@ -45,7 +45,7 @@ export function createMoyaForgeSource(collections: Record<string, ContentCollect
   return {
     getPages: (collection) => [...select(collection)],
     getPage: (url) => pages.find((p) => p.url === url.replace(/\/$/, "") || (url === "/" && p.url === "/")),
-    getPageTree: (collection) => buildNavigation(select(collection)),
+    getPageTree: (collection) => buildNavigation(select(collection).filter((page) => page.frontmatter.navigation !== "hidden")),
     getTableOfContents: (url) => [...(pages.find((p) => p.url === url)?.headings ?? [])],
     getSearchIndex: () => pages.map((p) => ({ url: p.url, title: p.title, description: p.description ?? "", headings: p.headings.map((h) => h.label) })),
   };
