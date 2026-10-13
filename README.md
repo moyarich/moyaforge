@@ -86,3 +86,15 @@ jobs:
 
 The reusable workflow installs dependencies, configures GitHub Pages, runs the caller's
 documentation build, uploads the caller's output directory, and deploys it.
+
+## Console package installation
+
+MoyaForge consumes the published `@moyarich/console@^0.1.0` package from GitHub Packages; Console remains a separate, lower-level project. Its dependency `@moyarich/console-core` is resolved from the same registry.
+
+The repository's `.npmrc` routes `@moyarich` packages to `https://npm.pkg.github.com`. GitHub Packages requires authentication, including for public packages. For local installs, use a GitHub personal access token (classic) with `read:packages`, made available as `NODE_AUTH_TOKEN`, and configure the registry authentication in your user-level `~/.npmrc` (do not commit credentials):
+
+```ini
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+For CI, `GITHUB_TOKEN` with `packages: read` works when the Console and Console Core packages grant the consuming repository Actions access. Alternatively, set a `PACKAGES_READ_TOKEN` Actions secret holding a classic PAT with `read:packages`; the MoyaForge CI workflow prefers this secret and falls back to `GITHUB_TOKEN`. Cross-repository package access must be granted separately; publishing a GitHub release is not sufficient proof of registry access.
