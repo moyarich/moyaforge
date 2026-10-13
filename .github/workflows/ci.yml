@@ -19,12 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-          registry-url: https://npm.pkg.github.com
-          scope: "@moyarich"
       - name: Install dependencies
         run: npm install --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_READ_TOKEN || github.token }}
       - name: Typecheck package
         run: npm run typecheck --workspace @moyarich/moyaforge
       - name: Run package tests
