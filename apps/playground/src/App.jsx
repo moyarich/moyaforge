@@ -62,7 +62,8 @@ export function App() {
               </CodeGroup>
               <h2>Built-in components</h2>
               <div className="preview"><ForgeDemo><strong>MoyaForge Demo</strong><p>Rendered directly from the published component API.</p></ForgeDemo></div>
-              <div className="preview"><EmptyState /></div>
+              <div className="preview"><EmptyState title="No results" description="This is the reusable MoyaForge empty state." /></div>
+              <div className="preview"><CopyButton value="npm install @moyarich/moyaforge">Copy npm install command</CopyButton></div>
             </div>
           )}
           {section === "Consumer overrides" && (
