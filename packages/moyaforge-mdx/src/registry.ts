@@ -1,4 +1,8 @@
-import { buildNavigationTree, flattenNavigation, type NavigationNode } from "./navigation.js";
+import {
+  buildNavigationTree,
+  flattenNavigation,
+  type NavigationNode,
+} from "./navigation.js";
 /** Headless, framework-independent page normalization for registry source manifests. */
 export type NavigationMode = "visible" | "hidden" | "disabled";
 export type TocPlacement = "right" | "sidebar" | "inline" | "none";

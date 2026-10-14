@@ -25,7 +25,10 @@ const defaults: ResolvedTocOptions = {
 };
 
 /** A page's explicit false overrides even an enabled project default. */
-export function resolveTocOptions(page?: TocSetting, project?: TocSetting): ResolvedTocOptions {
+export function resolveTocOptions(
+  page?: TocSetting,
+  project?: TocSetting,
+): ResolvedTocOptions {
   const value = page ?? project ?? true;
   if (value === false) return { ...defaults, placement: "none" };
   if (value === true) return { ...defaults };
@@ -48,7 +51,11 @@ export function filterTableOfContents(
         append(heading.children ?? [], target);
         continue;
       }
-      const item: TocHeading = { id: heading.id, value: heading.value, depth: heading.depth };
+      const item: TocHeading = {
+        id: heading.id,
+        value: heading.value,
+        depth: heading.depth,
+      };
       const children: TocHeading[] = [];
       append(heading.children ?? [], children);
       if (children.length) item.children = children;
