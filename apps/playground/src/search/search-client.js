@@ -9,7 +9,8 @@ let pending;
 async function openDatabase() {
   if (!SQL) SQL = await initSqlJs({ locateFile: () => wasmUrl });
   const response = await fetch(databaseUrl, { cache: "no-store" });
-  if (!response.ok) throw new Error(`Unable to load search index (${response.status})`);
+  if (!response.ok)
+    throw new Error(`Unable to load search index (${response.status})`);
   const bytes = new Uint8Array(await response.arrayBuffer());
   const next = new SQL.Database(bytes);
   database?.close();
@@ -20,7 +21,9 @@ async function openDatabase() {
 export async function searchPages(query) {
   if (!query.trim()) return [];
   if (!database) {
-    pending ??= openDatabase().finally(() => { pending = undefined; });
+    pending ??= openDatabase().finally(() => {
+      pending = undefined;
+    });
     await pending;
   }
   return querySearchDatabase(database, query);
@@ -34,6 +37,8 @@ export async function reloadSearch() {
 
 if (import.meta.hot) {
   import.meta.hot.on("moyaforge-search:updated", () => {
-    void reloadSearch().then(() => window.dispatchEvent(new Event("moyaforge-search:updated")));
+    void reloadSearch().then(() =>
+      window.dispatchEvent(new Event("moyaforge-search:updated")),
+    );
   });
 }

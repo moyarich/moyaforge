@@ -43,13 +43,13 @@ export function App() {
     let active = true;
     const update = () => {
       searchPages(searchQuery)
-        .then(results => {
+        .then((results) => {
           if (active) {
             setSearchResults(results);
             setSearchError("");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           if (active) setSearchError(String(error));
         });
     };
@@ -87,7 +87,7 @@ export function App() {
             id="playground-search"
             type="search"
             value={searchQuery}
-            onChange={event => setSearchQuery(event.target.value)}
+            onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search docs and packages"
             aria-controls="playground-search-results"
           />
@@ -95,8 +95,10 @@ export function App() {
             {searchError && <p role="alert">{searchError}</p>}
             {searchQuery.trim() && !searchError && (
               <ul>
-                {searchResults.map(key => (
-                  <li key={key}><code>{key}</code></li>
+                {searchResults.map((key) => (
+                  <li key={key}>
+                    <code>{key}</code>
+                  </li>
                 ))}
               </ul>
             )}
