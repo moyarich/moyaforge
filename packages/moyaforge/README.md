@@ -107,6 +107,12 @@ repositories can replace any provided MDX component.
 The consuming repository owns its documentation and demo content, branding,
 routing decisions, application-specific behavior, and final shell composition.
 
+## Production content configuration
+
+A consuming app provides a plain `registry.config.ts` with configurable `sources`. The headless MDX package owns page discovery, normalized routes, frontmatter validation, and metadata-only Vite exports. Use `virtual:moyaforge-mdx/metadata` for page records and `virtual:moyaforge-mdx/lazy-registry` for component loaders. Neither requires JavaScript frontmatter exports.
+
+The independent SQLite adapter is optional: `sqliteSearchPlugin({ registry, root })` from `@moyarich/moyaforge-search-sqlite/vite` indexes the same configured `page.md(x)` source patterns. Its `virtual:moyaforge-search/database` module exports a development endpoint or hashed production database URL. Quoted YAML navigation settings are parsed and disabled pages are excluded. Applications handle result display and navigation.
+
 ## Migrating legacy MDX/Vite integration
 
 For new integrations, prefer `createMdxOptions()` from `@moyarich/moyaforge-mdx` and `mdxRegistryPlugin()` from `@moyarich/moyaforge-mdx/vite`. The former does **not** require a JavaScript frontmatter export; use the metadata virtual module for parsed YAML records, and the lazy registry for component imports.
@@ -251,7 +257,7 @@ export default defineMoyaForgeConfig({
 });
 ```
 
-**These modes describe the intended composition, not a complete turnkey docs runtime yet.** The current package exposes components, content/navigation utilities and config. Automated MDX discovery, React Router mounting, Vite integration and a zero-config CLI are next steps; see [framework architecture](../../docs/framework-architecture.md).
+**These modes describe the intended composition, not a complete turnkey docs runtime yet.** The current package exposes components, content/navigation utilities and config. Configurable MDX registry discovery and optional Vite integration are available in `@moyarich/moyaforge-mdx`. The package also exposes router-independent `DocsRoutes` and basic CLI commands, but a complete turnkey docs-only application and framework-specific router adapters remain separate work; see [framework architecture](../../docs/framework-architecture.md).
 
 ## Metadata-driven table of contents
 
