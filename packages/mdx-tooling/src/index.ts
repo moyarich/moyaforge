@@ -1,3 +1,4 @@
+import type { PluggableList } from "unified";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -7,7 +8,7 @@ import rehypeExportToc from "@stefanprobst/rehype-extract-toc/mdx";
 
 /** Host-specific remark/rehype plugins are supplied by each consuming app. */
 export interface MdxToolingOptions {
-  remarkPlugins?: readonly unknown[];
+  remarkPlugins?: PluggableList;
   rehypePlugins?: readonly unknown[];
 }
 
@@ -24,12 +25,12 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       remarkGfm,
       ...options.remarkPlugins ?? [],
       [remarkMdxFrontmatter, { name: "frontmatter" }] as const,
-    ],
+    ] as PluggableList,
     rehypePlugins: [
       rehypeSlug,
       rehypeExtractToc,
       rehypeExportToc,
       ...options.rehypePlugins ?? [],
-    ],
+    ] as PluggableList,
   };
 }
