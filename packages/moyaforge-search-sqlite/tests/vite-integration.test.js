@@ -193,14 +193,27 @@ test("SQLite index handles quoted YAML navigation and rejects malformed frontmat
     const docs = join(root, "docs");
     await mkdir(docs);
     const page = join(docs, "page.md");
-    await writeFile(page, ['---', 'navigation: "disabled"', '---', '# Hidden'].join("\n"));
+    await writeFile(
+      page,
+      ["---", 'navigation: "disabled"', "---", "# Hidden"].join("\n"),
+    );
     const plugin = sqliteSearchPlugin({
-      root, registry: { sources: { docs: { base: "docs", include: ["**/page.md"] } } }
+      root,
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.md"] } },
+      },
     });
     plugin.configResolved({ command: "build", base: "/" });
     const id = plugin.resolveId("virtual:moyaforge-search/database");
     let asset;
-    await plugin.load.call({ emitFile(file) { asset = file; } }, id);
+    await plugin.load.call(
+      {
+        emitFile(file) {
+          asset = file;
+        },
+      },
+      id,
+    );
     const SQL = await initSqlJs();
     const db = new SQL.Database(asset.source);
     try {
@@ -208,13 +221,22 @@ test("SQLite index handles quoted YAML navigation and rejects malformed frontmat
     } finally {
       db.close();
     }
-    await writeFile(page, ['---', 'title: A', 'title: B', '---', '# Broken'].join("\n"));
+    await writeFile(
+      page,
+      ["---", "title: A", "title: B", "---", "# Broken"].join("\n"),
+    );
     const invalidPlugin = sqliteSearchPlugin({
-      root, registry: { sources: { docs: { base: "docs", include: ["**/page.md"] } } }
+      root,
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.md"] } },
+      },
     });
     invalidPlugin.configResolved({ command: "build", base: "/" });
     await assert.rejects(
-      invalidPlugin.load.call({ emitFile() {} }, invalidPlugin.resolveId("virtual:moyaforge-search/database")),
+      invalidPlugin.load.call(
+        { emitFile() {} },
+        invalidPlugin.resolveId("virtual:moyaforge-search/database"),
+      ),
       /invalid YAML frontmatter/,
     );
   } finally {
