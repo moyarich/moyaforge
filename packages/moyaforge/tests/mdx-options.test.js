@@ -4,7 +4,7 @@ import { createMdxOptions } from "@moyarich/moyaforge-mdx";
 import { createMoyaForgeMdxOptions } from "../dist/mdx-options.js";
 
 test("legacy MDX options use the canonical compiler defaults", () => {
-  const canonical = createMdxOptions();
+  const canonical = createMdxOptions({ frontmatterExport: true });
   const legacy = createMoyaForgeMdxOptions();
   assert.equal(legacy.providerImportSource, canonical.providerImportSource);
   assert.deepEqual(legacy.remarkPlugins, canonical.remarkPlugins);
