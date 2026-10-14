@@ -1,3 +1,5 @@
+import { extractPageHeadings } from "./headings.js";
+import type { TocHeading } from "./toc.js";
 import { readFile } from "node:fs/promises";
 import { parseDocument } from "yaml";
 import { glob } from "tinyglobby";
@@ -47,6 +49,7 @@ export function parsePageFrontmatter(
 export interface DiscoveredContent {
   registry: PageRegistry;
   inputs: Record<string, PageInput[]>;
+  headings: Record<string, TocHeading[]>;
 }
 
 /** Collect normalized metadata at build time; never import compiled page components. */
@@ -55,6 +58,7 @@ export async function discoverContent(
   root: string,
 ): Promise<DiscoveredContent> {
   const inputs: Record<string, PageInput[]> = {};
+  const headings: Record<string, TocHeading[]> = {};
   for (const [sourceName, source] of Object.entries(config.sources)) {
     const base = resolve(root, source.base);
     const files = await glob([...source.include], {
@@ -67,12 +71,11 @@ export async function discoverContent(
     for (const file of files.sort()) {
       if (!/(?:^|[\\/])page\.mdx?$/.test(file)) continue;
       const name = relative(base, file).split(sep).join("/");
-      pages.push({
-        file: name,
-        frontmatter: parsePageFrontmatter(await readFile(file, "utf8"), file),
-      });
+      const raw = await readFile(file, "utf8");
+      pages.push({ file: name, frontmatter: parsePageFrontmatter(raw, file) });
+      headings[`${sourceName}/${name}`] = await extractPageHeadings(raw, file);
     }
     inputs[sourceName] = pages;
   }
-  return { inputs, registry: buildPageRegistry(inputs) };
+  return { inputs, headings, registry: buildPageRegistry(inputs) };
 }
