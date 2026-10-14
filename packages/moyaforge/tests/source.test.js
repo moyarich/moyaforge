@@ -13,6 +13,9 @@ test("multiple collections resolve ordered page URLs and metadata", () => {
   });
   assert.deepEqual(source.getPages("docs").map((p) => p.url), ["/docs/guides", "/docs"]);
   assert.equal(source.getPage("/docs/guides")?.sourcePath, "docs/01-guides/page.mdx");
+  assert.equal(source.getPage("/docs/guides/")?.title, "Guides");
+  assert.equal(source.getPage("/docs/")?.title, "Home");
+  assert.equal(source.getTableOfContents("/docs/guides/")[0]?.id, "start");
   assert.equal(source.getTableOfContents("/docs/guides")[0]?.id, "start");
   assert.equal(source.getSearchIndex().length, 3);
   assert.equal(source.getPage("/docs/hidden"), undefined);

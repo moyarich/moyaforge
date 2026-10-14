@@ -86,3 +86,13 @@ jobs:
 
 The reusable workflow installs dependencies, configures GitHub Pages, runs the caller's
 documentation build, uploads the caller's output directory, and deploys it.
+
+## Console package installation
+
+MoyaForge consumes the published `@moyarich/console@^0.1.0` package from the public npm registry. Console is an independent, lower-level dependency, and its `@moyarich/console-core` dependency is installed automatically.
+
+```sh
+npm install @moyarich/moyaforge @moyarich/console
+```
+
+The repository's `.npmrc` routes `@moyarich` packages to the public npm registry. Public package installation does not require a GitHub Packages token or extra Actions permissions.
