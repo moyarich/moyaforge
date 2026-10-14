@@ -69,3 +69,7 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 ## Build-time heading extraction
 
 `extractPageHeadings(source, filename)` uses the existing remark/GFM → rehype-slug → rehype-extract-toc plugin stack, preserving duplicate heading IDs. `discoverContent()` now also returns `headings`, indexed by source name and relative filename. `virtual:moyaforge-mdx/metadata` exports this heading map without importing React page components. Consumers can pass these trees to `getTableOfContents()` for filtering and placement. The headings metadata pipeline currently parses Markdown syntax; MDX-specific JSX/expressions require compiler-parity validation before treating them as fully supported.
+
+## Internal link validation
+
+`validateInternalLinks(documents, registry, headings)` checks authored Markdown links against the normalized route inventory and extracted heading IDs. It returns structured diagnostics with source file, original href, and `missing-page`, `missing-anchor`, or `invalid-link` reason. Relative URLs resolve from the page's canonical directory route. External links, images, and fenced code are excluded. The helper is opt-in; enforcing it in CI/build, validating MDX JSX links, and checking other content assets remain separate steps in issue #27.
