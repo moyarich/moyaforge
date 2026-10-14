@@ -35,11 +35,16 @@ function docsFor(registry, root) {
         info = await stat(base);
       } catch (error) {
         if (error.code === "ENOENT")
-          throw new Error(`Search source "${sourceName}": directory does not exist: ${base}`, { cause: error });
+          throw new Error(
+            `Search source "${sourceName}": directory does not exist: ${base}`,
+            { cause: error },
+          );
         throw error;
       }
       if (!info.isDirectory())
-        throw new Error(`Search source "${sourceName}": expected directory: ${base}`);
+        throw new Error(
+          `Search source "${sourceName}": expected directory: ${base}`,
+        );
       const entries = await glob([...source.include], {
         cwd: base,
         absolute: true,
