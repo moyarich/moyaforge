@@ -80,5 +80,9 @@ export async function discoverContent(
     }
     inputs[sourceName] = pages;
   }
-  return { inputs, headings, registry: buildPageRegistry(inputs, { toc: config.toc }) };
+  return {
+    inputs,
+    headings,
+    registry: buildPageRegistry(inputs, { toc: config.toc }),
+  };
 }
