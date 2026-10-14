@@ -45,33 +45,35 @@ export function ContentExplorer() {
     return <p>No registered content pages were found.</p>;
   return (
     <div className="content-explorer">
-      <nav aria-label="Registered content pages">
-        <h2>Registered pages</h2>
-        <ul>
-          {visible.map((page) => (
-            <li key={page.path}>
-              <a
-                href={contentHref(page.path)}
-                aria-current={page.path === selectedPath ? "page" : undefined}
-                onClick={(event) => {
-                  if (
-                    event.button !== 0 ||
-                    event.metaKey ||
-                    event.ctrlKey ||
-                    event.shiftKey ||
-                    event.altKey
-                  )
-                    return;
-                  event.preventDefault();
-                  navigateContent(page.path);
-                }}
-              >
-                {page.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {visible.length > 0 && (
+        <nav aria-label="Registered content pages">
+          <h2>Registered pages</h2>
+          <ul>
+            {visible.map((page) => (
+              <li key={page.path}>
+                <a
+                  href={contentHref(page.path)}
+                  aria-current={page.path === selectedPath ? "page" : undefined}
+                  onClick={(event) => {
+                    if (
+                      event.button !== 0 ||
+                      event.metaKey ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey
+                    )
+                      return;
+                    event.preventDefault();
+                    navigateContent(page.path);
+                  }}
+                >
+                  {page.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
       <section aria-label="Registered content preview">
         {selected && Page ? (
           <>
