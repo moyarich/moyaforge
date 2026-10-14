@@ -50,3 +50,5 @@ production asset with Vite's base path applied. Search UIs may subscribe to
 the `moyaforge-search:updated` custom HMR event and reload their databases.
 Vite is an optional peer dependency and is not required to use core indexing
 or querying functions.
+
+The Vite adapter indexes canonical `page.md` and `page.mdx` files only, even when configured source globs include other Markdown files such as `README.md` or `notes.mdx`. This keeps its searchable documents aligned with MoyaForge content-page discovery without introducing a dependency on the MDX workspace package.
