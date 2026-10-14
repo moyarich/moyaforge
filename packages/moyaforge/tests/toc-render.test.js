@@ -108,16 +108,20 @@ test("TOC placements render in the intended landmark with a single accessible la
       minDepth: 2,
       maxDepth: 2,
     });
-    const section = placement === "sidebar"
-      ? /<aside data-moyaforge-docs-sidebar=""[\s\S]*?<\/aside>/
-      : placement === "inline"
-        ? /<main data-moyaforge-docs-article=""[\s\S]*?<\/main>/
-        : /<aside data-moyaforge-doc-outline=""[\s\S]*?<\/aside>/;
+    const section =
+      placement === "sidebar"
+        ? /<aside data-moyaforge-docs-sidebar=""[\s\S]*?<\/aside>/
+        : placement === "inline"
+          ? /<main data-moyaforge-docs-article=""[\s\S]*?<\/main>/
+          : /<aside data-moyaforge-doc-outline=""[\s\S]*?<\/aside>/;
     const region = html.match(section)?.[0] ?? "";
     assert.match(region, /aria-label="Article sections"/);
     assert.match(region, /href="#setup"/);
     assert.doesNotMatch(html, /href="#options"/);
-    assert.equal((html.match(/aria-label="Article sections"/g) ?? []).length, 2);
+    assert.equal(
+      (html.match(/aria-label="Article sections"/g) ?? []).length,
+      2,
+    );
   }
 });
 
