@@ -1,0 +1,24 @@
+name: Deploy MoyaForge Playground
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/pages.yml
+    with:
+      install-command: npm install --include=optional
+      build-command: npm run build --workspace @moyarich/moyaforge-playground
+      artifact-path: apps/playground/dist
