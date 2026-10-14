@@ -24,3 +24,23 @@ test("legacy pages manifest uses shared configurable page discovery", () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("lazy legacy manifest avoids static imports and preserves collection shape", () => {
+  const root = mkdtempSync(join(tmpdir(), "moyaforge-lazy-"));
+  try {
+    mkdirSync(join(root, "guide"), { recursive: true });
+    writeFileSync(join(root, "guide", "page.mdx"), "# Guide");
+    const plugin = moyaforgeVite({
+      root,
+      collections: { guide: { dir: "guide", baseUrl: "/guide" } },
+    });
+    const id = plugin.resolveId("virtual:moyaforge/lazy-pages");
+    const code = plugin.load(id);
+    assert.match(code, /\(\) => import\(/);
+    assert.doesNotMatch(code, /import \* as page/);
+    assert.match(code, /baseUrl: "\/guide"/);
+    assert.match(code, /"page.mdx": \(\) => import/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

@@ -258,3 +258,7 @@ Compiler defaults are maintained in `@moyarich/moyaforge-mdx` (`createMdxOptions
 ## Legacy Vite manifest compatibility
 
 `moyaforgeVite()` and `virtual:moyaforge/pages` remain supported for existing applications. The adapter now discovers `page.md` and `page.mdx` through the same `@moyarich/moyaforge-mdx` source-discovery utility instead of maintaining its own recursive filesystem scanner. New consumers should use `mdxRegistryPlugin` and `virtual:moyaforge-mdx/metadata` plus `virtual:moyaforge-mdx/lazy-registry`; the legacy virtual module still eagerly imports page components and should be migrated before removal.
+
+### Legacy collection migration
+
+The compatibility Vite plugin also exposes `virtual:moyaforge/lazy-pages`. It preserves the legacy `collections[name].dir`, `baseUrl` and `modules` keys, but each `modules[file]` is a function returning `import()` rather than an eagerly imported module object. Existing consumers of `virtual:moyaforge/pages` continue working unchanged. New applications should prefer `@moyarich/moyaforge-mdx/vite` and its normalized metadata plus lazy registry, rather than adding new dependencies on the legacy collection API.
