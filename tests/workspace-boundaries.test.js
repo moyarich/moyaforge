@@ -7,10 +7,17 @@ import { test } from "node:test";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifests = Object.fromEntries(
   await Promise.all(
-    ["moyaforge", "moyaforge-mdx", "moyaforge-search-sqlite"].map(async (name) => [
-      name,
-      JSON.parse(await readFile(resolve(root, "packages", name, "package.json"), "utf8")),
-    ]),
+    ["moyaforge", "moyaforge-mdx", "moyaforge-search-sqlite"].map(
+      async (name) => [
+        name,
+        JSON.parse(
+          await readFile(
+            resolve(root, "packages", name, "package.json"),
+            "utf8",
+          ),
+        ),
+      ],
+    ),
   ),
 );
 
@@ -39,11 +46,16 @@ test("published package export targets and command entry points exist after buil
     const entries = Object.values(manifest.exports ?? {}).flatMap((value) =>
       typeof value === "string" ? [value] : Object.values(value),
     );
-    const bins = typeof manifest.bin === "string"
-      ? [manifest.bin] : Object.values(manifest.bin ?? {});
+    const bins =
+      typeof manifest.bin === "string"
+        ? [manifest.bin]
+        : Object.values(manifest.bin ?? {});
     for (const target of [...entries, ...bins]) {
       const location = resolve(root, "packages", name, target);
-      assert.ok(location.startsWith(resolve(root, "packages", name) + "/"), target);
+      assert.ok(
+        location.startsWith(resolve(root, "packages", name) + "/"),
+        target,
+      );
       const file = await stat(location);
       assert.ok(file.isFile(), `${name}: missing published entry ${target}`);
     }
