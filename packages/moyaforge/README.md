@@ -250,3 +250,7 @@ export default defineMoyaForgeConfig({
 ## Metadata-driven table of contents
 
 `DocsLayout` accepts an optional `toc` property with `headings` obtained from `@moyarich/moyaforge-mdx` metadata and the canonical TOC options (`placement`, `label`, `minDepth`, `maxDepth`, `collapsible`, `defaultOpen`). It supports right, sidebar, inline and none placements without displaying the same TOC more than once. Pass `toc={false}` to disable the outline; absent `toc` retains the older DOM-driven outline behavior during migration. `DocOutline` can also receive heading trees directly, preserving extracted anchor IDs and tracking the active heading on scroll.
+
+## Shared MDX compiler options
+
+Compiler defaults are maintained in `@moyarich/moyaforge-mdx` (`createMdxOptions`). The legacy `@moyarich/moyaforge/mdx` export `createMoyaForgeMdxOptions()` remains available as a compatibility wrapper, but no longer maintains a second plugin list. New integrations should import directly from `@moyarich/moyaforge-mdx`. The legacy `moyaforgeVite` page-manifest path remains separate pending migration under issue #27.
