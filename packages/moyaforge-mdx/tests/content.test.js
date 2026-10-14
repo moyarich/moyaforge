@@ -150,7 +150,7 @@ test("configured package identity JSON is separate from page navigation metadata
     await writeFile(join(root, "packages", "example", "package.json"),
       JSON.stringify({ name: "@example/component", navigation: "disabled" }));
     await writeFile(join(root, "packages", "example", "page.mdx"),
-      "---\\ntitle: Component docs\\n---\\n# Component");
+      ["---", "title: Component docs", "---", "# Component"].join("\n"));
     const config = { sources: { packages: {
       base: "packages", include: ["*/page.mdx"], metadata: ["*/package.json"]
     } } };
@@ -162,7 +162,7 @@ test("configured package identity JSON is separate from page navigation metadata
     const id = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
     const code = await plugin.load.call({}, id);
     assert.match(code, /sourceMetadata/);
-    assert.match(code, /@example\\/component/);
+    assert.ok(code.includes("@example/component"));
     await writeFile(join(root, "packages", "example", "package.json"), "{ broken");
     await assert.rejects(discoverContent(config, root), /invalid JSON source metadata/);
   } finally {
