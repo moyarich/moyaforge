@@ -48,3 +48,9 @@ import { sources, pages, routes, navigation } from "virtual:moyaforge-mdx/metada
 These are plain JSON-compatible records with no React component imports. The existing `virtual:moyaforge-mdx/lazy-registry` supplies page loaders separately. Pages marked `navigation: disabled` appear in the complete `pages` inventory but are excluded from `routes` and `navigation`. Hidden pages remain routable but are not in navigation.
 
 Metadata is authored once in YAML, not in `package.json` or a required MDX JavaScript export. Compiler frontmatter exports remain temporarily for legacy consumers; migration away from them is tracked in #27.
+
+## Derived navigation tree
+
+The headless `buildPageRegistry()` result provides `tree` alongside `navigation`, `routes`, and `byPath`. `buildNavigationTree()` groups pages by their normalized routes; missing directory landing pages become *virtual group nodes* with no invented route. `flattenNavigation()` returns visible pages in nested, numeric-directory order, so previous/next links respect hierarchy instead of a global sort. Hidden pages remain routable but are not placed in menu groups; disabled pages are excluded from routes and navigation.
+
+The metadata-only Vite module also exports `tree`. When a Markdown or MDX file changes, its YAML metadata is rediscovered during development.
