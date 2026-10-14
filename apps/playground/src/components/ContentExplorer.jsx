@@ -1,5 +1,10 @@
 import { lazy, Suspense, useMemo, useState, useEffect } from "react";
-import { pages, navigation, headings } from "virtual:moyaforge-mdx/metadata";
+import {
+  pages,
+  routes,
+  navigation,
+  headings,
+} from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 import { DocOutline } from "@moyarich/moyaforge";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
@@ -36,7 +41,8 @@ export function ContentExplorer() {
       )
     : null;
 
-  if (!visible.length) return <p>No registered content pages were found.</p>;
+  if (!routes.some((page) => sources[page.source]?.lazyPages?.[page.file]))
+    return <p>No registered content pages were found.</p>;
   return (
     <div className="content-explorer">
       <nav aria-label="Registered content pages">
