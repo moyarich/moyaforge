@@ -27,10 +27,12 @@ source roots, include patterns, and navigation labels. The config is a plain
 TypeScript object (no `defineRegistry()` helper). Vite's registry integration
 uses its source roots for development file watching.
 
-The playground is currently a component showcase: its hardcoded example tabs are
-not a documentation navigation tree, and the registry does not yet generate MDX
-imports, page navigation, or SQLite search. Those consumers can use the same
-configuration when introduced, rather than adding independent glob patterns.
+The playground remains a component showcase, but it also consumes the content
+registry today: the **Content registry** view uses normalized metadata and lazy
+MDX imports, while the **Search** view uses the optional SQLite index. The
+separate hardcoded component examples are not generated from the registry.
+Both plugins read the same configured content sources rather than maintaining
+independent glob patterns.
 
 ## Examples
 
