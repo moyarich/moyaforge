@@ -11,10 +11,10 @@ test("legacy pages manifest uses shared configurable page discovery", () => {
     mkdirSync(join(root, "guide", "01-start"), { recursive: true });
     writeFileSync(join(root, "guide", "01-start", "page.mdx"), "# Start");
     writeFileSync(join(root, "guide", "note.md"), "# Not a landing page");
-    assert.ok(code.includes("01-start/page.mdx"));
+    const plugin = moyaforgeVite({ root, collections: { guide: { dir: "guide", baseUrl: "/guide" } } });
     const id = plugin.resolveId("virtual:moyaforge/pages");
     const code = plugin.load(id);
-    assert.match(code, /01-start\\/page\.mdx/);
+    assert.ok(code.includes("01-start/page.mdx"));
     assert.match(code, /baseUrl: "\/guide"/);
     assert.doesNotMatch(code, /note\.md/);
   } finally {
