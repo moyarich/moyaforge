@@ -91,3 +91,33 @@ test("literal MDX anchor links are validated like Markdown links", () => {
     ],
   );
 });
+
+test("encoded and multi-hash anchors validate the complete fragment", () => {
+  const localHeadings = {
+    ...headings,
+    "docs/01-guide/page.mdx": [
+      { id: "part#two", value: "Part two", depth: 2 },
+      { id: "hello world", value: "Hello world", depth: 2 },
+    ],
+  };
+  const issues = validateInternalLinks(
+    [{
+      source: "docs",
+      file: "page.md",
+      content: [
+        "[Encoded](./guide#hello%20world)",
+        "[Multi](./guide#part#two)",
+        "[Missing](./guide#part#three)",
+        "[Malformed](./guide#%ZZ)",
+        "[MalformedPath](./%ZZ#hello)",
+      ].join(" "),
+    }],
+    registry,
+    localHeadings,
+  );
+  assert.deepEqual(issues.map(({ href, reason }) => [href, reason]), [
+    ["./guide#part#three", "missing-anchor"],
+    ["./guide#%ZZ", "invalid-link"],
+    ["./%ZZ#hello", "invalid-link"],
+  ]);
+});
