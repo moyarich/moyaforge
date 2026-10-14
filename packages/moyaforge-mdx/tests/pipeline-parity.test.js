@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createMdxOptions, extractPageHeadings, getTableOfContents } from "../dist/index.js";
+import {
+  createMdxOptions,
+  extractPageHeadings,
+  getTableOfContents,
+} from "../dist/index.js";
 
 const markdown = `---
 title: Compiler parity
@@ -31,12 +35,18 @@ test("Markdown and MDX resolve identical heading IDs and filtered TOCs", async (
   ]);
   assert.deepEqual(mdxHeadings, mdHeadings);
   const toc = getTableOfContents(mdHeadings, { minDepth: 2, maxDepth: 3 });
-  assert.deepEqual(toc.headings.map((item) => item.id), ["setup"]);
-  assert.deepEqual(toc.headings[0].children.map((item) => item.id), [
-    "options",
-    "options-1",
-  ]);
-  assert.equal(toc.headings.some((item) => item.id === "not-a-heading"), false);
+  assert.deepEqual(
+    toc.headings.map((item) => item.id),
+    ["setup"],
+  );
+  assert.deepEqual(
+    toc.headings[0].children.map((item) => item.id),
+    ["options", "options-1"],
+  );
+  assert.equal(
+    toc.headings.some((item) => item.id === "not-a-heading"),
+    false,
+  );
 });
 
 test("compiler plugin options do not mutate later calls", () => {
