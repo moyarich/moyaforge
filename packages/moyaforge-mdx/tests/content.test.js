@@ -142,3 +142,49 @@ test("missing configured source directories fail while empty existing sources ar
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("configured package identity JSON is separate from page navigation metadata", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-source-identity-"));
+  try {
+    await mkdir(join(root, "packages", "example"), { recursive: true });
+    await writeFile(
+      join(root, "packages", "example", "package.json"),
+      JSON.stringify({ name: "@example/component", navigation: "disabled" }),
+    );
+    await writeFile(
+      join(root, "packages", "example", "page.mdx"),
+      ["---", "title: Component docs", "---", "# Component"].join("\n"),
+    );
+    const config = {
+      sources: {
+        packages: {
+          base: "packages",
+          include: ["*/page.mdx"],
+          metadata: ["*/package.json"],
+        },
+      },
+    };
+    const result = await discoverContent(config, root);
+    assert.equal(
+      result.metadata.packages["example/package.json"].name,
+      "@example/component",
+    );
+    assert.equal(result.registry.routes[0].navigation, "visible");
+    assert.equal(result.registry.routes[0].title, "Component docs");
+    const plugin = mdxRegistryPlugin({ registry: config, root });
+    const id = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
+    const code = await plugin.load.call({}, id);
+    assert.match(code, /sourceMetadata/);
+    assert.ok(code.includes("@example/component"));
+    await writeFile(
+      join(root, "packages", "example", "package.json"),
+      "{ broken",
+    );
+    await assert.rejects(
+      discoverContent(config, root),
+      /invalid JSON source metadata/,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

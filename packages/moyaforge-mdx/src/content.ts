@@ -54,6 +54,8 @@ export interface DiscoveredContent {
   registry: PageRegistry;
   inputs: Record<string, PageInput[]>;
   headings: Record<string, TocHeading[]>;
+  /** Source-relative identity metadata, kept separate from authored page frontmatter. */
+  metadata: Record<string, Record<string, unknown>>;
 }
 
 /** Collect normalized metadata at build time; never import compiled page components. */
@@ -63,6 +65,7 @@ export async function discoverContent(
 ): Promise<DiscoveredContent> {
   const inputs: Record<string, PageInput[]> = {};
   const headings: Record<string, TocHeading[]> = {};
+  const metadata: Record<string, Record<string, unknown>> = {};
   for (const [sourceName, source] of Object.entries(config.sources)) {
     const base = resolve(root, source.base);
     let baseInfo;
@@ -97,10 +100,31 @@ export async function discoverContent(
       headings[`${sourceName}/${name}`] = await extractPageHeadings(raw, file);
     }
     inputs[sourceName] = pages;
+    const sourceMetadata: Record<string, unknown> = {};
+    if (source.metadata?.length) {
+      const files = await glob([...source.metadata], {
+        cwd: base,
+        absolute: true,
+        onlyFiles: true,
+      });
+      for (const file of files.sort()) {
+        const name = relative(base, file).split(sep).join("/");
+        if (!name.endsWith(".json")) continue;
+        try {
+          sourceMetadata[name] = JSON.parse(await readFile(file, "utf8"));
+        } catch (error) {
+          throw new Error(`${file}: invalid JSON source metadata`, {
+            cause: error,
+          });
+        }
+      }
+    }
+    metadata[sourceName] = sourceMetadata;
   }
   return {
     inputs,
     headings,
+    metadata,
     registry: buildPageRegistry(inputs, { toc: config.toc }),
   };
 }
