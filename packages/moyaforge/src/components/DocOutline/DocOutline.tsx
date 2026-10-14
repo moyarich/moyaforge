@@ -69,7 +69,11 @@ export function DocOutline({
     const onHashChange = () => {
       const hash = window.location.hash.slice(1);
       let id = hash;
-      try { id = decodeURIComponent(hash); } catch { /* Keep literal hash. */ }
+      try {
+        id = decodeURIComponent(hash);
+      } catch {
+        /* Keep literal hash. */
+      }
       if (visibleItems.some((item) => item.id === id)) setActive(id);
       else update();
     };

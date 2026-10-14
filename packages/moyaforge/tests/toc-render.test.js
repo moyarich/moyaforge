@@ -62,19 +62,34 @@ test("collapsible outline starts closed if configured", () => {
   assert.doesNotMatch(html, /href="#setup"/);
 });
 
-
 test("default DocsLayout navigation excludes hidden and disabled pages", () => {
   const pages = [
     { url: "/hidden", title: "Hidden", frontmatter: { navigation: "hidden" } },
-    { url: "/disabled", title: "Disabled", frontmatter: { navigation: "disabled" } },
-    { url: "/legacy-hidden", title: "Legacy Hidden", frontmatter: { hidden: true } },
-    { url: "/visible", title: "Visible", frontmatter: { navigation: "visible" } },
+    {
+      url: "/disabled",
+      title: "Disabled",
+      frontmatter: { navigation: "disabled" },
+    },
+    {
+      url: "/legacy-hidden",
+      title: "Legacy Hidden",
+      frontmatter: { hidden: true },
+    },
+    {
+      url: "/visible",
+      title: "Visible",
+      frontmatter: { navigation: "visible" },
+    },
   ];
   const html = renderToStaticMarkup(
     React.createElement(DocsLayout, {
       pages,
       currentUrl: "/hidden",
-      children: React.createElement("article", null, "Hidden route remains renderable"),
+      children: React.createElement(
+        "article",
+        null,
+        "Hidden route remains renderable",
+      ),
     }),
   );
   assert.match(html, /href="\/visible"/);

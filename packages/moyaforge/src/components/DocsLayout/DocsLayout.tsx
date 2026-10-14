@@ -40,7 +40,8 @@ export function DocsLayout({
 }: DocsLayoutProps) {
   const current = pages.find((page) => page.url === currentUrl);
   const visiblePages = pages.filter(
-    (page) => page.frontmatter.navigation !== "hidden" &&
+    (page) =>
+      page.frontmatter.navigation !== "hidden" &&
       page.frontmatter.navigation !== "disabled" &&
       page.frontmatter.hidden !== true,
   );
