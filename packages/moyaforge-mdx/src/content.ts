@@ -9,6 +9,7 @@ import {
   type PageFrontmatter,
   type PageInput,
   type PageRegistry,
+  type TocSetting,
 } from "./registry.js";
 
 export interface ContentSource {
@@ -20,6 +21,8 @@ export interface ContentSource {
 }
 export interface ContentSourcesConfig {
   sources: Record<string, ContentSource>;
+  /** Default TOC configuration, overridden by per-page YAML frontmatter. */
+  toc?: TocSetting;
 }
 
 /** Parse authored YAML exactly once without requiring compiled MDX JavaScript exports. */
@@ -77,5 +80,9 @@ export async function discoverContent(
     }
     inputs[sourceName] = pages;
   }
-  return { inputs, headings, registry: buildPageRegistry(inputs) };
+  return {
+    inputs,
+    headings,
+    registry: buildPageRegistry(inputs, { toc: config.toc }),
+  };
 }

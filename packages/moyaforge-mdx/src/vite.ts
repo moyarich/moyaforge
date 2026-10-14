@@ -1,4 +1,4 @@
-import { discoverContent } from "./content.js";
+import { discoverContent, type ContentSourcesConfig } from "./content.js";
 import { resolve, relative, sep } from "node:path";
 import { glob } from "tinyglobby";
 import type { Plugin } from "vite";
@@ -10,7 +10,7 @@ export interface RegistrySource {
   navigation?: { label?: string; order?: number };
   metadata?: readonly string[];
 }
-export interface RegistryConfiguration {
+export interface RegistryConfiguration extends ContentSourcesConfig {
   sources: Record<string, RegistrySource>;
 }
 export interface RegistryPluginOptions {
