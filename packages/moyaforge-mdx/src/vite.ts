@@ -1,5 +1,5 @@
 import { discoverContent, type ContentSourcesConfig } from "./content.js";
-import { resolve } from "node:path";
+import { resolve, sep } from "node:path";
 import type { Plugin } from "vite";
 
 export interface RegistrySource {
