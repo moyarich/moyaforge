@@ -5,15 +5,31 @@ import rehypeSlug from "rehype-slug";
 import rehypeExtractToc from "@stefanprobst/rehype-extract-toc";
 import rehypeExportToc from "@stefanprobst/rehype-extract-toc/mdx";
 
-/** Shared MDX compiler conventions. Does not depend on Console or MoyaForge. */
-export function createMdxOptions() {
+/** Host-specific remark/rehype plugins are supplied by each consuming app. */
+export interface MdxToolingOptions {
+  remarkPlugins?: readonly unknown[];
+  rehypePlugins?: readonly unknown[];
+}
+
+/**
+ * Shared MDX compiler conventions, independent of any specific application.
+ * Additional remark plugins run before the frontmatter export transformer.
+ * Additional rehype plugins run after TOC and heading slug generation.
+ */
+export function createMdxOptions(options: MdxToolingOptions = {}) {
   return {
     providerImportSource: "@mdx-js/react",
     remarkPlugins: [
       remarkFrontmatter,
       remarkGfm,
+      ...options.remarkPlugins ?? [],
       [remarkMdxFrontmatter, { name: "frontmatter" }] as const,
     ],
-    rehypePlugins: [rehypeSlug, rehypeExtractToc, rehypeExportToc],
+    rehypePlugins: [
+      rehypeSlug,
+      rehypeExtractToc,
+      rehypeExportToc,
+      ...options.rehypePlugins ?? [],
+    ],
   };
 }
