@@ -10,6 +10,11 @@ type Plugin = {
   enforce: "pre";
   resolveId: (id: string) => string | undefined;
   load: (id: string) => string | undefined;
+  configureServer: (server: {
+    watcher: { on: (event: "add" | "unlink", cb: (file: string) => void) => void };
+    moduleGraph: { getModuleById: (id: string) => unknown; invalidateModule: (mod: any) => void };
+    ws: { send: (msg: { type: string }) => void };
+  }) => void;
   handleHotUpdate: (ctx: {
     file: string;
     server: {
@@ -66,6 +71,21 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
   const sourceRoots = Object.values(collections).map(({ dir }) =>
     resolve(root, dir),
   );
+  const isRegisteredPage = (file: string) => {
+    if (!/\bpage\.mdx?$/.test(file)) return false;
+    const absolute = resolve(file);
+    return sourceRoots.some((base) => {
+      const path = relative(base, absolute);
+      return path !== "" && path !== ".." && !path.startsWith(".." + sep) && !isAbsolute(path);
+    });
+  };
+  const reload = (server: { moduleGraph: { getModuleById: (id: string) => unknown; invalidateModule: (mod: any) => void }; ws: { send: (msg: { type: string }) => void } }) => {
+    for (const id of [resolved, lazyResolved]) {
+      const module = server.moduleGraph.getModuleById(id);
+      if (module) server.moduleGraph.invalidateModule(module);
+    }
+    server.ws.send({ type: "full-reload" });
+  };
   return {
     name: "moyaforge:pages",
     enforce: "pre",
@@ -77,26 +97,14 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
         : id === lazyResolved
           ? generate(root, collections, true)
           : undefined,
+    configureServer: (server) => {
+      for (const event of ["add", "unlink"] as const)
+        server.watcher.on(event, (file) => {
+          if (isRegisteredPage(file)) reload(server);
+        });
+    },
     handleHotUpdate: (ctx) => {
-      if (!/\.mdx?$/.test(ctx.file)) return;
-      const file = resolve(ctx.file);
-      if (
-        !sourceRoots.some((base) => {
-          const path = relative(base, file);
-          return (
-            path !== "" &&
-            !path.startsWith(".." + sep) &&
-            path !== ".." &&
-            !isAbsolute(path)
-          );
-        })
-      )
-        return;
-      for (const id of [resolved, lazyResolved]) {
-        const module = ctx.server.moduleGraph.getModuleById(id);
-        if (module) ctx.server.moduleGraph.invalidateModule(module);
-      }
-      ctx.server.ws.send({ type: "full-reload" });
+      if (isRegisteredPage(ctx.file)) reload(ctx.server);
     },
   };
 }
