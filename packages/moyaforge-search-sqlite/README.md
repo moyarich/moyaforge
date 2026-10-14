@@ -6,11 +6,19 @@ No dependency on `@moyarich/moyaforge`, `@moyarich/moyaforge-mdx`, or `@moyarich
 
 ```ts
 import initSqlJs from "sql.js";
-import { buildSearchDatabase, querySearchDatabase } from "@moyarich/moyaforge-search-sqlite";
+import {
+  buildSearchDatabase,
+  querySearchDatabase,
+} from "@moyarich/moyaforge-search-sqlite";
 
 const SQL = await initSqlJs();
 const bytes = buildSearchDatabase(SQL, [
-  { key: "/guide", title: "Guide", description: "Overview", body: "Hello SQLite" },
+  {
+    key: "/guide",
+    title: "Guide",
+    description: "Overview",
+    body: "Hello SQLite",
+  },
 ]);
 const db = new SQL.Database(bytes);
 try {

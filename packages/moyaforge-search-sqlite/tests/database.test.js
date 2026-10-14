@@ -15,7 +15,9 @@ test("indexes documents and ranks title matches", async () => {
     assert.deepEqual(querySearchDatabase(db, "sqlit"), ["title", "body"]);
     assert.deepEqual(querySearchDatabase(db, "sqlite missing"), []);
     assert.deepEqual(querySearchDatabase(db, ""), []);
-  } finally { db.close(); }
+  } finally {
+    db.close();
+  }
 });
 
 test("build is deterministic regardless of input ordering", async () => {
@@ -24,5 +26,8 @@ test("build is deterministic regardless of input ordering", async () => {
     { key: "z", title: "Z", description: "", body: "last" },
     { key: "a", title: "A", description: "", body: "first" },
   ];
-  assert.deepEqual(buildSearchDatabase(SQL, docs), buildSearchDatabase(SQL, docs.slice().reverse()));
+  assert.deepEqual(
+    buildSearchDatabase(SQL, docs),
+    buildSearchDatabase(SQL, docs.slice().reverse()),
+  );
 });
