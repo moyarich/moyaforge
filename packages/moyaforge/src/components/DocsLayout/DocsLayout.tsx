@@ -39,6 +39,11 @@ export function DocsLayout({
   editLink,
 }: DocsLayoutProps) {
   const current = pages.find((page) => page.url === currentUrl);
+  const visiblePages = pages.filter(
+    (page) => page.frontmatter.navigation !== "hidden" &&
+      page.frontmatter.navigation !== "disabled" &&
+      page.frontmatter.hidden !== true,
+  );
   const placement = toc === false ? "none" : (toc?.placement ?? "right");
   const filtered = toc
     ? filterDepth(toc.headings, toc.minDepth ?? 2, toc.maxDepth ?? 3)
@@ -54,7 +59,7 @@ export function DocsLayout({
   return (
     <div data-moyaforge-docs-layout="">
       <header data-moyaforge-docs-header="">
-        {header ?? <a href={pages[0]?.url ?? "/"}>{title}</a>}
+        {header ?? <a href={visiblePages[0]?.url ?? "/"}>{title}</a>}
       </header>
       <div data-moyaforge-docs-columns="">
         <aside
@@ -64,7 +69,7 @@ export function DocsLayout({
           {sidebar ?? (
             <nav>
               <ul>
-                {pages.map((page) => (
+                {visiblePages.map((page) => (
                   <li key={page.url}>
                     <a
                       href={page.url}
