@@ -1,0 +1,73 @@
+name: Publish npm package
+
+run-name: >-
+  Publish · ${{ inputs.package }} · ${{ inputs.registry }} · ${{ inputs.version-mode }}${{ inputs.version-mode == 'exact' && format(':{0}', inputs.exact-version) || '' }} · dry-run=${{ inputs.dry-run }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Package selector: all, name, or directory"
+        required: true
+        default: all
+        type: string
+      registry:
+        description: Publish destination
+        required: true
+        default: npm
+        type: choice
+        options:
+          - npm
+          - github
+          - all
+      version-mode:
+        description: Publish manifest version or an exact version
+        required: true
+        default: package-json
+        type: choice
+        options: [package-json, exact]
+      exact-version:
+        description: Version when using exact mode
+        required: false
+        default: ""
+        type: string
+      verify-git-tag:
+        description: Require matching package Git tag before publishing
+        required: true
+        default: true
+        type: boolean
+      node-version:
+        description: Node.js version for publishing
+        required: true
+        default: "24"
+        type: string
+      dry-run:
+        description: Preview publishing without changing the npm registry
+        required: true
+        default: true
+        type: boolean
+      tag:
+        description: npm distribution tag (leave empty to use the resolved default)
+        required: false
+        default: ""
+        type: string
+
+permissions: {}
+
+jobs:
+  publish:
+    permissions:
+      contents: write
+      packages: write
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_bulk-npm-publish.yml@main
+    with:
+      package: ${{ inputs.package }}
+      registry: ${{ inputs.registry }}
+      version-mode: ${{ inputs.version-mode }}
+      exact-version: ${{ inputs.exact-version }}
+      verify-git-tag: ${{ inputs.verify-git-tag }}
+      node-version: ${{ inputs.node-version }}
+      dry-run: ${{ inputs.dry-run }}
+      tag: ${{ inputs.tag }}
+    secrets:
+      npm-token: ${{ secrets._NPM_TOKEN }}
