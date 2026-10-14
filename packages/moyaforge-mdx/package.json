@@ -17,6 +17,10 @@
     "./vite": {
       "types": "./dist/vite.d.ts",
       "import": "./dist/vite.js"
+    },
+    "./source-files": {
+      "types": "./dist/source-files.d.ts",
+      "import": "./dist/source-files.js"
     }
   },
   "files": [

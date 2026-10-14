@@ -1,7 +1,7 @@
 # @moyarich/moyaforge
 
-Reusable helpers and components for repository-owned documentation sites and
-interactive playgrounds.
+Open-source, reusable helpers and components for documentation sites,
+component libraries, and interactive playgrounds.
 
 MoyaForge provides building blocks rather than requiring one application shell.
 Consumers can use the provided components, compose an optional shell, or build a
@@ -251,8 +251,10 @@ export default defineMoyaForgeConfig({
 
 `DocsLayout` accepts an optional `toc` property with `headings` obtained from `@moyarich/moyaforge-mdx` metadata and the canonical TOC options (`placement`, `label`, `minDepth`, `maxDepth`, `collapsible`, `defaultOpen`). It supports right, sidebar, inline and none placements without displaying the same TOC more than once. Pass `toc={false}` to disable the outline; absent `toc` retains the older DOM-driven outline behavior during migration. `DocOutline` can also receive heading trees directly, preserving extracted anchor IDs and tracking the active heading on scroll.
 
-## Shared MDX integration
+## MDX and Vite integration
 
-The playground uses `@moyarich/moyaforge-mdx` for compiler configuration, source discovery and page metadata. Its Vite plugin is `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`, with `virtual:moyaforge-mdx/metadata` and `virtual:moyaforge-mdx/lazy-registry` for route metadata and on-demand page loading.
+MoyaForge is an open-source toolkit for any consuming project. `apps/playground` is its first consumer, not its only intended consumer. Future repositories such as CSS Color Parser can reuse its components and independently configure their content sources.
 
-MoyaForge's React component package does not provide a separate Vite content manifest.
+Prefer `createMdxOptions` from `@moyarich/moyaforge-mdx`, `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`, and `virtual:moyaforge-mdx/metadata` plus `virtual:moyaforge-mdx/lazy-registry` for new registry integrations.
+
+The published `@moyarich/moyaforge/vite` (`moyaforgeVite`) and `@moyarich/moyaforge/mdx` (`createMoyaForgeMdxOptions`) entry points remain supported. The latter delegates to shared MDX compiler defaults; the former provides collection manifest modules for consumers using that contract. `@moyarich/moyaforge-mdx/source-files` remains available for shared source discovery. Do not remove public entry points merely because the playground does not use them.
