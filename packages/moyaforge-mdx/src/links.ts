@@ -51,7 +51,7 @@ export function validateInternalLinks(
             const clean = pathPart.split("?")[0];
             if (!clean || /(?:^|\/)page\.mdx?$/.test(clean) || !/\.[a-z\d]+$/i.test(clean)) {
               let path = clean
-                ? clean.startsWith("/") ? posix.normalize(clean) : posix.resolve(current.path, "..", clean)
+                ? clean.startsWith("/") ? posix.normalize(clean) : posix.resolve(current.path, clean)
                 : current.path;
               path = path.replace(/\/(?:page\.mdx?|index\.html?)$/, "").replace(/\/$/, "") || "/";
               const target = registry.byPath.get(path);
