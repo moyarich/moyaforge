@@ -91,7 +91,7 @@ export function validateInternalLinks(
               if (!target)
                 diagnostics.push({ file: key, href, reason: "missing-page" });
               else if (
-                hash &&
+                decodedHash &&
                 !anchors(headings[target.source + "/" + target.file] ?? []).has(
                   decodedHash,
                 )
