@@ -77,3 +77,7 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 ## Validate links during checks
 
 `checkContentLinks(registryConfig, appRoot)` scans registered pages and invokes `validateInternalLinks` against their normalized routes and extracted heading IDs. It returns diagnostic objects suitable for CI reporting. `formatLinkIssues()` renders them for logs. The playground command `npm run check:links --workspace @moyarich/moyaforge-playground` loads its own `registry.config.ts` through Vite and exits with status 1 when invalid links are found. The root `npm run checks` includes this validation. These checks cover Markdown links and anchors; JSX links and external URLs are not validated yet.
+
+## MDX-aware heading discovery
+
+The build-time TOC extraction parser now accepts MDX ESM imports, JSX components, and expression nodes using `remark-mdx`. The same `rehype-slug` and TOC extraction plugins continue to assign heading IDs. This enables ordinary Markdown headings around MDX components to appear in metadata without evaluating components. Headings generated *at runtime by React components* are not visible at build time; those require runtime instrumentation if they must appear in the TOC.
