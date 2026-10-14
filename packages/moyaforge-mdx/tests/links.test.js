@@ -69,3 +69,25 @@ test("image URLs and fenced-code links are not treated as internal document link
   );
   assert.deepEqual(issues, []);
 });
+
+test("literal MDX anchor links are validated like Markdown links", () => {
+  const issues = validateInternalLinks(
+    [
+      {
+        source: "docs",
+        file: "page.md",
+        content:
+          '<a href="./guide#install">Valid</a> <a href="/docs/missing">Missing</a> <a href="./guide#unknown">Bad anchor</a> <a href="https://example.org">External</a> <a href={computedPath}>Dynamic</a>',
+      },
+    ],
+    registry,
+    headings,
+  );
+  assert.deepEqual(
+    issues.map(({ href, reason }) => [href, reason]),
+    [
+      ["/docs/missing", "missing-page"],
+      ["./guide#unknown", "missing-anchor"],
+    ],
+  );
+});

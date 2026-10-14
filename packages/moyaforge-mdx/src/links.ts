@@ -2,6 +2,7 @@ import { posix } from "node:path";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
+import remarkMdx from "remark-mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import type { PageRegistry } from "./registry.js";
 import type { TocHeading } from "./toc.js";
@@ -47,10 +48,22 @@ export function validateInternalLinks(
       .use(remarkParse)
       .use(remarkFrontmatter, ["yaml"])
       .use(remarkGfm)
+      .use(remarkMdx)
       .parse(document.content);
     const visit = (node: any) => {
-      if (node.type === "link" || node.type === "definition") {
-        const href = node.url as string;
+      const mdxAnchor =
+        (node.type === "mdxJsxFlowElement" ||
+          node.type === "mdxJsxTextElement") &&
+        node.name === "a";
+      if (node.type === "link" || node.type === "definition" || mdxAnchor) {
+        const href = mdxAnchor
+          ? node.attributes?.find(
+              (attribute: any) =>
+                attribute.type === "mdxJsxAttribute" &&
+                attribute.name === "href" &&
+                typeof attribute.value === "string",
+            )?.value
+          : (node.url as string);
         if (href && !/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href)) {
           try {
             const [pathPart, hash] = href.split("#", 2);
