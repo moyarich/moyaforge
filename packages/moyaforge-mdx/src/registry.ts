@@ -1,3 +1,4 @@
+import { buildNavigationTree, flattenNavigation, type NavigationNode } from "./navigation.js";
 /** Headless, framework-independent page normalization for registry source manifests. */
 export type NavigationMode = "visible" | "hidden" | "disabled";
 export type TocPlacement = "right" | "sidebar" | "inline" | "none";
@@ -39,6 +40,7 @@ export interface PageRegistry {
   pages: NormalizedPage[];
   routes: NormalizedPage[];
   navigation: NormalizedPage[];
+  tree: NavigationNode[];
   byPath: Map<string, NormalizedPage>;
   breadcrumbs(path: string): NormalizedPage[];
   previousNext(path: string): {
@@ -153,12 +155,14 @@ export function buildPageRegistry(
       a.path.localeCompare(b.path),
   );
   const routes = pages.filter((p) => p.navigation !== "disabled");
-  const navigation = routes.filter((p) => p.navigation === "visible");
+  const tree = buildNavigationTree(routes);
+  const navigation = flattenNavigation(tree);
   const byPath = new Map(routes.map((p) => [p.path, p]));
   return {
     pages,
     routes,
     navigation,
+    tree,
     byPath,
     breadcrumbs(path) {
       const page = byPath.get(path);
