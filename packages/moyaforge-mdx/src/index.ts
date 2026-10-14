@@ -26,7 +26,9 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       remarkFrontmatter,
       remarkGfm,
       ...(options.remarkPlugins ?? []),
-      ...(options.frontmatterExport ? [[remarkMdxFrontmatter, { name: "frontmatter" }] as const] : []),
+      ...(options.frontmatterExport
+        ? [[remarkMdxFrontmatter, { name: "frontmatter" }] as const]
+        : []),
     ] as PluggableList,
     rehypePlugins: [
       rehypeSlug,
