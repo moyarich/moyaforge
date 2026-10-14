@@ -46,10 +46,15 @@ test("broad globs expose only canonical page.md and page.mdx modules", async () 
     await writeFile(join(root, "docs", "page.md"), "# Home");
     await writeFile(join(root, "docs", "01-guide", "page.mdx"), "# Guide");
     await writeFile(join(root, "docs", "README.md"), "# Internal notes");
-    await writeFile(join(root, "docs", "01-guide", "notes.mdx"), "# Not a page");
+    await writeFile(
+      join(root, "docs", "01-guide", "notes.mdx"),
+      "# Not a page",
+    );
     const plugin = mdxRegistryPlugin({
       root,
-      registry: { sources: { docs: { base: "docs", include: ["**/*.md", "**/*.mdx"] } } },
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/*.md", "**/*.mdx"] } },
+      },
     });
     for (const name of ["registry", "lazy-registry"]) {
       const id = plugin.resolveId.call({}, `virtual:moyaforge-mdx/${name}`);
