@@ -39,7 +39,7 @@ function docsFor(registry, root) {
       return Promise.all(
         entries
           .sort()
-          .filter((file) => /\.mdx?$/.test(file))
+          .filter((file) => /^page\.mdx?$/.test(file.replaceAll("\\", "/").split("/").at(-1) ?? ""))
           .map(async (file) => {
             const raw = await readFile(file, "utf8");
             const name = relative(base, file).split(sep).join("/");
