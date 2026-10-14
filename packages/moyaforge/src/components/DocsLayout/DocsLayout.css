@@ -19,10 +19,9 @@
 
 [data-moyaforge-docs-columns] {
   display: grid;
-  grid-template-columns: minmax(0, var(--_docs-sidebar-width)) minmax(
-      0,
-      1fr
-    ) minmax(0, var(--_docs-outline-width));
+  grid-template-columns:
+    minmax(0, var(--_docs-sidebar-width)) minmax(0, 1fr)
+    minmax(0, var(--_docs-outline-width));
   gap: clamp(1rem, 3vw, 3rem);
   max-width: 100rem;
   margin: auto;
