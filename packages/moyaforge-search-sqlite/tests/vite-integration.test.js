@@ -209,8 +209,12 @@ test("SQLite index handles quoted YAML navigation and rejects malformed frontmat
       db.close();
     }
     await writeFile(page, ['---', 'title: A', 'title: B', '---', '# Broken'].join("\n"));
+    const invalidPlugin = sqliteSearchPlugin({
+      root, registry: { sources: { docs: { base: "docs", include: ["**/page.md"] } } }
+    });
+    invalidPlugin.configResolved({ command: "build", base: "/" });
     await assert.rejects(
-      plugin.load.call({ emitFile() {} }, id),
+      invalidPlugin.load.call({ emitFile() {} }, invalidPlugin.resolveId("virtual:moyaforge-search/database")),
       /invalid YAML frontmatter/,
     );
   } finally {
