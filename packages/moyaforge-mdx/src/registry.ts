@@ -109,6 +109,9 @@ export function buildPageRegistry(
   sources: Record<string, readonly PageInput[]>,
   options: { toc?: TocSetting } = {},
 ): PageRegistry {
+  // Validate project-level TOC defaults even when no page overrides them.
+  if (options.toc !== undefined)
+    assertFrontmatter({ toc: options.toc }, "registry.config.ts");
   const seen = new Map<string, string>();
   const pages: NormalizedPage[] = [];
   for (const [source, inputs] of Object.entries(sources)) {
