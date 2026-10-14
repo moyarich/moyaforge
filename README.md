@@ -110,3 +110,5 @@ This npm-workspace repository follows the Console release model and consumes wor
 - **Self-heal:** fix formatting and synchronize the npm lockfile on non-`main` branches.
 
 The committed root `package-lock.json` is maintained by the shared lockfile self-heal workflow. Only `packages/moyaforge` is publishable. `apps/playground` remains private and must not be selected for releases.
+
+The GitHub Pages site is built from the private `apps/playground` workspace; package releases target only `packages/moyaforge`.
