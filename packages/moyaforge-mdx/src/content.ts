@@ -113,7 +113,9 @@ export async function discoverContent(
         try {
           sourceMetadata[name] = JSON.parse(await readFile(file, "utf8"));
         } catch (error) {
-          throw new Error(`${file}: invalid JSON source metadata`, { cause: error });
+          throw new Error(`${file}: invalid JSON source metadata`, {
+            cause: error,
+          });
         }
       }
     }
