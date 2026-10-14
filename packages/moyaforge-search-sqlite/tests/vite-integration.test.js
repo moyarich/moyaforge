@@ -166,12 +166,17 @@ test("development endpoint serves fresh SQLite data after a source change", asyn
 test("configured search sources distinguish missing paths, files and empty directories", async () => {
   const root = await mkdtemp(join(tmpdir(), "moyaforge-search-sources-"));
   try {
-    const registry = { sources: { docs: { base: "docs", include: ["**/page.md"] } } };
+    const registry = {
+      sources: { docs: { base: "docs", include: ["**/page.md"] } },
+    };
     const plugin = sqliteSearchPlugin({ root, registry });
     plugin.configResolved({ command: "build", base: "/" });
     const id = plugin.resolveId("virtual:moyaforge-search/database");
     const load = () => plugin.load.call({ emitFile() {} }, id);
-    await assert.rejects(load, /Search source "docs": directory does not exist:/);
+    await assert.rejects(
+      load,
+      /Search source "docs": directory does not exist:/,
+    );
     await writeFile(join(root, "docs"), "not a directory");
     await assert.rejects(load, /Search source "docs": expected directory:/);
     await rm(join(root, "docs"));
