@@ -42,7 +42,9 @@ export function mdxRegistryPlugin({
       const base = resolve(appRoot, source.base);
       const pages: string[] = [];
       const lazyPages: string[] = [];
-      for (const page of normalized.routes.filter((page) => page.source === name)) {
+      for (const page of normalized.routes.filter(
+        (page) => page.source === name,
+      )) {
         const file = resolve(base, page.file).replaceAll("\\", "/");
         const id = index++;
         if (!lazyOnly)
