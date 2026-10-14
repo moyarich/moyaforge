@@ -1,32 +1,26 @@
-import { lazy, Suspense, useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState, useEffect } from "react";
 import { pages, navigation, headings } from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 import { DocOutline } from "@moyarich/moyaforge";
+import { getTableOfContents } from "@moyarich/moyaforge-mdx";
+import { readContentRoute, contentHref, navigateContent, firstContentRoute } from "../content-routing.js";
 
-/**
- * Demonstrates the framework-neutral metadata + lazy component contract.
- * No page module is imported until its navigation entry is selected.
- */
 export function ContentExplorer() {
-  const visible = navigation.filter(
-    (page) => sources[page.source]?.lazyPages?.[page.file],
-  );
-  const [selectedPath, setSelectedPath] = useState(
-    () => visible[0]?.path ?? "",
-  );
+  const visible = navigation.filter((page) => sources[page.source]?.lazyPages?.[page.file]);
+  const [selectedPath, setSelectedPath] = useState(() => readContentRoute() ?? firstContentRoute());
+  useEffect(() => {
+    const update = () => setSelectedPath(readContentRoute() ?? firstContentRoute());
+    window.addEventListener("popstate", update);
+    return () => window.removeEventListener("popstate", update);
+  }, []);
   const selected = pages.find(
     (page) => page.path === selectedPath && page.navigation !== "disabled",
   );
-  const loader =
-    selected && sources[selected.source]?.lazyPages?.[selected.file];
+  const loader = selected && sources[selected.source]?.lazyPages?.[selected.file];
   const Page = useMemo(() => (loader ? lazy(loader) : null), [loader]);
-  const toc = selected
-    ? (headings[`${selected.source}/${selected.file}`] ?? [])
-    : [];
+  const toc = selected ? getTableOfContents(headings[`${selected.source}/${selected.file}`] ?? [], selected.toc) : null;
 
-  if (!visible.length) {
-    return <p>No registered content pages were found.</p>;
-  }
+  if (!visible.length) return <p>No registered content pages were found.</p>;
   return (
     <div className="content-explorer">
       <nav aria-label="Registered content pages">
@@ -34,13 +28,15 @@ export function ContentExplorer() {
         <ul>
           {visible.map((page) => (
             <li key={page.path}>
-              <button
-                type="button"
+              <a
+                href={contentHref(page.path)}
                 aria-current={page.path === selectedPath ? "page" : undefined}
-                onClick={() => setSelectedPath(page.path)}
-              >
-                {page.label}
-              </button>
+                onClick={(event) => {
+                  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                  event.preventDefault();
+                  navigateContent(page.path);
+                }}
+              >{page.label}</a>
             </li>
           ))}
         </ul>
@@ -53,13 +49,16 @@ export function ContentExplorer() {
             <Suspense fallback={<p role="status">Loading page…</p>}>
               <Page key={selected.path} />
             </Suspense>
-            {selected.toc !== false && toc.length > 0 && (
-              <DocOutline headings={toc} title="On this page" />
+            {toc && toc.options.placement !== "none" && (
+              <DocOutline
+                headings={toc.headings}
+                title={toc.options.label}
+                collapsible={toc.options.collapsible}
+                defaultOpen={toc.options.defaultOpen}
+              />
             )}
           </>
-        ) : (
-          <p>Choose a page.</p>
-        )}
+        ) : <p>Choose a registered page.</p>}
       </section>
     </div>
   );
