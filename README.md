@@ -96,3 +96,17 @@ npm install @moyarich/moyaforge @moyarich/console
 ```
 
 The repository's `.npmrc` routes `@moyarich` packages to the public npm registry. Public package installation does not require a GitHub Packages token or extra Actions permissions.
+
+## Repository workflows
+
+This npm-workspace repository follows the Console release model and consumes workflow definitions from [moyarich/reusable-workflows](https://github.com/moyarich/reusable-workflows) at `main`.
+
+- **CI:** build, test, typecheck, and inspect the publishable MoyaForge package; separately build the private playground.
+- **Release Drafter:** draft package-specific GitHub Releases from changes to `packages/**`.
+- **Release package:** manually select a package and version resolution strategy; defaults to a dry run.
+- **Publish npm package:** manually publish the public npm package; defaults to a dry run. Configure the repository secret `_NPM_TOKEN` for live npm publication.
+- **Reset / Restore:** manual, dry-run-first release recovery for package-scoped releases and tags.
+- **Pages:** deploy `apps/playground/dist` to GitHub Pages via the shared reusable Pages workflow.
+- **Self-heal:** fix formatting and synchronize the npm lockfile on non-`main` branches.
+
+Only `packages/moyaforge` is publishable. `apps/playground` remains private and must not be selected for releases.
