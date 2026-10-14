@@ -11,6 +11,11 @@ export function normalizeRoute(path) {
   const normalized = path.replace(/\/+$/, "") || "/";
   return routes.some((page) => page.path === normalized) ? normalized : null;
 }
+/** Resolve SQLite document keys against the canonical routable page inventory. */
+export function searchResultRoute(key) {
+  const page = routes.find((page) => `${page.source}/${page.file}` === key);
+  return page?.path ?? null;
+}
 export function contentHref(path, hash = "") {
   const url = new URL(window.location.href);
   url.searchParams.set(routeParam, path);
