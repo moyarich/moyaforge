@@ -251,14 +251,8 @@ export default defineMoyaForgeConfig({
 
 `DocsLayout` accepts an optional `toc` property with `headings` obtained from `@moyarich/moyaforge-mdx` metadata and the canonical TOC options (`placement`, `label`, `minDepth`, `maxDepth`, `collapsible`, `defaultOpen`). It supports right, sidebar, inline and none placements without displaying the same TOC more than once. Pass `toc={false}` to disable the outline; absent `toc` retains the older DOM-driven outline behavior during migration. `DocOutline` can also receive heading trees directly, preserving extracted anchor IDs and tracking the active heading on scroll.
 
-## Shared MDX compiler options
+## Shared MDX integration
 
-Compiler defaults are maintained in `@moyarich/moyaforge-mdx` (`createMdxOptions`). The legacy `@moyarich/moyaforge/mdx` export `createMoyaForgeMdxOptions()` remains available as a compatibility wrapper, but no longer maintains a second plugin list. New integrations should import directly from `@moyarich/moyaforge-mdx`. The legacy `moyaforgeVite` page-manifest path remains separate pending migration under issue #27.
+The playground uses `@moyarich/moyaforge-mdx` for compiler configuration, source discovery and page metadata. Its Vite plugin is `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`, with `virtual:moyaforge-mdx/metadata` and `virtual:moyaforge-mdx/lazy-registry` for route metadata and on-demand page loading.
 
-## Legacy Vite manifest compatibility
-
-`moyaforgeVite()` and `virtual:moyaforge/pages` remain supported for existing applications. The adapter now discovers `page.md` and `page.mdx` through the same `@moyarich/moyaforge-mdx` source-discovery utility instead of maintaining its own recursive filesystem scanner. New consumers should use `mdxRegistryPlugin` and `virtual:moyaforge-mdx/metadata` plus `virtual:moyaforge-mdx/lazy-registry`; the legacy virtual module still eagerly imports page components and should be migrated before removal.
-
-### Legacy collection migration
-
-The compatibility Vite plugin also exposes `virtual:moyaforge/lazy-pages`. It preserves the legacy `collections[name].dir`, `baseUrl` and `modules` keys, but each `modules[file]` is a function returning `import()` rather than an eagerly imported module object. Existing consumers of `virtual:moyaforge/pages` continue working unchanged. New applications should prefer `@moyarich/moyaforge-mdx/vite` and its normalized metadata plus lazy registry, rather than adding new dependencies on the legacy collection API.
+MoyaForge's React component package does not provide a separate Vite content manifest.
