@@ -11,8 +11,13 @@ type Plugin = {
   resolveId: (id: string) => string | undefined;
   load: (id: string) => string | undefined;
   configureServer: (server: {
-    watcher: { on: (event: "add" | "unlink", cb: (file: string) => void) => void };
-    moduleGraph: { getModuleById: (id: string) => unknown; invalidateModule: (mod: any) => void };
+    watcher: {
+      on: (event: "add" | "unlink", cb: (file: string) => void) => void;
+    };
+    moduleGraph: {
+      getModuleById: (id: string) => unknown;
+      invalidateModule: (mod: any) => void;
+    };
     ws: { send: (msg: { type: string }) => void };
   }) => void;
   handleHotUpdate: (ctx: {
@@ -76,10 +81,21 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
     const absolute = resolve(file);
     return sourceRoots.some((base) => {
       const path = relative(base, absolute);
-      return path !== "" && path !== ".." && !path.startsWith(".." + sep) && !isAbsolute(path);
+      return (
+        path !== "" &&
+        path !== ".." &&
+        !path.startsWith(".." + sep) &&
+        !isAbsolute(path)
+      );
     });
   };
-  const reload = (server: { moduleGraph: { getModuleById: (id: string) => unknown; invalidateModule: (mod: any) => void }; ws: { send: (msg: { type: string }) => void } }) => {
+  const reload = (server: {
+    moduleGraph: {
+      getModuleById: (id: string) => unknown;
+      invalidateModule: (mod: any) => void;
+    };
+    ws: { send: (msg: { type: string }) => void };
+  }) => {
     for (const id of [resolved, lazyResolved]) {
       const module = server.moduleGraph.getModuleById(id);
       if (module) server.moduleGraph.invalidateModule(module);

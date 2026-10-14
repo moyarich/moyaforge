@@ -81,17 +81,23 @@ test("legacy Vite HMR only reloads registered content roots", () => {
   }
 });
 
-
 test("legacy manifests refresh on registered page add and delete only", () => {
   const root = mkdtempSync(join(tmpdir(), "moyaforge-watch-"));
   try {
     mkdirSync(join(root, "docs"), { recursive: true });
-    const plugin = moyaforgeVite({ root, collections: { docs: { dir: "docs", baseUrl: "/docs" } } });
+    const plugin = moyaforgeVite({
+      root,
+      collections: { docs: { dir: "docs", baseUrl: "/docs" } },
+    });
     const handlers = {};
     const invalidated = [];
     const messages = [];
     plugin.configureServer({
-      watcher: { on(event, callback) { handlers[event] = callback; } },
+      watcher: {
+        on(event, callback) {
+          handlers[event] = callback;
+        },
+      },
       moduleGraph: {
         getModuleById: (id) => ({ id }),
         invalidateModule: (mod) => invalidated.push(mod.id),
