@@ -186,3 +186,34 @@ test("configured search sources distinguish missing paths, files and empty direc
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("SQLite index handles quoted YAML navigation and rejects malformed frontmatter", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-search-yaml-"));
+  try {
+    const docs = join(root, "docs");
+    await mkdir(docs);
+    const page = join(docs, "page.md");
+    await writeFile(page, ['---', 'navigation: "disabled"', '---', '# Hidden'].join("\n"));
+    const plugin = sqliteSearchPlugin({
+      root, registry: { sources: { docs: { base: "docs", include: ["**/page.md"] } } }
+    });
+    plugin.configResolved({ command: "build", base: "/" });
+    const id = plugin.resolveId("virtual:moyaforge-search/database");
+    let asset;
+    await plugin.load.call({ emitFile(file) { asset = file; } }, id);
+    const SQL = await initSqlJs();
+    const db = new SQL.Database(asset.source);
+    try {
+      assert.deepEqual(db.exec("SELECT key FROM documents"), []);
+    } finally {
+      db.close();
+    }
+    await writeFile(page, ['---', 'title: A', 'title: B', '---', '# Broken'].join("\n"));
+    await assert.rejects(
+      plugin.load.call({ emitFile() {} }, id),
+      /invalid YAML frontmatter/,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
