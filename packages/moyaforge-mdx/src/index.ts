@@ -23,14 +23,14 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
     remarkPlugins: [
       remarkFrontmatter,
       remarkGfm,
-      ...options.remarkPlugins ?? [],
+      ...(options.remarkPlugins ?? []),
       [remarkMdxFrontmatter, { name: "frontmatter" }] as const,
     ] as PluggableList,
     rehypePlugins: [
       rehypeSlug,
       rehypeExtractToc,
       rehypeExportToc,
-      ...options.rehypePlugins ?? [],
+      ...(options.rehypePlugins ?? []),
     ] as PluggableList,
   };
 }
