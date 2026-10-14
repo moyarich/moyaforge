@@ -85,3 +85,22 @@ The build-time TOC extraction parser now accepts MDX ESM imports, JSX components
 ## Compiled frontmatter exports
 
 Registry-based metadata discovery reads authored YAML from `page.md` and `page.mdx` at build time, without evaluating compiled components. `createMdxOptions()` does **not** generate a JavaScript `frontmatter` export by default. Older consumer integrations that explicitly import `page.frontmatter` can opt in with `createMdxOptions({ frontmatterExport: true })` while migrating to `virtual:moyaforge-mdx/metadata`. This does not change the YAML syntax or normalized page registry.
+
+## Optional static syntax highlighting
+
+Static Markdown and MDX fenced code blocks can use [Shiki](https://shiki.style/) at **build time**. It is optional; MoyaForge does not require the Shiki package or ship a runtime highlighter.
+
+Install `@shikijs/rehype` in the consuming application and pass its plugin to the shared compiler configuration:
+
+```ts
+import rehypeShiki from "@shikijs/rehype";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+
+const options = createMdxOptions({
+  shiki: [rehypeShiki, {
+    themes: { light: "github-light", dark: "github-dark" },
+  }],
+});
+```
+
+The Shiki rehype plugin runs after heading slugs and table-of-contents extraction, but before any additional host `rehypePlugins`. It highlights **static** code blocks in the Markdown/MDX compile pipeline. Interactive editors, Monaco, terminal output, and runnable snippets should be rendered through their own MDX components rather than this static highlighter; avoid applying a second syntax highlighter to their output. This option does not enable highlighting in the playground unless that app opts in.
