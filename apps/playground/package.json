@@ -10,11 +10,12 @@
     "react-dom": "^19.0.0",
     "@moyarich/console": "^0.1.0",
     "@moyarich/colorshower": "github:moyarich/colorshower",
+    "@moyarich/moyaforge-mdx": "*",
     "@moyarich/moyaforge-search-sqlite": "*"
   },
   "scripts": {
-    "dev": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite --host 0.0.0.0",
-    "build": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite build",
+    "dev": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite --host 0.0.0.0",
+    "build": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite build",
     "preview": "vite preview --host 0.0.0.0"
   },
   "devDependencies": {

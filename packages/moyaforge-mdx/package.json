@@ -1,0 +1,56 @@
+{
+  "name": "@moyarich/moyaforge-mdx",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Framework-independent Markdown and MDX compiler conventions",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyarich/moyaforge.git",
+    "directory": "packages/moyaforge-mdx"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test tests/*.test.js",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx-frontmatter": "^5.2.0",
+    "rehype-slug": "^6.0.0",
+    "@stefanprobst/rehype-extract-toc": "^3.0.0",
+    "unified": "^11.0.5",
+    "tinyglobby": "^0.2.15"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vite": "^6.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "vite": "^6.0.0 || ^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
+  }
+}

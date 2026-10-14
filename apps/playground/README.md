@@ -20,6 +20,18 @@ npm run preview --workspace @moyarich/moyaforge-playground
 
 The app builds its local MoyaForge workspace dependency before running Vite. Vite writes output to `apps/playground/dist` and honors `VITE_BASE_PATH` for subpath deployment.
 
+## Content source registry
+
+`registry.config.ts` is the single place to declare playground documentation
+source roots, include patterns, and navigation labels. The config is a plain
+TypeScript object (no `defineRegistry()` helper). Vite's registry integration
+uses its source roots for development file watching.
+
+The playground is currently a component showcase: its hardcoded example tabs are
+not a documentation navigation tree, and the registry does not yet generate MDX
+imports, page navigation, or SQLite search. Those consumers can use the same
+configuration when introduced, rather than adding independent glob patterns.
+
 ## Examples
 
 - Documentation: accessible code tabs, copy buttons, built-in Demo and empty state.

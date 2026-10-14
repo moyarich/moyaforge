@@ -1,0 +1,82 @@
+import { resolve, relative, sep } from "node:path";
+import { glob } from "tinyglobby";
+import type { Plugin } from "vite";
+
+export interface RegistrySource {
+  base: string;
+  include: readonly string[];
+  exclude?: readonly string[];
+  navigation?: { label?: string; order?: number };
+  metadata?: readonly string[];
+}
+export interface RegistryConfiguration {
+  sources: Record<string, RegistrySource>;
+}
+export interface RegistryPluginOptions {
+  registry: RegistryConfiguration;
+  root: string;
+}
+
+const publicId = "virtual:moyaforge-mdx/registry";
+const resolvedId = "\0" + publicId;
+
+/** Optional Vite adapter: source ownership remains with the application's registry.config.ts. */
+export function mdxRegistryPlugin({
+  registry,
+  root,
+}: RegistryPluginOptions): Plugin {
+  const appRoot = resolve(root);
+  const directories = Object.values(registry.sources).map((source) =>
+    resolve(appRoot, source.base),
+  );
+  const discover = async () => {
+    const imports: string[] = [];
+    const sources: string[] = [];
+    let index = 0;
+    for (const [name, source] of Object.entries(registry.sources)) {
+      const base = resolve(appRoot, source.base);
+      const entries = await glob([...source.include], {
+        cwd: base,
+        ignore: source.exclude ? [...source.exclude] : [],
+        absolute: true,
+        onlyFiles: true,
+      });
+      const pages: string[] = [];
+      for (const file of entries.sort()) {
+        const id = index++;
+        imports.push(
+          `import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`,
+        );
+        pages.push(
+          `${JSON.stringify(relative(base, file).split(sep).join("/"))}: page${id}`,
+        );
+      }
+      sources.push(
+        `${JSON.stringify(name)}: { pages: { ${pages.join(",")} } }`,
+      );
+    }
+    return `${imports.join("\n")}\nexport const sources = { ${sources.join(",")} };\n`;
+  };
+  return {
+    name: "moyaforge-mdx:registry",
+    enforce: "pre",
+    resolveId(id) {
+      if (id === publicId) return resolvedId;
+    },
+    async load(id) {
+      if (id === resolvedId) return discover();
+    },
+    configureServer(server) {
+      server.watcher.add(directories);
+      const update = (file: string) => {
+        const absolute = resolve(file);
+        if (!directories.some((dir) => absolute.startsWith(dir + sep))) return;
+        const module = server.moduleGraph.getModuleById(resolvedId);
+        if (module) server.moduleGraph.invalidateModule(module);
+        server.ws.send({ type: "full-reload" });
+      };
+      server.watcher.on("add", update);
+      server.watcher.on("unlink", update);
+    },
+  };
+}
