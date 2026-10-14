@@ -29,7 +29,7 @@ export function mdxRegistryPlugin({
   const directories = Object.values(registry.sources).map((source) =>
     resolve(appRoot, source.base),
   );
-  const discover = async () => {
+  const discover = async (lazyOnly: boolean) => {
     const imports: string[] = [];
     const sources: string[] = [];
     let index = 0;
@@ -45,17 +45,17 @@ export function mdxRegistryPlugin({
       const lazyPages: string[] = [];
       for (const file of entries.sort()) {
         const id = index++;
-        imports.push(
+        if (!lazyOnly) imports.push(
           `import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`,
         );
         const key = JSON.stringify(relative(base, file).split(sep).join("/"));
-        pages.push(`${key}: page${id}`);
+        if (!lazyOnly) pages.push(`${key}: page${id}`);
         lazyPages.push(
           `${key}: () => import(${JSON.stringify(file.split(sep).join("/"))})`,
         );
       }
       sources.push(
-        `${JSON.stringify(name)}: { pages: { ${pages.join(",")} }, lazyPages: { ${lazyPages.join(",")} } }`,
+        `${JSON.stringify(name)}: { ${lazyOnly ? "" : `pages: { ${pages.join(",")} }, `}lazyPages: { ${lazyPages.join(",")} } }`,
       );
     }
     return `${imports.join("\n")}\nexport const sources = { ${sources.join(",")} };\n`;
@@ -65,17 +65,21 @@ export function mdxRegistryPlugin({
     enforce: "pre",
     resolveId(id) {
       if (id === publicId) return resolvedId;
+      if (id === lazyPublicId) return lazyResolvedId;
     },
     async load(id) {
-      if (id === resolvedId) return discover();
+      if (id === resolvedId) return discover(false);
+      if (id === lazyResolvedId) return discover(true);
     },
     configureServer(server) {
       server.watcher.add(directories);
       const update = (file: string) => {
         const absolute = resolve(file);
         if (!directories.some((dir) => absolute.startsWith(dir + sep))) return;
-        const module = server.moduleGraph.getModuleById(resolvedId);
-        if (module) server.moduleGraph.invalidateModule(module);
+        for (const id of [resolvedId, lazyResolvedId]) {
+          const module = server.moduleGraph.getModuleById(id);
+          if (module) server.moduleGraph.invalidateModule(module);
+        }
         server.ws.send({ type: "full-reload" });
       };
       server.watcher.on("add", update);
