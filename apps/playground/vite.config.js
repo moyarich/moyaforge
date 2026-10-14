@@ -1,11 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
-import { createMoyaForgeMdxOptions } from "@moyarich/moyaforge/mdx";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
 
 export default defineConfig({
   plugins: [
-    { enforce: "pre", ...mdx(createMoyaForgeMdxOptions()) },
+    { enforce: "pre", ...mdx(createMdxOptions()) },
     react({ include: /\\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
   ],
   worker: { format: "es" },
