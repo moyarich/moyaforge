@@ -6,7 +6,10 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
   const originalFetch = globalThis.fetch;
   const originalSQL = globalThis.__testSQL;
   let completeFetch;
-  let startedFetch;
+  let signalFetchStarted;
+  const fetchStarted = new Promise((resolve) => {
+    signalFetchStarted = resolve;
+  });
   let fetchCount = 0;
   const closed = [];
   class FakeDatabase {
@@ -22,7 +25,7 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
     globalThis.fetch = async () => {
       fetchCount++;
       if (fetchCount === 1) {
-        startedFetch?.();
+        signalFetchStarted();
         return new Promise((resolve) => {
           completeFetch = resolve;
         });
@@ -47,10 +50,7 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
       "data:text/javascript," + encodeURIComponent(code)
     );
     const loading = client.searchPages("test");
-    await new Promise((resolve) => {
-      startedFetch = resolve;
-      if (completeFetch) resolve();
-    });
+    await fetchStarted;
     const refreshing = client.reloadSearch();
     completeFetch({
       ok: true,
