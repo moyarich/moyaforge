@@ -42,7 +42,12 @@ Both modules use the same configured content roots and reload when content files
 When using `mdxRegistryPlugin`, applications can import the metadata-only virtual module:
 
 ```ts
-import { sources, pages, routes, navigation } from "virtual:moyaforge-mdx/metadata";
+import {
+  sources,
+  pages,
+  routes,
+  navigation,
+} from "virtual:moyaforge-mdx/metadata";
 ```
 
 These are plain JSON-compatible records with no React component imports. The existing `virtual:moyaforge-mdx/lazy-registry` supplies page loaders separately. Pages marked `navigation: disabled` appear in the complete `pages` inventory but are excluded from `routes` and `navigation`. Hidden pages remain routable but are not in navigation.
