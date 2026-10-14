@@ -61,22 +61,26 @@ export function App() {
   const [searchError, setSearchError] = useState("");
   useEffect(() => {
     let active = true;
+    let requestId = 0;
     const update = () => {
+      const currentRequest = ++requestId;
       searchPages(searchQuery)
         .then((results) => {
-          if (active) {
+          if (active && currentRequest === requestId) {
             setSearchResults(results);
             setSearchError("");
           }
         })
         .catch((error) => {
-          if (active) setSearchError(String(error));
+          if (active && currentRequest === requestId)
+            setSearchError(String(error));
         });
     };
     update();
     window.addEventListener("moyaforge-search:updated", update);
     return () => {
       active = false;
+      requestId++;
       window.removeEventListener("moyaforge-search:updated", update);
     };
   }, [searchQuery]);
