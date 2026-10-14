@@ -101,23 +101,28 @@ test("encoded and multi-hash anchors validate the complete fragment", () => {
     ],
   };
   const issues = validateInternalLinks(
-    [{
-      source: "docs",
-      file: "page.md",
-      content: [
-        "[Encoded](./guide#hello%20world)",
-        "[Multi](./guide#part#two)",
-        "[Missing](./guide#part#three)",
-        "[Malformed](./guide#%ZZ)",
-        "[MalformedPath](./%ZZ#hello)",
-      ].join(" "),
-    }],
+    [
+      {
+        source: "docs",
+        file: "page.md",
+        content: [
+          "[Encoded](./guide#hello%20world)",
+          "[Multi](./guide#part#two)",
+          "[Missing](./guide#part#three)",
+          "[Malformed](./guide#%ZZ)",
+          "[MalformedPath](./%ZZ#hello)",
+        ].join(" "),
+      },
+    ],
     registry,
     localHeadings,
   );
-  assert.deepEqual(issues.map(({ href, reason }) => [href, reason]), [
-    ["./guide#part#three", "missing-anchor"],
-    ["./guide#%ZZ", "invalid-link"],
-    ["./%ZZ#hello", "invalid-link"],
-  ]);
+  assert.deepEqual(
+    issues.map(({ href, reason }) => [href, reason]),
+    [
+      ["./guide#part#three", "missing-anchor"],
+      ["./guide#%ZZ", "invalid-link"],
+      ["./%ZZ#hello", "invalid-link"],
+    ],
+  );
 });
