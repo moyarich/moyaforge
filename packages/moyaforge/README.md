@@ -254,3 +254,7 @@ export default defineMoyaForgeConfig({
 ## Shared MDX compiler options
 
 Compiler defaults are maintained in `@moyarich/moyaforge-mdx` (`createMdxOptions`). The legacy `@moyarich/moyaforge/mdx` export `createMoyaForgeMdxOptions()` remains available as a compatibility wrapper, but no longer maintains a second plugin list. New integrations should import directly from `@moyarich/moyaforge-mdx`. The legacy `moyaforgeVite` page-manifest path remains separate pending migration under issue #27.
+
+## Legacy Vite manifest compatibility
+
+`moyaforgeVite()` and `virtual:moyaforge/pages` remain supported for existing applications. The adapter now discovers `page.md` and `page.mdx` through the same `@moyarich/moyaforge-mdx` source-discovery utility instead of maintaining its own recursive filesystem scanner. New consumers should use `mdxRegistryPlugin` and `virtual:moyaforge-mdx/metadata` plus `virtual:moyaforge-mdx/lazy-registry`; the legacy virtual module still eagerly imports page components and should be migrated before removal.

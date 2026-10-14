@@ -1,5 +1,5 @@
-import { readdirSync } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { resolve } from "node:path";
+import { discoverSourceFilesSync } from "@moyarich/moyaforge-mdx/source-files";
 
 export interface MoyaForgeViteOptions {
   root?: string;
@@ -24,20 +24,6 @@ type Plugin = {
 const virtual = "virtual:moyaforge/pages";
 const resolved = "\0" + virtual;
 
-function walk(dir: string): string[] {
-  try {
-    return readdirSync(dir, { withFileTypes: true }).flatMap((item) =>
-      item.isDirectory()
-        ? walk(join(dir, item.name))
-        : /\.mdx?$/.test(item.name)
-          ? [join(dir, item.name)]
-          : [],
-    );
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
-    throw error;
-  }
-}
 function generate(
   root: string,
   collections: NonNullable<MoyaForgeViteOptions["collections"]>,
@@ -46,13 +32,13 @@ function generate(
   const configs: string[] = [];
   for (const [collection, definition] of Object.entries(collections)) {
     const base = resolve(root, definition.dir);
-    const items = walk(base).filter((file) => /(^|\/)page\.mdx?$/.test(file));
-    const modules = items.map((file) => {
+    const items = discoverSourceFilesSync(base);
+    const modules = items.map(({ absolute, relative: sourceFile }) => {
       const index = imports.length;
       imports.push(
-        `import * as page${index} from ${JSON.stringify(file.replace(/\\/g, "/"))};`,
+        `import * as page${index} from ${JSON.stringify(absolute)};`,
       );
-      return `${JSON.stringify(relative(base, file).replace(/\\/g, "/"))}: { default: page${index}.default, frontmatter: page${index}.frontmatter ?? page${index}.meta ?? {} }`;
+      return `${JSON.stringify(sourceFile)}: { default: page${index}.default, frontmatter: page${index}.frontmatter ?? page${index}.meta ?? {} }`;
     });
     configs.push(
       `${JSON.stringify(collection)}: { dir: ${JSON.stringify(definition.dir)}, baseUrl: ${JSON.stringify(definition.baseUrl)}, modules: { ${modules.join(",")} } }`,
