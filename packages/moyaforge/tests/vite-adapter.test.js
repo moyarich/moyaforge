@@ -80,3 +80,32 @@ test("legacy Vite HMR only reloads registered content roots", () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+
+test("legacy manifests refresh on registered page add and delete only", () => {
+  const root = mkdtempSync(join(tmpdir(), "moyaforge-watch-"));
+  try {
+    mkdirSync(join(root, "docs"), { recursive: true });
+    const plugin = moyaforgeVite({ root, collections: { docs: { dir: "docs", baseUrl: "/docs" } } });
+    const handlers = {};
+    const invalidated = [];
+    const messages = [];
+    plugin.configureServer({
+      watcher: { on(event, callback) { handlers[event] = callback; } },
+      moduleGraph: {
+        getModuleById: (id) => ({ id }),
+        invalidateModule: (mod) => invalidated.push(mod.id),
+      },
+      ws: { send: (message) => messages.push(message) },
+    });
+    handlers.add(join(root, "docs", "page.mdx"));
+    handlers.unlink(join(root, "docs", "nested", "page.md"));
+    handlers.add(join(root, "docs", "README.md"));
+    handlers.add(join(root, "docs-other", "page.mdx"));
+    assert.equal(invalidated.length, 4);
+    assert.equal(messages.length, 2);
+    assert.ok(messages.every((message) => message.type === "full-reload"));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
