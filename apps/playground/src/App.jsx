@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { ContentExplorer } from "./components/ContentExplorer.jsx";
-import { readContentRoute, searchResultRoute, contentHref, navigateContent } from "./content-routing.js";
+import {
+  readContentRoute,
+  searchResultRoute,
+  contentHref,
+  navigateContent,
+} from "./content-routing.js";
 import { searchPages } from "./search/search-client.js";
 import {
   CodeGroup,
@@ -124,7 +129,8 @@ export function App() {
                               event.ctrlKey ||
                               event.shiftKey ||
                               event.altKey
-                            ) return;
+                            )
+                              return;
                             event.preventDefault();
                             setSection("Content registry");
                             navigateContent(path);

@@ -60,13 +60,31 @@ test("SQLite search keys resolve only to canonical routable pages", async () => 
   const standalone = source.replace(
     'import { routes } from "virtual:moyaforge-mdx/metadata";',
     `const routes = ${JSON.stringify([
-      { source: "docs", file: "01-guide/page.mdx", path: "/docs/guide", navigation: "visible" },
-      { source: "docs", file: "02-hidden/page.md", path: "/docs/hidden", navigation: "hidden" },
+      {
+        source: "docs",
+        file: "01-guide/page.mdx",
+        path: "/docs/guide",
+        navigation: "visible",
+      },
+      {
+        source: "docs",
+        file: "02-hidden/page.md",
+        path: "/docs/hidden",
+        navigation: "hidden",
+      },
     ])};`,
   );
-  const router = await import("data:text/javascript," + encodeURIComponent(standalone));
-  assert.equal(router.searchResultRoute("docs/01-guide/page.mdx"), "/docs/guide");
-  assert.equal(router.searchResultRoute("docs/02-hidden/page.md"), "/docs/hidden");
+  const router = await import(
+    "data:text/javascript," + encodeURIComponent(standalone)
+  );
+  assert.equal(
+    router.searchResultRoute("docs/01-guide/page.mdx"),
+    "/docs/guide",
+  );
+  assert.equal(
+    router.searchResultRoute("docs/02-hidden/page.md"),
+    "/docs/hidden",
+  );
   assert.equal(router.searchResultRoute("docs/03-disabled/page.mdx"), null);
   assert.equal(router.searchResultRoute("README.md"), null);
 });
