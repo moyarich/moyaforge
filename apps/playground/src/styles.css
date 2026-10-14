@@ -229,3 +229,27 @@ a {
     transition: background 0.15s ease;
   }
 }
+
+/* Registry-driven docs preview; page modules are loaded only after selection. */
+.content-explorer {
+  display: grid;
+  grid-template-columns: minmax(11rem, 14rem) minmax(0, 1fr);
+  gap: 1.5rem;
+}
+.content-explorer nav ul { list-style: none; padding: 0; }
+.content-explorer nav li + li { margin-top: .35rem; }
+.content-explorer nav button {
+  width: 100%;
+  text-align: left;
+  padding: .45rem .6rem;
+  border: 1px solid currentColor;
+  border-radius: .35rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.content-explorer nav button[aria-current="page"] { font-weight: 700; }
+.content-explorer section { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 700px) {
+  .content-explorer { grid-template-columns: minmax(0, 1fr); }
+}
