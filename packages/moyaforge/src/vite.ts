@@ -52,7 +52,10 @@ function generate(
   return `${imports.join("\n")}\nexport const collections = { ${configs.join(",")} };\n`;
 }
 /**
- * @deprecated Prefer `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`\n * and its metadata/lazy-registry virtual modules for new integrations.\n * This legacy collection-based manifest remains for existing consumers.\n * Pair with an MDX compiler plugin in the host Vite config.
+ * @deprecated Prefer `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`
+ * and its metadata/lazy-registry virtual modules for new integrations.
+ * This legacy collection-based manifest remains for existing consumers.
+ * Pair with an MDX compiler plugin in the host Vite config.
  * Does not take ownership of the host router or React plugin.
  */
 export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
