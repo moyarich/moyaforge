@@ -65,6 +65,7 @@ test("SQLite search keys resolve only to canonical routable pages", async () => 
         file: "01-guide/page.mdx",
         path: "/docs/guide",
         navigation: "visible",
+        title: "Guide Title",
       },
       {
         source: "docs",
@@ -87,4 +88,13 @@ test("SQLite search keys resolve only to canonical routable pages", async () => 
   );
   assert.equal(router.searchResultRoute("docs/03-disabled/page.mdx"), null);
   assert.equal(router.searchResultRoute("README.md"), null);
+  assert.equal(
+    router.searchResultPage("docs/01-guide/page.mdx")?.title,
+    "Guide Title",
+  );
+  assert.equal(
+    router.searchResultPage("docs/02-hidden/page.md")?.path,
+    "/docs/hidden",
+  );
+  assert.equal(router.searchResultPage("docs/03-disabled/page.mdx"), null);
 });
