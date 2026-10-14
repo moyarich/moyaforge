@@ -81,3 +81,7 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 ## MDX-aware heading discovery
 
 The build-time TOC extraction parser now accepts MDX ESM imports, JSX components, and expression nodes using `remark-mdx`. The same `rehype-slug` and TOC extraction plugins continue to assign heading IDs. This enables ordinary Markdown headings around MDX components to appear in metadata without evaluating components. Headings generated _at runtime by React components_ are not visible at build time; those require runtime instrumentation if they must appear in the TOC.
+
+## Compiled frontmatter exports
+
+Registry-based metadata discovery reads authored YAML from `page.md` and `page.mdx` at build time, without evaluating compiled components. `createMdxOptions()` does **not** generate a JavaScript `frontmatter` export by default. Older consumer integrations that explicitly import `page.frontmatter` can opt in with `createMdxOptions({ frontmatterExport: true })` while migrating to `virtual:moyaforge-mdx/metadata`. This does not change the YAML syntax or normalized page registry.

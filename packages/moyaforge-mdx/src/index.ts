@@ -10,11 +10,13 @@ import rehypeExportToc from "@stefanprobst/rehype-extract-toc/mdx";
 export interface MdxToolingOptions {
   remarkPlugins?: PluggableList;
   rehypePlugins?: PluggableList;
+  /** Opt into a compiled MDX frontmatter export for older module consumers. YAML registry metadata does not require it. */
+  frontmatterExport?: boolean;
 }
 
 /**
  * Shared MDX compiler conventions, independent of any specific application.
- * Additional remark plugins run before the frontmatter export transformer.
+ * Additional remark plugins run after the default Markdown plugins.\n * Compiled frontmatter exports are optional: registry discovery owns YAML metadata.
  * Additional rehype plugins run after TOC and heading slug generation.
  */
 export function createMdxOptions(options: MdxToolingOptions = {}) {
@@ -24,7 +26,9 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       remarkFrontmatter,
       remarkGfm,
       ...(options.remarkPlugins ?? []),
-      [remarkMdxFrontmatter, { name: "frontmatter" }] as const,
+      ...(options.frontmatterExport
+        ? [[remarkMdxFrontmatter, { name: "frontmatter" }] as const]
+        : []),
     ] as PluggableList,
     rehypePlugins: [
       rehypeSlug,
