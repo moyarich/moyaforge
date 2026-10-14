@@ -94,3 +94,7 @@ pnpm add @moyarich/moyaforge
 ## Content registry showcase
 
 Select **Content registry** to browse visible pages from `registry.config.ts`. Navigation and headings use `virtual:moyaforge-mdx/metadata`; pages load on demand from `virtual:moyaforge-mdx/lazy-registry`. The showcase does not replace application routing or search.
+
+## Canonical MoyaForge integration
+
+The playground is the current consumer of MoyaForge. Its Vite config uses `createMdxOptions` and `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx`; registered documentation comes from the app's `registry.config.ts`. Content metadata is read from `virtual:moyaforge-mdx/metadata`, and individual pages are loaded on demand via `virtual:moyaforge-mdx/lazy-registry`. MoyaForge UI components come from `@moyarich/moyaforge`. There is no separate legacy collection manifest or MDX compiler shim.
