@@ -36,12 +36,18 @@ export function validateInternalLinks(
   headings: Record<string, TocHeading[]>,
 ): LinkIssue[] {
   const diagnostics: LinkIssue[] = [];
-  const bySourceFile = new Map(registry.pages.map((page) => [page.source + "/" + page.file, page]));
+  const bySourceFile = new Map(
+    registry.pages.map((page) => [page.source + "/" + page.file, page]),
+  );
   for (const document of documents) {
     const key = document.source + "/" + document.file;
     const current = bySourceFile.get(key);
     if (!current) continue;
-    const ast = unified().use(remarkParse).use(remarkFrontmatter, ["yaml"]).use(remarkGfm).parse(document.content);
+    const ast = unified()
+      .use(remarkParse)
+      .use(remarkFrontmatter, ["yaml"])
+      .use(remarkGfm)
+      .parse(document.content);
     const visit = (node: any) => {
       if (node.type === "link" || node.type === "definition") {
         const href = node.url as string;
@@ -49,14 +55,29 @@ export function validateInternalLinks(
           try {
             const [pathPart, hash] = href.split("#", 2);
             const clean = pathPart.split("?")[0];
-            if (!clean || /(?:^|\/)page\.mdx?$/.test(clean) || !/\.[a-z\d]+$/i.test(clean)) {
+            if (
+              !clean ||
+              /(?:^|\/)page\.mdx?$/.test(clean) ||
+              !/\.[a-z\d]+$/i.test(clean)
+            ) {
               let path = clean
-                ? clean.startsWith("/") ? posix.normalize(clean) : posix.resolve(current.path, clean)
+                ? clean.startsWith("/")
+                  ? posix.normalize(clean)
+                  : posix.resolve(current.path, clean)
                 : current.path;
-              path = path.replace(/\/(?:page\.mdx?|index\.html?)$/, "").replace(/\/$/, "") || "/";
+              path =
+                path
+                  .replace(/\/(?:page\.mdx?|index\.html?)$/, "")
+                  .replace(/\/$/, "") || "/";
               const target = registry.byPath.get(path);
-              if (!target) diagnostics.push({ file: key, href, reason: "missing-page" });
-              else if (hash && !anchors(headings[target.source + "/" + target.file] ?? []).has(decodeURIComponent(hash)))
+              if (!target)
+                diagnostics.push({ file: key, href, reason: "missing-page" });
+              else if (
+                hash &&
+                !anchors(headings[target.source + "/" + target.file] ?? []).has(
+                  decodeURIComponent(hash),
+                )
+              )
                 diagnostics.push({ file: key, href, reason: "missing-anchor" });
             }
           } catch {
@@ -64,7 +85,8 @@ export function validateInternalLinks(
           }
         }
       }
-      if (Array.isArray(node.children)) for (const child of node.children) visit(child);
+      if (Array.isArray(node.children))
+        for (const child of node.children) visit(child);
     };
     visit(ast);
   }

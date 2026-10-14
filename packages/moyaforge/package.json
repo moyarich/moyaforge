@@ -40,8 +40,8 @@
     "@moyarich/console": "^0.1.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json",
+    "typecheck": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test tests/*.test.js",
     "prepack": "npm run build"
   },
@@ -63,10 +63,6 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "remark-frontmatter": "^5.0.0",
-    "remark-gfm": "^4.0.1",
-    "remark-mdx-frontmatter": "^5.2.0",
-    "rehype-slug": "^6.0.0",
-    "@stefanprobst/rehype-extract-toc": "^3.0.0"
+    "@moyarich/moyaforge-mdx": "^0.1.0"
   }
 }

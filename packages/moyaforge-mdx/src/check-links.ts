@@ -9,11 +9,16 @@ export async function checkContentLinks(
   root: string,
 ): Promise<LinkIssue[]> {
   const { registry, headings } = await discoverContent(config, root);
-  const documents = await Promise.all(registry.pages.map(async (page) => ({
-    source: page.source,
-    file: page.file,
-    content: await readFile(resolve(root, config.sources[page.source].base, page.file), "utf8"),
-  })));
+  const documents = await Promise.all(
+    registry.pages.map(async (page) => ({
+      source: page.source,
+      file: page.file,
+      content: await readFile(
+        resolve(root, config.sources[page.source].base, page.file),
+        "utf8",
+      ),
+    })),
+  );
   return validateInternalLinks(documents, registry, headings);
 }
 
