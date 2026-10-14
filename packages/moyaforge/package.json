@@ -7,15 +7,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./components.css": "./src/components.css",
-    "./vite": {
-      "types": "./dist/vite.d.ts",
-      "import": "./dist/vite.js"
-    },
-    "./mdx": {
-      "types": "./dist/mdx-options.d.ts",
-      "import": "./dist/mdx-options.js"
-    }
+    "./components.css": "./src/components.css"
   },
   "files": [
     "dist",
