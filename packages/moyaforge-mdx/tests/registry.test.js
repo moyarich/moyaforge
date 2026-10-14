@@ -66,11 +66,13 @@ test("project TOC configuration is validated even for empty sources", () => {
     /registry\.config\.ts: invalid toc placement/,
   );
   assert.throws(
-    () => buildPageRegistry({ docs: [] }, { toc: { minDepth: 4, maxDepth: 2 } }),
+    () =>
+      buildPageRegistry({ docs: [] }, { toc: { minDepth: 4, maxDepth: 2 } }),
     /registry\.config\.ts: toc minDepth exceeds maxDepth/,
   );
   assert.deepEqual(
-    buildPageRegistry({ docs: [{ file: "page.md" }] }, { toc: false }).pages[0].toc,
+    buildPageRegistry({ docs: [{ file: "page.md" }] }, { toc: false }).pages[0]
+      .toc,
     false,
   );
 });
