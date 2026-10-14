@@ -13,11 +13,13 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./vite": "./vite-plugin/index.js"
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "vite-plugin"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -26,7 +28,8 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "sql.js": "^1.14.2"
+    "sql.js": "^1.14.2",
+    "tinyglobby": "^0.2.15"
   },
   "devDependencies": {
     "@types/sql.js": "^1.4.11",
@@ -35,5 +38,13 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
+  },
+  "peerDependencies": {
+    "vite": "^6.0.0 || ^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
   }
 }
