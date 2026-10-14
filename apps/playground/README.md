@@ -90,3 +90,7 @@ pnpm add @moyarich/moyaforge
 ````
 
 **Shiki highlighting is a build-time MDX concern**, not a runtime React component. Configure `rehype-pretty-code` (powered by Shiki) or your preferred MDX highlighting plugin in the consuming site's MDX compiler. MoyaForge's code tabs render its compiled output without imposing a specific build tool.
+
+## Content registry showcase
+
+Select **Content registry** to browse visible pages from `registry.config.ts`. Navigation and headings use `virtual:moyaforge-mdx/metadata`; pages load on demand from `virtual:moyaforge-mdx/lazy-registry`. The showcase does not replace application routing or search.
