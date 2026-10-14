@@ -1,4 +1,4 @@
-import { pages, routes } from "virtual:moyaforge-mdx/metadata";
+import { routes } from "virtual:moyaforge-mdx/metadata";
 
 /** Query routing works on GitHub Pages without requiring SPA rewrite rules. */
 export const routeParam = "page";
@@ -20,7 +20,7 @@ export function contentHref(path, hash = "") {
 export function firstContentRoute() {
   return (
     routes.find((page) => page.navigation === "visible")?.path ??
-    pages[0]?.path ??
+    routes[0]?.path ??
     null
   );
 }
