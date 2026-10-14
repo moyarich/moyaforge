@@ -38,3 +38,5 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
 export * from "./registry.js";
 
 export * from "./content.js";
+
+export * from "./navigation.js";
