@@ -3,22 +3,38 @@ import { pages, navigation, headings } from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 import { DocOutline } from "@moyarich/moyaforge";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx";
-import { readContentRoute, contentHref, navigateContent, firstContentRoute } from "../content-routing.js";
+import {
+  readContentRoute,
+  contentHref,
+  navigateContent,
+  firstContentRoute,
+} from "../content-routing.js";
 
 export function ContentExplorer() {
-  const visible = navigation.filter((page) => sources[page.source]?.lazyPages?.[page.file]);
-  const [selectedPath, setSelectedPath] = useState(() => readContentRoute() ?? firstContentRoute());
+  const visible = navigation.filter(
+    (page) => sources[page.source]?.lazyPages?.[page.file],
+  );
+  const [selectedPath, setSelectedPath] = useState(
+    () => readContentRoute() ?? firstContentRoute(),
+  );
   useEffect(() => {
-    const update = () => setSelectedPath(readContentRoute() ?? firstContentRoute());
+    const update = () =>
+      setSelectedPath(readContentRoute() ?? firstContentRoute());
     window.addEventListener("popstate", update);
     return () => window.removeEventListener("popstate", update);
   }, []);
   const selected = pages.find(
     (page) => page.path === selectedPath && page.navigation !== "disabled",
   );
-  const loader = selected && sources[selected.source]?.lazyPages?.[selected.file];
+  const loader =
+    selected && sources[selected.source]?.lazyPages?.[selected.file];
   const Page = useMemo(() => (loader ? lazy(loader) : null), [loader]);
-  const toc = selected ? getTableOfContents(headings[`${selected.source}/${selected.file}`] ?? [], selected.toc) : null;
+  const toc = selected
+    ? getTableOfContents(
+        headings[`${selected.source}/${selected.file}`] ?? [],
+        selected.toc,
+      )
+    : null;
 
   if (!visible.length) return <p>No registered content pages were found.</p>;
   return (
@@ -32,11 +48,20 @@ export function ContentExplorer() {
                 href={contentHref(page.path)}
                 aria-current={page.path === selectedPath ? "page" : undefined}
                 onClick={(event) => {
-                  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                  if (
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  )
+                    return;
                   event.preventDefault();
                   navigateContent(page.path);
                 }}
-              >{page.label}</a>
+              >
+                {page.label}
+              </a>
             </li>
           ))}
         </ul>
@@ -58,7 +83,9 @@ export function ContentExplorer() {
               />
             )}
           </>
-        ) : <p>Choose a registered page.</p>}
+        ) : (
+          <p>Choose a registered page.</p>
+        )}
       </section>
     </div>
   );

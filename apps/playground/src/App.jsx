@@ -40,7 +40,9 @@ const components = createMdxComponents(moyaForgeComponents, {
 });
 
 export function App() {
-  const [section, setSection] = useState(() => readContentRoute() ? "Content registry" : "Documentation");
+  const [section, setSection] = useState(() =>
+    readContentRoute() ? "Content registry" : "Documentation",
+  );
   const [override, setOverride] = useState(true);
   useEffect(() => {
     const onHistory = () => {

@@ -18,7 +18,11 @@ export function contentHref(path, hash = "") {
   return url.pathname + url.search + url.hash;
 }
 export function firstContentRoute() {
-  return routes.find((page) => page.navigation === "visible")?.path ?? pages[0]?.path ?? null;
+  return (
+    routes.find((page) => page.navigation === "visible")?.path ??
+    pages[0]?.path ??
+    null
+  );
 }
 export function navigateContent(path) {
   const href = contentHref(path);
