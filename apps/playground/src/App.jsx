@@ -51,7 +51,13 @@ export function App() {
   const [override, setOverride] = useState(true);
   useEffect(() => {
     const onHistory = () => {
-      if (readContentRoute()) setSection("Content registry");
+      setSection((current) =>
+        readContentRoute()
+          ? "Content registry"
+          : current === "Content registry"
+            ? "Documentation"
+            : current,
+      );
     };
     window.addEventListener("popstate", onHistory);
     return () => window.removeEventListener("popstate", onHistory);
