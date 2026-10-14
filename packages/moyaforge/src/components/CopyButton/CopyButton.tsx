@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
 
-export interface CopyButtonProps extends ComponentPropsWithoutRef<"button"> {
+export interface CopyButtonProps extends Omit<ComponentPropsWithoutRef<"button">, "value"> {
   value?: unknown;
   onCopy?: () => void;
 }
