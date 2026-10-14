@@ -9,5 +9,8 @@ test("legacy MDX options use the canonical compiler defaults", () => {
   assert.equal(legacy.providerImportSource, canonical.providerImportSource);
   assert.deepEqual(legacy.remarkPlugins, canonical.remarkPlugins);
   assert.deepEqual(legacy.rehypePlugins, canonical.rehypePlugins);
-  assert.notStrictEqual(legacy.remarkPlugins, createMoyaForgeMdxOptions().remarkPlugins);
+  assert.notStrictEqual(
+    legacy.remarkPlugins,
+    createMoyaForgeMdxOptions().remarkPlugins,
+  );
 });

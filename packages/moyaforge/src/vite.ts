@@ -38,7 +38,8 @@ function generate(
     const items = discoverSourceFilesSync(base);
     const modules = items.map(({ absolute, relative: sourceFile }) => {
       const index = imports.length;
-      if (lazyOnly) return `${JSON.stringify(sourceFile)}: () => import(${JSON.stringify(absolute)})`;
+      if (lazyOnly)
+        return `${JSON.stringify(sourceFile)}: () => import(${JSON.stringify(absolute)})`;
       imports.push(
         `import * as page${index} from ${JSON.stringify(absolute)};`,
       );
@@ -62,8 +63,14 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
   return {
     name: "moyaforge:pages",
     enforce: "pre",
-    resolveId: (id) => id === virtual ? resolved : id === lazyVirtual ? lazyResolved : undefined,
-    load: (id) => id === resolved ? generate(root, collections) : id === lazyResolved ? generate(root, collections, true) : undefined,
+    resolveId: (id) =>
+      id === virtual ? resolved : id === lazyVirtual ? lazyResolved : undefined,
+    load: (id) =>
+      id === resolved
+        ? generate(root, collections)
+        : id === lazyResolved
+          ? generate(root, collections, true)
+          : undefined,
     handleHotUpdate: (ctx) => {
       if (!/\.mdx?$/.test(ctx.file)) return;
       for (const id of [resolved, lazyResolved]) {

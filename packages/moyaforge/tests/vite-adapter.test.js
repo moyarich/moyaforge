@@ -30,7 +30,10 @@ test("lazy legacy manifest avoids static imports and preserves collection shape"
   try {
     mkdirSync(join(root, "guide"), { recursive: true });
     writeFileSync(join(root, "guide", "page.mdx"), "# Guide");
-    const plugin = moyaforgeVite({ root, collections: { guide: { dir: "guide", baseUrl: "/guide" } } });
+    const plugin = moyaforgeVite({
+      root,
+      collections: { guide: { dir: "guide", baseUrl: "/guide" } },
+    });
     const id = plugin.resolveId("virtual:moyaforge/lazy-pages");
     const code = plugin.load(id);
     assert.match(code, /\(\) => import\(/);
