@@ -135,7 +135,9 @@ export function App() {
             {examples.find((item) => item.name === section)?.description}
           </p>
           {section === "Content registry" && (
-            <div className="panel"><ContentExplorer /></div>
+            <div className="panel">
+              <ContentExplorer />
+            </div>
           )}
           {section === "Documentation" && (
             <div className="panel">

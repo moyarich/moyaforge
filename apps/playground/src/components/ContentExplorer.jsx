@@ -8,12 +8,21 @@ import { DocOutline } from "@moyarich/moyaforge";
  * No page module is imported until its navigation entry is selected.
  */
 export function ContentExplorer() {
-  const visible = navigation.filter((page) => sources[page.source]?.lazyPages?.[page.file]);
-  const [selectedPath, setSelectedPath] = useState(() => visible[0]?.path ?? "");
-  const selected = pages.find((page) => page.path === selectedPath && page.navigation !== "disabled");
-  const loader = selected && sources[selected.source]?.lazyPages?.[selected.file];
+  const visible = navigation.filter(
+    (page) => sources[page.source]?.lazyPages?.[page.file],
+  );
+  const [selectedPath, setSelectedPath] = useState(
+    () => visible[0]?.path ?? "",
+  );
+  const selected = pages.find(
+    (page) => page.path === selectedPath && page.navigation !== "disabled",
+  );
+  const loader =
+    selected && sources[selected.source]?.lazyPages?.[selected.file];
   const Page = useMemo(() => (loader ? lazy(loader) : null), [loader]);
-  const toc = selected ? headings[`${selected.source}/${selected.file}`] ?? [] : [];
+  const toc = selected
+    ? (headings[`${selected.source}/${selected.file}`] ?? [])
+    : [];
 
   if (!visible.length) {
     return <p>No registered content pages were found.</p>;
@@ -48,7 +57,9 @@ export function ContentExplorer() {
               <DocOutline headings={toc} title="On this page" />
             )}
           </>
-        ) : <p>Choose a page.</p>}
+        ) : (
+          <p>Choose a page.</p>
+        )}
       </section>
     </div>
   );
