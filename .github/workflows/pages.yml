@@ -17,17 +17,17 @@ on:
         description: Dependency installation command.
         required: false
         type: string
-        default: "npm ci --include=optional"
+        default: "npm install --include=optional"
       build-command:
         description: Command that builds the consuming repository's documentation site.
         required: false
         type: string
-        default: "npm run build:playground"
+        default: "npm run build --workspace @moyarich/moyaforge-playground"
       artifact-path:
         description: Built static site directory uploaded to GitHub Pages.
         required: false
         type: string
-        default: "packages/playground/dist"
+        default: "apps/playground/dist"
 
 permissions:
   contents: read
@@ -45,7 +45,6 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: ${{ inputs.node-version }}
-          cache: npm
 
       - name: Install dependencies
         working-directory: ${{ inputs.working-directory }}
