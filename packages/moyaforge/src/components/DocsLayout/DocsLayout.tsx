@@ -13,15 +13,17 @@ export interface DocsLayoutProps {
   sidebar?: ReactNode;
   outline?: ReactNode;
   /** Optional normalized TOC input from the content metadata registry. */
-  toc?: false | {
-    placement?: "right" | "sidebar" | "inline" | "none";
-    label?: string;
-    headings: readonly DocHeading[];
-    collapsible?: boolean;
-    defaultOpen?: boolean;
-    minDepth?: number;
-    maxDepth?: number;
-  };
+  toc?:
+    | false
+    | {
+        placement?: "right" | "sidebar" | "inline" | "none";
+        label?: string;
+        headings: readonly DocHeading[];
+        collapsible?: boolean;
+        defaultOpen?: boolean;
+        minDepth?: number;
+        maxDepth?: number;
+      };
   editLink?: { repository: string; branch?: string };
 }
 export function DocsLayout({
@@ -38,13 +40,15 @@ export function DocsLayout({
 }: DocsLayoutProps) {
   const current = pages.find((page) => page.url === currentUrl);
   const placement = toc === false ? "none" : (toc?.placement ?? "right");
-  const filtered = toc ? filterDepth(toc.headings, toc.minDepth ?? 2, toc.maxDepth ?? 3) : undefined;
+  const filtered = toc
+    ? filterDepth(toc.headings, toc.minDepth ?? 2, toc.maxDepth ?? 3)
+    : undefined;
   const configuredOutline = filtered?.length ? (
     <DocOutline
       headings={filtered}
       title={toc && toc.label ? toc.label : "On this page"}
       collapsible={Boolean(toc && toc.collapsible)}
-      defaultOpen={toc ? toc.defaultOpen ?? true : true}
+      defaultOpen={toc ? (toc.defaultOpen ?? true) : true}
     />
   ) : null;
   return (
@@ -91,7 +95,12 @@ export function DocsLayout({
           ) : null}
           {footer}
         </main>
-        {outline ?? (toc === undefined ? <DocOutline /> : placement === "right" ? configuredOutline : null)}
+        {outline ??
+          (toc === undefined ? (
+            <DocOutline />
+          ) : placement === "right" ? (
+            configuredOutline
+          ) : null)}
       </div>
     </div>
   );

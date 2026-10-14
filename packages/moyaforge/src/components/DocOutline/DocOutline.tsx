@@ -78,7 +78,11 @@ export function DocOutline({
       aria-label={title}
     >
       {collapsible ? (
-        <button type="button" aria-expanded={open} onClick={() => setOpen(!open)}>
+        <button
+          type="button"
+          aria-expanded={open}
+          onClick={() => setOpen(!open)}
+        >
           {title}
         </button>
       ) : (
@@ -86,18 +90,18 @@ export function DocOutline({
       )}
       {(!collapsible || open) && (
         <nav aria-label={title}>
-        <ul>
-          {visibleItems.map((item) => (
-            <li key={item.id} data-level={item.level}>
-              <a
-                href={`#${item.id}`}
-                aria-current={active === item.id ? "location" : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+          <ul>
+            {visibleItems.map((item) => (
+              <li key={item.id} data-level={item.level}>
+                <a
+                  href={`#${item.id}`}
+                  aria-current={active === item.id ? "location" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </nav>
       )}
     </aside>
