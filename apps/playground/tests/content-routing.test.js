@@ -27,13 +27,21 @@ test("content query routing respects normalized routable pages", async () => {
 });
 
 test("default content route never picks disabled pages", async () => {
-  const source = await readFile(new URL("../src/content-routing.js", import.meta.url), "utf8");
+  const source = await readFile(
+    new URL("../src/content-routing.js", import.meta.url),
+    "utf8",
+  );
   const importLine = 'import { routes } from "virtual:moyaforge-mdx/metadata";';
   const load = async (routes) => {
-    const standalone = source.replace(importLine, `const routes = ${JSON.stringify(routes)};`);
+    const standalone = source.replace(
+      importLine,
+      `const routes = ${JSON.stringify(routes)};`,
+    );
     return import("data:text/javascript," + encodeURIComponent(standalone));
   };
-  const hiddenOnly = await load([{ path: "/docs/hidden", navigation: "hidden" }]);
+  const hiddenOnly = await load([
+    { path: "/docs/hidden", navigation: "hidden" },
+  ]);
   assert.equal(hiddenOnly.firstContentRoute(), "/docs/hidden");
   const visiblePreferred = await load([
     { path: "/docs/hidden", navigation: "hidden" },
