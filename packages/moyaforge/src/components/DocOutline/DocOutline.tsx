@@ -1,7 +1,12 @@
 import { useEffect, useState, type RefObject } from "react";
 import type { TableOfContentsItem } from "../TableOfContents/TableOfContents.js";
 
-export interface DocHeading { id: string; value: string; depth: number; children?: DocHeading[] }
+export interface DocHeading {
+  id: string;
+  value: string;
+  depth: number;
+  children?: DocHeading[];
+}
 
 export interface DocOutlineProps {
   /** Build-time heading tree; avoids scanning the DOM for headings. */
@@ -25,7 +30,11 @@ export function DocOutline({
   className,
 }: DocOutlineProps) {
   const [items, setItems] = useState<TableOfContentsItem[]>([]);
-  const flattened = (nodes: readonly DocHeading[]): TableOfContentsItem[] => nodes.flatMap((node) => [{ id: node.id, label: node.value, level: node.depth }, ...flattened(node.children ?? [])]);
+  const flattened = (nodes: readonly DocHeading[]): TableOfContentsItem[] =>
+    nodes.flatMap((node) => [
+      { id: node.id, label: node.value, level: node.depth },
+      ...flattened(node.children ?? []),
+    ]);
   const visibleItems = headings ? flattened(headings) : items;
   const [active, setActive] = useState("");
   const [open, setOpen] = useState(defaultOpen);
@@ -68,8 +77,15 @@ export function DocOutline({
       className={className}
       aria-label={title}
     >
-      {collapsible ? <button type="button" aria-expanded={open} onClick={() => setOpen(!open)}>{title}</button> : <p data-moyaforge-doc-outline-title="">{title}</p>}
-      {(!collapsible || open) && <nav aria-label={title}>
+      {collapsible ? (
+        <button type="button" aria-expanded={open} onClick={() => setOpen(!open)}>
+          {title}
+        </button>
+      ) : (
+        <p data-moyaforge-doc-outline-title="">{title}</p>
+      )}
+      {(!collapsible || open) && (
+        <nav aria-label={title}>
         <ul>
           {visibleItems.map((item) => (
             <li key={item.id} data-level={item.level}>
@@ -82,7 +98,8 @@ export function DocOutline({
             </li>
           ))}
         </ul>
-      </nav>}
+        </nav>
+      )}
     </aside>
   );
 }
