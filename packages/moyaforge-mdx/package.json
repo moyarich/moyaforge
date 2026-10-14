@@ -37,7 +37,10 @@
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "unified": "^11.0.5",
     "tinyglobby": "^0.2.15",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "vfile": "^6.0.3"
   },
   "devDependencies": {
     "typescript": "^5.9.0",
