@@ -1,6 +1,6 @@
 import type { ChangeEventHandler, ComponentPropsWithoutRef, ReactNode } from "react";
 
-export interface SearchProps extends ComponentPropsWithoutRef<"label"> {
+export interface SearchProps extends Omit<ComponentPropsWithoutRef<"label">, "onChange"> {
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   icon?: ReactNode;
