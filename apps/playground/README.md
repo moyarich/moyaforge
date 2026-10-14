@@ -98,3 +98,7 @@ Select **Content registry** to browse visible pages from `registry.config.ts`. N
 ## Canonical MoyaForge integration
 
 The playground is the current consumer of MoyaForge. Its Vite config uses `createMdxOptions` and `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx`; registered documentation comes from the app's `registry.config.ts`. Content metadata is read from `virtual:moyaforge-mdx/metadata`, and individual pages are loaded on demand via `virtual:moyaforge-mdx/lazy-registry`. MoyaForge UI components come from `@moyarich/moyaforge`. There is no separate legacy collection manifest or MDX compiler shim.
+
+## Registered page links
+
+The Content registry explorer uses the browser query parameter `?page=/docs/route` for deep links. This keeps the GitHub Pages deployment pathname unchanged and allows refreshes without a custom SPA rewrite. Visible registry entries are rendered as ordinary links, including open-in-new-tab support; hidden pages remain addressable by direct links, and disabled pages cannot be selected. Back/forward navigation restores the selected page. Heading navigation uses the shared `getTableOfContents()` settings and the published MDX heading IDs. The interactive component showcase remains available separately.

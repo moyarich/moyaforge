@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ContentExplorer } from "./components/ContentExplorer.jsx";
+import { readContentRoute } from "./content-routing.js";
 import { searchPages } from "./search/search-client.js";
 import {
   CodeGroup,
@@ -39,8 +40,17 @@ const components = createMdxComponents(moyaForgeComponents, {
 });
 
 export function App() {
-  const [section, setSection] = useState("Documentation");
+  const [section, setSection] = useState(() =>
+    readContentRoute() ? "Content registry" : "Documentation",
+  );
   const [override, setOverride] = useState(true);
+  useEffect(() => {
+    const onHistory = () => {
+      if (readContentRoute()) setSection("Content registry");
+    };
+    window.addEventListener("popstate", onHistory);
+    return () => window.removeEventListener("popstate", onHistory);
+  }, []);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState("");
