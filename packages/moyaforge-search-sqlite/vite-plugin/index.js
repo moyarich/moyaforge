@@ -54,9 +54,9 @@ function docsFor(registry, root) {
             const title =
               frontmatter(raw, "title") ??
               folder
-                .replace(/^\\d+[-_ ]/, "")
+                .replace(/^\d+[-_ ]/, "")
                 .replace(/[-_]+/g, " ")
-                .replace(/\\b\\w/g, (letter) => letter.toUpperCase());
+                .replace(/\b\w/g, (letter) => letter.toUpperCase());
             return {
               key: sourceName + "/" + name,
               title,
