@@ -42,17 +42,20 @@ export function mdxRegistryPlugin({
         onlyFiles: true,
       });
       const pages: string[] = [];
+      const lazyPages: string[] = [];
       for (const file of entries.sort()) {
         const id = index++;
         imports.push(
           `import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`,
         );
-        pages.push(
-          `${JSON.stringify(relative(base, file).split(sep).join("/"))}: page${id}`,
+        const key = JSON.stringify(relative(base, file).split(sep).join("/"));
+        pages.push(`${key}: page${id}`);
+        lazyPages.push(
+          `${key}: () => import(${JSON.stringify(file.split(sep).join("/"))})`,
         );
       }
       sources.push(
-        `${JSON.stringify(name)}: { pages: { ${pages.join(",")} } }`,
+        `${JSON.stringify(name)}: { pages: { ${pages.join(",")} }, lazyPages: { ${lazyPages.join(",")} } }`,
       );
     }
     return `${imports.join("\n")}\nexport const sources = { ${sources.join(",")} };\n`;
