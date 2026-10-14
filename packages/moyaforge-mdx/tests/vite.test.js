@@ -75,11 +75,21 @@ test("Vite registries load hidden routes but never load disabled pages", async (
       await mkdir(join(root, "docs", folder), { recursive: true });
     }
     await writeFile(join(root, "docs", "01-visible", "page.md"), "# Visible");
-    await writeFile(join(root, "docs", "02-hidden", "page.mdx"), "---\nnavigation: hidden\n---\n# Hidden");
-    await writeFile(join(root, "docs", "03-disabled", "page.mdx"), "---\nnavigation: disabled\n---\n# Disabled");
+    await writeFile(
+      join(root, "docs", "02-hidden", "page.mdx"),
+      "---\nnavigation: hidden\n---\n# Hidden",
+    );
+    await writeFile(
+      join(root, "docs", "03-disabled", "page.mdx"),
+      "---\nnavigation: disabled\n---\n# Disabled",
+    );
     const plugin = mdxRegistryPlugin({
       root,
-      registry: { sources: { docs: { base: "docs", include: ["**/page.md", "**/page.mdx"] } } },
+      registry: {
+        sources: {
+          docs: { base: "docs", include: ["**/page.md", "**/page.mdx"] },
+        },
+      },
     });
     for (const name of ["registry", "lazy-registry"]) {
       const id = plugin.resolveId.call({}, `virtual:moyaforge-mdx/${name}`);
