@@ -38,7 +38,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test tests/*.test.js"
+    "test": "npm run build && node --test tests/*.test.js",
+    "prepack": "npm run build"
   },
   "devDependencies": {
     "@types/react": "^19.1.0",
@@ -52,5 +53,9 @@
   },
   "bin": {
     "moyaforge": "./dist/cli.js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

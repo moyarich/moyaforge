@@ -22,7 +22,8 @@
   align-self: start;
   max-height: var(--_doc-outline-max-height);
   overflow: auto;
-  border-left: var(--_doc-outline-border-width) solid var(--_doc-outline-border-color);
+  border-left: var(--_doc-outline-border-width) solid
+    var(--_doc-outline-border-color);
 }
 
 [data-moyaforge-doc-outline-title] {

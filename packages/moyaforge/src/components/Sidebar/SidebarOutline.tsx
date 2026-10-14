@@ -21,7 +21,13 @@ function getLabel(item: SidebarOutlineItem, labelPrefix?: string) {
   return item.label;
 }
 
-export function SidebarOutline({ items, value, labelPrefix, onChange, renderLabel }: SidebarOutlineProps) {
+export function SidebarOutline({
+  items,
+  value,
+  labelPrefix,
+  onChange,
+  renderLabel,
+}: SidebarOutlineProps) {
   return (
     <div data-moyaforge-sidebar-outline="">
       {items.map((item, index) => {
@@ -40,7 +46,13 @@ export function SidebarOutline({ items, value, labelPrefix, onChange, renderLabe
             ) : null}
             {item.children?.length ? (
               <div data-moyaforge-sidebar-children="">
-                <SidebarOutline items={item.children} value={value} labelPrefix={labelPrefix} onChange={onChange} renderLabel={renderLabel} />
+                <SidebarOutline
+                  items={item.children}
+                  value={value}
+                  labelPrefix={labelPrefix}
+                  onChange={onChange}
+                  renderLabel={renderLabel}
+                />
               </div>
             ) : null}
           </div>

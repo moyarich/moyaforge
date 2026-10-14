@@ -1,6 +1,8 @@
 import type { MonacoVscodeApiConfig } from "monaco-languageclient/vscodeApiWrapper";
 
-export type MoyaForgeMonacoExtension = NonNullable<MonacoVscodeApiConfig["extensions"]>[number];
+export type MoyaForgeMonacoExtension = NonNullable<
+  MonacoVscodeApiConfig["extensions"]
+>[number];
 
 export interface CreateMonacoVscodeConfigOptions {
   extensions?: readonly MoyaForgeMonacoExtension[];

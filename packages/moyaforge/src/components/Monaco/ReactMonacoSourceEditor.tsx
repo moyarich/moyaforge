@@ -1,4 +1,4 @@
-import Editor, { type EditorProps } from "@monaco-editor/react";
+import { Editor, type EditorProps } from "@monaco-editor/react";
 
 export type ReactMonacoSourceEditorProps = EditorProps;
 

@@ -1,0 +1,33 @@
+name: Self-heal package lock
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - "package.json"
+      - "packages/**/package.json"
+      - "apps/**/package.json"
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Commit package-lock.json changes
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  packages: read
+
+concurrency:
+  group: self-heal-package-lock-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package-lock:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_npm-package-lock.yml@main
+    with:
+      node-version: "24"
+      commit: ${{ github.event_name == 'push' || inputs.commit }}

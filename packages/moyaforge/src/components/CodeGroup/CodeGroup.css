@@ -27,10 +27,22 @@
   font: inherit;
 }
 
-[data-moyaforge-code-tabs] button[aria-selected="true"] { border-bottom-color: var(--_code-group-active-color); font-weight: 650; }
+[data-moyaforge-code-tabs] button[aria-selected="true"] {
+  border-bottom-color: var(--_code-group-active-color);
+  font-weight: 650;
+}
 
-[data-moyaforge-code-tabs] button:focus-visible { outline: 2px solid var(--_code-group-active-color); outline-offset: -3px; }
+[data-moyaforge-code-tabs] button:focus-visible {
+  outline: 2px solid var(--_code-group-active-color);
+  outline-offset: -3px;
+}
 
-[data-moyaforge-code-panel][hidden] { display: none; }
+[data-moyaforge-code-panel][hidden] {
+  display: none;
+}
 
-[data-moyaforge-code-panel] pre, [data-moyaforge-code-panel] figure { margin: 0; border-radius: 0; }
+[data-moyaforge-code-panel] pre,
+[data-moyaforge-code-panel] figure {
+  margin: 0;
+  border-radius: 0;
+}

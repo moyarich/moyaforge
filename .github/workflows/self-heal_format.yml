@@ -1,0 +1,30 @@
+name: Self-heal formatting
+
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Commit formatting changes
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: self-heal-format-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  format:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_prettier.yml@main
+    with:
+      mode: fix
+      prettier-config: this-repository
+      commit: ${{ github.event_name == 'push' || inputs.commit }}
+      node-version: "24"

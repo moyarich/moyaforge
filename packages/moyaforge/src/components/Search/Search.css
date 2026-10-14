@@ -1,5 +1,4 @@
 [data-moyaforge-search] {
-
   --_search-color: var(--search-color, inherit);
   --_search-background: var(--search-background, transparent);
   --_search-border-color: var(--search-border-color, currentColor);

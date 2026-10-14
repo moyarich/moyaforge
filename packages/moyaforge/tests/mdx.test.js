@@ -10,7 +10,13 @@ test("default MDX components include Console output surfaces", () => {
 });
 
 test("MDX default registry exports documentation components", () => {
-  for (const name of ["CodeGroup", "CodeTab", "DocOutline", "EditPageLink", "MonacoCodeGroup"]) {
+  for (const name of [
+    "CodeGroup",
+    "CodeTab",
+    "DocOutline",
+    "EditPageLink",
+    "MonacoCodeGroup",
+  ]) {
     assert.equal(typeof moyaForgeComponents[name], "function", name);
   }
 });

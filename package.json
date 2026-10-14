@@ -10,5 +10,17 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/moyarich/moyaforge.git"
+  },
+  "scripts": {
+    "build:package": "npm run build --workspace @moyarich/moyaforge",
+    "build:playground": "npm run build --workspace @moyarich/moyaforge-playground",
+    "test": "npm test --workspace @moyarich/moyaforge",
+    "typecheck": "npm run typecheck --workspace @moyarich/moyaforge",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "checks": "npm run typecheck && npm test && npm run build:playground"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.8"
   }
 }

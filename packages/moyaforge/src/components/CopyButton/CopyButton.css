@@ -1,5 +1,4 @@
 [data-moyaforge-copy-button] {
-
   --_copy-button-color: var(--copy-button-color, inherit);
   --_copy-button-background: var(--copy-button-background, transparent);
   --_copy-button-border-color: var(--copy-button-border-color, currentColor);

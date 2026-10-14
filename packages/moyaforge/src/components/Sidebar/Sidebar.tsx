@@ -8,7 +8,11 @@ import { SidebarItem } from "./SidebarItem.js";
 import { SidebarSection } from "./SidebarSection.js";
 
 function SidebarRoot({ as = "nav", children, ...props }: PolymorphicProps) {
-  return createElement(as, { "data-moyaforge-sidebar": "", ...props }, children);
+  return createElement(
+    as,
+    { "data-moyaforge-sidebar": "", ...props },
+    children,
+  );
 }
 
 export const Sidebar = Object.assign(SidebarRoot, {
