@@ -1,5 +1,10 @@
 import { lazy, Suspense, useMemo, useState, useEffect } from "react";
-import { pages, routes, navigation, headings } from "virtual:moyaforge-mdx/metadata";
+import {
+  pages,
+  routes,
+  navigation,
+  headings,
+} from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 import { DocOutline } from "@moyarich/moyaforge";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
