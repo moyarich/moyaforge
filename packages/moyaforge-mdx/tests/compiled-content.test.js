@@ -22,7 +22,9 @@ const source = [
 
 test("the shared compiler handles Markdown and MDX with matching heading anchors", async () => {
   const options = createMdxOptions();
-  const markdown = String(await compile({ value: source, path: "page.md" }, options));
+  const markdown = String(
+    await compile({ value: source, path: "page.md" }, options),
+  );
   const mdx = String(
     await compile(
       { value: source + '\n\n<Demo title="Example" />', path: "page.mdx" },
@@ -40,12 +42,18 @@ test("the shared compiler handles Markdown and MDX with matching heading anchors
   assert.match(mdx, /Demo/);
   const headings = await extractPageHeadings(source, "page.md");
   assert.equal(headings[0].id, "shared-pipeline");
-  assert.deepEqual(headings[0].children.map((entry) => entry.id), ["setup", "setup-1"]);
+  assert.deepEqual(
+    headings[0].children.map((entry) => entry.id),
+    ["setup", "setup-1"],
+  );
 });
 
 test("frontmatter JavaScript export remains an explicit option", async () => {
   const compiled = String(
-    await compile({ value: source, path: "page.mdx" }, createMdxOptions({ frontmatterExport: true })),
+    await compile(
+      { value: source, path: "page.mdx" },
+      createMdxOptions({ frontmatterExport: true }),
+    ),
   );
   assert.match(compiled, /frontmatter/);
   assert.match(compiled, /Shared pipeline/);

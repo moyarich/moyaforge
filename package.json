@@ -18,8 +18,9 @@
     "typecheck": "npm run typecheck --workspace @moyarich/moyaforge",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run typecheck && npm test && npm run check:links && npm run build:playground",
-    "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground"
+    "checks": "npm run typecheck && npm run test:all && npm run check:links && npm run build:playground",
+    "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
+    "test:all": "npm test --workspaces --if-present"
   },
   "devDependencies": {
     "prettier": "^3.9.8"

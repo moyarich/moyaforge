@@ -31,6 +31,10 @@ jobs:
         run: npm test --workspace @moyarich/moyaforge-mdx
       - name: Test shared SQLite search
         run: npm test --workspace @moyarich/moyaforge-search-sqlite
+      - name: Test playground routing and integration
+        run: npm test --workspace @moyarich/moyaforge-playground
+      - name: Validate registered content links and anchors
+        run: npm run check:links
       - run: npm run build --workspace @moyarich/moyaforge-playground
       - name: Check Pages output
         run: test -s apps/playground/dist/index.html
