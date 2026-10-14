@@ -94,6 +94,7 @@ export function mdxRegistryPlugin({
         server.ws.send({ type: "full-reload" });
       };
       server.watcher.on("add", update);
+      server.watcher.on("change", update);
       server.watcher.on("unlink", update);
     },
   };
