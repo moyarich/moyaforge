@@ -68,7 +68,7 @@ export async function discoverContent(
     try {
       baseInfo = await stat(base);
     } catch (error) {
-      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      if ((error as { code?: string }).code === "ENOENT") {
         throw new Error(`Content source "${sourceName}": directory does not exist: ${base}`, { cause: error });
       }
       throw error;
