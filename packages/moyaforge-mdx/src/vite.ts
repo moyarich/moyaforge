@@ -1,7 +1,5 @@
 import { discoverContent, type ContentSourcesConfig } from "./content.js";
-import { isContentPageFile } from "./source-files.js";
-import { resolve, relative, sep } from "node:path";
-import { glob } from "tinyglobby";
+import { resolve, sep } from "node:path";
 import type { Plugin } from "vite";
 
 export interface RegistrySource {
@@ -39,29 +37,21 @@ export function mdxRegistryPlugin({
     const imports: string[] = [];
     const sources: string[] = [];
     let index = 0;
+    const { registry: normalized } = await discoverContent(registry, appRoot);
     for (const [name, source] of Object.entries(registry.sources)) {
       const base = resolve(appRoot, source.base);
-      const entries = await glob([...source.include], {
-        cwd: base,
-        ignore: source.exclude ? [...source.exclude] : [],
-        absolute: true,
-        onlyFiles: true,
-      });
       const pages: string[] = [];
       const lazyPages: string[] = [];
-      for (const file of entries.sort()) {
-        // Match discoverContent(): broad source globs may include non-page Markdown assets.
-        if (!isContentPageFile(file)) continue;
+      for (const page of normalized.routes.filter(
+        (page) => page.source === name,
+      )) {
+        const file = resolve(base, page.file).replaceAll("\\", "/");
         const id = index++;
         if (!lazyOnly)
-          imports.push(
-            `import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`,
-          );
-        const key = JSON.stringify(relative(base, file).split(sep).join("/"));
+          imports.push(`import * as page${id} from ${JSON.stringify(file)};`);
+        const key = JSON.stringify(page.file);
         if (!lazyOnly) pages.push(`${key}: page${id}`);
-        lazyPages.push(
-          `${key}: () => import(${JSON.stringify(file.split(sep).join("/"))})`,
-        );
+        lazyPages.push(`${key}: () => import(${JSON.stringify(file)})`);
       }
       sources.push(
         `${JSON.stringify(name)}: { ${lazyOnly ? "" : `pages: { ${pages.join(",")} }, `}lazyPages: { ${lazyPages.join(",")} } }`,
