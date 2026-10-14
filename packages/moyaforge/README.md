@@ -113,11 +113,11 @@ A consuming app provides a plain `registry.config.ts` with configurable `sources
 
 The independent SQLite adapter is optional: `sqliteSearchPlugin({ registry, root })` from `@moyarich/moyaforge-search-sqlite/vite` indexes the same configured `page.md(x)` source patterns. Its `virtual:moyaforge-search/database` module exports a development endpoint or hashed production database URL. Quoted YAML navigation settings are parsed and disabled pages are excluded. Applications handle result display and navigation.
 
-## Migrating legacy MDX/Vite integration
+## Canonical MDX/Vite integration
 
-For new integrations, prefer `createMdxOptions()` from `@moyarich/moyaforge-mdx` and `mdxRegistryPlugin()` from `@moyarich/moyaforge-mdx/vite`. The former does **not** require a JavaScript frontmatter export; use the metadata virtual module for parsed YAML records, and the lazy registry for component imports.
+Use `createMdxOptions()` from `@moyarich/moyaforge-mdx` and `mdxRegistryPlugin()` from `@moyarich/moyaforge-mdx/vite`. The metadata-only virtual module provides parsed YAML content records, while `virtual:moyaforge-mdx/lazy-registry` provides component loaders without eager imports.
 
-`createMoyaForgeMdxOptions()` from `@moyarich/moyaforge/mdx` remains a deprecated compatibility wrapper that explicitly enables compiled frontmatter exports. `moyaforgeVite()` from `@moyarich/moyaforge/vite` and its `virtual:moyaforge/pages` / `virtual:moyaforge/lazy-pages` modules are also legacy compatibility APIs. Do not introduce new consumers of these paths; they use a separate collection-based configuration and do not expose the canonical normalized metadata contract. They remain exported to avoid unexpected consumer breakage during migration.
+The UI package does not export a separate MDX compiler or Vite registry plugin. `@moyarich/moyaforge/vite`, `@moyarich/moyaforge/mdx`, `virtual:moyaforge/pages`, and `virtual:moyaforge/lazy-pages` were experimental duplicate APIs and have been removed. Migrate to the canonical MDX package before upgrading.
 
 ## Repository layout
 
