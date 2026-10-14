@@ -8,12 +8,13 @@ test("content query routing respects normalized routable pages", async () => {
     "utf8",
   );
   const standalone = source.replace(
-    'import { pages, routes } from "virtual:moyaforge-mdx/metadata";',
-    'const pages = [{ path: "/docs", navigation: "visible" }]; const routes = [{ path: "/docs" }, { path: "/docs/hidden" }];',
+    'import { routes } from "virtual:moyaforge-mdx/metadata";',
+    'const routes = [{ path: "/docs", navigation: "visible" }, { path: "/docs/hidden", navigation: "hidden" }];',
   );
   const router = await import(
     "data:text/javascript," + encodeURIComponent(standalone)
   );
+  assert.equal(router.firstContentRoute(), "/docs");
   assert.equal(router.normalizeRoute("/docs/"), "/docs");
   assert.equal(router.normalizeRoute("/docs/hidden"), "/docs/hidden");
   assert.equal(router.normalizeRoute("/docs/disabled"), null);
@@ -23,4 +24,22 @@ test("content query routing respects normalized routable pages", async () => {
     "/docs/hidden",
   );
   assert.equal(router.readContentRoute("?page=%2Fmissing"), null);
+});
+
+test("default content route never picks disabled pages", async () => {
+  const source = await readFile(new URL("../src/content-routing.js", import.meta.url), "utf8");
+  const importLine = 'import { routes } from "virtual:moyaforge-mdx/metadata";';
+  const load = async (routes) => {
+    const standalone = source.replace(importLine, `const routes = ${JSON.stringify(routes)};`);
+    return import("data:text/javascript," + encodeURIComponent(standalone));
+  };
+  const hiddenOnly = await load([{ path: "/docs/hidden", navigation: "hidden" }]);
+  assert.equal(hiddenOnly.firstContentRoute(), "/docs/hidden");
+  const visiblePreferred = await load([
+    { path: "/docs/hidden", navigation: "hidden" },
+    { path: "/docs/start", navigation: "visible" },
+  ]);
+  assert.equal(visiblePreferred.firstContentRoute(), "/docs/start");
+  const noRoutablePages = await load([]);
+  assert.equal(noRoutablePages.firstContentRoute(), null);
 });
