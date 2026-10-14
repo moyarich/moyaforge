@@ -52,12 +52,18 @@ export function validateInternalLinks(
       .parse(document.content);
     const visit = (node: any) => {
       const mdxAnchor =
-        (node.type === "mdxJsxFlowElement" || node.type === "mdxJsxTextElement") &&
+        (node.type === "mdxJsxFlowElement" ||
+          node.type === "mdxJsxTextElement") &&
         node.name === "a";
       if (node.type === "link" || node.type === "definition" || mdxAnchor) {
         const href = mdxAnchor
-          ? node.attributes?.find((attribute: any) => attribute.type === "mdxJsxAttribute" && attribute.name === "href" && typeof attribute.value === "string")?.value
-          : node.url as string;
+          ? node.attributes?.find(
+              (attribute: any) =>
+                attribute.type === "mdxJsxAttribute" &&
+                attribute.name === "href" &&
+                typeof attribute.value === "string",
+            )?.value
+          : (node.url as string);
         if (href && !/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href)) {
           try {
             const [pathPart, hash] = href.split("#", 2);
