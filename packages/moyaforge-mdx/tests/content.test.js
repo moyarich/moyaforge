@@ -71,3 +71,32 @@ test("normalized metadata manifest excludes disabled pages and compiled modules"
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("project TOC defaults apply to Markdown and MDX with page overrides", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-toc-config-"));
+  try {
+    await mkdir(join(root, "docs", "01-guide"), { recursive: true });
+    await mkdir(join(root, "docs", "02-hidden-toc"), { recursive: true });
+    await writeFile(join(root, "docs", "page.md"), "# Home\n\n## Intro");
+    await writeFile(join(root, "docs", "01-guide", "page.mdx"),
+      "---\ntoc:\n  placement: inline\n---\n# Guide\n\n## Intro");
+    await writeFile(join(root, "docs", "02-hidden-toc", "page.md"),
+      "---\ntoc: false\n---\n# Hidden TOC\n\n## Intro");
+    const config = {
+      toc: { placement: "sidebar", minDepth: 2, maxDepth: 3 },
+      sources: { docs: { base: "docs", include: ["**/page.md", "**/page.mdx"] } },
+    };
+    const discovered = await discoverContent(config, root);
+    assert.deepEqual(discovered.registry.byPath.get("/docs").toc, config.toc);
+    assert.deepEqual(discovered.registry.byPath.get("/docs/guide").toc, { placement: "inline" });
+    assert.equal(discovered.registry.byPath.get("/docs/hidden-toc").toc, false);
+    const plugin = mdxRegistryPlugin({ root, registry: config });
+    const id = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
+    const module = await plugin.load.call({}, id);
+    assert.match(module, /"placement":"sidebar"/);
+    assert.match(module, /"placement":"inline"/);
+    assert.match(module, /"toc":false/);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
