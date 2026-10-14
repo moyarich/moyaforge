@@ -5,10 +5,15 @@ import mdx from "@mdx-js/rollup";
 import { createMdxOptions } from "@moyarich/moyaforge-mdx";
 import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
 import registry from "./registry.config";
+import { playgroundSqliteSearchPlugin } from "./vite-search-plugin/index.js";
 
 export default defineConfig({
   plugins: [
     mdxRegistryPlugin({
+      registry,
+      root: fileURLToPath(new URL(".", import.meta.url)),
+    }),
+    playgroundSqliteSearchPlugin({
       registry,
       root: fileURLToPath(new URL(".", import.meta.url)),
     }),
