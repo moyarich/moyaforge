@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ContentExplorer } from "./components/ContentExplorer.jsx";
 import {
   readContentRoute,
-  searchResultRoute,
+  searchResultPage,
   contentHref,
   navigateContent,
 } from "./content-routing.js";
@@ -116,7 +116,8 @@ export function App() {
             {searchQuery.trim() && !searchError && (
               <ul>
                 {searchResults.map((key) => {
-                  const path = searchResultRoute(key);
+                  const page = searchResultPage(key);
+                  const path = page?.path;
                   return (
                     <li key={key}>
                       {path ? (
@@ -136,7 +137,7 @@ export function App() {
                             navigateContent(path);
                           }}
                         >
-                          {path}
+                          {page.title || page.label || path}
                         </a>
                       ) : (
                         <code>{key}</code>
