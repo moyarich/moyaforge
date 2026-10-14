@@ -85,7 +85,7 @@ export function buildPageRegistry(
       if (previous) throw Error(`Duplicate route ${path}: ${previous} and ${input.file}`);
       seen.set(path, input.file);
       const last = dirs.at(-1) ?? source;
-      const order = meta.order ?? Number(ORDER.exec(last)?.[1] ?? Number.MAX_SAFE_INTEGER);
+      const order = meta.order ?? (dirs.length === 0 ? -1 : Number(ORDER.exec(last)?.[1] ?? Number.MAX_SAFE_INTEGER));
       const parentPath = dirs.length ? "/" + [source, ...dirs.slice(0, -1).map((x) => x.replace(PREFIX, ""))].join("/") : null;
       pages.push({
         source, file: input.file, path,
