@@ -27,6 +27,10 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
+      - name: Test shared MDX tooling
+        run: npm test --workspace @moyarich/moyaforge-mdx
+      - name: Test shared SQLite search
+        run: npm test --workspace @moyarich/moyaforge-search-sqlite
       - run: npm run build --workspace @moyarich/moyaforge-playground
       - name: Check Pages output
         run: test -s apps/playground/dist/index.html
