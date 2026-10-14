@@ -243,7 +243,7 @@ a {
 .content-explorer nav li + li {
   margin-top: 0.35rem;
 }
-.content-explorer nav button {
+.content-explorer nav a {
   width: 100%;
   text-align: left;
   padding: 0.45rem 0.6rem;
@@ -252,8 +252,10 @@ a {
   background: transparent;
   color: inherit;
   cursor: pointer;
+  display: block;
+  text-decoration: none;
 }
-.content-explorer nav button[aria-current="page"] {
+.content-explorer nav a[aria-current="page"] {
   font-weight: 700;
 }
 .content-explorer section {
