@@ -72,7 +72,7 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
     resolve(root, dir),
   );
   const isRegisteredPage = (file: string) => {
-    if (!/\bpage\.mdx?$/.test(file)) return false;
+    if (!/(?:^|[\\/])page\.mdx?$/.test(file)) return false;
     const absolute = resolve(file);
     return sourceRoots.some((base) => {
       const path = relative(base, absolute);
