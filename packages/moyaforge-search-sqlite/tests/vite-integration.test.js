@@ -22,11 +22,11 @@ test("production SQLite search indexes canonical pages and emits a hashed asset"
     await mkdir(join(root, "docs", "03-disabled"), { recursive: true });
     await writeFile(
       join(root, "docs", "02-hidden", "page.md"),
-      "---\\nnavigation: hidden\\n---\\n# Hidden searchable page",
+      "---\nnavigation: hidden\n---\n# Hidden searchable page",
     );
     await writeFile(
       join(root, "docs", "03-disabled", "page.mdx"),
-      "---\\nnavigation: disabled\\n---\\n# Disabled page",
+      "---\nnavigation: disabled\n---\n# Disabled page",
     );
     await writeFile(
       join(root, "docs", "README.md"),
@@ -70,6 +70,87 @@ test("production SQLite search indexes canonical pages and emits a hashed asset"
     } finally {
       db.close();
     }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("development endpoint serves fresh SQLite data after a source change", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-sqlite-dev-"));
+  try {
+    const docs = join(root, "docs");
+    await mkdir(docs);
+    const page = join(docs, "page.md");
+    await writeFile(page, "# First version");
+    const plugin = sqliteSearchPlugin({
+      root,
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.md"] } },
+      },
+    });
+    plugin.configResolved({ command: "serve", base: "/preview/" });
+    const id = plugin.resolveId("virtual:moyaforge-search/database");
+    const module = await plugin.load(id);
+    assert.match(module, /import\.meta\.env\.BASE_URL/);
+    assert.match(module, /__moyaforge_search\.sqlite/);
+    const handlers = new Map();
+    const events = [];
+    let middleware;
+    plugin.configureServer({
+      watcher: {
+        add() {},
+        on(event, callback) {
+          handlers.set(event, callback);
+        },
+      },
+      ws: {
+        send(event) {
+          events.push(event);
+        },
+      },
+      middlewares: {
+        use(callback) {
+          middleware = callback;
+        },
+      },
+    });
+    const fetchDatabase = async () => {
+      const headers = {};
+      let payload;
+      let nextCalled = false;
+      await middleware(
+        { url: "/preview/__moyaforge_search.sqlite?cache=off" },
+        {
+          setHeader(name, value) {
+            headers[name] = value;
+          },
+          end(data) {
+            payload = data;
+          },
+        },
+        () => {
+          nextCalled = true;
+        },
+      );
+      assert.equal(nextCalled, false);
+      assert.equal(headers["Content-Type"], "application/vnd.sqlite3");
+      assert.equal(headers["Cache-Control"], "no-store");
+      assert.ok(payload?.length);
+      const SQL = await initSqlJs();
+      const db = new SQL.Database(payload);
+      try {
+        return db.exec("SELECT body FROM documents")[0].values[0][0];
+      } finally {
+        db.close();
+      }
+    };
+    assert.match(await fetchDatabase(), /First version/);
+    await writeFile(page, "# Updated version");
+    handlers.get("change")(page);
+    assert.deepEqual(events, [
+      { type: "custom", event: "moyaforge-search:updated" },
+    ]);
+    assert.match(await fetchDatabase(), /Updated version/);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
