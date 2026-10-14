@@ -59,16 +59,27 @@ export function DocOutline({
   }, [rootRef, selector, headings]);
   useEffect(() => {
     const update = () => {
-      let current = visibleItems[0]?.id ?? "";
+      let current = "";
       for (const item of visibleItems) {
         const node = document.getElementById(item.id);
         if (node && node.getBoundingClientRect().top <= 130) current = item.id;
       }
       setActive(current);
     };
-    update();
+    const onHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      let id = hash;
+      try { id = decodeURIComponent(hash); } catch { /* Keep literal hash. */ }
+      if (visibleItems.some((item) => item.id === id)) setActive(id);
+      else update();
+    };
+    onHashChange();
     window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    window.addEventListener("hashchange", onHashChange);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("hashchange", onHashChange);
+    };
   }, [headings, items]);
   if (!visibleItems.length) return null;
   return (
