@@ -1,4 +1,5 @@
 import { discoverContent, type ContentSourcesConfig } from "./content.js";
+import { isContentPageFile } from "./source-files.js";
 import { resolve, relative, sep } from "node:path";
 import { glob } from "tinyglobby";
 import type { Plugin } from "vite";
@@ -50,12 +51,7 @@ export function mdxRegistryPlugin({
       const lazyPages: string[] = [];
       for (const file of entries.sort()) {
         // Match discoverContent(): broad source globs may include non-page Markdown assets.
-        if (
-          !/^page\.mdx?$/.test(
-            file.replaceAll("\\", "/").split("/").at(-1) ?? "",
-          )
-        )
-          continue;
+        if (!isContentPageFile(file)) continue;
         const id = index++;
         if (!lazyOnly)
           imports.push(

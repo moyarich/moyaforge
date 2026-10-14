@@ -1,4 +1,5 @@
 import { extractPageHeadings } from "./headings.js";
+import { isContentPageFile } from "./source-files.js";
 import type { TocHeading } from "./toc.js";
 import { readFile, stat } from "node:fs/promises";
 import { parseDocument } from "yaml";
@@ -89,7 +90,7 @@ export async function discoverContent(
     });
     const pages: PageInput[] = [];
     for (const file of files.sort()) {
-      if (!/(?:^|[\\/])page\.mdx?$/.test(file)) continue;
+      if (!isContentPageFile(file)) continue;
       const name = relative(base, file).split(sep).join("/");
       const raw = await readFile(file, "utf8");
       pages.push({ file: name, frontmatter: parsePageFrontmatter(raw, file) });
