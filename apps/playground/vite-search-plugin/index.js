@@ -1,7 +1,8 @@
 import { resolve, relative, extname, sep } from "node:path";
 import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
 import { glob } from "tinyglobby";
 import initSqlJs from "sql.js";
 import { buildSearchDatabase } from "@moyarich/moyaforge-search-sqlite";
@@ -49,7 +50,7 @@ export function playgroundSqliteSearchPlugin({ registry, root }) {
   let mode = "serve", base = "/";
   let SQL, bytes, dirty = true, outputUrl;
   const build = async () => {
-    if (!SQL) SQL = await initSqlJs({ locateFile: file => fileURLToPath(new URL("../../node_modules/sql.js/dist/" + file, import.meta.url)) });
+    if (!SQL) SQL = await initSqlJs({ locateFile: file => require.resolve("sql.js/dist/" + file) });
     if (!dirty && bytes) return bytes;
     bytes = buildSearchDatabase(SQL, await docsFor(registry, root));
     dirty = false;
