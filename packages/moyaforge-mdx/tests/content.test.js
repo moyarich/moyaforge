@@ -108,3 +108,37 @@ test("project TOC defaults apply to Markdown and MDX with page overrides", async
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("missing configured source directories fail while empty existing sources are valid", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-source-check-"));
+  try {
+    const missing = {
+      sources: { docs: { base: "missing", include: ["**/page.md"] } },
+    };
+    await assert.rejects(
+      discoverContent(missing, root),
+      /Content source "docs": directory does not exist: .*missing/,
+    );
+    await writeFile(join(root, "not-a-directory"), "");
+    await assert.rejects(
+      discoverContent(
+        {
+          sources: {
+            docs: { base: "not-a-directory", include: ["**/page.md"] },
+          },
+        },
+        root,
+      ),
+      /Content source "docs": expected directory:/,
+    );
+    await mkdir(join(root, "empty"));
+    const discovered = await discoverContent(
+      { sources: { docs: { base: "empty", include: ["**/page.md"] } } },
+      root,
+    );
+    assert.deepEqual(discovered.inputs.docs, []);
+    assert.deepEqual(discovered.registry.routes, []);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
