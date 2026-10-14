@@ -66,8 +66,13 @@ export function validateInternalLinks(
           : (node.url as string);
         if (href && !/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href)) {
           try {
-            const [pathPart, hash] = href.split("#", 2);
-            const clean = pathPart.split("?")[0];
+            const fragmentAt = href.indexOf("#");
+            const pathPart = fragmentAt < 0 ? href : href.slice(0, fragmentAt);
+            const hash = fragmentAt < 0 ? null : href.slice(fragmentAt + 1);
+            // Decode before route lookup so invalid percent escapes are reported
+            // consistently even when the target page does not exist.
+            const decodedHash = hash === null ? null : decodeURIComponent(hash);
+            const clean = decodeURIComponent(pathPart.split("?")[0]);
             if (
               !clean ||
               /(?:^|\/)page\.mdx?$/.test(clean) ||
@@ -88,7 +93,7 @@ export function validateInternalLinks(
               else if (
                 hash &&
                 !anchors(headings[target.source + "/" + target.file] ?? []).has(
-                  decodeURIComponent(hash),
+                  decodedHash,
                 )
               )
                 diagnostics.push({ file: key, href, reason: "missing-anchor" });
