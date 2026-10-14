@@ -97,9 +97,12 @@ import rehypeShiki from "@shikijs/rehype";
 import { createMdxOptions } from "@moyarich/moyaforge-mdx";
 
 const options = createMdxOptions({
-  shiki: [rehypeShiki, {
-    themes: { light: "github-light", dark: "github-dark" },
-  }],
+  shiki: [
+    rehypeShiki,
+    {
+      themes: { light: "github-light", dark: "github-dark" },
+    },
+  ],
 });
 ```
 

@@ -10,7 +10,10 @@ test("Shiki integration is optional and maintains deterministic rehype ordering"
     shiki: [shiki, { themes: { light: "github-light", dark: "github-dark" } }],
     rehypePlugins: [additional],
   });
-  assert.equal(configured.rehypePlugins.length, defaults.rehypePlugins.length + 2);
+  assert.equal(
+    configured.rehypePlugins.length,
+    defaults.rehypePlugins.length + 2,
+  );
   assert.deepEqual(configured.rehypePlugins.at(-2), [
     shiki,
     { themes: { light: "github-light", dark: "github-dark" } },
