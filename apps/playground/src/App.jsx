@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ContentExplorer } from "./components/ContentExplorer.jsx";
 import { searchPages } from "./search/search-client.js";
 import {
   CodeGroup,
@@ -13,6 +14,10 @@ import { ConsoleValue } from "@moyarich/console";
 import { Demo, PlaygroundCallout } from "./components/index.js";
 
 const examples = [
+  {
+    name: "Content registry",
+    description: "Discover workspace documentation and load pages on demand.",
+  },
   {
     name: "Documentation",
     description: "Accessible code tabs, copy actions and MDX defaults.",
@@ -129,6 +134,11 @@ export function App() {
           <p className="intro">
             {examples.find((item) => item.name === section)?.description}
           </p>
+          {section === "Content registry" && (
+            <div className="panel">
+              <ContentExplorer />
+            </div>
+          )}
           {section === "Documentation" && (
             <div className="panel">
               <h2>Install packages</h2>
