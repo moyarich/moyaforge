@@ -42,3 +42,5 @@ export * from "./content.js";
 export * from "./navigation.js";
 
 export * from "./toc.js";
+
+export * from "./headings.js";
