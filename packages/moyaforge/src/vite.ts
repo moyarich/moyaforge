@@ -1,4 +1,4 @@
-import { resolve } from "node:path";
+import { isAbsolute, relative, resolve, sep } from "node:path";
 import { discoverSourceFilesSync } from "@moyarich/moyaforge-mdx/source-files";
 
 export interface MoyaForgeViteOptions {
@@ -52,7 +52,10 @@ function generate(
   return `${imports.join("\n")}\nexport const collections = { ${configs.join(",")} };\n`;
 }
 /**
- * Vite virtual manifest plugin. Pair with an MDX compiler plugin in the host Vite config.
+ * @deprecated Prefer `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`
+ * and its metadata/lazy-registry virtual modules for new integrations.
+ * This legacy collection-based manifest remains for existing consumers.
+ * Pair with an MDX compiler plugin in the host Vite config.
  * Does not take ownership of the host router or React plugin.
  */
 export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
@@ -60,6 +63,9 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
   const collections = options.collections ?? {
     docs: { dir: "docs", baseUrl: "/docs" },
   };
+  const sourceRoots = Object.values(collections).map(({ dir }) =>
+    resolve(root, dir),
+  );
   return {
     name: "moyaforge:pages",
     enforce: "pre",
@@ -73,6 +79,19 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
           : undefined,
     handleHotUpdate: (ctx) => {
       if (!/\.mdx?$/.test(ctx.file)) return;
+      const file = resolve(ctx.file);
+      if (
+        !sourceRoots.some((base) => {
+          const path = relative(base, file);
+          return (
+            path !== "" &&
+            !path.startsWith(".." + sep) &&
+            path !== ".." &&
+            !isAbsolute(path)
+          );
+        })
+      )
+        return;
       for (const id of [resolved, lazyResolved]) {
         const module = ctx.server.moduleGraph.getModuleById(id);
         if (module) ctx.server.moduleGraph.invalidateModule(module);
