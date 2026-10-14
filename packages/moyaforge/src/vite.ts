@@ -32,13 +32,13 @@ function generate(
   const configs: string[] = [];
   for (const [collection, definition] of Object.entries(collections)) {
     const base = resolve(root, definition.dir);
-    const items = walk(base).filter((file) => /(^|\/)page\.mdx?$/.test(file));
+    const items = discoverSourceFilesSync(base);
     const modules = items.map(({ absolute, relative: sourceFile }) => {
       const index = imports.length;
       imports.push(
-        `import * as page${index} from ${JSON.stringify(file.replace(/\\/g, "/"))};`,
+        `import * as page${index} from ${JSON.stringify(absolute)};`,
       );
-      return `${JSON.stringify(relative(base, file).replace(/\\/g, "/"))}: { default: page${index}.default, frontmatter: page${index}.frontmatter ?? page${index}.meta ?? {} }`;
+      return `${JSON.stringify(sourceFile)}: { default: page${index}.default, frontmatter: page${index}.frontmatter ?? page${index}.meta ?? {} }`;
     });
     configs.push(
       `${JSON.stringify(collection)}: { dir: ${JSON.stringify(definition.dir)}, baseUrl: ${JSON.stringify(definition.baseUrl)}, modules: { ${modules.join(",")} } }`,
