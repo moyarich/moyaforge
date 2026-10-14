@@ -3,7 +3,9 @@ import { resolve, relative, sep } from "node:path";
 
 /** Canonical page filename rule shared by metadata, lazy modules and compatibility adapters. */
 export function isContentPageFile(file: string): boolean {
-  return /^page\.mdx?$/.test(file.replaceAll("\\", "/").split("/").at(-1) ?? "");
+  return /^page\.mdx?$/.test(
+    file.replaceAll("\\", "/").split("/").at(-1) ?? "",
+  );
 }
 
 export interface DiscoveredSourceFile {
