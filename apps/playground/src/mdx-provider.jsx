@@ -1,14 +1,7 @@
 import { MDXProvider } from "@mdx-js/react";
 import * as ColorShower from "@moyarich/colorshower";
 import { createMdxComponents, moyaForgeComponents } from "@moyarich/moyaforge";
-
-function Demo({ children }) {
-  return <section data-demo>{children}</section>;
-}
-
-function PlaygroundCallout({ children }) {
-  return <aside data-callout="playground">{children}</aside>;
-}
+import { Demo, PlaygroundCallout } from "./components/index.js";
 
 const components = createMdxComponents(moyaForgeComponents, {
   ColorShower,

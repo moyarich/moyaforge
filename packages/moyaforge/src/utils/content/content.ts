@@ -7,6 +7,8 @@ export interface PageFrontmatter {
   label?: string;
   title?: string;
   hidden?: boolean;
+  /** visible: menu and route, hidden: route only, disabled: omit. */
+  navigation?: "visible" | "hidden" | "disabled";
   [key: string]: unknown;
 }
 
@@ -62,7 +64,7 @@ export function createPageDescriptor(path: string, module: PageModule = {}): Pag
     path,
     frontmatter,
     Component: module.default,
-    hidden: frontmatter.hidden === true,
+    hidden: frontmatter.hidden === true || frontmatter.navigation === "disabled",
   };
 }
 

@@ -1,0 +1,30 @@
+[data-moyaforge-monaco-tabs] {
+  --_monaco-tabs-gap: var(--monaco-tabs-gap, 0.25rem);
+  --_monaco-tabs-border-color: var(--monaco-tabs-border-color, #30394d);
+  --_monaco-tabs-padding: var(--monaco-tabs-padding, 0.65rem 0.85rem);
+  --_monaco-tabs-active-color: var(--monaco-tabs-active-color, #a5b4fc);
+  display: flex;
+  gap: var(--_monaco-tabs-gap);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--_monaco-tabs-border-color);
+}
+
+[data-moyaforge-monaco-tabs] button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: inherit;
+  padding: var(--_monaco-tabs-padding);
+  cursor: pointer;
+  font: inherit;
+}
+
+[data-moyaforge-monaco-tabs] button[aria-selected="true"] {
+  border-bottom-color: var(--_monaco-tabs-active-color);
+  font-weight: 650;
+}
+
+[data-moyaforge-monaco-tabs] button:focus-visible {
+  outline: 2px solid var(--_monaco-tabs-active-color);
+  outline-offset: -3px;
+}
