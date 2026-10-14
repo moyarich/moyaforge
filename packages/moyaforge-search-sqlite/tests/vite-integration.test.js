@@ -22,11 +22,11 @@ test("production SQLite search indexes canonical pages and emits a hashed asset"
     await mkdir(join(root, "docs", "03-disabled"), { recursive: true });
     await writeFile(
       join(root, "docs", "02-hidden", "page.md"),
-      "---\\nnavigation: hidden\\n---\\n# Hidden searchable page",
+      "---\nnavigation: hidden\n---\n# Hidden searchable page",
     );
     await writeFile(
       join(root, "docs", "03-disabled", "page.mdx"),
-      "---\\nnavigation: disabled\\n---\\n# Disabled page",
+      "---\nnavigation: disabled\n---\n# Disabled page",
     );
     await writeFile(
       join(root, "docs", "README.md"),
