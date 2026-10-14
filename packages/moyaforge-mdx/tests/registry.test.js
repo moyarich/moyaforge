@@ -59,3 +59,18 @@ test("colliding public paths and invalid metadata fail with source paths", () =>
     /page.md: toc minDepth exceeds maxDepth/,
   );
 });
+
+test("project TOC configuration is validated even for empty sources", () => {
+  assert.throws(
+    () => buildPageRegistry({ docs: [] }, { toc: { placement: "left" } }),
+    /registry\.config\.ts: invalid toc placement/,
+  );
+  assert.throws(
+    () => buildPageRegistry({ docs: [] }, { toc: { minDepth: 4, maxDepth: 2 } }),
+    /registry\.config\.ts: toc minDepth exceeds maxDepth/,
+  );
+  assert.deepEqual(
+    buildPageRegistry({ docs: [{ file: "page.md" }] }, { toc: false }).pages[0].toc,
+    false,
+  );
+});
