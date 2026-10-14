@@ -1,24 +1,26 @@
-name: Deploy MoyaForge Playground
+name: Deploy GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
+  packages: read
   pages: write
   id-token: write
 
 concurrency:
   group: github-pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  deploy:
-    uses: ./.github/workflows/pages.yml
+  pages:
+    name: Build and deploy playground
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_github-pages.yml@main
     with:
+      node-version: "24"
       install-command: npm install --include=optional
-      build-command: npm run build --workspace @moyarich/moyaforge-playground
-      artifact-path: apps/playground/dist
+      build-command: VITE_BASE_PATH="${PAGES_BASE_PATH}/" MOYAFORGE_BASE_PATH="${PAGES_BASE_PATH}/" npm run build --workspace @moyarich/moyaforge-playground
+      output-directory: apps/playground/dist
