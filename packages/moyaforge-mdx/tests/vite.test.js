@@ -12,10 +12,18 @@ test("lazy registry emits only dynamic imports, while existing registry stays co
     await writeFile(join(root, "docs", "01-guide", "page.mdx"), "# Guide");
     const plugin = mdxRegistryPlugin({
       root,
-      registry: { sources: { docs: { base: "docs", include: ["**/page.mdx"] } } },
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.mdx"] } },
+      },
     });
-    const lazyId = plugin.resolveId.call({}, "virtual:moyaforge-mdx/lazy-registry");
-    const legacyId = plugin.resolveId.call({}, "virtual:moyaforge-mdx/registry");
+    const lazyId = plugin.resolveId.call(
+      {},
+      "virtual:moyaforge-mdx/lazy-registry",
+    );
+    const legacyId = plugin.resolveId.call(
+      {},
+      "virtual:moyaforge-mdx/registry",
+    );
     assert.ok(lazyId);
     assert.ok(legacyId);
     const lazy = await plugin.load.call({}, lazyId);

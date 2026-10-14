@@ -47,9 +47,10 @@ export function mdxRegistryPlugin({
       const lazyPages: string[] = [];
       for (const file of entries.sort()) {
         const id = index++;
-        if (!lazyOnly) imports.push(
-          `import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`,
-        );
+        if (!lazyOnly)
+          imports.push(
+            `import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`,
+          );
         const key = JSON.stringify(relative(base, file).split(sep).join("/"));
         if (!lazyOnly) pages.push(`${key}: page${id}`);
         lazyPages.push(
