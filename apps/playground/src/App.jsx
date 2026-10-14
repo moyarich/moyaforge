@@ -123,7 +123,10 @@ export function App() {
           />
           <div id="playground-search-results" aria-live="polite">
             {searchError && <p role="alert">{searchError}</p>}
-            {searchQuery.trim() && !searchError && (
+            {searchQuery.trim() && !searchError && searchResults.length === 0 && (
+              <p>No matching pages found.</p>
+            )}
+            {searchQuery.trim() && !searchError && searchResults.length > 0 && (
               <ul>
                 {searchResults.map((key) => {
                   const page = searchResultPage(key);
