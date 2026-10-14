@@ -4,25 +4,30 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
   package:
-    name: Typecheck, test and pack
+    name: MoyaForge package
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_node-ci.yml@main
+    with:
+      package-directory: packages/moyaforge
+      node-version: "24"
+
+  playground:
+    name: Build private playground
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
-      - name: Install dependencies
-        run: npm install --ignore-scripts
-      - name: Typecheck package
-        run: npm run typecheck --workspace @moyarich/moyaforge
-      - name: Run package tests
-        run: npm test --workspace @moyarich/moyaforge
-      - name: Inspect npm distribution
-        run: npm pack --dry-run --workspace @moyarich/moyaforge
+          cache: npm
+      - run: npm ci --include=optional
+      - run: npm run build --workspace @moyarich/moyaforge-playground
+      - name: Check Pages output
+        run: test -s apps/playground/dist/index.html
