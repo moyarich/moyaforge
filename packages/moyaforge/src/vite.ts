@@ -63,7 +63,9 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
   const collections = options.collections ?? {
     docs: { dir: "docs", baseUrl: "/docs" },
   };
-  const sourceRoots = Object.values(collections).map(({ dir }) => resolve(root, dir));
+  const sourceRoots = Object.values(collections).map(({ dir }) =>
+    resolve(root, dir),
+  );
   return {
     name: "moyaforge:pages",
     enforce: "pre",
@@ -81,9 +83,15 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
       if (
         !sourceRoots.some((base) => {
           const path = relative(base, file);
-          return path !== "" && !path.startsWith(".." + sep) && path !== ".." && !isAbsolute(path);
+          return (
+            path !== "" &&
+            !path.startsWith(".." + sep) &&
+            path !== ".." &&
+            !isAbsolute(path)
+          );
         })
-      ) return;
+      )
+        return;
       for (const id of [resolved, lazyResolved]) {
         const module = ctx.server.moduleGraph.getModuleById(id);
         if (module) ctx.server.moduleGraph.invalidateModule(module);

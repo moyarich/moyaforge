@@ -45,7 +45,6 @@ test("lazy legacy manifest avoids static imports and preserves collection shape"
   }
 });
 
-
 test("legacy Vite HMR only reloads registered content roots", () => {
   const root = mkdtempSync(join(tmpdir(), "moyaforge-hmr-"));
   try {
@@ -72,7 +71,10 @@ test("legacy Vite HMR only reloads registered content roots", () => {
     assert.deepEqual(invalidated, []);
     assert.deepEqual(messages, []);
     plugin.handleHotUpdate(ctx(join(root, "docs", "page.mdx")));
-    assert.deepEqual(invalidated, ["\\0virtual:moyaforge/pages", "\\0virtual:moyaforge/lazy-pages"]);
+    assert.deepEqual(invalidated, [
+      "\\0virtual:moyaforge/pages",
+      "\\0virtual:moyaforge/lazy-pages",
+    ]);
     assert.deepEqual(messages, [{ type: "full-reload" }]);
   } finally {
     rmSync(root, { recursive: true, force: true });
