@@ -6,7 +6,7 @@ test("compiler defaults are independent and fresh per invocation", () => {
   const first = createMdxOptions();
   const second = createMdxOptions();
   assert.equal(first.providerImportSource, "@mdx-js/react");
-  assert.equal(first.remarkPlugins.length, 3);
+  assert.equal(first.remarkPlugins.length, 2);
   assert.equal(first.rehypePlugins.length, 3);
   assert.notStrictEqual(first.remarkPlugins, second.remarkPlugins);
 });
@@ -19,6 +19,6 @@ test("host plugins extend defaults without replacing shared conventions", () => 
     rehypePlugins: [customRehype],
   });
   assert.equal(options.remarkPlugins[2], customRemark);
-  assert.equal(options.remarkPlugins.length, 4);
+  assert.equal(options.remarkPlugins.length, 3);
   assert.equal(options.rehypePlugins[3], customRehype);
 });
