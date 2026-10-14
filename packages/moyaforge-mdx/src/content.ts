@@ -2,7 +2,12 @@ import { readFile } from "node:fs/promises";
 import { parseDocument } from "yaml";
 import { glob } from "tinyglobby";
 import { relative, resolve, sep } from "node:path";
-import { buildPageRegistry, type PageFrontmatter, type PageInput, type PageRegistry } from "./registry.js";
+import {
+  buildPageRegistry,
+  type PageFrontmatter,
+  type PageInput,
+  type PageRegistry,
+} from "./registry.js";
 
 export interface ContentSource {
   base: string;
@@ -16,16 +21,26 @@ export interface ContentSourcesConfig {
 }
 
 /** Parse authored YAML exactly once without requiring compiled MDX JavaScript exports. */
-export function parsePageFrontmatter(text: string, filename: string): PageFrontmatter {
+export function parsePageFrontmatter(
+  text: string,
+  filename: string,
+): PageFrontmatter {
   const normalized = text.replace(/^\uFEFF/, "");
-  if (!normalized.startsWith("---\n") && !normalized.startsWith("---\r\n")) return {};
-  const match = /^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.exec(normalized);
+  if (!normalized.startsWith("---\n") && !normalized.startsWith("---\r\n"))
+    return {};
+  const match = /^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.exec(
+    normalized,
+  );
   if (!match) throw new Error(`${filename}: unterminated YAML frontmatter`);
   const document = parseDocument(match[1], { uniqueKeys: true, strict: true });
-  if (document.errors.length) throw new Error(`${filename}: invalid YAML frontmatter: ${document.errors.map((error) => error.message).join("; ")}`);
+  if (document.errors.length)
+    throw new Error(
+      `${filename}: invalid YAML frontmatter: ${document.errors.map((error) => error.message).join("; ")}`,
+    );
   const value: unknown = document.toJS();
   if (value == null) return {};
-  if (typeof value !== "object" || Array.isArray(value)) throw new Error(`${filename}: YAML frontmatter must be an object`);
+  if (typeof value !== "object" || Array.isArray(value))
+    throw new Error(`${filename}: YAML frontmatter must be an object`);
   return value as PageFrontmatter;
 }
 
@@ -35,7 +50,10 @@ export interface DiscoveredContent {
 }
 
 /** Collect normalized metadata at build time; never import compiled page components. */
-export async function discoverContent(config: ContentSourcesConfig, root: string): Promise<DiscoveredContent> {
+export async function discoverContent(
+  config: ContentSourcesConfig,
+  root: string,
+): Promise<DiscoveredContent> {
   const inputs: Record<string, PageInput[]> = {};
   for (const [sourceName, source] of Object.entries(config.sources)) {
     const base = resolve(root, source.base);

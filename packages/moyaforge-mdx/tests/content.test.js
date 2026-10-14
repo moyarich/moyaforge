@@ -7,12 +7,27 @@ import { parsePageFrontmatter, discoverContent } from "../dist/content.js";
 import { mdxRegistryPlugin } from "../dist/vite.js";
 
 test("YAML metadata is parsed for Markdown and MDX without JS exports", () => {
-  assert.deepEqual(parsePageFrontmatter("---\ntitle: API\nnavigation: hidden\ntoc: false\n---\n# Hello", "page.md"), {
-    title: "API", navigation: "hidden", toc: false,
-  });
+  assert.deepEqual(
+    parsePageFrontmatter(
+      "---\ntitle: API\nnavigation: hidden\ntoc: false\n---\n# Hello",
+      "page.md",
+    ),
+    {
+      title: "API",
+      navigation: "hidden",
+      toc: false,
+    },
+  );
   assert.deepEqual(parsePageFrontmatter("# Nothing", "page.mdx"), {});
-  assert.throws(() => parsePageFrontmatter("---\ntitle: A\ntitle: B\n---\n", "docs/page.md"), /docs\/page.md: invalid YAML/);
-  assert.throws(() => parsePageFrontmatter("---\ntitle: Unclosed", "docs/page.md"), /unterminated YAML/);
+  assert.throws(
+    () =>
+      parsePageFrontmatter("---\ntitle: A\ntitle: B\n---\n", "docs/page.md"),
+    /docs\/page.md: invalid YAML/,
+  );
+  assert.throws(
+    () => parsePageFrontmatter("---\ntitle: Unclosed", "docs/page.md"),
+    /unterminated YAML/,
+  );
 });
 
 test("normalized metadata manifest excludes disabled pages and compiled modules", async () => {
@@ -20,13 +35,32 @@ test("normalized metadata manifest excludes disabled pages and compiled modules"
   try {
     await mkdir(join(root, "docs", "01-guide"), { recursive: true });
     await mkdir(join(root, "docs", "02-disabled"), { recursive: true });
-    await writeFile(join(root, "docs", "page.md"), "---\ntitle: Docs\n---\n# Welcome");
-    await writeFile(join(root, "docs", "01-guide", "page.mdx"), "---\ntitle: Guide\nnavigation: hidden\n---\n# Guide");
-    await writeFile(join(root, "docs", "02-disabled", "page.md"), "---\nnavigation: disabled\n---\n# Disabled");
-    const config = { sources: { docs: { base: "docs", include: ["**/page.md", "**/page.mdx"] } } };
+    await writeFile(
+      join(root, "docs", "page.md"),
+      "---\ntitle: Docs\n---\n# Welcome",
+    );
+    await writeFile(
+      join(root, "docs", "01-guide", "page.mdx"),
+      "---\ntitle: Guide\nnavigation: hidden\n---\n# Guide",
+    );
+    await writeFile(
+      join(root, "docs", "02-disabled", "page.md"),
+      "---\nnavigation: disabled\n---\n# Disabled",
+    );
+    const config = {
+      sources: {
+        docs: { base: "docs", include: ["**/page.md", "**/page.mdx"] },
+      },
+    };
     const result = await discoverContent(config, root);
-    assert.deepEqual(result.registry.routes.map((page) => page.path), ["/docs", "/docs/guide"]);
-    assert.deepEqual(result.registry.navigation.map((page) => page.path), ["/docs"]);
+    assert.deepEqual(
+      result.registry.routes.map((page) => page.path),
+      ["/docs", "/docs/guide"],
+    );
+    assert.deepEqual(
+      result.registry.navigation.map((page) => page.path),
+      ["/docs"],
+    );
     const plugin = mdxRegistryPlugin({ root, registry: config });
     const id = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
     assert.ok(id);
