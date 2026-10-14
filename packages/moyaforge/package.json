@@ -11,6 +11,10 @@
     "./vite": {
       "types": "./dist/vite.d.ts",
       "import": "./dist/vite.js"
+    },
+    "./mdx": {
+      "types": "./dist/mdx-options.d.ts",
+      "import": "./dist/mdx-options.js"
     }
   },
   "files": [
@@ -57,5 +61,12 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx-frontmatter": "^5.2.0",
+    "rehype-slug": "^6.0.0",
+    "@stefanprobst/rehype-extract-toc": "^3.0.0"
   }
 }
