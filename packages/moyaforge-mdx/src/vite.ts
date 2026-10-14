@@ -78,10 +78,11 @@ export function mdxRegistryPlugin({
       if (id === resolvedId) return discover(false);
       if (id === lazyResolvedId) return discover(true);
       if (id === metadataResolvedId) {
-        const { registry: pages, inputs, headings } = await discoverContent(
-          registry,
-          appRoot,
-        );
+        const {
+          registry: pages,
+          inputs,
+          headings,
+        } = await discoverContent(registry, appRoot);
         return `export const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages)};\nexport const routes = ${JSON.stringify(pages.routes)};\nexport const navigation = ${JSON.stringify(pages.navigation)};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\n`;
       }
     },

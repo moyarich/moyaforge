@@ -12,7 +12,10 @@ import type { TocHeading } from "./toc.js";
  * Extract headings using the same rehype-slug + rehype-extract-toc combination
  * used by the MDX compiler, without evaluating the page component.
  */
-export async function extractPageHeadings(source: string, filename = "page.md"): Promise<TocHeading[]> {
+export async function extractPageHeadings(
+  source: string,
+  filename = "page.md",
+): Promise<TocHeading[]> {
   const processor = unified()
     .use(remarkParse)
     .use(remarkFrontmatter, ["yaml"])
@@ -22,17 +25,24 @@ export async function extractPageHeadings(source: string, filename = "page.md"):
     .use(rehypeExtractToc);
   const file = new VFile({ value: source, path: filename });
   await processor.run(processor.parse(file), file);
-  type Entry = { id?: string; value: string; depth: number; children?: Entry[] };
+  type Entry = {
+    id?: string;
+    value: string;
+    depth: number;
+    children?: Entry[];
+  };
   const normalize = (entries: readonly Entry[]): TocHeading[] =>
     entries.flatMap((entry) => {
       const children = normalize(entry.children ?? []);
       if (!entry.id) return children;
-      return [{
-        id: entry.id,
-        value: entry.value,
-        depth: entry.depth,
-        ...(children.length ? { children } : {}),
-      }];
+      return [
+        {
+          id: entry.id,
+          value: entry.value,
+          depth: entry.depth,
+          ...(children.length ? { children } : {}),
+        },
+      ];
     });
   return normalize((file.data.toc ?? []) as Entry[]);
 }
