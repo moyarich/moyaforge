@@ -22,7 +22,8 @@ test("consumer-facing package entry points compose independently", async () => {
 
 test("canonical Vite plugins accept a plain consumer-owned registry", async () => {
   const { mdxRegistryPlugin } = await import("@moyarich/moyaforge-mdx/vite");
-  const { sqliteSearchPlugin } = await import("@moyarich/moyaforge-search-sqlite/vite");
+  const { sqliteSearchPlugin } =
+    await import("@moyarich/moyaforge-search-sqlite/vite");
   const registry = {
     sources: {
       docs: { base: "docs", include: ["**/page.md", "**/page.mdx"] },
