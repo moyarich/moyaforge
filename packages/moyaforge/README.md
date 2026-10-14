@@ -15,7 +15,6 @@ MoyaForge.
 
 For new applications, use `@moyarich/moyaforge-mdx` as the canonical Markdown/MDX discovery, YAML metadata, navigation, routes, headings and link-validation layer. Configure sources in the consuming application's `registry.config.ts` and use its metadata-only and lazy Vite registries. The helpers below remain available for compatibility with applications that already supply module maps.
 
-
 ```js
 import { buildNavigation, createPages, filterPages } from "@moyarich/moyaforge";
 
