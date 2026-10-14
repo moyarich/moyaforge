@@ -10,8 +10,12 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
   let fetchCount = 0;
   const closed = [];
   class FakeDatabase {
-    constructor(bytes) { this.version = bytes[0]; }
-    close() { closed.push(this.version); }
+    constructor(bytes) {
+      this.version = bytes[0];
+    }
+    close() {
+      closed.push(this.version);
+    }
   }
   try {
     globalThis.__testSQL = { Database: FakeDatabase };
@@ -19,26 +23,39 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
       fetchCount++;
       if (fetchCount === 1) {
         startedFetch?.();
-        return new Promise((resolve) => { completeFetch = resolve; });
+        return new Promise((resolve) => {
+          completeFetch = resolve;
+        });
       }
       return { ok: true, arrayBuffer: async () => Uint8Array.of(2).buffer };
     };
-    const source = await readFile(new URL("../src/search/search-client.js", import.meta.url), "utf8");
+    const source = await readFile(
+      new URL("../src/search/search-client.js", import.meta.url),
+      "utf8",
+    );
     const standalone = source
       .replace(/^import .*;\n/gm, "")
-      .replace('let SQL;', 'let SQL = globalThis.__testSQL;')
-      .replace('import.meta.hot', 'undefined')
-      .replace('querySearchDatabase(database, query)', '[database.version]');
+      .replace("let SQL;", "let SQL = globalThis.__testSQL;")
+      .replace("import.meta.hot", "undefined")
+      .replace("querySearchDatabase(database, query)", "[database.version]");
     // Remove multiline static imports as well.
     const code = standalone
       .replace(/^import \{[\s\S]*?\} from "[^"]+";\n/gm, "")
       .replace(/\bwasmUrl\b/g, '"unused.wasm"')
       .replace(/\bdatabaseUrl\b/g, '"/search.sqlite"');
-    const client = await import("data:text/javascript," + encodeURIComponent(code));
+    const client = await import(
+      "data:text/javascript," + encodeURIComponent(code)
+    );
     const loading = client.searchPages("test");
-    await new Promise((resolve) => { startedFetch = resolve; if (completeFetch) resolve(); });
+    await new Promise((resolve) => {
+      startedFetch = resolve;
+      if (completeFetch) resolve();
+    });
     const refreshing = client.reloadSearch();
-    completeFetch({ ok: true, arrayBuffer: async () => Uint8Array.of(1).buffer });
+    completeFetch({
+      ok: true,
+      arrayBuffer: async () => Uint8Array.of(1).buffer,
+    });
     await loading;
     await refreshing;
     assert.deepEqual(closed, [1]);
