@@ -21,9 +21,14 @@ const publicId = "virtual:moyaforge-mdx/registry";
 const resolvedId = "\0" + publicId;
 
 /** Optional Vite adapter: source ownership remains with the application's registry.config.ts. */
-export function mdxRegistryPlugin({ registry, root }: RegistryPluginOptions): Plugin {
+export function mdxRegistryPlugin({
+  registry,
+  root,
+}: RegistryPluginOptions): Plugin {
   const appRoot = resolve(root);
-  const directories = Object.values(registry.sources).map(source => resolve(appRoot, source.base));
+  const directories = Object.values(registry.sources).map((source) =>
+    resolve(appRoot, source.base),
+  );
   const discover = async () => {
     const imports: string[] = [];
     const sources: string[] = [];
@@ -39,23 +44,33 @@ export function mdxRegistryPlugin({ registry, root }: RegistryPluginOptions): Pl
       const pages: string[] = [];
       for (const file of entries.sort()) {
         const id = index++;
-        imports.push(`import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`);
-        pages.push(`${JSON.stringify(relative(base, file).split(sep).join("/"))}: page${id}`);
+        imports.push(
+          `import * as page${id} from ${JSON.stringify(file.split(sep).join("/"))};`,
+        );
+        pages.push(
+          `${JSON.stringify(relative(base, file).split(sep).join("/"))}: page${id}`,
+        );
       }
-      sources.push(`${JSON.stringify(name)}: { pages: { ${pages.join(",")} } }`);
+      sources.push(
+        `${JSON.stringify(name)}: { pages: { ${pages.join(",")} } }`,
+      );
     }
     return `${imports.join("\n")}\nexport const sources = { ${sources.join(",")} };\n`;
   };
   return {
     name: "moyaforge-mdx:registry",
     enforce: "pre",
-    resolveId(id) { if (id === publicId) return resolvedId; },
-    async load(id) { if (id === resolvedId) return discover(); },
+    resolveId(id) {
+      if (id === publicId) return resolvedId;
+    },
+    async load(id) {
+      if (id === resolvedId) return discover();
+    },
     configureServer(server) {
       server.watcher.add(directories);
       const update = (file: string) => {
         const absolute = resolve(file);
-        if (!directories.some(dir => absolute.startsWith(dir + sep))) return;
+        if (!directories.some((dir) => absolute.startsWith(dir + sep))) return;
         const module = server.moduleGraph.getModuleById(resolvedId);
         if (module) server.moduleGraph.invalidateModule(module);
         server.ws.send({ type: "full-reload" });
