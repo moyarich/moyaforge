@@ -1,6 +1,11 @@
 import { globSync } from "tinyglobby";
 import { resolve, relative, sep } from "node:path";
 
+/** Canonical page filename rule shared by metadata, lazy modules and compatibility adapters. */
+export function isContentPageFile(file: string): boolean {
+  return /^page\.mdx?$/.test(file.replaceAll("\\", "/").split("/").at(-1) ?? "");
+}
+
 export interface DiscoveredSourceFile {
   absolute: string;
   relative: string;
@@ -20,7 +25,7 @@ export function discoverSourceFilesSync(
     onlyFiles: true,
   })
     .sort()
-    .filter((file) => /(?:^|[\\/])page\.mdx?$/.test(file))
+    .filter(isContentPageFile)
     .map((absolute) => ({
       absolute: absolute.split(sep).join("/"),
       relative: relative(directory, absolute).split(sep).join("/"),
