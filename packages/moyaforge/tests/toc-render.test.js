@@ -98,3 +98,36 @@ test("default DocsLayout navigation excludes hidden and disabled pages", () => {
   assert.doesNotMatch(html, /href="\/legacy-hidden"/);
   assert.match(html, /Hidden route remains renderable/);
 });
+
+test("TOC placements render in the intended landmark with a single accessible label", () => {
+  for (const placement of ["right", "sidebar", "inline"]) {
+    const html = render({
+      headings,
+      placement,
+      label: "Article sections",
+      minDepth: 2,
+      maxDepth: 2,
+    });
+    const section = placement === "sidebar"
+      ? /<aside data-moyaforge-docs-sidebar=""[\s\S]*?<\/aside>/
+      : placement === "inline"
+        ? /<main data-moyaforge-docs-article=""[\s\S]*?<\/main>/
+        : /<aside data-moyaforge-doc-outline=""[\s\S]*?<\/aside>/;
+    const region = html.match(section)?.[0] ?? "";
+    assert.match(region, /aria-label="Article sections"/);
+    assert.match(region, /href="#setup"/);
+    assert.doesNotMatch(html, /href="#options"/);
+    assert.equal((html.match(/aria-label="Article sections"/g) ?? []).length, 2);
+  }
+});
+
+test("preserves canonical duplicate-heading slugs rather than regenerating them", () => {
+  const duplicateSlugs = [
+    { id: "overview", value: "Overview", depth: 2 },
+    { id: "overview-1", value: "Overview", depth: 2 },
+  ];
+  const html = render({ headings: duplicateSlugs, placement: "right" });
+  assert.match(html, /href="#overview"/);
+  assert.match(html, /href="#overview-1"/);
+  assert.equal((html.match(/>Overview<\/a>/g) ?? []).length, 2);
+});
