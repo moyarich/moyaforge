@@ -23,10 +23,13 @@ type Plugin = {
 };
 const virtual = "virtual:moyaforge/pages";
 const resolved = "\0" + virtual;
+const lazyVirtual = "virtual:moyaforge/lazy-pages";
+const lazyResolved = "\0" + lazyVirtual;
 
 function generate(
   root: string,
   collections: NonNullable<MoyaForgeViteOptions["collections"]>,
+  lazyOnly = false,
 ): string {
   const imports: string[] = [];
   const configs: string[] = [];
@@ -35,6 +38,7 @@ function generate(
     const items = discoverSourceFilesSync(base);
     const modules = items.map(({ absolute, relative: sourceFile }) => {
       const index = imports.length;
+      if (lazyOnly) return `${JSON.stringify(sourceFile)}: () => import(${JSON.stringify(absolute)})`;
       imports.push(
         `import * as page${index} from ${JSON.stringify(absolute)};`,
       );
@@ -58,12 +62,14 @@ export function moyaforgeVite(options: MoyaForgeViteOptions = {}): Plugin {
   return {
     name: "moyaforge:pages",
     enforce: "pre",
-    resolveId: (id) => (id === virtual ? resolved : undefined),
-    load: (id) => (id === resolved ? generate(root, collections) : undefined),
+    resolveId: (id) => id === virtual ? resolved : id === lazyVirtual ? lazyResolved : undefined,
+    load: (id) => id === resolved ? generate(root, collections) : id === lazyResolved ? generate(root, collections, true) : undefined,
     handleHotUpdate: (ctx) => {
       if (!/\.mdx?$/.test(ctx.file)) return;
-      const module = ctx.server.moduleGraph.getModuleById(resolved);
-      if (module) ctx.server.moduleGraph.invalidateModule(module);
+      for (const id of [resolved, lazyResolved]) {
+        const module = ctx.server.moduleGraph.getModuleById(id);
+        if (module) ctx.server.moduleGraph.invalidateModule(module);
+      }
       ctx.server.ws.send({ type: "full-reload" });
     },
   };
