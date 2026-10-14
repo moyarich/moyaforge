@@ -1,5 +1,5 @@
 import { resolve, relative, sep } from "node:path";
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
@@ -30,6 +30,21 @@ function docsFor(registry, root) {
   return Promise.all(
     Object.entries(registry.sources).map(async ([sourceName, source]) => {
       const base = resolve(root, source.base);
+      let info;
+      try {
+        info = await stat(base);
+      } catch (error) {
+        if (error.code === "ENOENT")
+          throw new Error(
+            `Search source "${sourceName}": directory does not exist: ${base}`,
+            { cause: error },
+          );
+        throw error;
+      }
+      if (!info.isDirectory())
+        throw new Error(
+          `Search source "${sourceName}": expected directory: ${base}`,
+        );
       const entries = await glob([...source.include], {
         cwd: base,
         absolute: true,
