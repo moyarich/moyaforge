@@ -12,12 +12,14 @@ export interface MdxToolingOptions {
   rehypePlugins?: PluggableList;
   /** Opt into a compiled MDX frontmatter export for older module consumers. YAML registry metadata does not require it. */
   frontmatterExport?: boolean;
+  /** Optional build-time Shiki rehype plugin, supplied by the host for static code blocks. */
+  shiki?: PluggableList[number];
 }
 
 /**
  * Shared MDX compiler conventions, independent of any specific application.
  * Additional remark plugins run after the default Markdown plugins.\n * Compiled frontmatter exports are optional: registry discovery owns YAML metadata.
- * Additional rehype plugins run after TOC and heading slug generation.
+ * Optional Shiki highlighting runs after slug/TOC extraction and before host rehype plugins.\n * Only supply Shiki for static prose code blocks; exclude Monaco/runnable components.
  */
 export function createMdxOptions(options: MdxToolingOptions = {}) {
   return {
@@ -34,6 +36,7 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       rehypeSlug,
       rehypeExtractToc,
       rehypeExportToc,
+      ...(options.shiki ? [options.shiki] : []),
       ...(options.rehypePlugins ?? []),
     ] as PluggableList,
   };
