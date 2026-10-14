@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 import { glob } from "tinyglobby";
+import { parseDocument } from "yaml";
 import initSqlJs from "sql.js";
 import { buildSearchDatabase } from "../dist/index.js";
 
@@ -20,11 +21,24 @@ function clean(content) {
     .replace(/\s+/g, " ")
     .trim();
 }
-function frontmatter(text, field) {
-  const match = text.match(/^---\s*\n([\s\S]*?)\n---/);
-  if (!match) return undefined;
-  const found = match[1].match(new RegExp("^" + field + ":\\s*(.*)$", "m"));
-  return found?.[1]?.trim().replace(/^['"]|['"]$/g, "");
+function frontmatter(text, filename) {
+  const normalized = text.replace(/^\uFEFF/, "");
+  if (!normalized.startsWith("---\n") && !normalized.startsWith("---\r\n"))
+    return {};
+  const match = /^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.exec(
+    normalized,
+  );
+  if (!match) throw new Error(`${filename}: unterminated YAML frontmatter`);
+  const document = parseDocument(match[1], { uniqueKeys: true, strict: true });
+  if (document.errors.length)
+    throw new Error(
+      `${filename}: invalid YAML frontmatter: ${document.errors.map((error) => error.message).join("; ")}`,
+    );
+  const value = document.toJS();
+  if (value == null) return {};
+  if (typeof value !== "object" || Array.isArray(value))
+    throw new Error(`${filename}: YAML frontmatter must be an object`);
+  return value;
 }
 function docsFor(registry, root) {
   return Promise.all(
@@ -61,13 +75,14 @@ function docsFor(registry, root) {
           )
           .map(async (file) => {
             const raw = await readFile(file, "utf8");
+            const meta = frontmatter(raw, file);
             // Disabled pages have no route and must not appear in search.
-            if (frontmatter(raw, "navigation") === "disabled") return null;
+            if (meta.navigation === "disabled") return null;
             const name = relative(base, file).split(sep).join("/");
             const segments = name.split("/");
             const folder = segments.at(-2) ?? sourceName;
             const title =
-              frontmatter(raw, "title") ??
+              meta.title ??
               folder
                 .replace(/^\d+[-_ ]/, "")
                 .replace(/[-_]+/g, " ")
@@ -75,7 +90,7 @@ function docsFor(registry, root) {
             return {
               key: sourceName + "/" + name,
               title,
-              description: frontmatter(raw, "description") ?? "",
+              description: meta.description ?? "",
               body: clean(raw),
             };
           }),

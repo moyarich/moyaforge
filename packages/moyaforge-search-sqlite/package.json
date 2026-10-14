@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "sql.js": "^1.14.2",
-    "tinyglobby": "^0.2.15"
+    "tinyglobby": "^0.2.15",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@types/sql.js": "^1.4.11",
