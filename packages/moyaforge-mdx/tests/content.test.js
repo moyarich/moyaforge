@@ -121,7 +121,14 @@ test("missing configured source directories fail while empty existing sources ar
     );
     await writeFile(join(root, "not-a-directory"), "");
     await assert.rejects(
-      discoverContent({ sources: { docs: { base: "not-a-directory", include: ["**/page.md"] } } }, root),
+      discoverContent(
+        {
+          sources: {
+            docs: { base: "not-a-directory", include: ["**/page.md"] },
+          },
+        },
+        root,
+      ),
       /Content source "docs": expected directory:/,
     );
     await mkdir(join(root, "empty"));

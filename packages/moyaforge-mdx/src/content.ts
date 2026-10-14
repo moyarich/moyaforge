@@ -69,12 +69,17 @@ export async function discoverContent(
       baseInfo = await stat(base);
     } catch (error) {
       if ((error as { code?: string }).code === "ENOENT") {
-        throw new Error(`Content source "${sourceName}": directory does not exist: ${base}`, { cause: error });
+        throw new Error(
+          `Content source "${sourceName}": directory does not exist: ${base}`,
+          { cause: error },
+        );
       }
       throw error;
     }
     if (!baseInfo.isDirectory()) {
-      throw new Error(`Content source "${sourceName}": expected directory: ${base}`);
+      throw new Error(
+        `Content source "${sourceName}": expected directory: ${base}`,
+      );
     }
     const files = await glob([...source.include], {
       cwd: base,
