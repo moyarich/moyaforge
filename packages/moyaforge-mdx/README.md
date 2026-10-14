@@ -80,4 +80,4 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 
 ## MDX-aware heading discovery
 
-The build-time TOC extraction parser now accepts MDX ESM imports, JSX components, and expression nodes using `remark-mdx`. The same `rehype-slug` and TOC extraction plugins continue to assign heading IDs. This enables ordinary Markdown headings around MDX components to appear in metadata without evaluating components. Headings generated *at runtime by React components* are not visible at build time; those require runtime instrumentation if they must appear in the TOC.
+The build-time TOC extraction parser now accepts MDX ESM imports, JSX components, and expression nodes using `remark-mdx`. The same `rehype-slug` and TOC extraction plugins continue to assign heading IDs. This enables ordinary Markdown headings around MDX components to appear in metadata without evaluating components. Headings generated _at runtime by React components_ are not visible at build time; those require runtime instrumentation if they must appear in the TOC.

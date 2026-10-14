@@ -24,5 +24,8 @@ test("MDX syntax can coexist with Markdown headings without becoming TOC entries
   const tree = await extractPageHeadings(source, "page.mdx");
   assert.equal(tree[0].id, "component-guide");
   assert.equal(tree[0].children[0].id, "installation");
-  assert.deepEqual(tree[0].children[0].children.map((heading) => heading.id), ["api", "api-1"]);
+  assert.deepEqual(
+    tree[0].children[0].children.map((heading) => heading.id),
+    ["api", "api-1"],
+  );
 });
