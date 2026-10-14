@@ -1,6 +1,7 @@
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
+import remarkMdx from "remark-mdx";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkRehype from "remark-rehype";
 import rehypeSlug from "rehype-slug";
@@ -20,6 +21,7 @@ export async function extractPageHeadings(
     .use(remarkParse)
     .use(remarkFrontmatter, ["yaml"])
     .use(remarkGfm)
+    .use(remarkMdx)
     .use(remarkRehype)
     .use(rehypeSlug)
     .use(rehypeExtractToc);
