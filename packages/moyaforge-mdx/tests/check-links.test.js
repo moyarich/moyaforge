@@ -9,14 +9,30 @@ test("build-time link checker uses the configured content roots", async () => {
   const root = await mkdtemp(join(tmpdir(), "moyaforge-links-"));
   try {
     await mkdir(join(root, "docs", "01-guide"), { recursive: true });
-    await writeFile(join(root, "docs", "page.md"), "# Home\n\n[Valid](./guide#setup) [Missing](./guide#typo)");
-    await writeFile(join(root, "docs", "01-guide", "page.md"), "# Guide\n\n## Setup");
-    const issues = await checkContentLinks({
-      sources: { docs: { base: "docs", include: ["**/page.md"] } },
-    }, root);
+    await writeFile(
+      join(root, "docs", "page.md"),
+      "# Home\n\n[Valid](./guide#setup) [Missing](./guide#typo)",
+    );
+    await writeFile(
+      join(root, "docs", "01-guide", "page.md"),
+      "# Guide\n\n## Setup",
+    );
+    const issues = await checkContentLinks(
+      {
+        sources: { docs: { base: "docs", include: ["**/page.md"] } },
+      },
+      root,
+    );
     assert.equal(issues.length, 1);
-    assert.deepEqual(issues[0], { file: "docs/page.md", href: "./guide#typo", reason: "missing-anchor" });
-    assert.equal(formatLinkIssues(issues), "docs/page.md: missing-anchor: ./guide#typo");
+    assert.deepEqual(issues[0], {
+      file: "docs/page.md",
+      href: "./guide#typo",
+      reason: "missing-anchor",
+    });
+    assert.equal(
+      formatLinkIssues(issues),
+      "docs/page.md: missing-anchor: ./guide#typo",
+    );
   } finally {
     await rm(root, { recursive: true, force: true });
   }

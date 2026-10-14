@@ -3,7 +3,9 @@ import { dirname, resolve } from "node:path";
 import { createServer } from "vite";
 import { checkContentLinks, formatLinkIssues } from "@moyarich/moyaforge-mdx";
 
-const root = dirname(fileURLToPath(new URL("../registry.config.ts", import.meta.url)));
+const root = dirname(
+  fileURLToPath(new URL("../registry.config.ts", import.meta.url)),
+);
 const server = await createServer({
   root,
   configFile: false,
@@ -13,7 +15,9 @@ const server = await createServer({
 
 let registry;
 try {
-  ({ default: registry } = await server.ssrLoadModule(resolve(root, "registry.config.ts")));
+  ({ default: registry } = await server.ssrLoadModule(
+    resolve(root, "registry.config.ts"),
+  ));
 } finally {
   await server.close();
 }
