@@ -30,9 +30,17 @@ export async function searchPages(query) {
 }
 
 export async function reloadSearch() {
+  // A pending fetch can install a database after the initial close.
+  // Wait for it before discarding the cache so the next query loads fresh data.
+  if (pending) {
+    try {
+      await pending;
+    } catch {
+      // A failed initial load still needs to clear any cached database.
+    }
+  }
   database?.close();
   database = undefined;
-  if (pending) await pending;
 }
 
 if (import.meta.hot) {
