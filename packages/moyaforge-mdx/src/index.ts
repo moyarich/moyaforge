@@ -46,3 +46,5 @@ export * from "./toc.js";
 export * from "./headings.js";
 
 export * from "./links.js";
+
+export * from "./check-links.js";
