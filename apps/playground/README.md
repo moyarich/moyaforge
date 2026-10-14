@@ -1,13 +1,35 @@
 # MoyaForge playground
 
-This app demonstrates how a consuming application uses `@moyarich/moyaforge`.
+The private `@moyarich/moyaforge-playground` workspace app is an interactive React/Vite component showcase. It uses the reusable MoyaForge components and the independently published `@moyarich/console` package without copying their implementations.
 
-It intentionally keeps usage code outside the reusable package and shows:
+## Run locally
 
-- MoyaForge default MDX components.
-- Consumer-provided MDX components.
-- Consumer overrides of MoyaForge component names.
-- Standard `MDXProvider` composition.
+From the repository root, using Node.js 24:
+
+```sh
+npm install
+npm run dev --workspace @moyarich/moyaforge-playground
+```
+
+To create and preview a production build:
+
+```sh
+npm run build --workspace @moyarich/moyaforge-playground
+npm run preview --workspace @moyarich/moyaforge-playground
+```
+
+The app builds its local MoyaForge workspace dependency before running Vite. Vite writes output to `apps/playground/dist` and honors `VITE_BASE_PATH` for subpath deployment.
+
+## Examples
+
+- Documentation: accessible code tabs, copy buttons, built-in Demo and empty state.
+- Consumer overrides: compare the built-in Demo to the registered app override and a custom Callout.
+- Console: structured value rendering using the published Console API.
+- Responsive, keyboard-operable navigation and scoped app styles.
+
+## MDX integration
+
+`src/mdx-provider.jsx` remains the example of `MDXProvider` composition with `createMdxComponents`. It also demonstrates third-party `ColorShower` registration.
 
 ## Documentation UI components
 
