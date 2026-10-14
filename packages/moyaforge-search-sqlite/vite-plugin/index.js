@@ -46,6 +46,8 @@ function docsFor(registry, root) {
           )
           .map(async (file) => {
             const raw = await readFile(file, "utf8");
+            // Disabled pages have no route and must not appear in search.
+            if (frontmatter(raw, "navigation") === "disabled") return null;
             const name = relative(base, file).split(sep).join("/");
             const title =
               frontmatter(raw, "title") ??
@@ -62,7 +64,7 @@ function docsFor(registry, root) {
           }),
       );
     }),
-  ).then((groups) => groups.flat());
+  ).then((groups) => groups.flat().filter((document) => document !== null));
 }
 
 export function sqliteSearchPlugin({ registry, root }) {
