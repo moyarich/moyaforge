@@ -19,6 +19,8 @@ export interface RegistryPluginOptions {
 
 const publicId = "virtual:moyaforge-mdx/registry";
 const resolvedId = "\0" + publicId;
+const lazyPublicId = "virtual:moyaforge-mdx/lazy-registry";
+const lazyResolvedId = "\0" + lazyPublicId;
 
 /** Optional Vite adapter: source ownership remains with the application's registry.config.ts. */
 export function mdxRegistryPlugin({
