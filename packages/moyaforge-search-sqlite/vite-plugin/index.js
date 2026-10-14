@@ -49,12 +49,14 @@ function docsFor(registry, root) {
             // Disabled pages have no route and must not appear in search.
             if (frontmatter(raw, "navigation") === "disabled") return null;
             const name = relative(base, file).split(sep).join("/");
+            const segments = name.split("/");
+            const folder = segments.at(-2) ?? sourceName;
             const title =
               frontmatter(raw, "title") ??
-              name
-                .split("/")
-                .pop()
-                .replace(/\.mdx?$/, "");
+              folder
+                .replace(/^\d+[-_ ]/, "")
+                .replace(/[-_]+/g, " ")
+                .replace(/\b\w/g, (letter) => letter.toUpperCase());
             return {
               key: sourceName + "/" + name,
               title,

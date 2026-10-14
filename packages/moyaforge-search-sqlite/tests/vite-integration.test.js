@@ -67,6 +67,13 @@ test("production SQLite search indexes canonical pages and emits a hashed asset"
         "docs/02-hidden/page.md",
         "docs/page.md",
       ]);
+      const titles = db.exec("SELECT key, title FROM documents ORDER BY key")[0]
+        .values;
+      assert.deepEqual(titles, [
+        ["docs/01-guide/page.mdx", "Guide"],
+        ["docs/02-hidden/page.md", "Hidden"],
+        ["docs/page.md", "Docs"],
+      ]);
     } finally {
       db.close();
     }
