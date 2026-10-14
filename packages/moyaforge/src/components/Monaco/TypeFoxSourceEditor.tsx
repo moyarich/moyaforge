@@ -23,7 +23,11 @@ export function TypeFoxSourceEditor({
   onTextChanged,
 }: TypeFoxSourceEditorProps) {
   return (
-    <div className={className} data-moyaforge-typefox-source-editor="" style={{ minHeight: 0, ...style }}>
+    <div
+      className={className}
+      data-moyaforge-typefox-source-editor=""
+      style={{ minHeight: 0, ...style }}
+    >
       <MonacoEditorReactComp
         vscodeApiConfig={vscodeApiConfig}
         editorAppConfig={editorAppConfig}

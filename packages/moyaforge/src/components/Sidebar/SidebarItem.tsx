@@ -7,10 +7,21 @@ export interface SidebarItemProps extends PolymorphicProps {
   onSelect?: () => void;
 }
 
-export function SidebarItem({ active, current = "page", onSelect, children, as = "button", ...props }: SidebarItemProps) {
-  return createElement(as, {
-    "aria-current": active ? current : undefined,
-    ...(as === "button" ? { type: "button", onClick: onSelect } : {}),
-    ...props,
-  }, children);
+export function SidebarItem({
+  active,
+  current = "page",
+  onSelect,
+  children,
+  as = "button",
+  ...props
+}: SidebarItemProps) {
+  return createElement(
+    as,
+    {
+      "aria-current": active ? current : undefined,
+      ...(as === "button" ? { type: "button", onClick: onSelect } : {}),
+      ...props,
+    },
+    children,
+  );
 }

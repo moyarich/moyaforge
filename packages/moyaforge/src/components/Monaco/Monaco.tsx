@@ -32,7 +32,9 @@ export function Monaco({
   renderEditor,
   showFileTabs = true,
 }: MonacoProps) {
-  const [uncontrolledActiveFile, setUncontrolledActiveFile] = useState(defaultActiveFile ?? files[0]?.name ?? "");
+  const [uncontrolledActiveFile, setUncontrolledActiveFile] = useState(
+    defaultActiveFile ?? files[0]?.name ?? "",
+  );
   const [drafts, setDrafts] = useState<Record<string, string>>(() =>
     Object.fromEntries(files.map((file) => [file.name, file.value])),
   );
@@ -40,7 +42,8 @@ export function Monaco({
   useEffect(() => {
     setDrafts((current) => {
       const next = { ...current };
-      for (const file of files) if (!(file.name in next)) next[file.name] = file.value;
+      for (const file of files)
+        if (!(file.name in next)) next[file.name] = file.value;
       return next;
     });
   }, [files]);
@@ -54,7 +57,8 @@ export function Monaco({
   if (!selectedFile) return null;
 
   function selectFile(file: MonacoFile) {
-    if (controlledActiveFile === undefined) setUncontrolledActiveFile(file.name);
+    if (controlledActiveFile === undefined)
+      setUncontrolledActiveFile(file.name);
     onActiveFileChange?.(file.name, file);
   }
 

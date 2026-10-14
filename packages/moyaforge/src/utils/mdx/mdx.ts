@@ -20,10 +20,27 @@ import { MonacoCodeGroup } from "../../components/Monaco/MonacoCodeGroup.js";
 import { DocOutline } from "../../components/DocOutline/DocOutline.js";
 
 export const moyaForgeComponents = Object.freeze({
-  Console, Terminal,
-  CopyButton, Demo, NavigationTree, Page, Search, Sidebar, SidebarContent,
-  SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem, SidebarSection,
-  Source, TableOfContents, CodeGroup, CodeTab, EditPageLink, DocOutline, MonacoCodeGroup,
+  Console,
+  Terminal,
+  CopyButton,
+  Demo,
+  NavigationTree,
+  Page,
+  Search,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarItem,
+  SidebarSection,
+  Source,
+  TableOfContents,
+  CodeGroup,
+  CodeTab,
+  EditPageLink,
+  DocOutline,
+  MonacoCodeGroup,
 });
 
 export type MdxComponents = Record<string, ComponentType<any>>;

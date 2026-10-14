@@ -52,35 +52,49 @@ export function pagePathParts(path: string): string[] {
     .filter(Boolean);
 }
 
-export function createPageDescriptor(path: string, module: PageModule = {}): PageDescriptor {
+export function createPageDescriptor(
+  path: string,
+  module: PageModule = {},
+): PageDescriptor {
   const segments = pagePathParts(path);
   const frontmatter = module.frontmatter ?? {};
   const fallbackId = segments.join("/") || "index";
 
   return {
     id: frontmatter.id ?? fallbackId,
-    label: frontmatter.label ?? labelFromSegment(segments.at(-1) ?? frontmatter.title ?? "Home"),
+    label:
+      frontmatter.label ??
+      labelFromSegment(segments.at(-1) ?? frontmatter.title ?? "Home"),
     navPath: segments.map(labelFromSegment),
     path,
     frontmatter,
     Component: module.default,
-    hidden: frontmatter.hidden === true || frontmatter.navigation === "disabled",
+    hidden:
+      frontmatter.hidden === true || frontmatter.navigation === "disabled",
   };
 }
 
-export function createPages(modules: Record<string, PageModule>): PageDescriptor[] {
+export function createPages(
+  modules: Record<string, PageModule>,
+): PageDescriptor[] {
   return Object.entries(modules)
     .map(([path, module]) => createPageDescriptor(path, module))
     .filter((page) => !page.hidden)
     .sort((left, right) => compareOrderedPaths(left.path, right.path));
 }
 
-export function filterPages(pages: PageDescriptor[], query?: string): PageDescriptor[] {
-  const value = String(query ?? "").trim().toLowerCase();
+export function filterPages(
+  pages: PageDescriptor[],
+  query?: string,
+): PageDescriptor[] {
+  const value = String(query ?? "")
+    .trim()
+    .toLowerCase();
   if (!value) return [...pages];
 
   return pages.filter((page) =>
-    [page.label, page.id, ...page.navPath]
-      .some((part) => part.toLowerCase().includes(value)),
+    [page.label, page.id, ...page.navPath].some((part) =>
+      part.toLowerCase().includes(value),
+    ),
   );
 }

@@ -14,11 +14,7 @@ MoyaForge.
 ## Content helpers
 
 ```js
-import {
-  buildNavigation,
-  createPages,
-  filterPages,
-} from "@moyarich/moyaforge";
+import { buildNavigation, createPages, filterPages } from "@moyarich/moyaforge";
 
 const modules = import.meta.glob("./docs/**/page.mdx", { eager: true });
 const pages = createPages(modules);
@@ -60,11 +56,7 @@ keep their own classes, icons, renderers, and CSS. This allows an existing site
 such as Console to migrate to MoyaForge without changing its appearance.
 
 ```jsx
-import {
-  NavigationTree,
-  Source,
-  buildNavigation,
-} from "@moyarich/moyaforge";
+import { NavigationTree, Source, buildNavigation } from "@moyarich/moyaforge";
 
 const navigation = buildNavigation(pages);
 
@@ -90,10 +82,7 @@ MoyaForge uses the standard MDX component/provider model.
 
 ```jsx
 import { MDXProvider } from "@mdx-js/react";
-import {
-  createMdxComponents,
-  moyaForgeComponents,
-} from "@moyarich/moyaforge";
+import { createMdxComponents, moyaForgeComponents } from "@moyarich/moyaforge";
 
 const components = createMdxComponents(moyaForgeComponents, {
   Demo: ProjectDemo,
@@ -129,7 +118,6 @@ api/
 ```
 
 Use `defineMoyaForgeConfig()` to override them.
-
 
 ## Styling components
 
@@ -170,7 +158,6 @@ internal implementation details.
 There is no MoyaForge namespace on CSS custom properties. This keeps existing
 themes easy to map without forcing MoyaForge-specific design tokens.
 
-
 ### Composable sidebar
 
 `Sidebar` does not insert a content wrapper or require navigation behavior. Compose
@@ -197,8 +184,6 @@ only the regions needed by the consuming application:
 The same primitives are also available as named exports such as
 `SidebarHeader`, `SidebarContent`, and `SidebarFooter`. Search and
 NavigationTree remain independent components.
-
-
 
 ## Component styles and theming
 

@@ -9,13 +9,25 @@ export interface NavigationTreeProps {
   itemProps?: ComponentPropsWithoutRef<"li">;
 }
 
-export function NavigationTree({ items, renderLink, listProps, itemProps }: NavigationTreeProps) {
+export function NavigationTree({
+  items,
+  renderLink,
+  listProps,
+  itemProps,
+}: NavigationTreeProps) {
   return (
     <ul data-moyaforge-navigation-tree="" {...listProps}>
       {items.map((item) => (
         <li key={item.page?.id ?? item.label} {...itemProps}>
           {item.page && renderLink ? renderLink(item.page, item) : item.label}
-          {item.children.length ? <NavigationTree items={item.children} renderLink={renderLink} listProps={listProps} itemProps={itemProps} /> : null}
+          {item.children.length ? (
+            <NavigationTree
+              items={item.children}
+              renderLink={renderLink}
+              listProps={listProps}
+              itemProps={itemProps}
+            />
+          ) : null}
         </li>
       ))}
     </ul>

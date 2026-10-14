@@ -6,5 +6,9 @@ export interface SourceProps extends ComponentPropsWithoutRef<"pre"> {
 }
 
 export function Source({ code, language, children, ...props }: SourceProps) {
-  return <pre data-moyaforge-source="" data-language={language} {...props}><code>{children ?? code}</code></pre>;
+  return (
+    <pre data-moyaforge-source="" data-language={language} {...props}>
+      <code>{children ?? code}</code>
+    </pre>
+  );
 }
