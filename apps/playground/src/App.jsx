@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ContentExplorer } from "./components/ContentExplorer.jsx";
-import { readContentRoute } from "./content-routing.js";
+import { readContentRoute, searchResultRoute, contentHref, navigateContent } from "./content-routing.js";
 import { searchPages } from "./search/search-client.js";
 import {
   CodeGroup,
@@ -110,11 +110,34 @@ export function App() {
             {searchError && <p role="alert">{searchError}</p>}
             {searchQuery.trim() && !searchError && (
               <ul>
-                {searchResults.map((key) => (
-                  <li key={key}>
-                    <code>{key}</code>
-                  </li>
-                ))}
+                {searchResults.map((key) => {
+                  const path = searchResultRoute(key);
+                  return (
+                    <li key={key}>
+                      {path ? (
+                        <a
+                          href={contentHref(path)}
+                          onClick={(event) => {
+                            if (
+                              event.button !== 0 ||
+                              event.metaKey ||
+                              event.ctrlKey ||
+                              event.shiftKey ||
+                              event.altKey
+                            ) return;
+                            event.preventDefault();
+                            setSection("Content registry");
+                            navigateContent(path);
+                          }}
+                        >
+                          {path}
+                        </a>
+                      ) : (
+                        <code>{key}</code>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
