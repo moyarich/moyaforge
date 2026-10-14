@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { searchPages } from "./search/search-client.js";
 import {
   CodeGroup,
   CodeTab,
@@ -35,6 +36,30 @@ const components = createMdxComponents(moyaForgeComponents, {
 export function App() {
   const [section, setSection] = useState("Documentation");
   const [override, setOverride] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchError, setSearchError] = useState("");
+  useEffect(() => {
+    let active = true;
+    const update = () => {
+      searchPages(searchQuery)
+        .then((results) => {
+          if (active) {
+            setSearchResults(results);
+            setSearchError("");
+          }
+        })
+        .catch((error) => {
+          if (active) setSearchError(String(error));
+        });
+    };
+    update();
+    window.addEventListener("moyaforge-search:updated", update);
+    return () => {
+      active = false;
+      window.removeEventListener("moyaforge-search:updated", update);
+    };
+  }, [searchQuery]);
   return (
     <div className="playground">
       <header className="topbar">
@@ -56,6 +81,28 @@ export function App() {
       </header>
       <div className="layout">
         <aside className="sidebar" aria-label="Example navigation">
+          <div className="sidebar-label">DOCUMENTATION SEARCH</div>
+          <label htmlFor="playground-search">Search registered pages</label>
+          <input
+            id="playground-search"
+            type="search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search docs and packages"
+            aria-controls="playground-search-results"
+          />
+          <div id="playground-search-results" aria-live="polite">
+            {searchError && <p role="alert">{searchError}</p>}
+            {searchQuery.trim() && !searchError && (
+              <ul>
+                {searchResults.map((key) => (
+                  <li key={key}>
+                    <code>{key}</code>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <div className="sidebar-label">COMPONENT EXAMPLES</div>
           <nav aria-label="Playground sections">
             {examples.map(({ name, description }) => (
