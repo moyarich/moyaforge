@@ -1,3 +1,4 @@
+import { discoverContent } from "./content.js";
 import { resolve, relative, sep } from "node:path";
 import { glob } from "tinyglobby";
 import type { Plugin } from "vite";
@@ -21,6 +22,8 @@ const publicId = "virtual:moyaforge-mdx/registry";
 const resolvedId = "\0" + publicId;
 const lazyPublicId = "virtual:moyaforge-mdx/lazy-registry";
 const lazyResolvedId = "\0" + lazyPublicId;
+const metadataPublicId = "virtual:moyaforge-mdx/metadata";
+const metadataResolvedId = "\0" + metadataPublicId;
 
 /** Optional Vite adapter: source ownership remains with the application's registry.config.ts. */
 export function mdxRegistryPlugin({
@@ -69,17 +72,22 @@ export function mdxRegistryPlugin({
     resolveId(id) {
       if (id === publicId) return resolvedId;
       if (id === lazyPublicId) return lazyResolvedId;
+      if (id === metadataPublicId) return metadataResolvedId;
     },
     async load(id) {
       if (id === resolvedId) return discover(false);
       if (id === lazyResolvedId) return discover(true);
+      if (id === metadataResolvedId) {
+        const { registry: pages, inputs } = await discoverContent(registry, appRoot);
+        return `export const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages)};\nexport const routes = ${JSON.stringify(pages.routes)};\nexport const navigation = ${JSON.stringify(pages.navigation)};\n`;
+      }
     },
     configureServer(server) {
       server.watcher.add(directories);
       const update = (file: string) => {
         const absolute = resolve(file);
         if (!directories.some((dir) => absolute.startsWith(dir + sep))) return;
-        for (const id of [resolvedId, lazyResolvedId]) {
+        for (const id of [resolvedId, lazyResolvedId, metadataResolvedId]) {
           const module = server.moduleGraph.getModuleById(id);
           if (module) server.moduleGraph.invalidateModule(module);
         }
