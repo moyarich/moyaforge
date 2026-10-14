@@ -84,7 +84,9 @@ test("development endpoint serves fresh SQLite data after a source change", asyn
     await writeFile(page, "# First version");
     const plugin = sqliteSearchPlugin({
       root,
-      registry: { sources: { docs: { base: "docs", include: ["**/page.md"] } } },
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.md"] } },
+      },
     });
     plugin.configResolved({ command: "serve", base: "/preview/" });
     const id = plugin.resolveId("virtual:moyaforge-search/database");
@@ -97,10 +99,20 @@ test("development endpoint serves fresh SQLite data after a source change", asyn
     plugin.configureServer({
       watcher: {
         add() {},
-        on(event, callback) { handlers.set(event, callback); },
+        on(event, callback) {
+          handlers.set(event, callback);
+        },
       },
-      ws: { send(event) { events.push(event); } },
-      middlewares: { use(callback) { middleware = callback; } },
+      ws: {
+        send(event) {
+          events.push(event);
+        },
+      },
+      middlewares: {
+        use(callback) {
+          middleware = callback;
+        },
+      },
     });
     const fetchDatabase = async () => {
       const headers = {};
@@ -109,10 +121,16 @@ test("development endpoint serves fresh SQLite data after a source change", asyn
       await middleware(
         { url: "/preview/__moyaforge_search.sqlite?cache=off" },
         {
-          setHeader(name, value) { headers[name] = value; },
-          end(data) { payload = data; },
+          setHeader(name, value) {
+            headers[name] = value;
+          },
+          end(data) {
+            payload = data;
+          },
         },
-        () => { nextCalled = true; },
+        () => {
+          nextCalled = true;
+        },
       );
       assert.equal(nextCalled, false);
       assert.equal(headers["Content-Type"], "application/vnd.sqlite3");
@@ -129,7 +147,9 @@ test("development endpoint serves fresh SQLite data after a source change", asyn
     assert.match(await fetchDatabase(), /First version/);
     await writeFile(page, "# Updated version");
     handlers.get("change")(page);
-    assert.deepEqual(events, [{ type: "custom", event: "moyaforge-search:updated" }]);
+    assert.deepEqual(events, [
+      { type: "custom", event: "moyaforge-search:updated" },
+    ]);
     assert.match(await fetchDatabase(), /Updated version/);
   } finally {
     await rm(root, { recursive: true, force: true });
