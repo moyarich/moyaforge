@@ -36,5 +36,7 @@ jobs:
       - name: Validate registered content links and anchors
         run: npm run check:links
       - run: npm run build --workspace @moyarich/moyaforge-playground
+      - name: Check workspace boundaries and public export targets
+        run: npm run test:boundaries
       - name: Check Pages output
         run: test -s apps/playground/dist/index.html
