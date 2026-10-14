@@ -25,11 +25,15 @@ function frontmatter(text, filename) {
   const normalized = text.replace(/^\uFEFF/, "");
   if (!normalized.startsWith("---\n") && !normalized.startsWith("---\r\n"))
     return {};
-  const match = /^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.exec(normalized);
+  const match = /^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.exec(
+    normalized,
+  );
   if (!match) throw new Error(`${filename}: unterminated YAML frontmatter`);
   const document = parseDocument(match[1], { uniqueKeys: true, strict: true });
   if (document.errors.length)
-    throw new Error(`${filename}: invalid YAML frontmatter: ${document.errors.map((error) => error.message).join("; ")}`);
+    throw new Error(
+      `${filename}: invalid YAML frontmatter: ${document.errors.map((error) => error.message).join("; ")}`,
+    );
   const value = document.toJS();
   if (value == null) return {};
   if (typeof value !== "object" || Array.isArray(value))
