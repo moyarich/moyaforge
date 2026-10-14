@@ -246,3 +246,7 @@ export default defineMoyaForgeConfig({
 ```
 
 **These modes describe the intended composition, not a complete turnkey docs runtime yet.** The current package exposes components, content/navigation utilities and config. Automated MDX discovery, React Router mounting, Vite integration and a zero-config CLI are next steps; see [framework architecture](../../docs/framework-architecture.md).
+
+## Metadata-driven table of contents
+
+`DocsLayout` accepts an optional `toc` property with `headings` obtained from `@moyarich/moyaforge-mdx` metadata and the canonical TOC options (`placement`, `label`, `minDepth`, `maxDepth`, `collapsible`, `defaultOpen`). It supports right, sidebar, inline and none placements without displaying the same TOC more than once. Pass `toc={false}` to disable the outline; absent `toc` retains the older DOM-driven outline behavior during migration. `DocOutline` can also receive heading trees directly, preserving extracted anchor IDs and tracking the active heading on scroll.
