@@ -13,6 +13,9 @@ MoyaForge.
 
 ## Content helpers
 
+For new applications, use `@moyarich/moyaforge-mdx` as the canonical Markdown/MDX discovery, YAML metadata, navigation, routes, headings and link-validation layer. Configure sources in the consuming application's `registry.config.ts` and use its metadata-only and lazy Vite registries. The helpers below remain available for compatibility with applications that already supply module maps.
+
+
 ```js
 import { buildNavigation, createPages, filterPages } from "@moyarich/moyaforge";
 
@@ -100,12 +103,16 @@ repositories can replace any provided MDX component.
 
 ## Ownership boundary
 
-MoyaForge owns reusable mechanisms: content discovery helpers, ordered paths,
-navigation data, MDX plumbing, runnable playground composition, Console-backed
-developer-tool output surfaces, and reusable presentation primitives.
+`@moyarich/moyaforge-mdx` owns content discovery, MDX compilation, YAML metadata, normalized navigation and route records, and optional Vite discovery. `@moyarich/moyaforge-search-sqlite` supplies an optional independent search adapter. This UI package owns reusable presentation primitives, MDX component mappings, and Console-backed developer-tool surfaces. The consuming application composes these packages and owns its router and content configuration.
 
 The consuming repository owns its documentation and demo content, branding,
 routing decisions, application-specific behavior, and final shell composition.
+
+## Migrating legacy MDX/Vite integration
+
+For new integrations, prefer `createMdxOptions()` from `@moyarich/moyaforge-mdx` and `mdxRegistryPlugin()` from `@moyarich/moyaforge-mdx/vite`. The former does **not** require a JavaScript frontmatter export; use the metadata virtual module for parsed YAML records, and the lazy registry for component imports.
+
+`createMoyaForgeMdxOptions()` from `@moyarich/moyaforge/mdx` remains a deprecated compatibility wrapper that explicitly enables compiled frontmatter exports. `moyaforgeVite()` from `@moyarich/moyaforge/vite` and its `virtual:moyaforge/pages` / `virtual:moyaforge/lazy-pages` modules are also legacy compatibility APIs. Do not introduce new consumers of these paths; they use a separate collection-based configuration and do not expose the canonical normalized metadata contract. They remain exported to avoid unexpected consumer breakage during migration.
 
 ## Repository layout
 
