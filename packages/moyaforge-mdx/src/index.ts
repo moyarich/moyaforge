@@ -34,3 +34,5 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
     ] as PluggableList,
   };
 }
+
+export * from "./registry.js";
