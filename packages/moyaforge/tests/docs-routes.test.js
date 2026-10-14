@@ -31,7 +31,9 @@ const source = createMoyaForgeSource({
 });
 
 const render = (pathname, extras = {}) =>
-  renderToStaticMarkup(React.createElement(DocsRoutes, { source, pathname, ...extras }));
+  renderToStaticMarkup(
+    React.createElement(DocsRoutes, { source, pathname, ...extras }),
+  );
 
 test("host-provided paths resolve nested routes with or without trailing slashes", () => {
   for (const pathname of ["/docs/guide", "/docs/guide/"]) {
@@ -50,7 +52,9 @@ test("hidden pages stay renderable without appearing in the default navigation",
 
 test("disabled and unknown pages use the host-provided not-found view", () => {
   for (const pathname of ["/docs/disabled", "/docs/unknown"]) {
-    const html = render(pathname, { notFound: React.createElement("p", null, "Host 404") });
+    const html = render(pathname, {
+      notFound: React.createElement("p", null, "Host 404"),
+    });
     assert.match(html, /Host 404/);
     assert.doesNotMatch(html, /Disabled content/);
   }
@@ -58,7 +62,8 @@ test("disabled and unknown pages use the host-provided not-found view", () => {
 
 test("host renderPage overrides the default route content", () => {
   const html = render("/docs/guide", {
-    renderPage: (page) => React.createElement("strong", null, page.title + " override"),
+    renderPage: (page) =>
+      React.createElement("strong", null, page.title + " override"),
   });
   assert.match(html, /Guide override/);
   assert.doesNotMatch(html, /Guide content/);
