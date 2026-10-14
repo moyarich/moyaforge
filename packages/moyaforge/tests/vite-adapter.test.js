@@ -72,8 +72,8 @@ test("legacy Vite HMR only reloads registered content roots", () => {
     assert.deepEqual(messages, []);
     plugin.handleHotUpdate(ctx(join(root, "docs", "page.mdx")));
     assert.deepEqual(invalidated, [
-      "\\0virtual:moyaforge/pages",
-      "\\0virtual:moyaforge/lazy-pages",
+      "\0virtual:moyaforge/pages",
+      "\0virtual:moyaforge/lazy-pages",
     ]);
     assert.deepEqual(messages, [{ type: "full-reload" }]);
   } finally {
