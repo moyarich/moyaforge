@@ -1,6 +1,6 @@
 import { extractPageHeadings } from "./headings.js";
 import type { TocHeading } from "./toc.js";
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { parseDocument } from "yaml";
 import { glob } from "tinyglobby";
 import { relative, resolve, sep } from "node:path";
@@ -64,6 +64,18 @@ export async function discoverContent(
   const headings: Record<string, TocHeading[]> = {};
   for (const [sourceName, source] of Object.entries(config.sources)) {
     const base = resolve(root, source.base);
+    let baseInfo;
+    try {
+      baseInfo = await stat(base);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+        throw new Error(`Content source "${sourceName}": directory does not exist: ${base}`, { cause: error });
+      }
+      throw error;
+    }
+    if (!baseInfo.isDirectory()) {
+      throw new Error(`Content source "${sourceName}": expected directory: ${base}`);
+    }
     const files = await glob([...source.include], {
       cwd: base,
       ignore: source.exclude ? [...source.exclude] : [],
