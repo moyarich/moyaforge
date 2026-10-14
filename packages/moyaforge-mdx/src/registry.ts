@@ -41,32 +41,62 @@ export interface PageRegistry {
   navigation: NormalizedPage[];
   byPath: Map<string, NormalizedPage>;
   breadcrumbs(path: string): NormalizedPage[];
-  previousNext(path: string): { previous?: NormalizedPage; next?: NormalizedPage };
+  previousNext(path: string): {
+    previous?: NormalizedPage;
+    next?: NormalizedPage;
+  };
 }
 const PREFIX = /^\d+[-_ ]/;
 const ORDER = /^(\d+)[-_ ]/;
-const toLabel = (value: string) => value.replace(PREFIX, "").replace(/[-_]+/g, " ").replace(/\b\w/g, (v) => v.toUpperCase());
+const toLabel = (value: string) =>
+  value
+    .replace(PREFIX, "")
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (v) => v.toUpperCase());
 function assertFrontmatter(meta: PageFrontmatter, file: string): void {
-  if (!meta || typeof meta !== "object" || Array.isArray(meta)) throw Error(`${file}: frontmatter must be an object`);
+  if (!meta || typeof meta !== "object" || Array.isArray(meta))
+    throw Error(`${file}: frontmatter must be an object`);
   for (const key of ["title", "label", "description"] as const) {
-    if (meta[key] !== undefined && typeof meta[key] !== "string") throw Error(`${file}: ${key} must be a string`);
+    if (meta[key] !== undefined && typeof meta[key] !== "string")
+      throw Error(`${file}: ${key} must be a string`);
   }
-  if (meta.order !== undefined && (!Number.isFinite(meta.order))) throw Error(`${file}: order must be a finite number`);
-  if (meta.navigation !== undefined && !["visible", "hidden", "disabled"].includes(meta.navigation)) throw Error(`${file}: invalid navigation mode`);
+  if (meta.order !== undefined && !Number.isFinite(meta.order))
+    throw Error(`${file}: order must be a finite number`);
+  if (
+    meta.navigation !== undefined &&
+    !["visible", "hidden", "disabled"].includes(meta.navigation)
+  )
+    throw Error(`${file}: invalid navigation mode`);
   if (meta.toc !== undefined && typeof meta.toc !== "boolean") {
-    if (!meta.toc || typeof meta.toc !== "object" || Array.isArray(meta.toc)) throw Error(`${file}: invalid toc setting`);
+    if (!meta.toc || typeof meta.toc !== "object" || Array.isArray(meta.toc))
+      throw Error(`${file}: invalid toc setting`);
     const { placement, minDepth, maxDepth } = meta.toc;
-    if (placement !== undefined && !["right", "sidebar", "inline", "none"].includes(placement)) throw Error(`${file}: invalid toc placement`);
-    if ([minDepth, maxDepth].some((n) => n !== undefined && (!Number.isInteger(n) || n < 1 || n > 6))) throw Error(`${file}: toc depths must be integers from 1 to 6`);
-    if (minDepth !== undefined && maxDepth !== undefined && minDepth > maxDepth) throw Error(`${file}: toc minDepth exceeds maxDepth`);
-    for (const key of ["collapsible", "defaultOpen"] as const) if (meta.toc[key] !== undefined && typeof meta.toc[key] !== "boolean") throw Error(`${file}: toc ${key} must be boolean`);
-    if (meta.toc.label !== undefined && typeof meta.toc.label !== "string") throw Error(`${file}: toc label must be a string`);
+    if (
+      placement !== undefined &&
+      !["right", "sidebar", "inline", "none"].includes(placement)
+    )
+      throw Error(`${file}: invalid toc placement`);
+    if (
+      [minDepth, maxDepth].some(
+        (n) => n !== undefined && (!Number.isInteger(n) || n < 1 || n > 6),
+      )
+    )
+      throw Error(`${file}: toc depths must be integers from 1 to 6`);
+    if (minDepth !== undefined && maxDepth !== undefined && minDepth > maxDepth)
+      throw Error(`${file}: toc minDepth exceeds maxDepth`);
+    for (const key of ["collapsible", "defaultOpen"] as const)
+      if (meta.toc[key] !== undefined && typeof meta.toc[key] !== "boolean")
+        throw Error(`${file}: toc ${key} must be boolean`);
+    if (meta.toc.label !== undefined && typeof meta.toc.label !== "string")
+      throw Error(`${file}: toc label must be a string`);
   }
 }
 function segments(file: string): string[] {
   const safe = file.replace(/\\/g, "/").replace(/^\.\//, "");
-  if (safe.startsWith("/") || safe.split("/").includes("..")) throw Error(`${file}: invalid content path`);
-  if (!/(?:^|\/)page\.mdx?$/.test(safe)) throw Error(`${file}: expected page.md or page.mdx`);
+  if (safe.startsWith("/") || safe.split("/").includes(".."))
+    throw Error(`${file}: invalid content path`);
+  if (!/(?:^|\/)page\.mdx?$/.test(safe))
+    throw Error(`${file}: expected page.md or page.mdx`);
   return safe.split("/").slice(0, -1);
 }
 export function buildPageRegistry(
@@ -80,28 +110,56 @@ export function buildPageRegistry(
       const meta = input.frontmatter ?? {};
       assertFrontmatter(meta, input.file);
       const dirs = segments(input.file);
-      const path = "/" + [source, ...dirs.map((x) => x.replace(PREFIX, ""))].filter(Boolean).join("/");
+      const path =
+        "/" +
+        [source, ...dirs.map((x) => x.replace(PREFIX, ""))]
+          .filter(Boolean)
+          .join("/");
       const previous = seen.get(path);
-      if (previous) throw Error(`Duplicate route ${path}: ${previous} and ${input.file}`);
+      if (previous)
+        throw Error(`Duplicate route ${path}: ${previous} and ${input.file}`);
       seen.set(path, input.file);
       const last = dirs.at(-1) ?? source;
-      const order = meta.order ?? (dirs.length === 0 ? -1 : Number(ORDER.exec(last)?.[1] ?? Number.MAX_SAFE_INTEGER));
-      const parentPath = dirs.length ? "/" + [source, ...dirs.slice(0, -1).map((x) => x.replace(PREFIX, ""))].join("/") : null;
+      const order =
+        meta.order ??
+        (dirs.length === 0
+          ? -1
+          : Number(ORDER.exec(last)?.[1] ?? Number.MAX_SAFE_INTEGER));
+      const parentPath = dirs.length
+        ? "/" +
+          [source, ...dirs.slice(0, -1).map((x) => x.replace(PREFIX, ""))].join(
+            "/",
+          )
+        : null;
       pages.push({
-        source, file: input.file, path,
-        title: meta.title ?? toLabel(last), label: meta.label ?? meta.title ?? toLabel(last),
-        description: meta.description, order, navigation: meta.navigation ?? "visible",
-        toc: meta.toc ?? options.toc ?? { placement: "right", minDepth: 2, maxDepth: 3 },
+        source,
+        file: input.file,
+        path,
+        title: meta.title ?? toLabel(last),
+        label: meta.label ?? meta.title ?? toLabel(last),
+        description: meta.description,
+        order,
+        navigation: meta.navigation ?? "visible",
+        toc: meta.toc ??
+          options.toc ?? { placement: "right", minDepth: 2, maxDepth: 3 },
         parentPath,
       });
     }
   }
-  pages.sort((a, b) => a.source.localeCompare(b.source) || a.order - b.order || a.path.localeCompare(b.path));
+  pages.sort(
+    (a, b) =>
+      a.source.localeCompare(b.source) ||
+      a.order - b.order ||
+      a.path.localeCompare(b.path),
+  );
   const routes = pages.filter((p) => p.navigation !== "disabled");
   const navigation = routes.filter((p) => p.navigation === "visible");
   const byPath = new Map(routes.map((p) => [p.path, p]));
   return {
-    pages, routes, navigation, byPath,
+    pages,
+    routes,
+    navigation,
+    byPath,
     breadcrumbs(path) {
       const page = byPath.get(path);
       if (!page) return [];
@@ -109,14 +167,21 @@ export function buildPageRegistry(
       let parent = page.parentPath;
       while (parent) {
         const candidate = byPath.get(parent);
-        if (candidate && candidate.navigation === "visible") ancestors.unshift(candidate);
-        parent = candidate?.parentPath ?? (parent.lastIndexOf("/") > 0 ? parent.slice(0, parent.lastIndexOf("/")) : null);
+        if (candidate && candidate.navigation === "visible")
+          ancestors.unshift(candidate);
+        parent =
+          candidate?.parentPath ??
+          (parent.lastIndexOf("/") > 0
+            ? parent.slice(0, parent.lastIndexOf("/"))
+            : null);
       }
       return [...ancestors, page];
     },
     previousNext(path) {
       const index = navigation.findIndex((p) => p.path === path);
-      return index < 0 ? {} : { previous: navigation[index - 1], next: navigation[index + 1] };
+      return index < 0
+        ? {}
+        : { previous: navigation[index - 1], next: navigation[index + 1] };
     },
   };
 }

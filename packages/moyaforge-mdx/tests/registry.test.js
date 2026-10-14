@@ -3,21 +3,35 @@ import test from "node:test";
 import { buildPageRegistry } from "../dist/registry.js";
 
 test("discovers root and nested landing pages with path-derived labels and ordering", () => {
-  const registry = buildPageRegistry({ docs: [
-    { file: "02-api/page.mdx" }, { file: "page.md" },
-    { file: "01-start/page.md", frontmatter: { title: "Quick start" } },
-  ] });
-  assert.deepEqual(registry.navigation.map((p) => p.path), ["/docs", "/docs/start", "/docs/api"]);
+  const registry = buildPageRegistry({
+    docs: [
+      { file: "02-api/page.mdx" },
+      { file: "page.md" },
+      { file: "01-start/page.md", frontmatter: { title: "Quick start" } },
+    ],
+  });
+  assert.deepEqual(
+    registry.navigation.map((p) => p.path),
+    ["/docs", "/docs/start", "/docs/api"],
+  );
   assert.equal(registry.byPath.get("/docs/start").label, "Quick start");
-  assert.deepEqual(registry.breadcrumbs("/docs/start").map((p) => p.path), ["/docs", "/docs/start"]);
+  assert.deepEqual(
+    registry.breadcrumbs("/docs/start").map((p) => p.path),
+    ["/docs", "/docs/start"],
+  );
 });
 
 test("hidden pages remain routable; disabled pages are excluded", () => {
-  const registry = buildPageRegistry({ docs: [
-    { file: "page.mdx" },
-    { file: "01-hidden/page.md", frontmatter: { navigation: "hidden", toc: false } },
-    { file: "02-disabled/page.mdx", frontmatter: { navigation: "disabled" } },
-  ] });
+  const registry = buildPageRegistry({
+    docs: [
+      { file: "page.mdx" },
+      {
+        file: "01-hidden/page.md",
+        frontmatter: { navigation: "hidden", toc: false },
+      },
+      { file: "02-disabled/page.mdx", frontmatter: { navigation: "disabled" } },
+    ],
+  });
   assert.equal(registry.routes.length, 2);
   assert.equal(registry.navigation.length, 1);
   assert.equal(registry.byPath.get("/docs/hidden").toc, false);
@@ -25,10 +39,23 @@ test("hidden pages remain routable; disabled pages are excluded", () => {
 });
 
 test("colliding public paths and invalid metadata fail with source paths", () => {
-  assert.throws(() => buildPageRegistry({ docs: [
-    { file: "01-api/page.md" }, { file: "02-api/page.mdx" },
-  ] }), /Duplicate route \/docs\/api/);
-  assert.throws(() => buildPageRegistry({ docs: [
-    { file: "page.md", frontmatter: { toc: { minDepth: 4, maxDepth: 2 } } },
-  ] }), /page.md: toc minDepth exceeds maxDepth/);
+  assert.throws(
+    () =>
+      buildPageRegistry({
+        docs: [{ file: "01-api/page.md" }, { file: "02-api/page.mdx" }],
+      }),
+    /Duplicate route \/docs\/api/,
+  );
+  assert.throws(
+    () =>
+      buildPageRegistry({
+        docs: [
+          {
+            file: "page.md",
+            frontmatter: { toc: { minDepth: 4, maxDepth: 2 } },
+          },
+        ],
+      }),
+    /page.md: toc minDepth exceeds maxDepth/,
+  );
 });
