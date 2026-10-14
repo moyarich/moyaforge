@@ -50,7 +50,9 @@ export function mdxRegistryPlugin({
         );
         const key = JSON.stringify(relative(base, file).split(sep).join("/"));
         pages.push(`${key}: page${id}`);
-        lazyPages.push(`${key}: () => import(${JSON.stringify(file.split(sep).join("/"))})`);
+        lazyPages.push(
+          `${key}: () => import(${JSON.stringify(file.split(sep).join("/"))})`,
+        );
       }
       sources.push(
         `${JSON.stringify(name)}: { pages: { ${pages.join(",")} }, lazyPages: { ${lazyPages.join(",")} } }`,
