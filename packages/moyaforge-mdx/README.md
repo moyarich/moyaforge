@@ -73,3 +73,7 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 ## Internal link validation
 
 `validateInternalLinks(documents, registry, headings)` checks authored Markdown links against the normalized route inventory and extracted heading IDs. It returns structured diagnostics with source file, original href, and `missing-page`, `missing-anchor`, or `invalid-link` reason. Relative URLs resolve from the page's canonical directory route. External links, images, and fenced code are excluded. The helper is opt-in; enforcing it in CI/build, validating MDX JSX links, and checking other content assets remain separate steps in issue #27.
+
+## Validate links during checks
+
+`checkContentLinks(registryConfig, appRoot)` scans registered pages and invokes `validateInternalLinks` against their normalized routes and extracted heading IDs. It returns diagnostic objects suitable for CI reporting. `formatLinkIssues()` renders them for logs. The playground command `npm run check:links --workspace @moyarich/moyaforge-playground` loads its own `registry.config.ts` through Vite and exits with status 1 when invalid links are found. The root `npm run checks` includes this validation. These checks cover Markdown links and anchors; JSX links and external URLs are not validated yet.
