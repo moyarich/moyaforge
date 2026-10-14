@@ -49,6 +49,8 @@ export function mdxRegistryPlugin({
       const pages: string[] = [];
       const lazyPages: string[] = [];
       for (const file of entries.sort()) {
+        // Match discoverContent(): broad source globs may include non-page Markdown assets.
+        if (!/(?:^|[\\\\/])page\\.mdx?$/.test(file)) continue;
         const id = index++;
         if (!lazyOnly)
           imports.push(
