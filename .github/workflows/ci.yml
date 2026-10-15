@@ -35,7 +35,7 @@ jobs:
         run: npm test --workspace @moyarich/moyaforge-playground
       - name: Validate registered content links and anchors
         run: npm run check:links
-      - run: npm run build --workspace @moyarich/moyaforge-playground
+      - run: npm run build --workspaces
       - name: Test public consumer package imports
         run: npm run test:consumer
       - name: Build standalone Vite consumer
