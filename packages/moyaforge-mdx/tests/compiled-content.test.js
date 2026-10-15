@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import { test } from "vitest";
 import { compile } from "@mdx-js/mdx";
 import { createMdxOptions, extractPageHeadings } from "../dist/index.js";
 
