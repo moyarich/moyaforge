@@ -21,12 +21,12 @@ import { Demo, PlaygroundCallout } from "./components/index.js";
 
 const examples = [
   {
-    name: "Content registry",
-    description: "Discover workspace documentation and load pages on demand.",
+    name: "Docs",
+    description: "Browse workspace documentation, guides, and package pages.",
   },
   {
-    name: "Documentation",
-    description: "Accessible code tabs, copy actions and MDX defaults.",
+    name: "Component examples",
+    description: "Try code tabs, copy actions, and MDX components.",
   },
   {
     name: "Consumer overrides",
@@ -46,16 +46,16 @@ const components = createMdxComponents(moyaForgeComponents, {
 
 export function App() {
   const [section, setSection] = useState(() =>
-    readContentRoute() ? "Content registry" : "Documentation",
+    "Docs",
   );
   const [override, setOverride] = useState(true);
   useEffect(() => {
     const onHistory = () => {
       setSection((current) =>
         readContentRoute()
-          ? "Content registry"
-          : current === "Content registry"
-            ? "Documentation"
+          ? "Docs"
+          : current === "Docs"
+            ? "Docs"
             : current,
       );
     };
@@ -146,7 +146,7 @@ export function App() {
                             )
                               return;
                             event.preventDefault();
-                            setSection("Content registry");
+                            setSection("Docs");
                             navigateContent(path);
                           }}
                         >
@@ -187,12 +187,12 @@ export function App() {
           <p className="intro">
             {examples.find((item) => item.name === section)?.description}
           </p>
-          {section === "Content registry" && (
+          {section === "Docs" && (
             <div className="panel">
               <ContentExplorer />
             </div>
           )}
-          {section === "Documentation" && (
+          {section === "Component examples" && (
             <div className="panel">
               <h2>Install packages</h2>
               <p>Switch package managers with keyboard-accessible tabs.</p>
