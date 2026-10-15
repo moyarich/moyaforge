@@ -12,19 +12,22 @@ test("consumer-facing package entry points compose independently", async () => {
   ]);
   // React/Monaco UI imports CSS and require a bundler; test its public
   // export target here and exercise its runtime in the playground Vite build.
-  const uiEntry = import.meta.resolve("@moyarich/moyaforge");
-  assert.match(uiEntry, /\/moyaforge\/dist\/index\.js$/);
-  const uiSource = await readFile(new URL(uiEntry), "utf8");
+  const uiManifest = JSON.parse(
+    await readFile(new URL("../packages/moyaforge/package.json", import.meta.url), "utf8"),
+  );
+  const uiEntry = uiManifest.exports["."].import;
+  assert.equal(uiEntry, "./dist/index.js");
+  const uiSource = await readFile(
+    new URL(`../packages/moyaforge/${uiEntry}`, import.meta.url),
+    "utf8",
+  );
   assert.match(uiSource, /components\/index\.js/);
   assert.equal(typeof mdx.createMdxOptions, "function");
   assert.equal(typeof registry.mdxRegistryPlugin, "function");
   assert.equal(typeof search.buildSearchDatabase, "function");
   assert.equal(typeof searchVite.sqliteSearchPlugin, "function");
   assert.equal(typeof toc.getTableOfContents, "function");
-  assert.throws(
-    () => import.meta.resolve("@moyarich/moyaforge/mdx"),
-    /not defined by "exports"/,
-  );
+  assert.equal(Object.hasOwn(uiManifest.exports, "./mdx"), false);
 });
 
 test("canonical Vite plugins accept a plain consumer-owned registry", async () => {
