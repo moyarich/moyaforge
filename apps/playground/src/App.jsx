@@ -7,71 +7,30 @@ import {
   navigateContent,
 } from "./content-routing.js";
 import { searchPages } from "./search/search-client.js";
-import {
-  CodeGroup,
-  CodeTab,
-  CopyButton,
-  Demo as ForgeDemo,
-  EmptyState,
-  createMdxComponents,
-  moyaForgeComponents,
-} from "@moyarich/moyaforge";
-import { ConsoleValue } from "@moyarich/console";
-import { Demo, PlaygroundCallout } from "./components/index.js";
 
-const examples = [
-  {
-    name: "Docs",
-    description: "Browse workspace documentation, guides, and package pages.",
-  },
-  {
-    name: "Component examples",
-    description: "Try code tabs, copy actions, and MDX components.",
-  },
-  {
-    name: "Consumer overrides",
-    description: "Replace framework defaults without editing the library.",
-  },
-  {
-    name: "Console",
-    description:
-      "Inspect structured values using the published Console package.",
-  },
-];
-
-const components = createMdxComponents(moyaForgeComponents, {
-  Demo,
-  Callout: PlaygroundCallout,
-});
-
+/**
+ * Private app shell only. Docs and examples are owned by the repository's
+ * docs/ tree and rendered through the registered MDX content inventory.
+ */
 export function App() {
-  const [section, setSection] = useState(() => "Docs");
-  const [override, setOverride] = useState(true);
-  useEffect(() => {
-    const onHistory = () => {
-      if (readContentRoute()) setSection("Docs");
-    };
-    window.addEventListener("popstate", onHistory);
-    return () => window.removeEventListener("popstate", onHistory);
-  }, []);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState("");
+
   useEffect(() => {
     let active = true;
     let requestId = 0;
     const update = () => {
-      const currentRequest = ++requestId;
+      const id = ++requestId;
       searchPages(searchQuery)
         .then((results) => {
-          if (active && currentRequest === requestId) {
+          if (active && id === requestId) {
             setSearchResults(results);
             setSearchError("");
           }
         })
         .catch((error) => {
-          if (active && currentRequest === requestId)
-            setSearchError(String(error));
+          if (active && id === requestId) setSearchError(String(error));
         });
     };
     update();
@@ -82,27 +41,20 @@ export function App() {
       window.removeEventListener("moyaforge-search:updated", update);
     };
   }, [searchQuery]);
+
   return (
     <div className="playground">
       <header className="topbar">
-        <a
-          className="brand"
-          href="#main"
-          aria-label="MoyaForge playground home"
-        >
+        <a className="brand" href="#main" aria-label="MoyaForge documentation home">
           <span className="brand-mark">M</span> MoyaForge{" "}
-          <span className="brand-subtitle">/ Playground</span>
+          <span className="brand-subtitle">/ Documentation</span>
         </a>
-        <a
-          href="https://github.com/moyarich/moyaforge"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://github.com/moyarich/moyaforge" target="_blank" rel="noreferrer">
           View on GitHub ↗
         </a>
       </header>
       <div className="layout">
-        <aside className="sidebar" aria-label="Example navigation">
+        <aside className="sidebar" aria-label="Documentation search">
           <div className="sidebar-label">DOCUMENTATION SEARCH</div>
           <label htmlFor="playground-search">Search registered pages</label>
           <input
@@ -115,9 +67,9 @@ export function App() {
           />
           <div id="playground-search-results" aria-live="polite">
             {searchError && <p role="alert">{searchError}</p>}
-            {searchQuery.trim() &&
-              !searchError &&
-              searchResults.length === 0 && <p>No matching pages found.</p>}
+            {searchQuery.trim() && !searchError && searchResults.length === 0 && (
+              <p>No matching pages found.</p>
+            )}
             {searchQuery.trim() && !searchError && searchResults.length > 0 && (
               <ul>
                 {searchResults.map((key) => {
@@ -129,16 +81,9 @@ export function App() {
                         <a
                           href={contentHref(path)}
                           onClick={(event) => {
-                            if (
-                              event.button !== 0 ||
-                              event.metaKey ||
-                              event.ctrlKey ||
-                              event.shiftKey ||
-                              event.altKey
-                            )
-                              return;
+                            if (event.button !== 0 || event.metaKey || event.ctrlKey ||
+                                event.shiftKey || event.altKey) return;
                             event.preventDefault();
-                            setSection("Docs");
                             navigateContent(path);
                           }}
                         >
@@ -153,141 +98,15 @@ export function App() {
               </ul>
             )}
           </div>
-          <div className="sidebar-label">COMPONENT EXAMPLES</div>
-          <nav aria-label="Playground sections">
-            {examples.map(({ name, description }) => (
-              <button
-                key={name}
-                type="button"
-                onClick={() => setSection(name)}
-                aria-current={section === name ? "page" : undefined}
-                className={section === name ? "nav-item selected" : "nav-item"}
-              >
-                <strong>{name}</strong>
-                <small>{description}</small>
-              </button>
-            ))}
-          </nav>
           <p className="sidebar-note">
-            These examples run in the private workspace app and use MoyaForge's
-            public component exports.
+            Documentation and examples come from the repository's docs directory.
           </p>
         </aside>
         <main id="main" className="main" tabIndex={-1}>
-          <p className="eyebrow">INTERACTIVE SHOWCASE</p>
-          <h1>{section}</h1>
-          <p className="intro">
-            {examples.find((item) => item.name === section)?.description}
-          </p>
-          {section === "Docs" && (
-            <div className="panel">
-              <ContentExplorer />
-            </div>
-          )}
-          {section === "Component examples" && (
-            <div className="panel">
-              <h2>Install packages</h2>
-              <p>Switch package managers with keyboard-accessible tabs.</p>
-              <CodeGroup label="Package manager">
-                <CodeTab label="npm">
-                  <pre>
-                    <code>
-                      npm install @moyarich/moyaforge @moyarich/console
-                    </code>
-                  </pre>
-                </CodeTab>
-                <CodeTab label="pnpm">
-                  <pre>
-                    <code>pnpm add @moyarich/moyaforge @moyarich/console</code>
-                  </pre>
-                </CodeTab>
-                <CodeTab label="yarn">
-                  <pre>
-                    <code>yarn add @moyarich/moyaforge @moyarich/console</code>
-                  </pre>
-                </CodeTab>
-              </CodeGroup>
-              <h2>Built-in components</h2>
-              <div className="preview">
-                <ForgeDemo>
-                  <strong>MoyaForge Demo</strong>
-                  <p>Rendered directly from the published component API.</p>
-                </ForgeDemo>
-              </div>
-              <div className="preview">
-                <EmptyState
-                  title="No results"
-                  description="This is the reusable MoyaForge empty state."
-                />
-              </div>
-              <div className="preview">
-                <CopyButton value="npm install @moyarich/moyaforge">
-                  Copy npm install command
-                </CopyButton>
-              </div>
-            </div>
-          )}
-          {section === "Consumer overrides" && (
-            <div className="panel">
-              <h2>Override a component</h2>
-              <p>
-                MoyaForge supplies defaults; a consuming app can register an
-                implementation under the same name.
-              </p>
-              <label className="toggle">
-                <input
-                  type="checkbox"
-                  checked={override}
-                  onChange={(event) => setOverride(event.target.checked)}
-                />{" "}
-                Use consumer Demo override
-              </label>
-              <div className="preview">
-                {override ? (
-                  <components.Demo>
-                    Consumer-provided Demo implementation
-                  </components.Demo>
-                ) : (
-                  <ForgeDemo>Built-in MoyaForge Demo implementation</ForgeDemo>
-                )}
-              </div>
-              <div className="preview">
-                <components.Callout>
-                  Custom Callout registered through createMdxComponents.
-                </components.Callout>
-              </div>
-            </div>
-          )}
-          {section === "Console" && (
-            <div className="panel">
-              <h2>Structured value inspection</h2>
-              <p>
-                This component is imported from the published{" "}
-                <code>@moyarich/console</code> package, not copied into
-                MoyaForge.
-              </p>
-              <div className="preview">
-                <ConsoleValue
-                  value={{
-                    framework: "MoyaForge",
-                    console: "npm",
-                    features: ["MDX", "React", "Documentation"],
-                    ready: true,
-                  }}
-                />
-              </div>
-            </div>
-          )}
-          <footer className="footer">
-            <span>Built with React, Vite and MoyaForge.</span>
-            <a
-              href="https://github.com/moyarich/moyaforge/tree/main/docs"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Browse docs ↗
-            </a>
-          </footer>
+          <p className="eyebrow">REPOSITORY DOCUMENTATION</p>
+          <h1>MoyaForge Docs</h1>
+          <p className="intro">Guides and examples maintained in the repository.</p>
+          <div className="panel"><ContentExplorer /></div>
         </main>
       </div>
     </div>
