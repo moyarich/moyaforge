@@ -1,0 +1,54 @@
+---
+title: MoyaForge examples
+label: Examples
+description: Install, configure, and render MoyaForge packages.
+---
+
+# Examples
+
+These are repository-owned examples. The playground renders these documents using the MoyaForge MDX registry.
+
+## Install
+
+```sh
+npm install @moyarich/moyaforge @moyarich/moyaforge-mdx
+```
+
+## Render reusable UI
+
+```tsx
+import { CodeGroup, CodeTab, DocOutline } from "@moyarich/moyaforge";
+
+export function Example() {
+  return (
+    <CodeGroup>
+      <CodeTab label="npm">
+        <pre>npm install @moyarich/moyaforge</pre>
+      </CodeTab>
+      <CodeTab label="pnpm">
+        <pre>pnpm add @moyarich/moyaforge</pre>
+      </CodeTab>
+    </CodeGroup>
+  );
+}
+```
+
+## Compile repository-owned MDX
+
+```js
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
+
+export default {
+  plugins: [
+    mdxRegistryPlugin({ registry, root: process.cwd() }),
+    { enforce: "pre", ...mdx(createMdxOptions()) },
+  ],
+};
+```
+
+## Add SQLite documentation search
+
+Use `@moyarich/moyaforge-search-sqlite/vite` with the same registry object. The indexing adapter remains independent of the MoyaForge React package.
+
+The source of these examples is this page, not a hardcoded example catalog inside `apps/playground`.

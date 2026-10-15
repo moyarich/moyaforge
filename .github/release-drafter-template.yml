@@ -1,0 +1,46 @@
+# Public release drafts describe package capabilities, not repository maintenance.
+name-template: "{{RELEASE_NAME_TEMPLATE}}"
+tag-template: "{{TAG_TEMPLATE}}"
+
+categories:
+  - type: pre-exclude
+    when:
+      labels:
+        - skip-changelog
+        - chore
+        - maintenance
+        - ci
+        - tests
+        - documentation
+        - docs
+        - dependencies
+
+  - title: "Features"
+    semver-increment: minor
+    when:
+      labels:
+        - enhancement
+        - feature
+
+  - title: "Bug fixes"
+    semver-increment: patch
+    when:
+      labels:
+        - bug
+        - fix
+
+  - type: version-resolver
+    semver-increment: major
+    when:
+      label: breaking
+
+  - type: version-resolver
+    semver-increment: patch
+
+change-template: "- $TITLE (#$NUMBER) @$AUTHOR <!-- release-draft-sync:pr=$NUMBER -->"
+no-changes-template: ""
+
+template: |
+  ## Package changes
+
+  $CHANGES

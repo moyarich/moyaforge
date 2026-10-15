@@ -1,0 +1,42 @@
+---
+title: Development
+label: Development
+description: Local setup, testing and repository maintenance.
+---
+
+# Development
+
+This section describes **maintainer workflows**, not public package release capabilities.
+
+## Requirements
+
+Use Node.js 24 and npm from the repository root.
+
+```sh
+npm ci
+npm run dev
+```
+
+`npm run dev` launches the private `apps/playground` workspace, building local workspace packages first.
+
+## Test and build
+
+```sh
+npm run typecheck
+npm test
+npm run test:unit
+npm run check:links
+npm run build
+npm run test:consumer:browser
+npm run test:e2e
+```
+
+Playwright browser tests require Chromium to be installed, for example `npx playwright install chromium`.
+
+## Ownership and release notes
+
+- `docs/` owns the documentation, examples, and development guide; `apps/playground` only renders them.
+- `packages/*/CHANGELOG.md` and package release drafts describe **user-visible capabilities and fixes** of the respective publishable packages.
+- CI mechanics, lockfile regeneration, release automation, contributor setup, private playground maintenance, and development-only tests belong here or in contributor documentation, **not in public changelogs**.
+- Update a public changelog only when a released package's behavior or public API changes.
+- The release-note classification workflow automatically applies `skip-changelog` to maintenance-style PR titles (`chore:`, `ci:`, `docs:`, `test:`, `build:`, `refactor:` and `style:`) or PRs without public package implementation changes. Feature and fix PRs touching published source remain eligible. Reviewers may also apply `skip-changelog` explicitly.
