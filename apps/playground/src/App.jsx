@@ -45,11 +45,19 @@ export function App() {
   return (
     <div className="playground">
       <header className="topbar">
-        <a className="brand" href="#main" aria-label="MoyaForge documentation home">
+        <a
+          className="brand"
+          href="#main"
+          aria-label="MoyaForge documentation home"
+        >
           <span className="brand-mark">M</span> MoyaForge{" "}
           <span className="brand-subtitle">/ Documentation</span>
         </a>
-        <a href="https://github.com/moyarich/moyaforge" target="_blank" rel="noreferrer">
+        <a
+          href="https://github.com/moyarich/moyaforge"
+          target="_blank"
+          rel="noreferrer"
+        >
           View on GitHub ↗
         </a>
       </header>
@@ -67,9 +75,9 @@ export function App() {
           />
           <div id="playground-search-results" aria-live="polite">
             {searchError && <p role="alert">{searchError}</p>}
-            {searchQuery.trim() && !searchError && searchResults.length === 0 && (
-              <p>No matching pages found.</p>
-            )}
+            {searchQuery.trim() &&
+              !searchError &&
+              searchResults.length === 0 && <p>No matching pages found.</p>}
             {searchQuery.trim() && !searchError && searchResults.length > 0 && (
               <ul>
                 {searchResults.map((key) => {
@@ -81,8 +89,14 @@ export function App() {
                         <a
                           href={contentHref(path)}
                           onClick={(event) => {
-                            if (event.button !== 0 || event.metaKey || event.ctrlKey ||
-                                event.shiftKey || event.altKey) return;
+                            if (
+                              event.button !== 0 ||
+                              event.metaKey ||
+                              event.ctrlKey ||
+                              event.shiftKey ||
+                              event.altKey
+                            )
+                              return;
                             event.preventDefault();
                             navigateContent(path);
                           }}
@@ -99,14 +113,19 @@ export function App() {
             )}
           </div>
           <p className="sidebar-note">
-            Documentation and examples come from the repository's docs directory.
+            Documentation and examples come from the repository's docs
+            directory.
           </p>
         </aside>
         <main id="main" className="main" tabIndex={-1}>
           <p className="eyebrow">REPOSITORY DOCUMENTATION</p>
           <h1>MoyaForge Docs</h1>
-          <p className="intro">Guides and examples maintained in the repository.</p>
-          <div className="panel"><ContentExplorer /></div>
+          <p className="intro">
+            Guides and examples maintained in the repository.
+          </p>
+          <div className="panel">
+            <ContentExplorer />
+          </div>
         </main>
       </div>
     </div>

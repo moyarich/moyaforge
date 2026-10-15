@@ -109,7 +109,7 @@ This npm-workspace repository follows the Console release model and consumes wor
 - **Pages:** deploy `apps/playground/dist` to GitHub Pages via the shared reusable Pages workflow.
 - **Self-heal:** fix formatting and synchronize the npm lockfile on non-`main` branches.
 
-Local setup and testing instructions live in [Development](docs/development/page.mdx). The private playground renders [Docs](docs/page.mdx) and [Examples](docs/examples/page.mdx) from the repository rather than owning a separate example catalog. Public package changelogs and release drafts are reserved for user-facing package behavior; workflow and test maintenance is documented under Development. 
+Local setup and testing instructions live in [Development](docs/development/page.mdx). The private playground renders [Docs](docs/page.mdx) and [Examples](docs/examples/page.mdx) from the repository rather than owning a separate example catalog. Public package changelogs and release drafts are reserved for user-facing package behavior; workflow and test maintenance is documented under Development.
 
 The committed root `package-lock.json` is maintained by the shared lockfile self-heal workflow. Publishable packages live under `packages/`. `apps/playground` remains private and must not be selected for releases.
 
