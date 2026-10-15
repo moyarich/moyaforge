@@ -1,107 +1,29 @@
 # MoyaForge playground
 
-The private `@moyarich/moyaforge-playground` workspace app is an interactive React/Vite component showcase. It uses the reusable MoyaForge components and the independently published `@moyarich/console` package without copying their implementations.
+This private Vite/React app is the **renderer** for repository-owned documentation and examples. Content lives in [../../docs](../../docs); the app does not maintain a separate component/example catalog.
 
 ## Run locally
 
-From the repository root, using Node.js 24:
+From the repository root (Node.js 24):
 
 ```sh
-npm install
-npm run dev --workspace @moyarich/moyaforge-playground
+npm ci
+npm run dev
 ```
 
-To create and preview a production build:
+Production build and preview:
 
 ```sh
-npm run build --workspace @moyarich/moyaforge-playground
+npm run build:playground
 npm run preview --workspace @moyarich/moyaforge-playground
 ```
 
-The app builds its local MoyaForge workspace dependency before running Vite. Vite writes output to `apps/playground/dist` and honors `VITE_BASE_PATH` for subpath deployment.
+## Architecture
 
-## Content source registry
+- `registry.config.ts` registers `../../docs` and package-owned page sources.
+- `src/components/ContentExplorer.jsx` displays metadata and lazy MDX modules.
+- `src/App.jsx` owns only navigation, search, and layout.
+- `docs/page.mdx` and `docs/examples/page.mdx` own visible documentation and examples.
+- `docs/development/page.mdx` owns maintainer setup and test instructions.
 
-`registry.config.ts` is the single place to declare playground documentation
-source roots, include patterns, and navigation labels. The config is a plain
-TypeScript object (no `defineRegistry()` helper). Vite's registry integration
-uses its source roots for development file watching.
-
-The playground opens to the **Docs** view, which uses normalized metadata and lazy
-MDX imports. The sidebar search uses the optional SQLite index and links directly
-to registered pages. The **Component examples** view keeps the interactive showcase. The
-separate hardcoded component examples are not generated from the registry.
-Both plugins read the same configured content sources rather than maintaining
-independent glob patterns.
-
-## Examples
-
-- Docs: browse registered workspace Markdown and MDX sources using normal links.
-- Component examples: accessible code tabs, copy buttons, built-in Demo and empty state.
-- Consumer overrides: compare the built-in Demo to the registered app override and a custom Callout.
-- Console: structured value rendering using the published Console API.
-- Responsive, keyboard-operable navigation and scoped app styles.
-
-## MDX integration
-
-`src/mdx-provider.jsx` remains the example of `MDXProvider` composition with `createMdxComponents`. It also demonstrates third-party `ColorShower` registration.
-
-## Documentation UI components
-
-MoyaForge now supplies these React components through `moyaForgeComponents`, so an MDX consumer can render them without local copies:
-
-- `<DocOutline />`: scroll-aware right-side heading outline. Heading elements must have stable `id` attributes (use a remark/rehype heading slug plugin in the consuming MDX build). Optionally pass `rootRef` to scope to an article.
-- `<EditPageLink repository="moyarich/moyaforge" path="docs/page.mdx" />`: repository-aware GitHub edit link.
-- `<CodeGroup>` / `<CodeTab label="...">`: keyboard accessible tabs for any React/MDX content, including Shiki-highlighted Markdown fences.
-- `<MonacoCodeGroup files={[{ name: "file.ts", value: "const x = 1", language: "typescript" }]} />`: existing Monaco abstraction with a default `@monaco-editor/react` renderer and optional `editable`.
-
-Example MDX:
-
-````mdx
-<CodeGroup>
-  <CodeTab label="npm">
-
-```sh
-npm install @moyarich/moyaforge
-```
-
-  </CodeTab>
-  <CodeTab label="pnpm">
-
-```sh
-pnpm add @moyarich/moyaforge
-```
-
-  </CodeTab>
-</CodeGroup>
-
-<MonacoCodeGroup
-  editable
-  files={[
-    {
-      name: "example.ts",
-      language: "typescript",
-      value: "export const hello = 'world';",
-    },
-  ]}
-/>
-
-<EditPageLink
-  repository="moyarich/moyaforge"
-  path="apps/playground/README.md"
-/>
-````
-
-**Shiki highlighting is a build-time MDX concern**, not a runtime React component. Configure `rehype-pretty-code` (powered by Shiki) or your preferred MDX highlighting plugin in the consuming site's MDX compiler. MoyaForge's code tabs render its compiled output without imposing a specific build tool.
-
-## Content registry showcase
-
-Select **Docs** (the default view) to browse visible pages from `registry.config.ts`. Navigation and headings use `virtual:moyaforge-mdx/metadata`; pages load on demand from `virtual:moyaforge-mdx/lazy-registry`. The showcase does not replace application routing or search.
-
-## Canonical MoyaForge integration
-
-The playground is the current consumer of MoyaForge. Its Vite config uses `createMdxOptions` and `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx`; registered documentation comes from the app's `registry.config.ts`. Content metadata is read from `virtual:moyaforge-mdx/metadata`, and individual pages are loaded on demand via `virtual:moyaforge-mdx/lazy-registry`. MoyaForge UI components come from `@moyarich/moyaforge`. There is no separate legacy collection manifest or MDX compiler shim.
-
-## Registered page links
-
-The Content registry explorer uses the browser query parameter `?page=/docs/route` for deep links. This keeps the GitHub Pages deployment pathname unchanged and allows refreshes without a custom SPA rewrite. Visible registry entries are rendered as ordinary links, including open-in-new-tab support; hidden pages remain addressable by direct links, and disabled pages cannot be selected. Back/forward navigation restores the selected page. Heading navigation uses the shared `getTableOfContents()` settings and the published MDX heading IDs. The interactive component showcase remains available separately.
+The private app is not a published package and its maintenance belongs in Development docs, not a public package changelog.
