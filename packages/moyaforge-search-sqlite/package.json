@@ -48,5 +48,16 @@
     "vite": {
       "optional": true
     }
-  }
+  },
+  "publisher": "moyarich",
+  "author": "Moya Richards",
+  "keywords": [
+    "moyaforge",
+    "sqlite",
+    "search",
+    "documentation",
+    "full-text-search",
+    "indexing",
+    "vite"
+  ]
 }
