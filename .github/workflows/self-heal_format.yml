@@ -16,7 +16,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: self-heal-format-${{ github.ref }}
+  group: self-heal-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
