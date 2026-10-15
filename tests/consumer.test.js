@@ -10,8 +10,8 @@ test("consumer-facing package entry points compose independently", async () => {
     import("@moyarich/moyaforge-search-sqlite/vite"),
     import("@moyarich/moyaforge-mdx/toc"),
   ]);
-  // React/Monaco UI imports CSS and require a bundler; test its public
-  // export target here and exercise its runtime in the playground Vite build.
+  // React/Monaco UI imports CSS and needs a bundler. Resolve its public
+  // entry here; the playground and standalone Vite builds verify its runtime.
   const uiEntry = import.meta.resolve("@moyarich/moyaforge");
   assert.match(uiEntry, /\/moyaforge\/dist\/index\.js$/);
   const uiSource = await readFile(new URL(uiEntry), "utf8");
