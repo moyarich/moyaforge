@@ -27,16 +27,17 @@ source roots, include patterns, and navigation labels. The config is a plain
 TypeScript object (no `defineRegistry()` helper). Vite's registry integration
 uses its source roots for development file watching.
 
-The playground remains a component showcase, but it also consumes the content
-registry today: the **Content registry** view uses normalized metadata and lazy
-MDX imports, while the **Search** view uses the optional SQLite index. The
+The playground opens to the **Docs** view, which uses normalized metadata and lazy
+MDX imports. The sidebar search uses the optional SQLite index and links directly
+to registered pages. The **Component examples** view keeps the interactive showcase. The
 separate hardcoded component examples are not generated from the registry.
 Both plugins read the same configured content sources rather than maintaining
 independent glob patterns.
 
 ## Examples
 
-- Documentation: accessible code tabs, copy buttons, built-in Demo and empty state.
+- Docs: browse registered workspace Markdown and MDX sources using normal links.
+- Component examples: accessible code tabs, copy buttons, built-in Demo and empty state.
 - Consumer overrides: compare the built-in Demo to the registered app override and a custom Callout.
 - Console: structured value rendering using the published Console API.
 - Responsive, keyboard-operable navigation and scoped app styles.
@@ -95,7 +96,7 @@ pnpm add @moyarich/moyaforge
 
 ## Content registry showcase
 
-Select **Content registry** to browse visible pages from `registry.config.ts`. Navigation and headings use `virtual:moyaforge-mdx/metadata`; pages load on demand from `virtual:moyaforge-mdx/lazy-registry`. The showcase does not replace application routing or search.
+Select **Docs** (the default view) to browse visible pages from `registry.config.ts`. Navigation and headings use `virtual:moyaforge-mdx/metadata`; pages load on demand from `virtual:moyaforge-mdx/lazy-registry`. The showcase does not replace application routing or search.
 
 ## Canonical MoyaForge integration
 
