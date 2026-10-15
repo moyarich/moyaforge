@@ -21,7 +21,7 @@ permissions:
   packages: read
 
 concurrency:
-  group: self-heal-${{ github.ref }}
+  group: self-heal-package-lock-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
