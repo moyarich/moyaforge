@@ -38,6 +38,8 @@ jobs:
       - run: npm run build --workspace @moyarich/moyaforge-playground
       - name: Test public consumer package imports
         run: npm run test:consumer
+      - name: Build standalone Vite consumer
+        run: npm run test:consumer:browser
       - name: Test standalone Vite consumer with Vitest
         run: npm run test:consumer:vitest
       - name: Install Playwright Chromium
