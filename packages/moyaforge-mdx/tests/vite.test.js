@@ -105,3 +105,59 @@ test("Vite registries load hidden routes but never load disabled pages", async (
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("virtual registries share discovery while reloading after source changes", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-registry-cache-"));
+  try {
+    const directory = join(root, "docs");
+    await mkdir(directory, { recursive: true });
+    const file = join(directory, "page.mdx");
+    await writeFile(file, "---\ntitle: Original\n---\n# Original");
+    const plugin = mdxRegistryPlugin({
+      root,
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.mdx"] } },
+      },
+    });
+    const metadataId = plugin.resolveId.call(
+      {},
+      "virtual:moyaforge-mdx/metadata",
+    );
+    const lazyId = plugin.resolveId.call(
+      {},
+      "virtual:moyaforge-mdx/lazy-registry",
+    );
+    const first = await plugin.load.call({}, metadataId);
+    assert.match(first, /Original/);
+    await writeFile(file, "---\ntitle: Updated\n---\n# Updated");
+    // Discovery is cached across module loads until Vite invalidates it.
+    assert.equal(await plugin.load.call({}, metadataId), first);
+    assert.match(await plugin.load.call({}, lazyId), /lazyPages/);
+    const invalidated = [];
+    const listeners = new Map();
+    plugin.configureServer({
+      watcher: {
+        add() {},
+        on(name, listener) {
+          listeners.set(name, listener);
+        },
+      },
+      moduleGraph: {
+        getModuleById(id) {
+          return { id };
+        },
+        invalidateModule(module) {
+          invalidated.push(module.id);
+        },
+      },
+      ws: { send() {} },
+    });
+    listeners.get("change")(file);
+    const second = await plugin.load.call({}, metadataId);
+    assert.match(second, /Updated/);
+    assert.notEqual(first, second);
+    assert.equal(invalidated.length, 3);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
