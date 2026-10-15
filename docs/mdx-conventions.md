@@ -1,6 +1,6 @@
 # Markdown and MDX conventions
 
-MoyaForge documents use `page.mdx` as the route entry point and optional numbered directory prefixes for navigation order. Keep repository-owned content in `docs/` and implementation-specific examples in the consuming application.
+MoyaForge documents use `page.mdx` as the route entry point and optional numbered directory prefixes for navigation order. Keep repository-owned documentation and example content in `docs/`. The private `apps/playground` application renders the registered content instead of owning a separate documentation or example catalog.
 
 ```text
 docs/
@@ -41,11 +41,11 @@ Install the supported peer dependencies and use `createMoyaForgeMdxOptions` with
 ```js
 import mdx from "@mdx-js/rollup";
 import react from "@vitejs/plugin-react";
-import { createMoyaForgeMdxOptions } from "@moyarich/moyaforge/mdx";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
 
 export default {
   plugins: [
-    { enforce: "pre", ...mdx(createMoyaForgeMdxOptions()) },
+    { enforce: "pre", ...mdx(createMdxOptions()) },
     react({ include: /\\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
   ],
 };
