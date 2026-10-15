@@ -2,8 +2,6 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
 
@@ -14,9 +12,43 @@ concurrency:
 permissions:
   contents: read
   packages: read
+  pull-requests: read
 
 jobs:
+  deduplicate:
+    name: Select CI trigger
+    runs-on: ubuntu-latest
+    outputs:
+      run-checks: ${{ steps.check.outputs.run-checks }}
+    steps:
+      - name: Skip branch push checks when an open PR handles the same commit
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          REPO: ${{ github.repository }}
+          REF_NAME: ${{ github.ref_name }}
+          OWNER: ${{ github.repository_owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" != push || "$REF_NAME" == main ]]; then
+            echo "run-checks=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          open_prs=$(gh api "repos/$REPO/pulls" \
+            -f state=open -f head="$OWNER:$REF_NAME" --jq 'length')
+          if [[ "$open_prs" -gt 0 ]]; then
+            echo "run-checks=false" >> "$GITHUB_OUTPUT"
+            echo "Open PR detected: use pull_request CI for this branch."
+          else
+            echo "run-checks=true" >> "$GITHUB_OUTPUT"
+          fi
+
   package:
+    needs: deduplicate
+    if: needs.deduplicate.outputs.run-checks == 'true'
     name: MoyaForge package
     uses: moyarich/reusable-workflows/.github/workflows/reusable_node-ci.yml@main
     with:
@@ -24,6 +56,8 @@ jobs:
       node-version: "24"
 
   playground:
+    needs: deduplicate
+    if: needs.deduplicate.outputs.run-checks == 'true'
     name: Build private playground
     runs-on: ubuntu-latest
     steps:
