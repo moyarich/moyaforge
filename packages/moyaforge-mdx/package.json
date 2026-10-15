@@ -67,5 +67,16 @@
     "vite": {
       "optional": true
     }
-  }
+  },
+  "publisher": "moyarich",
+  "author": "Moya Richards",
+  "keywords": [
+    "moyaforge",
+    "mdx",
+    "markdown",
+    "compiler",
+    "documentation",
+    "vite",
+    "content"
+  ]
 }
