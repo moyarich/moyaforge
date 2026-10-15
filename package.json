@@ -24,7 +24,7 @@
     "test:boundaries": "node --test tests/workspace-boundaries.test.js",
     "test:consumer": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-search-sqlite && node --test tests/consumer-exports.test.js",
     "test:consumer:browser": "npm run build --workspace @moyarich/moyaforge && npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
-    "test:consumer:vitest": "vitest run --config tests/vite-consumer-build/vitest.config.js"
+    "test:consumer:vitest": "vitest run"
   },
   "devDependencies": {
     "prettier": "^3.9.8",
