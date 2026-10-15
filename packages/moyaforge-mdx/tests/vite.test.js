@@ -115,10 +115,18 @@ test("virtual registries share discovery while reloading after source changes", 
     await writeFile(file, "---\\ntitle: Original\\n---\\n# Original");
     const plugin = mdxRegistryPlugin({
       root,
-      registry: { sources: { docs: { base: "docs", include: ["**/page.mdx"] } } },
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.mdx"] } },
+      },
     });
-    const metadataId = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
-    const lazyId = plugin.resolveId.call({}, "virtual:moyaforge-mdx/lazy-registry");
+    const metadataId = plugin.resolveId.call(
+      {},
+      "virtual:moyaforge-mdx/metadata",
+    );
+    const lazyId = plugin.resolveId.call(
+      {},
+      "virtual:moyaforge-mdx/lazy-registry",
+    );
     const first = await plugin.load.call({}, metadataId);
     assert.match(first, /Original/);
     await writeFile(file, "---\\ntitle: Updated\\n---\\n# Updated");
@@ -130,11 +138,17 @@ test("virtual registries share discovery while reloading after source changes", 
     plugin.configureServer({
       watcher: {
         add() {},
-        on(name, listener) { listeners.set(name, listener); },
+        on(name, listener) {
+          listeners.set(name, listener);
+        },
       },
       moduleGraph: {
-        getModuleById(id) { return { id }; },
-        invalidateModule(module) { invalidated.push(module.id); },
+        getModuleById(id) {
+          return { id };
+        },
+        invalidateModule(module) {
+          invalidated.push(module.id);
+        },
       },
       ws: { send() {} },
     });
