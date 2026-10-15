@@ -112,7 +112,7 @@ test("virtual registries share discovery while reloading after source changes", 
     const directory = join(root, "docs");
     await mkdir(directory, { recursive: true });
     const file = join(directory, "page.mdx");
-    await writeFile(file, "---\\ntitle: Original\\n---\\n# Original");
+    await writeFile(file, "---\ntitle: Original\n---\n# Original");
     const plugin = mdxRegistryPlugin({
       root,
       registry: {
@@ -129,7 +129,7 @@ test("virtual registries share discovery while reloading after source changes", 
     );
     const first = await plugin.load.call({}, metadataId);
     assert.match(first, /Original/);
-    await writeFile(file, "---\\ntitle: Updated\\n---\\n# Updated");
+    await writeFile(file, "---\ntitle: Updated\n---\n# Updated");
     // Discovery is cached across module loads until Vite invalidates it.
     assert.equal(await plugin.load.call({}, metadataId), first);
     assert.match(await plugin.load.call({}, lazyId), /lazyPages/);
