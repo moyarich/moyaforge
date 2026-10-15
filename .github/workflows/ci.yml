@@ -36,12 +36,12 @@ jobs:
         run: npm run test:consumer
       - name: Build standalone Vite consumer
         run: npm run test:consumer:browser
-      - name: Test standalone Vite consumer with Vitest
-        run: npm run test:consumer:vitest
+      - name: Run unit tests with Vitest
+        run: npm run test:unit
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
-      - name: Test standalone Vite consumer in browser
-        run: npm run test:consumer:playwright
+      - name: Run end-to-end browser tests
+        run: npm run test:e2e
       - name: Check workspace boundaries and public export targets
         run: npm run test:boundaries
       - name: Check Pages output
