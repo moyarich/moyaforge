@@ -34,8 +34,8 @@ jobs:
           node --input-type=module <<'NODE'
           import { readFileSync, writeFileSync } from 'node:fs';
           for (const [file, peers] of Object.entries({
-            'packages/moyaforge-mdx/package.json': { vite: '^6.4.0 || ^7.0.0 || ^8.0.0' },
-            'packages/moyaforge-search-sqlite/package.json': { vite: '^6.4.0 || ^7.0.0 || ^8.0.0' },
+            'packages/moyaforge-mdx/package.json': { vite: '^8.0.0' },
+            'packages/moyaforge-search-sqlite/package.json': { vite: '^8.0.0' },
             'packages/moyaforge/package.json': { react: '>=18', 'react-dom': '>=18' }
           })) {
             const manifest = JSON.parse(readFileSync(file, 'utf8'));
