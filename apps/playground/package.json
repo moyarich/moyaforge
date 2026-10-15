@@ -18,7 +18,7 @@
     "build": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "check:links": "npm run build --workspace @moyarich/moyaforge-mdx && node ./scripts/check-links.mjs",
-    "test": "node --test tests/*.test.js"
+    "test": "vitest run --root ../.. apps/playground/tests"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",
