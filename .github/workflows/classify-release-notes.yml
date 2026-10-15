@@ -1,0 +1,48 @@
+name: Classify release notes
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+  issues: write
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark maintenance-only PRs as excluded from public release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Never check out or execute untrusted pull request code.
+          files=$(gh api --paginate "repos/$GH_REPO/pulls/$PR_NUMBER/files?per_page=100" --jq '.[].filename')
+          # A conventional maintenance title is intentionally excluded even if
+          # the PR touches package files (e.g. a package's tests or build setup).
+          internal_title=false
+          if [[ "$PR_TITLE" =~ ^(chore|ci|test|tests|docs|build|refactor|style)(\\([^)]*\\))?!?:[[:space:]] ]]; then
+            internal_title=true
+          fi
+          public_code=false
+          while IFS= read -r file; do
+            case "$file" in
+              packages/*/src/*|packages/*/vite-plugin/*|packages/*/bin/*)
+                public_code=true ;;
+            esac
+          done <<< "$files"
+
+          if [[ "$internal_title" == true || "$public_code" == false ]]; then
+            gh api --method POST "repos/$GH_REPO/issues/$PR_NUMBER/labels" \
+              -f 'labels[]=skip-changelog' >/dev/null
+            echo "Excluded maintenance/documentation PR from public release notes."
+          else
+            # Keep user-managed exclusions. Only set the label automatically;
+            # do not remove one that may have been applied deliberately.
+            echo "Potential end-user package change: leaving release-note selection to reviewers."
+          fi
