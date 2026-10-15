@@ -45,9 +45,7 @@ const components = createMdxComponents(moyaForgeComponents, {
 });
 
 export function App() {
-  const [section, setSection] = useState(() =>
-    "Docs",
-  );
+  const [section, setSection] = useState(() => "Docs");
   const [override, setOverride] = useState(true);
   useEffect(() => {
     const onHistory = () => {
