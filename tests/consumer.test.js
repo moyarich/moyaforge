@@ -13,7 +13,10 @@ test("consumer-facing package entry points compose independently", async () => {
   // React/Monaco UI imports CSS and require a bundler; test its public
   // export target here and exercise its runtime in the playground Vite build.
   const uiManifest = JSON.parse(
-    await readFile(new URL("../packages/moyaforge/package.json", import.meta.url), "utf8"),
+    await readFile(
+      new URL("../packages/moyaforge/package.json", import.meta.url),
+      "utf8",
+    ),
   );
   const uiEntry = uiManifest.exports["."].import;
   assert.equal(uiEntry, "./dist/index.js");
