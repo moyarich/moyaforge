@@ -1,8 +1,5 @@
 name: Upgrade workspace dependencies
 on:
-  push:
-    branches: [test/issue-100-external-vite-consumer]
-    paths: [.github/workflows/upgrade-dependencies.yml]
   workflow_dispatch:
 
 permissions:
@@ -31,6 +28,21 @@ jobs:
           npm exec --yes --package npm-check-updates@latest -- npm-check-updates \
             --upgrade --workspaces --root --dep prod,dev,optional,peer \
             --reject '@moyarich/moyaforge,@moyarich/moyaforge-mdx,@moyarich/moyaforge-search-sqlite,@moyarich/colorshower'
+      - name: Preserve supported peer compatibility
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          for (const [file, peers] of Object.entries({
+            'packages/moyaforge-mdx/package.json': { vite: '^6.4.0 || ^7.0.0 || ^8.0.0' },
+            'packages/moyaforge-search-sqlite/package.json': { vite: '^6.4.0 || ^7.0.0 || ^8.0.0' },
+            'packages/moyaforge/package.json': { react: '>=18', 'react-dom': '>=18' }
+          })) {
+            const manifest = JSON.parse(readFileSync(file, 'utf8'));
+            Object.assign(manifest.peerDependencies, peers);
+            writeFileSync(file, JSON.stringify(manifest, null, 2) + '\\n');
+          }
+          NODE
       - name: Update lockfile and verify clean installation
         env:
           NODE_AUTH_TOKEN: ${{ github.token }}
