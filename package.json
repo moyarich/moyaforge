@@ -14,17 +14,29 @@
   "scripts": {
     "build:package": "npm run build --workspace @moyarich/moyaforge",
     "build:playground": "npm run build --workspace @moyarich/moyaforge-playground",
-    "test": "npm test --workspace @moyarich/moyaforge",
-    "typecheck": "npm run typecheck --workspace @moyarich/moyaforge",
+    "test": "npm test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run typecheck && npm run test:all && npm run check:links && npm run build:playground && npm run test:boundaries && npm run test:consumer",
+    "checks": "npm run typecheck && npm test && npm run check:links && npm run build && npm run test:unit && npm run test:consumer:browser",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
-    "test:all": "npm test --workspaces --if-present",
-    "test:boundaries": "node --test tests/workspace-boundaries.test.js",
-    "test:consumer": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-search-sqlite && node --test tests/consumer-exports.test.js"
+    "test:all": "npm run test",
+    "test:boundaries": "vitest run tests/workspace.test.js",
+    "test:consumer": "vitest run tests/consumer.test.js",
+    "test:consumer:browser": "npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
+    "build": "npm run build --workspaces",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
-    "prettier": "^3.9.8"
+    "prettier": "^3.9.10",
+    "vitest": "^5.0.4",
+    "@playwright/test": "^1.64.1",
+    "vite": "^8.3.4",
+    "@types/node": "^26.6.5",
+    "@vitejs/plugin-react": "^6.1.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

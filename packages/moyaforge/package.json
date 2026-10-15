@@ -34,18 +34,18 @@
   "scripts": {
     "build": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json",
     "typecheck": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test tests/*.test.js",
+    "test": "npm run build && vitest run",
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "@types/react": "^19.1.0",
-    "typescript": "^5.9.0",
-    "@types/react-dom": "^19.1.0",
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2",
+    "@types/react-dom": "^19.3.0",
     "@typefox/monaco-editor-react": "^8.0.2",
     "monaco-languageclient": "^11.0.2",
     "@monaco-editor/react": "^4.7.0",
     "@moyarich/console": "^0.1.0",
-    "@types/node": "^24.0.0"
+    "@types/node": "^26.6.5"
   },
   "bin": {
     "moyaforge": "./dist/cli.js"
@@ -56,5 +56,16 @@
   },
   "dependencies": {
     "@moyarich/moyaforge-mdx": "^0.1.0"
-  }
+  },
+  "publisher": "moyarich",
+  "author": "Moya Richards",
+  "keywords": [
+    "moyaforge",
+    "react",
+    "components",
+    "documentation",
+    "docs",
+    "mdx",
+    "ui"
+  ]
 }

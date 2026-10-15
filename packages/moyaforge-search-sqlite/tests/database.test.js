@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import { test } from "vitest";
 import initSqlJs from "sql.js";
 import { buildSearchDatabase, querySearchDatabase } from "../dist/index.js";
 

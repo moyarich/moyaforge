@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { test } from "node:test";
+import { test } from "vitest";
 
 test("search refresh invalidates a database whose initial fetch was in flight", async () => {
   const originalFetch = globalThis.fetch;

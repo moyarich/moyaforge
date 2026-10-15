@@ -25,28 +25,39 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test tests/*.test.js",
+    "test": "npm run build && vitest run",
     "prepack": "npm run build"
   },
   "dependencies": {
-    "sql.js": "^1.14.2",
-    "tinyglobby": "^0.2.15",
+    "sql.js": "^1.15.0",
+    "tinyglobby": "^0.2.17",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@types/sql.js": "^1.4.11",
-    "typescript": "^5.9.2"
+    "typescript": "^7.0.2"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
   "peerDependencies": {
-    "vite": "^6.0.0 || ^7.0.0"
+    "vite": "^8.0.0"
   },
   "peerDependenciesMeta": {
     "vite": {
       "optional": true
     }
-  }
+  },
+  "publisher": "moyarich",
+  "author": "Moya Richards",
+  "keywords": [
+    "moyaforge",
+    "sqlite",
+    "search",
+    "documentation",
+    "full-text-search",
+    "indexing",
+    "vite"
+  ]
 }

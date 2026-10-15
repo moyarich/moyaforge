@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { resolve, dirname } from "node:path";
-import { test } from "node:test";
+import { test } from "vitest";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifests = Object.fromEntries(

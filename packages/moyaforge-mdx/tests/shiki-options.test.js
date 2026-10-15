@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vitest";
 import { createMdxOptions } from "../dist/index.js";
 
 test("Shiki integration is optional and maintains deterministic rehype ordering", () => {

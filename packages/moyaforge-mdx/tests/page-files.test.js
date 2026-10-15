@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import { test } from "vitest";
 import { isContentPageFile } from "../dist/source-files.js";
 
 test("canonical page matching works across nested Unix and Windows paths", () => {
