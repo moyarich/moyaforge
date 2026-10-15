@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["tests/**/*.test.{js,jsx,ts,tsx}"],
+    include: ["tests/**/*.vitest.test.{js,jsx,ts,tsx}"],
     environment: "node",
   },
 });
