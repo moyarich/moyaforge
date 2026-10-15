@@ -22,7 +22,8 @@
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:all": "npm test --workspaces --if-present",
     "test:boundaries": "node --test tests/workspace-boundaries.test.js",
-    "test:consumer": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-search-sqlite && node --test tests/consumer-exports.test.js"
+    "test:consumer": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-search-sqlite && node --test tests/consumer-exports.test.js",
+    "test:consumer:browser": "npm run build --workspace @moyarich/moyaforge && npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/consumer/vite.config.js"
   },
   "devDependencies": {
     "prettier": "^3.9.8"
