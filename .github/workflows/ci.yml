@@ -37,7 +37,7 @@ jobs:
             exit 0
           fi
 
-          open_prs=$(gh api "repos/$REPO/pulls" \
+          open_prs=$(gh api --method GET "repos/$REPO/pulls" \
             -f state=open -f head="$OWNER:$REF_NAME" --jq 'length')
           if [[ "$open_prs" -gt 0 ]]; then
             echo "run-checks=false" >> "$GITHUB_OUTPUT"
