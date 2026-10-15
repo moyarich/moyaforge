@@ -18,15 +18,15 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run typecheck && npm test && npm run check:links && npm run build && npm run test:boundaries && npm run test:consumer && npm run test:consumer:browser && npm run test:consumer:vitest",
+    "checks": "npm run typecheck && npm test && npm run check:links && npm run build && npm run test:boundaries && npm run test:consumer && npm run test:consumer:browser && npm run test:unit",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:all": "npm run test",
     "test:boundaries": "node --test tests/workspace-boundaries.test.js",
     "test:consumer": "node --test tests/consumer-exports.test.js",
     "test:consumer:browser": "npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
-    "test:consumer:vitest": "vitest run tests/vite-consumer-build",
-    "test:consumer:playwright": "playwright test",
-    "build": "npm run build --workspaces"
+    "build": "npm run build --workspaces",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "prettier": "^3.9.8",
