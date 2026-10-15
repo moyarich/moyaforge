@@ -39,3 +39,4 @@ Playwright browser tests require Chromium to be installed, for example `npx play
 - `packages/*/CHANGELOG.md` and package release drafts describe **user-visible capabilities and fixes** of the respective publishable packages.
 - CI mechanics, lockfile regeneration, release automation, contributor setup, private playground maintenance, and development-only tests belong here or in contributor documentation, **not in public changelogs**.
 - Update a public changelog only when a released package's behavior or public API changes.
+- The release-note classification workflow automatically applies `skip-changelog` to maintenance-style PR titles (`chore:`, `ci:`, `docs:`, `test:`, `build:`, `refactor:` and `style:`) or PRs without public package implementation changes. Feature and fix PRs touching published source remain eligible. Reviewers may also apply `skip-changelog` explicitly.
