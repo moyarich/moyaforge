@@ -3,7 +3,7 @@ import {
   ArrowUpRight,
   BookOpen,
   Command,
-  Github,
+  GitBranch,
   Search,
   Terminal,
   X,
@@ -87,7 +87,7 @@ export function App() {
           target="_blank"
           rel="noreferrer"
         >
-          <Github size={17} aria-hidden="true" /> <span>GitHub</span>{" "}
+          <GitBranch size={17} aria-hidden="true" /> <span>GitHub</span>{" "}
           <ArrowUpRight size={14} aria-hidden="true" />
         </a>
       </header>
