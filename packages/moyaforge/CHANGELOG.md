@@ -4,11 +4,10 @@
 
 ### Added
 
-- Reusable documentation infrastructure, MDX component registry, and configuration helpers.
-- Documentation layouts, navigation, search, code tabs, Monaco integration, and playground components.
-- Public package exports and a separate private interactive playground.
+- Reusable React documentation components, including navigation, code tabs, searchable documentation UI primitives, and Monaco editor integration.
+- MDX component registration and consumer overrides for custom documentation experiences.
+- Public package exports for reusable documentation layouts and component APIs.
 
 ### Fixed
 
-- React intrinsic component property conflicts and Monaco editor import.
-- GitHub Pages deployment build and reusable workflow integration.
+- React intrinsic property handling and Monaco editor imports.
