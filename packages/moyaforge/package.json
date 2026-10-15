@@ -56,5 +56,16 @@
   },
   "dependencies": {
     "@moyarich/moyaforge-mdx": "^0.1.0"
-  }
+  },
+  "publisher": "moyarich",
+  "author": "Moya Richards",
+  "keywords": [
+    "moyaforge",
+    "react",
+    "components",
+    "documentation",
+    "docs",
+    "mdx",
+    "ui"
+  ]
 }
