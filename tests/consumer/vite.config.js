@@ -6,5 +6,8 @@ const root = fileURLToPath(new URL(".", import.meta.url));
 export default defineConfig({
   root,
   plugins: [react()],
-  build: { outDir: fileURLToPath(new URL("../../.consumer-dist", import.meta.url)), emptyOutDir: true },
+  build: {
+    outDir: fileURLToPath(new URL("../../.consumer-dist", import.meta.url)),
+    emptyOutDir: true,
+  },
 });
