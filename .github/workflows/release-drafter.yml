@@ -169,4 +169,5 @@ jobs:
       target-key: ${{ matrix.directory }}
       release-name: ${{ format('{0} v{1}', matrix.name, matrix.version) }}
       changelog-path: ${{ format('{0}/CHANGELOG.md', matrix.directory) }}
+      template-path: .github/release-drafter-template.yml
       dry-run: false
