@@ -18,7 +18,7 @@
     "typecheck": "npm run typecheck --workspace @moyarich/moyaforge",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run typecheck && npm run test:all && npm run check:links && npm run build:playground && npm run test:boundaries && npm run test:consumer && npm run test:consumer:vitest",
+    "checks": "npm run typecheck && npm run test:all && npm run check:links && npm run build:playground && npm run test:boundaries && npm run test:consumer && npm run test:consumer:browser && npm run test:consumer:vitest",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:all": "npm test --workspaces --if-present",
     "test:boundaries": "node --test tests/workspace-boundaries.test.js",
