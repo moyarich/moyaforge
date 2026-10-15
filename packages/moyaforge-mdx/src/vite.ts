@@ -33,11 +33,15 @@ export function mdxRegistryPlugin({
   const directories = Object.values(registry.sources).map((source) =>
     resolve(appRoot, source.base),
   );
+  // Share one metadata discovery across all virtual modules in a build.
+  // Re-reading every MDX file for each module duplicates transient allocations.
+  let discovery: ReturnType<typeof discoverContent> | undefined;
+  const getDiscovery = () => (discovery ??= discoverContent(registry, appRoot));
   const discover = async (lazyOnly: boolean) => {
     const imports: string[] = [];
     const sources: string[] = [];
     let index = 0;
-    const { registry: normalized } = await discoverContent(registry, appRoot);
+    const { registry: normalized } = await getDiscovery();
     for (const [name, source] of Object.entries(registry.sources)) {
       const base = resolve(appRoot, source.base);
       const pages: string[] = [];
@@ -76,7 +80,7 @@ export function mdxRegistryPlugin({
           inputs,
           headings,
           metadata,
-        } = await discoverContent(registry, appRoot);
+        } = await getDiscovery();
         return `export const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages)};\nexport const routes = ${JSON.stringify(pages.routes)};\nexport const navigation = ${JSON.stringify(pages.navigation)};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
       }
     },
@@ -85,6 +89,7 @@ export function mdxRegistryPlugin({
       const update = (file: string) => {
         const absolute = resolve(file);
         if (!directories.some((dir) => absolute.startsWith(dir + sep))) return;
+        discovery = undefined;
         for (const id of [resolvedId, lazyResolvedId, metadataResolvedId]) {
           const module = server.moduleGraph.getModuleById(id);
           if (module) server.moduleGraph.invalidateModule(module);
