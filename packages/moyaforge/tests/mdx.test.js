@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import test from "vitest";
 
 import { Console, Terminal } from "@moyarich/console";
 import { moyaForgeComponents } from "../dist/utils/mdx/index.js";
