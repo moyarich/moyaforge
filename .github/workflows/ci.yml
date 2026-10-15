@@ -72,6 +72,46 @@ jobs:
       - name: Validate registered content links and anchors
         run: npm run check:links
       - run: npm run build --workspaces
+      - name: Verify moyaforge-mdx publish tarball
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm pack --workspace @moyarich/moyaforge-mdx --dry-run --json > /tmp/moyaforge-mdx-pack.json
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const [pkg] = JSON.parse(readFileSync('/tmp/moyaforge-mdx-pack.json', 'utf8'));
+          if (pkg.name !== '@moyarich/moyaforge-mdx') throw Error('Unexpected tarball package');
+          const files = new Set(pkg.files.map(({ path }) => path));
+          for (const file of [
+            'dist/index.js', 'dist/index.d.ts',
+            'dist/vite.js', 'dist/vite.d.ts',
+            'dist/toc.js', 'dist/toc.d.ts',
+            'dist/source-files.js', 'dist/source-files.d.ts',
+            'README.md', 'CHANGELOG.md', 'package.json',
+          ]) {
+            if (!files.has(file)) throw Error('Publish tarball missing ' + file);
+          }
+          console.log('Validated published MDX entry points and documentation.');
+          NODE
+      - name: Verify playground consumes moyaforge-mdx
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const packageJson = JSON.parse(readFileSync('apps/playground/package.json', 'utf8'));
+          if (!packageJson.dependencies?.['@moyarich/moyaforge-mdx']) {
+            throw Error('Playground must depend on @moyarich/moyaforge-mdx');
+          }
+          const vite = readFileSync('apps/playground/vite.config.js', 'utf8');
+          const explorer = readFileSync('apps/playground/src/components/ContentExplorer.jsx', 'utf8');
+          if (!vite.includes('mdxRegistryPlugin(')) throw Error('Playground must use shared MDX Vite plugin');
+          if (!explorer.includes('virtual:moyaforge-mdx/metadata') ||
+              !explorer.includes('virtual:moyaforge-mdx/lazy-registry')) {
+            throw Error('Playground must use shared metadata and lazy page loader');
+          }
+          console.log('Verified playground uses MDX package APIs.');
+          NODE
       - name: Build standalone Vite consumer
         run: npm run test:consumer:browser
       - name: Run unit tests with Vitest
