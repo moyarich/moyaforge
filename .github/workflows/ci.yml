@@ -27,12 +27,8 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
-      - name: Test shared MDX tooling
-        run: npm test --workspace @moyarich/moyaforge-mdx
-      - name: Test shared SQLite search
-        run: npm test --workspace @moyarich/moyaforge-search-sqlite
-      - name: Test playground routing and integration
-        run: npm test --workspace @moyarich/moyaforge-playground
+      - name: Test all workspaces
+        run: npm test --workspaces --if-present
       - name: Validate registered content links and anchors
         run: npm run check:links
       - run: npm run build --workspaces
