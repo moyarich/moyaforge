@@ -24,10 +24,12 @@
     "test:boundaries": "node --test tests/workspace-boundaries.test.js",
     "test:consumer": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-search-sqlite && node --test tests/consumer-exports.test.js",
     "test:consumer:browser": "npm run build --workspace @moyarich/moyaforge && npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
-    "test:consumer:vitest": "vitest run tests/vite-consumer-build"
+    "test:consumer:vitest": "vitest run tests/vite-consumer-build",
+    "test:consumer:playwright": "npm run build --workspace @moyarich/moyaforge && playwright test"
   },
   "devDependencies": {
     "prettier": "^3.9.8",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@playwright/test": "^1.56.1"
   }
 }
