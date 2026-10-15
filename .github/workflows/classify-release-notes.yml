@@ -26,7 +26,8 @@ jobs:
           # A conventional maintenance title is intentionally excluded even if
           # the PR touches package files (e.g. a package's tests or build setup).
           internal_title=false
-          if [[ "$PR_TITLE" =~ ^(chore|ci|test|tests|docs|build|refactor|style)(\\([^)]*\\))?!?:[[:space:]] ]]; then
+          maintenance_prefix="^(chore|ci|test|tests|docs|build|refactor|style)(\\([^)]*\\))?!?:[[:space:]]"
+          if [[ "$PR_TITLE" =~ $maintenance_prefix ]]; then
             internal_title=true
           fi
           public_code=false
