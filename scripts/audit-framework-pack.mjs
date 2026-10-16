@@ -31,10 +31,11 @@ const extractedUiGroups = [
   "Layout/DocsLayout",
 ];
 const packedExtractedUi = legacyComponentPaths.filter((path) =>
-  extractedUiGroups.some((group) =>
-    path.startsWith(`dist/components/${group}/`) ||
-    path.startsWith(`src/components/${group}/`)
-  )
+  extractedUiGroups.some(
+    (group) =>
+      path.startsWith(`dist/components/${group}/`) ||
+      path.startsWith(`src/components/${group}/`),
+  ),
 );
 const stylesheetPaths = paths.filter((path) => path.endsWith(".css"));
 const uiOnlyPaths = paths.filter((path) => path.includes("moyaforge-ui"));
