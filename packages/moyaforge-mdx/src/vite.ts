@@ -5,6 +5,8 @@ import type { Plugin } from "vite";
 export interface RegistrySource {
   base: string;
   include: readonly string[];
+  /** Include ordinary Markdown files in addition to directory landing pages. */
+  pageFiles?: "canonical" | "all";
   exclude?: readonly string[];
   navigation?: { label?: string; order?: number };
   metadata?: readonly string[];

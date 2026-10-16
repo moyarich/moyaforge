@@ -16,6 +16,8 @@ import {
 export interface ContentSource {
   base: string;
   include: readonly string[];
+  /** Include ordinary Markdown files in addition to directory landing pages. */
+  pageFiles?: "canonical" | "all";
   exclude?: readonly string[];
   metadata?: readonly string[];
   navigation?: { label?: string; order?: number };
@@ -93,7 +95,12 @@ export async function discoverContent(
     });
     const pages: PageInput[] = [];
     for (const file of files.sort()) {
-      if (!isContentPageFile(file)) continue;
+      if (
+        source.pageFiles === "all"
+          ? !/\.mdx?$/.test(file)
+          : !isContentPageFile(file)
+      )
+        continue;
       const name = relative(base, file).split(sep).join("/");
       const raw = await readFile(file, "utf8");
       pages.push({ file: name, frontmatter: parsePageFrontmatter(raw, file) });

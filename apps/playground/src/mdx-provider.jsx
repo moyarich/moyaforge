@@ -1,11 +1,35 @@
+import {
+  BookOpen,
+  Camera,
+  Check,
+  ChevronRight,
+  Code,
+  ExternalLink,
+  FileText,
+  Info,
+  Search as SearchIcon,
+  Settings,
+  Terminal as TerminalIcon,
+} from "lucide-react";
 import { MDXProvider } from "@mdx-js/react";
-import * as ColorShower from "@moyarich/colorshower";
-import { createMdxComponents, moyaForgeComponents } from "@moyarich/moyaforge";
-import { Demo, PlaygroundCallout } from "./components/index.js";
+import {
+  createMdxComponents,
+  moyaForgeComponents,
+} from "@moyarich/moyaforge/mdx";
+import { PlaygroundCallout } from "./components/index.js";
 
 const components = createMdxComponents(moyaForgeComponents, {
-  ColorShower,
-  Demo,
+  BookOpen,
+  Camera,
+  Check,
+  ChevronRight,
+  Code,
+  ExternalLink,
+  FileText,
+  Info,
+  SearchIcon,
+  Settings,
+  TerminalIcon,
   Callout: PlaygroundCallout,
 });
 

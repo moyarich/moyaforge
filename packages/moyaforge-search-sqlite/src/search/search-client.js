@@ -1,6 +1,6 @@
+import { querySearchDatabase } from "@moyarich/moyaforge-search-sqlite";
 import initSqlJs from "sql.js";
 import wasmUrl from "sql.js/dist/sql-wasm.wasm?url";
-import { querySearchDatabase } from "@moyarich/moyaforge-search-sqlite";
 import { databaseUrl } from "virtual:moyaforge-search/database";
 
 let SQL;

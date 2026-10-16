@@ -1,100 +1,41 @@
-import assert from "node:assert/strict";
-import { test } from "vitest";
-import { readFile } from "node:fs/promises";
+import { test, expect } from "vitest";
+import { createContentRouting } from "../../../packages/moyaforge/src/components/Routing/content-routing";
 
-test("content query routing respects normalized routable pages", async () => {
-  const source = await readFile(
-    new URL("../src/content-routing.js", import.meta.url),
-    "utf8",
-  );
-  const standalone = source.replace(
-    'import { routes } from "virtual:moyaforge-mdx/metadata";',
-    'const routes = [{ path: "/docs", navigation: "visible" }, { path: "/docs/hidden", navigation: "hidden" }];',
-  );
-  const router = await import(
-    "data:text/javascript," + encodeURIComponent(standalone)
-  );
-  assert.equal(router.firstContentRoute(), "/docs");
-  assert.equal(router.normalizeRoute("/docs/"), "/docs");
-  assert.equal(router.normalizeRoute("/docs/hidden"), "/docs/hidden");
-  assert.equal(router.normalizeRoute("/docs/disabled"), null);
-  assert.equal(router.normalizeRoute("//evil.test"), null);
-  assert.equal(
-    router.readContentRoute("?page=%2Fdocs%2Fhidden"),
-    "/docs/hidden",
-  );
-  assert.equal(router.readContentRoute("?page=%2Fmissing"), null);
+const pages = [
+  {
+    source: "docs",
+    file: "02-hidden/page.mdx",
+    path: "/docs/hidden",
+    navigation: "hidden",
+  },
+  {
+    source: "docs",
+    file: "01-guide/page.mdx",
+    path: "/docs/guide",
+    navigation: "visible",
+  },
+  {
+    source: "docs",
+    file: "03-disabled/page.mdx",
+    path: "/docs/disabled",
+    navigation: "disabled",
+  },
+];
+test("canonical routes exclude disabled pages while preserving hidden pages", () => {
+  const routing = createContentRouting(pages);
+  expect(routing.firstContentRoute()).toBe("/docs/guide");
+  expect(routing.normalizeRoute("/docs/guide/")).toBe("/docs/guide");
+  expect(routing.normalizeRoute("/docs/hidden")).toBe("/docs/hidden");
+  expect(routing.normalizeRoute("/docs/disabled")).toBeNull();
+  expect(routing.normalizeRoute("//evil.test")).toBeNull();
+  expect(routing.normalizeRoute("/missing")).toBeNull();
 });
-
-test("default content route never picks disabled pages", async () => {
-  const source = await readFile(
-    new URL("../src/content-routing.js", import.meta.url),
-    "utf8",
-  );
-  const importLine = 'import { routes } from "virtual:moyaforge-mdx/metadata";';
-  const load = async (routes) => {
-    const standalone = source.replace(
-      importLine,
-      `const routes = ${JSON.stringify(routes)};`,
-    );
-    return import("data:text/javascript," + encodeURIComponent(standalone));
-  };
-  const hiddenOnly = await load([
-    { path: "/docs/hidden", navigation: "hidden" },
-  ]);
-  assert.equal(hiddenOnly.firstContentRoute(), "/docs/hidden");
-  const visiblePreferred = await load([
-    { path: "/docs/hidden", navigation: "hidden" },
-    { path: "/docs/start", navigation: "visible" },
-  ]);
-  assert.equal(visiblePreferred.firstContentRoute(), "/docs/start");
-  const noRoutablePages = await load([]);
-  assert.equal(noRoutablePages.firstContentRoute(), null);
-});
-
-test("SQLite search keys resolve only to canonical routable pages", async () => {
-  const source = await readFile(
-    new URL("../src/content-routing.js", import.meta.url),
-    "utf8",
-  );
-  const standalone = source.replace(
-    'import { routes } from "virtual:moyaforge-mdx/metadata";',
-    `const routes = ${JSON.stringify([
-      {
-        source: "docs",
-        file: "01-guide/page.mdx",
-        path: "/docs/guide",
-        navigation: "visible",
-        title: "Guide Title",
-      },
-      {
-        source: "docs",
-        file: "02-hidden/page.md",
-        path: "/docs/hidden",
-        navigation: "hidden",
-      },
-    ])};`,
-  );
-  const router = await import(
-    "data:text/javascript," + encodeURIComponent(standalone)
-  );
-  assert.equal(
-    router.searchResultRoute("docs/01-guide/page.mdx"),
+test("search keys resolve against canonical routes rather than inferred URL paths", () => {
+  const routing = createContentRouting(pages);
+  expect(routing.searchResultRoute("docs/01-guide/page.mdx")).toBe(
     "/docs/guide",
   );
-  assert.equal(
-    router.searchResultRoute("docs/02-hidden/page.md"),
-    "/docs/hidden",
-  );
-  assert.equal(router.searchResultRoute("docs/03-disabled/page.mdx"), null);
-  assert.equal(router.searchResultRoute("README.md"), null);
-  assert.equal(
-    router.searchResultPage("docs/01-guide/page.mdx")?.title,
-    "Guide Title",
-  );
-  assert.equal(
-    router.searchResultPage("docs/02-hidden/page.md")?.path,
-    "/docs/hidden",
-  );
-  assert.equal(router.searchResultPage("docs/03-disabled/page.mdx"), null);
+  expect(routing.searchResultPage("docs/02-hidden/page.mdx")).toBe(pages[0]);
+  expect(routing.searchResultRoute("docs/03-disabled/page.mdx")).toBeNull();
+  expect(createContentRouting([]).firstContentRoute()).toBeNull();
 });

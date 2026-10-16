@@ -21,8 +21,9 @@ npm run preview --workspace @moyarich/moyaforge-playground
 ## Architecture
 
 - `registry.config.ts` registers `../../docs` and package-owned page sources.
-- `src/components/ContentExplorer.jsx` displays metadata and lazy MDX modules.
-- `src/App.jsx` owns only navigation, search, and layout.
+- `src/App.jsx` renders metadata and lazy MDX modules inside the public routing and documentation shell APIs.
+- The sidebar and outline use explicit slots with registry-driven navigation, version information, and page-specific feedback.
+- `src/mdx-provider.jsx` registers reusable components and common Lucide icons for authored MDX.
 - `docs/page.mdx` and `docs/examples/page.mdx` own visible documentation and examples.
 - `docs/development/page.mdx` owns maintainer setup and test instructions.
 

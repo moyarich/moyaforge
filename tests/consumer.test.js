@@ -21,9 +21,9 @@ test("consumer-facing package entry points compose independently", async () => {
   assert.equal(typeof search.buildSearchDatabase, "function");
   assert.equal(typeof searchVite.sqliteSearchPlugin, "function");
   assert.equal(typeof toc.getTableOfContents, "function");
-  assert.throws(
-    () => import.meta.resolve("@moyarich/moyaforge/mdx"),
-    /not defined by "exports"/,
+  assert.match(
+    import.meta.resolve("@moyarich/moyaforge/mdx"),
+    /\/dist\/utils\/mdx\/index\.js$/,
   );
 });
 

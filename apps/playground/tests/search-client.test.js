@@ -33,7 +33,10 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
       return { ok: true, arrayBuffer: async () => Uint8Array.of(2).buffer };
     };
     const source = await readFile(
-      new URL("../src/search/search-client.js", import.meta.url),
+      new URL(
+        "../../../packages/moyaforge-search-sqlite/src/search/search-client.js",
+        import.meta.url,
+      ),
       "utf8",
     );
     const standalone = source

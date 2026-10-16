@@ -1,18 +1,80 @@
 ---
-title: MoyaForge documentation
-label: Overview
-description: Guides, examples, and package reference for MoyaForge.
+title: Getting started
+label: Getting started
+order: 1
+description: Build a documentation site with MoyaForge.
 ---
 
-# MoyaForge documentation
+# Getting started
 
-MoyaForge provides reusable React documentation components, Markdown/MDX tooling, and optional SQLite-backed search.
+MoyaForge brings your content, navigation, and React components together. Write in Markdown or MDX, add the packages you need, and build a documentation site that feels like your own.
 
-## Explore
+## Install the packages
 
-- [Examples](./examples) — package integration and reusable component examples
-- [Development](./development) — local setup, testing and contributor workflows
-- [Framework architecture](./framework-architecture.md) — current architecture and roadmap
-- [MDX conventions](./mdx-conventions.md) — authoring and compilation conventions
+Start with a React and Vite application. Install the framework and MDX compiler; add SQLite search when your site needs it.
 
-The documentation and example content lives in the repository's `docs/` tree. The private playground renders it; the playground is not the canonical source.
+```sh
+npm install @moyarich/moyaforge @moyarich/moyaforge-mdx
+npm install react-router-dom @mdx-js/react
+npm install -D @mdx-js/rollup
+# Optional full-text search
+npm install @moyarich/moyaforge-search-sqlite
+```
+
+## Choose your building blocks
+
+| Package                             | What it provides                                                    |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| `@moyarich/moyaforge`               | React documentation layouts, routing, navigation, and components    |
+| `@moyarich/moyaforge-mdx`           | MDX compiler conventions, content discovery, metadata, and headings |
+| `@moyarich/moyaforge-search-sqlite` | Standalone SQLite indexing, queries, and a Vite adapter             |
+
+The MDX and search packages work independently. MoyaForge connects them into a documentation experience.
+
+## Create your first page
+
+Create `docs/page.mdx`. Frontmatter controls the title, navigation label, and order. Headings become anchors and appear in the page outline.
+
+```md
+---
+title: Welcome
+label: Introduction
+order: 1
+---
+
+# Welcome
+
+Your documentation starts here.
+
+## Your first guide
+
+Write Markdown, or use React components in MDX.
+```
+
+## Connect your application
+
+This playground uses the same public components available to your app. It supplies the generated page inventory and renders content inside the shared documentation shell.
+
+```jsx
+import { MoyaForgeRouter, DocumentationSite } from "@moyarich/moyaforge";
+import "@moyarich/moyaforge/components.css";
+import { routes } from "virtual:moyaforge-mdx/metadata";
+
+export function App() {
+  return (
+    <MoyaForgeRouter pages={routes} mode="hash">
+      <DocumentationSite title="My documentation">
+        <ContentPage />
+      </DocumentationSite>
+    </MoyaForgeRouter>
+  );
+}
+```
+
+`ContentPage` is your content renderer. The [routing guide](./routing) shows how to connect the lazy MDX registry.
+
+> You are looking at a working example: the navigation, search results, and page outline are powered by these packages.
+
+## Keep exploring
+
+Learn about [routing](./routing), [MDX setup](./mdx), and [SQLite search](./search). Visit the [component examples](./examples) to see MDX and React working together.

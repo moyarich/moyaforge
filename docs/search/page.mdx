@@ -1,0 +1,64 @@
+---
+title: SQLite search
+label: SQLite search
+order: 4
+---
+
+# SQLite search
+
+Add local, browser-based search to your documentation. The search package builds an index from your sources and returns document keys; MoyaForge resolves those keys to pages.
+
+## Add the Vite plugin
+
+Use the same registry configuration for content discovery and indexing.
+
+```js
+import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
+
+// Add alongside your MDX and React plugins:
+sqliteSearchPlugin({ registry, root: import.meta.dirname });
+```
+
+The adapter serves the database during development, rebuilds it when content changes, and emits it as a production asset.
+
+## Connect the documentation search
+
+The optional browser client loads SQLite on the first query. Pass its search function to the documentation shell.
+
+```jsx
+import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
+
+<DocumentationSite title="My docs" search={searchPages}>
+  <ContentPage />
+</DocumentationSite>;
+```
+
+Press Command K or Control K to focus search. Results navigate through React Router. Escape clears the query.
+
+## Use the standalone API
+
+Build and query an index without React, MDX, or Vite. The core API accepts a SQL.js instance and indexed documents.
+
+```js
+import initSqlJs from "sql.js";
+import {
+  buildSearchDatabase,
+  querySearchDatabase,
+} from "@moyarich/moyaforge-search-sqlite";
+
+const SQL = await initSqlJs();
+const bytes = buildSearchDatabase(SQL, [
+  {
+    key: "docs/page.mdx",
+    title: "Welcome",
+    description: "",
+    body: "Welcome to the documentation",
+  },
+]);
+const database = new SQL.Database(bytes);
+const results = querySearchDatabase(database, "documentation");
+```
+
+## Keep routing in the framework
+
+Search doesn't choose your URL format. `useContentRouting().searchResultPage(key)` resolves a key against the routable MDX inventory, preserving canonical paths and excluding disabled pages.

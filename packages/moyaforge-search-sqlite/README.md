@@ -58,3 +58,12 @@ The Vite adapter indexes canonical `page.md` and `page.mdx` files only, even whe
 Content discovery by the optional Vite adapter accepts configured source roots and glob patterns, but indexes only `page.md` and `page.mdx`. YAML frontmatter is parsed with the standalone `yaml` package; quoted values work, duplicate keys or malformed YAML produce source-path errors, and `navigation: disabled` excludes a page. Hidden pages remain searchable. The adapter intentionally has no dependency on the MoyaForge UI or MDX packages.
 
 When using the Vite plugin, import `databaseUrl` from `virtual:moyaforge-search/database` rather than hardcoding `/assets/search.sqlite`: development uses `/__moyaforge_search.sqlite` and production uses a content-hashed asset under the configured Vite base path. Reload the client database upon `moyaforge-search:updated` during development to avoid stale results.
+
+### Optional Vite browser client
+
+Import `searchPages` and `reloadSearch` from
+`@moyarich/moyaforge-search-sqlite/client` in an app using `sqliteSearchPlugin`.
+The client loads SQL.js and the generated database on the first non-empty query,
+returns document keys, and invalidates its cache when the Vite plugin reports
+content updates. Applications or MoyaForge resolve those keys to routes.
+The core package entry remains independent of Vite and browser APIs.
