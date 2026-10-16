@@ -888,6 +888,11 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/SidebarV1/types.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV1/types.ts"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/index.ts"
