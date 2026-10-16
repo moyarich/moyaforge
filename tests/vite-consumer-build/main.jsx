@@ -5,7 +5,13 @@ import {
   DocsRoutes,
   createMoyaForgeSource,
 } from "@moyarich/moyaforge";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 
 const toc = getTableOfContents([
@@ -31,7 +37,7 @@ const hostSource = createMoyaForgeSource({
 });
 
 function HostDocs() {
-  const pathname = window.location.pathname;
+  const { pathname } = useLocation();
   return (
     <DocsRoutes
       source={hostSource}
@@ -42,7 +48,7 @@ function HostDocs() {
 }
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
+  <BrowserRouter basename="/app">
     <Routes>
       <Route
         path="/host"
