@@ -4,7 +4,9 @@ import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
 
 export interface RegistryLazySources {
   readonly [source: string]: {
-    readonly lazyPages?: Readonly<Record<string, () => Promise<{ default: ComponentType }>>>;
+    readonly lazyPages?: Readonly<
+      Record<string, () => Promise<{ default: ComponentType }>>
+    >;
   };
 }
 
@@ -18,7 +20,10 @@ export interface RegistryDocsRoutesProps {
   renderPage?: (page: NormalizedPage, content: ReactNode) => ReactNode;
 }
 
-const cache = new WeakMap<() => Promise<{ default: ComponentType }>, ComponentType>();
+const cache = new WeakMap<
+  () => Promise<{ default: ComponentType }>,
+  ComponentType
+>();
 
 /**
  * Renders any discovered MDX page under the consumer's existing React Router.
@@ -33,7 +38,9 @@ export function RegistryDocsRoutes({
 }: RegistryDocsRoutesProps) {
   const { pathname } = useLocation();
   const path = pathname.replace(/\/+$/, "") || "/";
-  const page = routes.find((route) => route.path === path && route.navigation !== "disabled");
+  const page = routes.find(
+    (route) => route.path === path && route.navigation !== "disabled",
+  );
   const loader = page && sources[page.source]?.lazyPages?.[page.file];
   if (!page || !loader) return <>{notFound}</>;
   let Component = cache.get(loader);
