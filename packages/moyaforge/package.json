@@ -1,6 +1,6 @@
 {
   "name": "@moyarich/moyaforge",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "type": "module",
   "exports": {
     ".": {
@@ -65,7 +65,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@moyarich/moyaforge-mdx": "^0.2.0"
+    "@moyarich/moyaforge-mdx": "^0.1.0"
   },
   "publisher": "moyarich",
   "author": "Moya Richards",
