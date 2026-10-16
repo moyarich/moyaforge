@@ -68,3 +68,34 @@ test("host renderPage overrides the default route content", () => {
   assert.match(html, /Guide override/);
   assert.doesNotMatch(html, /Guide content/);
 });
+
+test("host app keeps unrelated routes outside the embedded documentation", () => {
+  function HostApp({ pathname }) {
+    if (!pathname.startsWith("/docs"))
+      return React.createElement("main", null, "Host dashboard");
+    return React.createElement(DocsRoutes, {
+      source,
+      pathname,
+      notFound: React.createElement("p", null, "Docs not found"),
+    });
+  }
+  const renderHost = (pathname) =>
+    renderToStaticMarkup(React.createElement(HostApp, { pathname }));
+  assert.match(renderHost("/dashboard"), /Host dashboard/);
+  assert.doesNotMatch(renderHost("/dashboard"), /Docs not found/);
+  assert.match(renderHost("/docs/guide"), /Guide content/);
+  assert.match(renderHost("/docs/missing"), /Docs not found/);
+});
+
+test("embedded docs allow consumers to override shell content without replacing routing", () => {
+  const html = render("/docs/guide", {
+    layout: {
+      title: "Host documentation",
+      header: React.createElement("strong", null, "Host header"),
+      footer: React.createElement("small", null, "Host footer"),
+    },
+  });
+  assert.match(html, /Host header/);
+  assert.match(html, /Host footer/);
+  assert.match(html, /Guide content/);
+});
