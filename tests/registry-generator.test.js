@@ -117,3 +117,39 @@ test("rejects naming collisions, missing imports, undeclared packages and bounda
   );
   await expect(readFile(resolve(root, "registry.json"))).rejects.toThrow();
 });
+
+test("failed regeneration preserves previously generated registry and styles", async () => {
+  const { root, put } = await fixture();
+  await buildRegistry(root);
+  const manifest = await readFile(resolve(root, "registry.json"), "utf8");
+  const styles = await readFile(
+    resolve(root, "registry/styles/new-badge.css"),
+    "utf8",
+  );
+  await put(
+    "packages/moyaforge/src/components/Nested/NewBadge/index.ts",
+    'export * from "./does-not-exist.js";',
+  );
+  await expect(buildRegistry(root)).rejects.toThrow(
+    "Unresolved registry import",
+  );
+  expect(await readFile(resolve(root, "registry.json"), "utf8")).toBe(manifest);
+  expect(
+    await readFile(resolve(root, "registry/styles/new-badge.css"), "utf8"),
+  ).toBe(styles);
+});
+
+test("a no-change build preserves generated output byte-for-byte", async () => {
+  const { root } = await fixture();
+  await buildRegistry(root);
+  const manifestPath = resolve(root, "registry.json");
+  const cssPath = resolve(root, "registry/styles/new-badge.css");
+  const before = await Promise.all([
+    readFile(manifestPath, "utf8"),
+    readFile(cssPath, "utf8"),
+  ]);
+  await buildRegistry(root);
+  await buildRegistry(root, { check: true });
+  expect(await readFile(manifestPath, "utf8")).toBe(before[0]);
+  expect(await readFile(cssPath, "utf8")).toBe(before[1]);
+});
