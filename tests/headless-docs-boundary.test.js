@@ -72,3 +72,12 @@ test("docs-routes registry installs its headless renderer dependency", async () 
     "packages/moyaforge/src/components/Routing/HeadlessDocsRoutes.tsx",
   );
 });
+
+test("playground imports routing from headless subpath rather than docs UI", async () => {
+  const source = await readFile(
+    new URL("../apps/playground/src/App.jsx", import.meta.url),
+    "utf8",
+  );
+  expect(source).toContain('from "@moyarich/moyaforge/headless"');
+  expect(source).toMatch(/import \{ MoyaForgeRouter, useContentRouting \} from "@moyarich\/moyaforge\/headless"/);
+});
