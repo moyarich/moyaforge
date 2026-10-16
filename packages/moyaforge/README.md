@@ -358,3 +358,26 @@ editable source from the GitHub registry. Both distributions use the canonical
 source in `src/components`; copied source becomes app-owned. See the
 [CLI guide](../moyaforge-cli/README.md) for release prerequisites, source-owned
 starters, shadcn compatibility, and existing-app setup.
+
+## Automatic documentation routes
+
+The consumer owns `registry.config.ts` and configures the `@moyarich/moyaforge-mdx/vite` adapter. Import the dedicated registry-routes entry only in a Vite consumer with that adapter enabled; it resolves the generated virtual modules, not a hardcoded list of pages.
+
+```tsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { RegistryRoutes } from "@moyarich/moyaforge/registry-routes";
+
+export function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/*" element={<RegistryRoutes />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+Each MDX page discovered from the consumer's configuration becomes addressable without a per-page React Router declaration. React Router remains owned by the host, including its basename, hash strategy, and other application routes.
+
