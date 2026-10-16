@@ -65,7 +65,11 @@ function imports(text, file) {
 export async function buildRegistry(root, { check = false } = {}) {
   root = await realpath(root);
   const sourceRoot = resolve(root, "packages/moyaforge/src");
+  const uiSourceRoot = resolve(root, "packages/moyaforge-ui/src");
+  const uiComponentRoot = resolve(uiSourceRoot, "components");
+  // Until all installable components are migrated, discover both source roots.
   const componentRoot = resolve(sourceRoot, "components");
+  const sourceRoots = [sourceRoot, uiSourceRoot];
   const templateRoot = resolve(root, "registry/templates");
   const manifest = JSON.parse(
     await readFile(resolve(root, "packages/moyaforge/package.json"), "utf8"),
@@ -79,11 +83,11 @@ export async function buildRegistry(root, { check = false } = {}) {
       );
     specs.set(name, spec);
   }
-  async function discover(folder) {
+  async function discover(folder, rootFolder = componentRoot) {
     const entries = (await readdir(folder, { withFileTypes: true })).sort(
       (a, b) => a.name.localeCompare(b.name, "en"),
     );
-    if (folder !== componentRoot) {
+    if (folder !== rootFolder) {
       const entry = entries.find(
         (item) => item.isFile() && /^index\.(ts|tsx)$/.test(item.name),
       );
@@ -91,9 +95,11 @@ export async function buildRegistry(root, { check = false } = {}) {
         add(kebab(basename(folder)), { entry: resolve(folder, entry.name) });
     }
     for (const entry of entries)
-      if (entry.isDirectory()) await discover(resolve(folder, entry.name));
+      if (entry.isDirectory()) await discover(resolve(folder, entry.name), rootFolder);
   }
   await discover(componentRoot);
+  if (await stat(uiComponentRoot).then(() => true, () => false))
+    await discover(uiComponentRoot, uiComponentRoot);
   for (const entry of (await readdir(templateRoot)).sort())
     if (/\.(tsx|ts)$/.test(entry))
       add(kebab(basename(entry, extname(entry))), {
@@ -125,7 +131,7 @@ export async function buildRegistry(root, { check = false } = {}) {
     const dependencies = new Map();
     async function visit(file, template = false) {
       const canonical = await realpath(file);
-      if (!template && !canonical.startsWith(sourceRoot + "/"))
+      if (!template && !sourceRoots.some((source) => canonical.startsWith(source + "/")))
         throw Error(`Registry file outside canonical UI source: ${file}`);
       if (files.has(file)) return;
       files.add(file);
@@ -152,11 +158,12 @@ export async function buildRegistry(root, { check = false } = {}) {
             await visit(resolve(dirname(file), sibling));
     }
     await visit(spec.entry, spec.template);
+    const itemSourceRoot = spec.entry.startsWith(uiSourceRoot + "/") ? uiSourceRoot : sourceRoot;
     const stylesheet = await format(
       [...files]
         .filter((file) => file.endsWith(".css"))
         .sort()
-        .map((file) => `@import "./${relative(sourceRoot, file)}";`)
+        .map((file) => `@import "./${relative(itemSourceRoot, file)}";`)
         .join("\n"),
       { parser: "css" },
     );
@@ -165,7 +172,7 @@ export async function buildRegistry(root, { check = false } = {}) {
     const installed = [...files].sort().map((file) => ({
       path: relative(root, file),
       type: "registry:file",
-      target: `~/src/components/moyaforge/${file === spec.entry && spec.template ? basename(file) : relative(sourceRoot, file)}`,
+      target: `~/src/components/moyaforge/${file === spec.entry && spec.template ? basename(file) : relative(itemSourceRoot, file)}`,
     }));
     installed.push({
       path: "LICENSE",
