@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## Unreleased
 
 - Publish the navigation API and opt-in ordinary Markdown discovery used by portable documentation shells and CLI starters.
 

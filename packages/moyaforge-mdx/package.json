@@ -1,6 +1,6 @@
 {
   "name": "@moyarich/moyaforge-mdx",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "Framework-independent Markdown and MDX compiler conventions",
   "license": "MIT",

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## Unreleased
 
 - Move the CLI executable to the separate `@moyarich/moyaforge-cli` package.
 - Add a focused `/code` entry and make Console/editor peer dependencies optional.
