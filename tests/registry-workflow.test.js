@@ -29,7 +29,9 @@ test("registry bot changes only generated output after validation", () => {
 
 test("registry automation serializes branch updates and uses the repo token", () => {
   expect(workflow).toMatch(/permissions:\s*\n\s*contents:\s*write/);
-  expect(workflow).toContain("group: build-component-registry-${{ github.ref }}");
+  expect(workflow).toContain(
+    "group: build-component-registry-${{ github.ref }}",
+  );
   expect(workflow).toContain("cancel-in-progress: false");
   expect(workflow).toContain("ref: ${{ github.ref_name }}");
   expect(workflow).not.toMatch(/secrets\.(?:PAT|_NPM_TOKEN)/);
