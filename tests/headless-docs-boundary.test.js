@@ -79,5 +79,7 @@ test("playground imports routing from headless subpath rather than docs UI", asy
     "utf8",
   );
   expect(source).toContain('from "@moyarich/moyaforge/headless"');
-  expect(source).toMatch(/import \{ MoyaForgeRouter, useContentRouting \} from "@moyarich\/moyaforge\/headless"/);
+  expect(source).toMatch(
+    /import \{ MoyaForgeRouter, useContentRouting \} from "@moyarich\/moyaforge\/headless"/,
+  );
 });
