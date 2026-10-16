@@ -27,3 +27,19 @@ test("TOC anchors are keyboard-accessible and preserve deep links", async ({
   await expect(page).toHaveURL(/#overview-1$/);
   await expect(page.locator("#overview-1")).toBeVisible();
 });
+
+test("TOC marks the active heading as current after hash navigation", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const links = page.getByRole("link", { name: "Overview" });
+  await links.nth(1).click();
+  await expect(page).toHaveURL(/#overview-1$/);
+  await expect(links.nth(1)).toHaveAttribute("aria-current", "location");
+  await expect(links.nth(0)).not.toHaveAttribute("aria-current", "location");
+
+  await links.nth(0).click();
+  await expect(page).toHaveURL(/#overview$/);
+  await expect(links.nth(0)).toHaveAttribute("aria-current", "location");
+  await expect(links.nth(1)).not.toHaveAttribute("aria-current", "location");
+});
