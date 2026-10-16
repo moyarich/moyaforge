@@ -137,13 +137,14 @@ try {
   console.log(installed);
   await writeFile(
     join(root, "src/main.tsx"),
-    'import {createRoot} from "react-dom/client"; import {CodeBlock} from "./components/moyaforge/components/CodeBlock/CodeBlock"; import "./components/moyaforge/code-block.css"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
+    'import {createRoot} from "react-dom/client"; import {CodeBlock} from "./components/moyaforge/components/CodeBlock/CodeBlock"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
   );
   const code = await readFile(
     join(root, "src/components/moyaforge/components/CodeBlock/CodeBlock.tsx"),
     "utf8",
   );
   assert.ok(code.includes("CodeCopyIcon"));
+  assert.ok(code.includes('import "./CodeBlock.css"'), "component owns its CSS import");
   await run("npm", ["exec", "--", "tsc", "--noEmit"], root);
   await run("npm", ["run", "build"], root);
   server = spawn("npm", ["run", "dev"], {
