@@ -13,6 +13,8 @@ test("framework import audit follows TypeScript .js source re-exports", () => {
   const report = JSON.parse(output);
   expect(report["index.ts"].sourceFiles).toBeGreaterThan(1);
   expect(report["docs.ts"].sourceFiles).toBeGreaterThan(1);
+  expect(report["registry-routes.tsx"].sourceFiles).toBeGreaterThan(1);
+  expect(report["utils/mdx/index.ts"].sourceFiles).toBeGreaterThan(1);
   expect(report["index.ts"].extractedUiImports).toContain(
     "components/SidebarV2/index.ts",
   );
