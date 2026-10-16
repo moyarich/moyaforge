@@ -43,3 +43,19 @@ test("TOC marks the active heading as current after hash navigation", async ({
   await expect(links.nth(0)).toHaveAttribute("aria-current", "location");
   await expect(links.nth(1)).not.toHaveAttribute("aria-current", "location");
 });
+
+test("TOC navigation remains accessible at a narrow mobile viewport", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+  const outline = page.locator("[data-moyaforge-doc-outline]");
+  await expect(outline).toHaveCount(1);
+  const links = outline.getByRole("link", { name: "Overview" });
+  await expect(links).toHaveCount(2);
+  await links.nth(1).focus();
+  await expect(links.nth(1)).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#overview-1$/);
+  await expect(links.nth(1)).toHaveAttribute("aria-current", "location");
+});
