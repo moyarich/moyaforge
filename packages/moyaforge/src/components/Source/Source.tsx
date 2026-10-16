@@ -1,3 +1,4 @@
+import "./Source.css";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 export interface SourceProps extends ComponentPropsWithoutRef<"pre"> {
