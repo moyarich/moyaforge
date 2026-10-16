@@ -1,3 +1,4 @@
+import "./CodeBlock.css";
 import { CodeCopyIcon } from "../CodeBlock/CodeCopyIcon.js";
 import {
   Children,
