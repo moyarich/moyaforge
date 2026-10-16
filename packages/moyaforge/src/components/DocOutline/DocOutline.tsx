@@ -1,3 +1,4 @@
+import "./DocOutline.css";
 import { useEffect, useState, type RefObject } from "react";
 import type { TableOfContentsItem } from "../TableOfContents/TableOfContents.js";
 

@@ -1,3 +1,4 @@
+import "./NavigationTree.css";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import type { PageDescriptor } from "../../utils/content/index.js";
 import type { NavigationItem } from "../../utils/navigation/index.js";

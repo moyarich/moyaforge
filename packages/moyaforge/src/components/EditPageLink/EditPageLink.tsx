@@ -1,3 +1,4 @@
+import "./EditPageLink.css";
 import type { ComponentPropsWithoutRef } from "react";
 
 export interface EditPageLinkProps extends Omit<

@@ -1,3 +1,4 @@
+import "./Sidebar.css";
 import { createElement } from "react";
 import type { PolymorphicProps } from "../Page/index.js";
 import { SidebarContent } from "./SidebarContent.js";

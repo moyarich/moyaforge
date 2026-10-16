@@ -1,3 +1,4 @@
+import "./TableOfContents.css";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 export interface TableOfContentsItem {
