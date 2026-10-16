@@ -1,3 +1,4 @@
+import "./Page.css";
 import { createElement, type ElementType, type ReactNode } from "react";
 
 export interface PolymorphicProps {
