@@ -35,6 +35,38 @@ A root `./page.mdx` becomes the section index page. Folder landing pages such as
 The helpers return ordinary data. Routing, selection state, rendering, and shell
 layout remain under consumer control.
 
+## Headless documentation routing (migration)
+
+The `@moyarich/moyaforge/headless` subpath exports route rendering
+without importing the documentation layout, sidebars, or other installable UI.
+A host application provides its own presentation through `renderLayout`:
+
+```tsx
+import { HeadlessDocsRoutes } from "@moyarich/moyaforge/headless";
+
+export function Documentation({ source, pathname, Layout }) {
+  return (
+    <HeadlessDocsRoutes
+      source={source}
+      pathname={pathname}
+      renderLayout={(page, content) => (
+        <Layout currentPath={page.url} pages={source.getPages()}>
+          {content}
+        </Layout>
+      )}
+    />
+  );
+}
+```
+
+Install the desired documentation layout from the MoyaForge component registry
+into the consuming application and supply that local component as `Layout`.
+This keeps application-owned UI separate from the runtime routing package.
+`DocsRoutes` remains a compatibility adapter that imports the legacy
+`DocsLayout`; migrate calls to `HeadlessDocsRoutes` before removing that
+adapter. The `./headless` subpath does not, by itself, remove legacy UI from
+the root package or its published tarball.
+
 ## Components
 
 MoyaForge exports composable primitives including:
