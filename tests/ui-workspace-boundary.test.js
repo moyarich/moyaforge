@@ -20,3 +20,16 @@ test("framework does not depend on the private UI source workspace", async () =>
   };
   expect(deps).not.toHaveProperty("@moyarich/moyaforge-ui-source");
 });
+
+test("MDX tooling is installable without the MoyaForge framework", async () => {
+  const mdx = await readPackage("../packages/moyaforge-mdx/package.json");
+  const deps = {
+    ...mdx.dependencies,
+    ...mdx.peerDependencies,
+    ...mdx.optionalDependencies,
+  };
+  expect(deps).not.toHaveProperty("@moyarich/moyaforge");
+  expect(deps).not.toHaveProperty("@moyarich/moyaforge-ui-source");
+  expect(mdx.exports).toHaveProperty("./vite");
+  expect(mdx.exports).toHaveProperty("./toc");
+});
