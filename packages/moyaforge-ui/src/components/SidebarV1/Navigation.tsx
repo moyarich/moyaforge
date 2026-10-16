@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import type { NavigationNode } from "@moyarich/moyaforge-mdx/navigation";
-import type { DocumentationGroup } from "../Layout/DocsLayout/utils.js";
+import type { DocumentationGroup } from "./SidebarV1.js";
 
 export interface NavigationProps {
   groups: readonly DocumentationGroup[];
