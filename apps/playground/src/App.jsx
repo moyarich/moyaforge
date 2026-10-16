@@ -1,11 +1,15 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
-import { SidebarV1, Navigation } from "../../../packages/moyaforge-ui/src/components/SidebarV1/index.ts";
-import { DocOutlineShell, DocOutline } from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
 import {
-  buildDocumentationGroups,
-} from "@moyarich/moyaforge/docs";
+  SidebarV1,
+  Navigation,
+} from "../../../packages/moyaforge-ui/src/components/SidebarV1/index.ts";
+import {
+  DocOutlineShell,
+  DocOutline,
+} from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
+import { buildDocumentationGroups } from "@moyarich/moyaforge/docs";
 import {
   MoyaForgeRouter,
   useContentRouting,

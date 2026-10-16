@@ -104,7 +104,13 @@ test("playground sidebar and outline use private UI source instead of framework 
     new URL("../apps/playground/src/App.jsx", import.meta.url),
     "utf8",
   );
-  expect(source).toContain("packages/moyaforge-ui/src/components/SidebarV1/index.ts");
-  expect(source).toContain("packages/moyaforge-ui/src/components/DocOutline/index.ts");
-  expect(source).not.toMatch(/import\s*\{[^}]*SidebarV1[^}]*\}\s*from "@moyarich\/moyaforge\/docs"/);
+  expect(source).toContain(
+    "packages/moyaforge-ui/src/components/SidebarV1/index.ts",
+  );
+  expect(source).toContain(
+    "packages/moyaforge-ui/src/components/DocOutline/index.ts",
+  );
+  expect(source).not.toMatch(
+    /import\s*\{[^}]*SidebarV1[^}]*\}\s*from "@moyarich\/moyaforge\/docs"/,
+  );
 });
