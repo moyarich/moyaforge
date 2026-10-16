@@ -56,6 +56,8 @@ export async function planProject({
       mode === "source"
         ? `${ui}/docs-shell.css`
         : "@moyarich/moyaforge/components.css",
+    "/* __CODE_STYLE_IMPORT__ */":
+      mode === "source" ? `import "${ui}/code-group.css";` : "",
     __CODE_IMPORT__:
       mode === "source"
         ? `${ui}/components/CodeBlock/CodeBlock.js`

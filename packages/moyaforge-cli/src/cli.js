@@ -136,7 +136,7 @@ async function main() {
     });
     const components =
       mode === "source"
-        ? await planItems({ ...options, names: ["docs-shell"] })
+        ? await planItems({ ...options, names: ["docs-shell", "code-group"] })
         : { files: [], dependencies: [] };
     plan = {
       files: [...components.files, ...project.files],

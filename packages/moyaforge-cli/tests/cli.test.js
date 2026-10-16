@@ -104,6 +104,15 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(await read(root, "moyaforge/vite.config.ts")).toContain(
     "@moyarich/moyaforge-mdx/vite",
   );
+  expect(await read(root, "moyaforge/src/main.tsx")).toContain(
+    'import "../../src/components/moyaforge/code-group.css";',
+  );
+  expect(
+    await read(
+      root,
+      "src/components/moyaforge/components/CodeGroup/CodeGroup.tsx",
+    ),
+  ).toContain("CodeGroup");
   const packageRoot = await project();
   expect(
     run(
