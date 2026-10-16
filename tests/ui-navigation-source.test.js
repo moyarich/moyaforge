@@ -167,7 +167,9 @@ test("the UI workspace remains private and is not an npm-distributed component b
 });
 
 test("documentation-site registry metadata matches generator conventions", () => {
-  const item = registry.items.find((entry) => entry.name === "documentation-site");
+  const item = registry.items.find(
+    (entry) => entry.name === "documentation-site",
+  );
   expect(item.description).toBe(
     "Editable MoyaForge documentation-site source and CSS. Import the installed styles alongside the component.",
   );
