@@ -19,6 +19,10 @@
     "./code": {
       "types": "./dist/code.d.ts",
       "import": "./dist/code.js"
+    },
+    "./registry-routes": {
+      "types": "./dist/registry-routes.d.ts",
+      "import": "./dist/registry-routes.js"
     }
   },
   "files": [
