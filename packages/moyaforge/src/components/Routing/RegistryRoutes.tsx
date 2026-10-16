@@ -10,7 +10,7 @@ export interface RegistryLazySources {
   };
 }
 
-export interface RegistryRoutesProps {
+export interface RegistryRouteViewProps {
   /** Canonical metadata exported from virtual:moyaforge-mdx/metadata. */
   routes: readonly NormalizedPage[];
   /** Lazy MDX modules exported from virtual:moyaforge-mdx/lazy-registry. */
@@ -29,13 +29,13 @@ const cache = new WeakMap<
  * Renders any discovered MDX page under the consumer's existing React Router.
  * Mount once at a host wildcard route; no per-page Route elements or router wrapper.
  */
-export function RegistryRoutes({
+export function RegistryRouteView({
   routes,
   sources,
   notFound = <p>Page not found.</p>,
   fallback = <p role="status">Loading documentation…</p>,
   renderPage,
-}: RegistryRoutesProps) {
+}: RegistryRouteViewProps) {
   const { pathname } = useLocation();
   const path = pathname.replace(/\/+$/, "") || "/";
   const page = routes.find(
