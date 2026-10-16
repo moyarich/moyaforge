@@ -226,10 +226,16 @@ export async function buildRegistry(root, { check = false } = {}) {
   const output = await format(JSON.stringify(registry), { parser: "json" });
   const stylesRoot = resolve(root, "registry/styles");
   if (check) {
-    const existingRegistry = await readFile(resolve(root, "registry.json"), "utf8");
+    const existingRegistry = await readFile(
+      resolve(root, "registry.json"),
+      "utf8",
+    );
     if (existingRegistry !== output) {
       let mismatch = 0;
-      while (mismatch < Math.min(existingRegistry.length, output.length) && existingRegistry[mismatch] === output[mismatch])
+      while (
+        mismatch < Math.min(existingRegistry.length, output.length) &&
+        existingRegistry[mismatch] === output[mismatch]
+      )
         mismatch++;
       throw Error(
         `Registry is stale at character ${mismatch}: expected ${JSON.stringify(output.slice(mismatch, mismatch + 100))}, found ${JSON.stringify(existingRegistry.slice(mismatch, mismatch + 100))}. Run npm run registry:build.`,
