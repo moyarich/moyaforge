@@ -6,7 +6,6 @@ const root = resolve(import.meta.dirname, "..");
 const src = resolve(root, "packages/moyaforge/src");
 const entrypoints = ["index.ts", "docs.ts", "code.ts"];
 const groups = ["NavigationTree", "SidebarV1", "SidebarV2", "Page", "Layout/DocsLayout", "Layout/DocumentationSite"];
-const known = new Set();
 function resolveLocal(from, specifier) {
   if (!specifier.startsWith(".")) return null;
   const base = resolve(dirname(from), specifier);
