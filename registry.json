@@ -234,7 +234,7 @@
       "title": "Docs Layout",
       "description": "Editable MoyaForge docs-layout source and CSS. Import the installed styles alongside the component.",
       "dependencies": [
-        "@moyarich/moyaforge-mdx@^0.2.0",
+        "@moyarich/moyaforge-mdx@^0.1.0",
         "react@>=18",
         "react-router-dom@^7.18.4"
       ],
@@ -352,7 +352,7 @@
       "title": "Docs Routes",
       "description": "Editable MoyaForge docs-routes source and CSS. Import the installed styles alongside the component.",
       "dependencies": [
-        "@moyarich/moyaforge-mdx@^0.2.0",
+        "@moyarich/moyaforge-mdx@^0.1.0",
         "react@>=18",
         "react-router-dom@^7.18.4"
       ],
@@ -475,7 +475,7 @@
       "title": "Docs Shell",
       "description": "Editable MoyaForge docs-shell source and CSS. Import the installed styles alongside the component.",
       "dependencies": [
-        "@moyarich/moyaforge-mdx@^0.2.0",
+        "@moyarich/moyaforge-mdx@^0.1.0",
         "react@>=18",
         "react-router-dom@^7.18.4"
       ],
@@ -847,7 +847,7 @@
       "title": "Sidebar V1",
       "description": "Editable MoyaForge sidebar-v1 source and CSS. Import the installed styles alongside the component.",
       "dependencies": [
-        "@moyarich/moyaforge-mdx@^0.2.0",
+        "@moyarich/moyaforge-mdx@^0.1.0",
         "react@>=18",
         "react-router-dom@^7.18.4"
       ],
