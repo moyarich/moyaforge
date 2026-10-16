@@ -31,15 +31,17 @@ export interface DocsLayoutProps {
   footer?: ReactNode;
   sidebar?: ReactNode;
   outline?: ReactNode;
-  toc?: false | {
-    placement?: "right" | "sidebar" | "inline" | "none";
-    label?: string;
-    headings: readonly DocsLayoutHeading[];
-    collapsible?: boolean;
-    defaultOpen?: boolean;
-    minDepth?: number;
-    maxDepth?: number;
-  };
+  toc?:
+    | false
+    | {
+        placement?: "right" | "sidebar" | "inline" | "none";
+        label?: string;
+        headings: readonly DocsLayoutHeading[];
+        collapsible?: boolean;
+        defaultOpen?: boolean;
+        minDepth?: number;
+        maxDepth?: number;
+      };
   editLink?: { repository: string; branch?: string };
 }
 
@@ -56,13 +58,21 @@ function visibleHeadings(
   });
 }
 
-function HeadingLinks({ headings }: { headings: readonly DocsLayoutHeading[] }) {
+function HeadingLinks({
+  headings,
+}: {
+  headings: readonly DocsLayoutHeading[];
+}) {
   return (
     <ul>
       {headings.map((heading) => (
         <li key={heading.id}>
-          <a href={`#${heading.id}`}>{heading.text ?? heading.title ?? heading.id}</a>
-          {heading.children?.length ? <HeadingLinks headings={heading.children} /> : null}
+          <a href={`#${heading.id}`}>
+            {heading.text ?? heading.title ?? heading.id}
+          </a>
+          {heading.children?.length ? (
+            <HeadingLinks headings={heading.children} />
+          ) : null}
         </li>
       ))}
     </ul>
@@ -83,13 +93,16 @@ export function DocsLayout({
   editLink,
 }: DocsLayoutProps) {
   const current = pages.find((page) => page.url === currentUrl);
-  const visiblePages = pages.filter((page) =>
-    page.frontmatter?.navigation !== "hidden" &&
-    page.frontmatter?.navigation !== "disabled" &&
-    page.frontmatter?.hidden !== true
+  const visiblePages = pages.filter(
+    (page) =>
+      page.frontmatter?.navigation !== "hidden" &&
+      page.frontmatter?.navigation !== "disabled" &&
+      page.frontmatter?.hidden !== true,
   );
   const placement = toc === false ? "none" : (toc?.placement ?? "right");
-  const headings = toc ? visibleHeadings(toc.headings, toc.minDepth ?? 2, toc.maxDepth ?? 3) : [];
+  const headings = toc
+    ? visibleHeadings(toc.headings, toc.minDepth ?? 2, toc.maxDepth ?? 3)
+    : [];
   const configuredOutline = headings.length ? (
     <nav aria-label={toc && toc.label ? toc.label : "On this page"}>
       <strong>{toc && toc.label ? toc.label : "On this page"}</strong>
@@ -101,7 +114,10 @@ export function DocsLayout({
       <ul>
         {visiblePages.map((page) => (
           <li key={page.url}>
-            <a href={page.url} aria-current={page.url === currentUrl ? "page" : undefined}>
+            <a
+              href={page.url}
+              aria-current={page.url === currentUrl ? "page" : undefined}
+            >
               {page.title ?? page.label ?? page.url}
             </a>
           </li>
@@ -109,9 +125,10 @@ export function DocsLayout({
       </ul>
     </nav>
   );
-  const editHref = current?.sourcePath && editLink
-    ? `${editLink.repository.replace(/\/$/, "")}/edit/${encodeURIComponent(editLink.branch ?? "main")}/${current.sourcePath.split("/").map(encodeURIComponent).join("/")}`
-    : undefined;
+  const editHref =
+    current?.sourcePath && editLink
+      ? `${editLink.repository.replace(/\/$/, "")}/edit/${encodeURIComponent(editLink.branch ?? "main")}/${current.sourcePath.split("/").map(encodeURIComponent).join("/")}`
+      : undefined;
 
   return (
     <div data-moyaforge-docs-layout="">
@@ -119,7 +136,9 @@ export function DocsLayout({
         {header ?? <a href={visiblePages[0]?.url ?? "/"}>{title}</a>}
       </header>
       <div data-moyaforge-docs-columns="">
-        {sidebar !== undefined ? sidebar : (
+        {sidebar !== undefined ? (
+          sidebar
+        ) : (
           <aside data-moyaforge-docs-sidebar="">
             {sidebarContent}
             {placement === "sidebar" ? configuredOutline : null}
@@ -135,7 +154,11 @@ export function DocsLayout({
           ) : null}
           {footer}
         </main>
-        {outline !== undefined ? outline : placement === "right" ? configuredOutline : null}
+        {outline !== undefined
+          ? outline
+          : placement === "right"
+            ? configuredOutline
+            : null}
       </div>
     </div>
   );
