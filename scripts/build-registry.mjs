@@ -95,10 +95,16 @@ export async function buildRegistry(root, { check = false } = {}) {
         add(kebab(basename(folder)), { entry: resolve(folder, entry.name) });
     }
     for (const entry of entries)
-      if (entry.isDirectory()) await discover(resolve(folder, entry.name), rootFolder);
+      if (entry.isDirectory())
+        await discover(resolve(folder, entry.name), rootFolder);
   }
   await discover(componentRoot);
-  if (await stat(uiComponentRoot).then(() => true, () => false))
+  if (
+    await stat(uiComponentRoot).then(
+      () => true,
+      () => false,
+    )
+  )
     await discover(uiComponentRoot, uiComponentRoot);
   for (const entry of (await readdir(templateRoot)).sort())
     if (/\.(tsx|ts)$/.test(entry))
@@ -131,7 +137,10 @@ export async function buildRegistry(root, { check = false } = {}) {
     const dependencies = new Map();
     async function visit(file, template = false) {
       const canonical = await realpath(file);
-      if (!template && !sourceRoots.some((source) => canonical.startsWith(source + "/")))
+      if (
+        !template &&
+        !sourceRoots.some((source) => canonical.startsWith(source + "/"))
+      )
         throw Error(`Registry file outside canonical UI source: ${file}`);
       if (files.has(file)) return;
       files.add(file);
@@ -158,7 +167,9 @@ export async function buildRegistry(root, { check = false } = {}) {
             await visit(resolve(dirname(file), sibling));
     }
     await visit(spec.entry, spec.template);
-    const itemSourceRoot = spec.entry.startsWith(uiSourceRoot + "/") ? uiSourceRoot : sourceRoot;
+    const itemSourceRoot = spec.entry.startsWith(uiSourceRoot + "/")
+      ? uiSourceRoot
+      : sourceRoot;
     const stylesheet = await format(
       [...files]
         .filter((file) => file.endsWith(".css"))
