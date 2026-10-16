@@ -5,8 +5,17 @@ source under `packages/moyaforge/src/components`. It is not the content-discover
 configuration used by the playground.
 
 Run `npm run registry:build` after changing component imports or adding files.
-The generator computes relative-import closure, includes styles and license
-notices, declares npm/item dependencies, and writes per-item CSS entry files.
+The generator discovers component folders (including nested folders) with an
+`index.ts` or `index.tsx` entry and all `.ts`/`.tsx` compositions in
+`registry/templates`. Names come from the folder/template filename in kebab case;
+collisions fail generation. A new component needs no central registration list.
+
+It parses imports, re-exports, type imports, and literal dynamic imports to collect
+each item’s complete source graph. External dependency ranges come from the UI
+package’s dependencies and peer dependencies; undeclared dependencies fail the
+build. Each item includes its own complete file graph, styles, and license notice;
+shared files have identical targets so installers can preserve existing edits.
+Unused generated CSS entries are removed when components disappear.
 Run `npm run registry:check` to ensure manifests and CSS have not drifted.
 
 `templates/docs-shell.tsx` is an editable composition of canonical UI components,
@@ -18,10 +27,9 @@ imports resolve without monorepo aliases. Registry file targets default to
 `src/components/moyaforge`; native CLI `--directory` can relocate the tree.
 Package-managed imports remain available separately from the public npm package.
 
-The native CLI resolves same-repository item dependencies from the selected
-registry snapshot. Shadcn GitHub item references resolve their own refs: when
-validating a release pinned to a tag, pin the registry dependency references too
-if you need the entire graph held to that tag. Default references follow main.
+Generated items are self-contained and do not reference other registry items,
+so installing a GitHub item at a tag or commit pins its entire source graph.
+The native CLI also supports same-repository dependencies in external manifests.
 
 ## Automatic builds
 
