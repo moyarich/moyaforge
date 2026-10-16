@@ -4,7 +4,7 @@ import { dirname, relative, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const src = resolve(root, "packages/moyaforge/src");
-const entrypoints = ["index.ts", "docs.ts", "code.ts"];
+const entrypoints = ["index.ts", "docs.ts", "code.ts", "registry-routes.tsx", "utils/mdx/index.ts"];
 const groups = [
   "NavigationTree",
   "SidebarV1",
@@ -22,6 +22,7 @@ function resolveLocal(from, specifier) {
     base.replace(/\.js$/, ".tsx"),
     base + ".ts",
     base + ".tsx",
+    base.replace(/\.js$/, ".mts"),
     resolve(base, "index.ts"),
     resolve(base, "index.tsx"),
   ];
