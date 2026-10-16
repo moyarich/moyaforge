@@ -1,149 +1,233 @@
 import { format } from "prettier";
-import { readFile, writeFile, readdir, access, mkdir } from "node:fs/promises";
-import { resolve, relative, dirname, extname } from "node:path";
+import { parse } from "@babel/parser";
+import {
+  readFile,
+  writeFile,
+  readdir,
+  stat,
+  mkdir,
+  rm,
+  realpath,
+} from "node:fs/promises";
+import { resolve, relative, dirname, extname, basename } from "node:path";
+import { pathToFileURL } from "node:url";
 
-const root = resolve(import.meta.dirname, "..");
-const sourceRoot = resolve(root, "packages/moyaforge/src");
-const specs = {
-  "code-block": { entries: ["components/CodeBlock/CodeBlock.tsx"], deps: [] },
-  "code-group": {
-    entries: ["components/CodeGroup/CodeGroup.tsx"],
-    deps: ["code-block"],
-  },
-  "sidebar-v1": { entries: ["components/SidebarV1/index.ts"], deps: [] },
-  "sidebar-v2": { entries: ["components/SidebarV2/index.ts"], deps: [] },
-  "doc-outline": { entries: ["components/DocOutline/index.ts"], deps: [] },
-  "docs-shell": {
-    entries: ["components/Layout/DocsLayout/DocumentationSite.tsx"],
-    deps: ["sidebar-v1", "doc-outline", "code-group"],
-  },
-};
-async function exists(path) {
+const kebab = (name) =>
+  name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+async function isFile(path) {
   try {
-    await access(path);
-    return true;
-  } catch {
-    return false;
+    return (await stat(path)).isFile();
+  } catch (error) {
+    if (error.code === "ENOENT") return false;
+    throw error;
   }
 }
-async function resolveImport(base, specifier) {
-  const path = resolve(dirname(base), specifier);
-  for (const candidate of [
-    path,
-    path.replace(/\.js$/, ".ts"),
-    path.replace(/\.js$/, ".tsx"),
-  ])
-    if (await exists(candidate)) return candidate;
-  throw Error(`Unresolved registry import ${specifier} in ${base}`);
-}
-async function closure(entries) {
-  const files = new Set();
-  async function visit(file) {
-    if (files.has(file)) return;
-    if (!file.startsWith(sourceRoot + "/"))
-      throw Error(`Registry file outside canonical UI source: ${file}`);
-    files.add(file);
-    const text = await readFile(file, "utf8");
-    const imports = [
-      ...text.matchAll(/(?:from\s*|import\s*)["'](\.[^"']+)["']/g),
-    ].map((match) => match[1]);
-    for (const specifier of imports.filter((value) => value.startsWith(".")))
-      await visit(await resolveImport(file, specifier));
-    for (const name of await readdir(dirname(file)))
-      if (extname(name) === ".css") files.add(resolve(dirname(file), name));
+function imports(text, file) {
+  if (file.endsWith(".css"))
+    return [...text.matchAll(/@import\s+(?:url\(\s*)?["']([^"']+)["']/g)].map(
+      (match) => match[1],
+    );
+  const ast = parse(text, {
+    sourceType: "module",
+    plugins: ["typescript", "jsx"],
+    createImportExpressions: true,
+  });
+  const found = new Set();
+  function visit(node) {
+    if (!node || typeof node !== "object") return;
+    if (
+      [
+        "ImportDeclaration",
+        "ExportNamedDeclaration",
+        "ExportAllDeclaration",
+      ].includes(node.type) &&
+      node.source
+    )
+      found.add(node.source.value);
+    if (node.type === "ImportExpression") {
+      if (node.source.type !== "StringLiteral")
+        throw Error(
+          `Nonliteral dynamic import in ${file}; registry imports must be statically resolvable.`,
+        );
+      found.add(node.source.value);
+    }
+    if (node.type === "TSImportType" && node.argument?.type === "StringLiteral")
+      found.add(node.argument.value);
+    for (const value of Object.values(node)) {
+      if (Array.isArray(value)) value.forEach(visit);
+      else if (value && typeof value === "object") visit(value);
+    }
   }
-  for (const entry of entries) await visit(resolve(sourceRoot, entry));
-  return files;
+  visit(ast.program);
+  return [...found];
 }
-const closures = Object.fromEntries(
-  await Promise.all(
-    Object.entries(specs).map(async ([name, spec]) => [
-      name,
-      await closure(spec.entries),
-    ]),
-  ),
-);
-const items = [];
-for (const [name, spec] of Object.entries(specs)) {
-  const provided = new Set(spec.deps.flatMap((dep) => [...closures[dep]]));
-  const files = [...closures[name]]
-    .filter((file) => !provided.has(file))
-    .sort()
-    .map((file) => ({
+
+export async function buildRegistry(root, { check = false } = {}) {
+  root = await realpath(root);
+  const sourceRoot = resolve(root, "packages/moyaforge/src");
+  const componentRoot = resolve(sourceRoot, "components");
+  const templateRoot = resolve(root, "registry/templates");
+  const manifest = JSON.parse(
+    await readFile(resolve(root, "packages/moyaforge/package.json"), "utf8"),
+  );
+  const declared = { ...manifest.peerDependencies, ...manifest.dependencies };
+  const specs = new Map();
+  function add(name, spec) {
+    if (specs.has(name))
+      throw Error(
+        `Duplicate registry name '${name}': ${specs.get(name).entry} and ${spec.entry}`,
+      );
+    specs.set(name, spec);
+  }
+  async function discover(folder) {
+    const entries = (await readdir(folder, { withFileTypes: true })).sort(
+      (a, b) => a.name.localeCompare(b.name, "en"),
+    );
+    if (folder !== componentRoot) {
+      const entry = entries.find(
+        (item) => item.isFile() && /^index\.(ts|tsx)$/.test(item.name),
+      );
+      if (entry)
+        add(kebab(basename(folder)), { entry: resolve(folder, entry.name) });
+    }
+    for (const entry of entries)
+      if (entry.isDirectory()) await discover(resolve(folder, entry.name));
+  }
+  await discover(componentRoot);
+  for (const entry of (await readdir(templateRoot)).sort())
+    if (/\.(tsx|ts)$/.test(entry))
+      add(kebab(basename(entry, extname(entry))), {
+        entry: resolve(templateRoot, entry),
+        template: true,
+      });
+  async function resolveImport(base, specifier) {
+    const path = resolve(dirname(base), specifier);
+    for (const candidate of [
+      path,
+      path.replace(/\.js$/, ".ts"),
+      path.replace(/\.js$/, ".tsx"),
+      `${path}.ts`,
+      `${path}.tsx`,
+      resolve(path, "index.ts"),
+      resolve(path, "index.tsx"),
+    ])
+      if (await isFile(candidate)) return candidate;
+    throw Error(
+      `Unresolved registry import '${specifier}' in ${relative(root, base)}`,
+    );
+  }
+  const items = [];
+  const styles = new Map();
+  for (const [name, spec] of [...specs].sort(([a], [b]) =>
+    a.localeCompare(b, "en"),
+  )) {
+    const files = new Set();
+    const dependencies = new Map();
+    async function visit(file, template = false) {
+      const canonical = await realpath(file);
+      if (!template && !canonical.startsWith(sourceRoot + "/"))
+        throw Error(`Registry file outside canonical UI source: ${file}`);
+      if (files.has(file)) return;
+      files.add(file);
+      const text = await readFile(file, "utf8");
+      for (const specifier of imports(text, file)) {
+        if (specifier.startsWith(".")) {
+          // Templates retain their installed location alongside the copied source tree.
+          const base = template ? resolve(sourceRoot, basename(file)) : file;
+          await visit(await resolveImport(base, specifier));
+        } else {
+          const pkg = specifier.startsWith("@")
+            ? specifier.split("/").slice(0, 2).join("/")
+            : specifier.split("/")[0];
+          if (!declared[pkg])
+            throw Error(
+              `Undeclared registry dependency '${pkg}' imported by ${relative(root, file)}`,
+            );
+          dependencies.set(pkg, declared[pkg]);
+        }
+      }
+      if (!template && !file.endsWith(".css"))
+        for (const sibling of (await readdir(dirname(file))).sort())
+          if (sibling.endsWith(".css"))
+            await visit(resolve(dirname(file), sibling));
+    }
+    await visit(spec.entry, spec.template);
+    const stylesheet =
+      [...files]
+        .filter((file) => file.endsWith(".css"))
+        .sort()
+        .map((file) => `@import "./${relative(sourceRoot, file)}";`)
+        .join("\n") + "\n";
+    const stylePath = `registry/styles/${name}.css`;
+    styles.set(`${name}.css`, stylesheet);
+    const installed = [...files].sort().map((file) => ({
       path: relative(root, file),
       type: "registry:file",
-      target: `~/src/components/moyaforge/${relative(sourceRoot, file)}`,
+      target: `~/src/components/moyaforge/${file === spec.entry && spec.template ? basename(file) : relative(sourceRoot, file)}`,
     }));
-  files.push({
-    path: "LICENSE",
-    type: "registry:file",
-    target: "~/src/components/moyaforge/LICENSE",
-  });
-  const dependencies = new Set(["react@>=18"]);
-  for (const file of closures[name]) {
-    const source = await readFile(file, "utf8");
-    if (source.includes('from "react-router-dom"'))
-      dependencies.add("react-router-dom@^7.18.4");
-    if (source.includes('from "@moyarich/moyaforge-mdx'))
-      dependencies.add("@moyarich/moyaforge-mdx@^0.2.0");
-  }
-  const styleFiles = new Set([
-    ...closures[name],
-    ...spec.deps.flatMap((dep) => [...closures[dep]]),
-  ]);
-  const stylesheet =
-    [...styleFiles]
-      .filter((file) => file.endsWith(".css"))
-      .sort()
-      .map((file) => `@import "./${relative(sourceRoot, file)}";`)
-      .join("\n") + "\n";
-  const stylePath = `registry/styles/${name}.css`;
-  if (process.argv.includes("--check")) {
-    if ((await readFile(resolve(root, stylePath), "utf8")) !== stylesheet)
-      throw Error(`Stale stylesheet: ${stylePath}`);
-  } else {
-    await mkdir(resolve(root, "registry/styles"), { recursive: true });
-    await writeFile(resolve(root, stylePath), stylesheet);
-  }
-  files.push({
-    path: stylePath,
-    type: "registry:file",
-    target: `~/src/components/moyaforge/${name}.css`,
-  });
-  if (name === "docs-shell")
-    files.push({
-      path: "registry/templates/docs-shell.tsx",
+    installed.push({
+      path: "LICENSE",
       type: "registry:file",
-      target: "~/src/components/moyaforge/docs-shell.tsx",
+      target: "~/src/components/moyaforge/LICENSE",
     });
-  items.push({
-    name,
-    type: "registry:block",
-    title: name
-      .split("-")
-      .map((x) => x[0].toUpperCase() + x.slice(1))
-      .join(" "),
-    description: `Editable MoyaForge ${name} source and CSS. Import the installed styles alongside the component.`,
-    dependencies: [...dependencies],
-    registryDependencies: spec.deps.map((dep) => `moyarich/moyaforge/${dep}`),
-    files,
-  });
+    installed.push({
+      path: stylePath,
+      type: "registry:file",
+      target: `~/src/components/moyaforge/${name}.css`,
+    });
+    items.push({
+      name,
+      type: spec.template ? "registry:block" : "registry:component",
+      title: name
+        .split("-")
+        .map((part) => part[0].toUpperCase() + part.slice(1))
+        .join(" "),
+      description: `Editable MoyaForge ${name} source and CSS. Import the installed styles alongside the component.`,
+      dependencies: [...dependencies]
+        .sort(([a], [b]) => a.localeCompare(b, "en"))
+        .map(([pkg, version]) => `${pkg}@${version}`),
+      files: installed,
+    });
+  }
+  const registry = {
+    $schema: "https://ui.shadcn.com/schema/registry.json",
+    name: "moyaforge",
+    homepage: "https://github.com/moyarich/moyaforge",
+    items,
+  };
+  const output = await format(JSON.stringify(registry), { parser: "json" });
+  const stylesRoot = resolve(root, "registry/styles");
+  if (check) {
+    if ((await readFile(resolve(root, "registry.json"), "utf8")) !== output)
+      throw Error("Registry is stale. Run npm run registry:build.");
+    const actual = (await readdir(stylesRoot))
+      .filter((name) => name.endsWith(".css"))
+      .sort();
+    if (JSON.stringify(actual) !== JSON.stringify([...styles.keys()].sort()))
+      throw Error("Registry styles are stale. Run npm run registry:build.");
+    for (const [name, contents] of styles)
+      if ((await readFile(resolve(stylesRoot, name), "utf8")) !== contents)
+        throw Error(`Stale stylesheet: ${name}`);
+  } else {
+    // Compute and validate the entire graph before changing generated output.
+    await mkdir(stylesRoot, { recursive: true });
+    for (const old of await readdir(stylesRoot))
+      if (old.endsWith(".css") && !styles.has(old))
+        await rm(resolve(stylesRoot, old));
+    for (const [name, contents] of styles)
+      await writeFile(resolve(stylesRoot, name), contents);
+    await writeFile(resolve(root, "registry.json"), output);
+  }
+  return registry;
 }
-const registry = {
-  $schema: "https://ui.shadcn.com/schema/registry.json",
-  name: "moyaforge",
-  homepage: "https://github.com/moyarich/moyaforge",
-  items,
-};
-const output = await format(JSON.stringify(registry), { parser: "json" });
-if (process.argv.includes("--check")) {
-  if (
-    JSON.stringify(
-      JSON.parse(await readFile(resolve(root, "registry.json"), "utf8")),
-    ) !== JSON.stringify(registry)
-  )
-    throw Error("Registry is stale. Run npm run registry:build.");
-} else await writeFile(resolve(root, "registry.json"), output);
-console.log(
-  `Validated ${items.length} registry items against canonical component source.`,
-);
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(resolve(process.argv[1])).href
+) {
+  const registry = await buildRegistry(resolve(import.meta.dirname, ".."), {
+    check: process.argv.includes("--check"),
+  });
+  console.log(
+    `Validated ${registry.items.length} automatically discovered registry items.`,
+  );
+}

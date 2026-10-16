@@ -34,12 +34,13 @@
     "test:registry:consumer": "node tests/shadcn-consumer.mjs"
   },
   "devDependencies": {
-    "prettier": "^3.9.10",
-    "vitest": "^5.0.4",
+    "@babel/parser": "^8.0.7",
     "@playwright/test": "^1.64.1",
-    "vite": "^8.3.4",
     "@types/node": "^26.6.5",
-    "@vitejs/plugin-react": "^6.1.2"
+    "@vitejs/plugin-react": "^6.1.2",
+    "prettier": "^3.9.10",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
   },
   "engines": {
     "node": ">=22.12.0"

@@ -6,6 +6,7 @@ on:
     paths:
       - "packages/moyaforge/src/**"
       - "scripts/build-registry.mjs"
+      - "packages/moyaforge/package.json"
       - "registry/templates/**"
       - "package.json"
       - "package-lock.json"

@@ -75,7 +75,7 @@ test("custom destinations retain portable relative imports", async () => {
     "./components/SidebarV1/SidebarV1.js",
   );
   expect(await read(root, "ui/docs/docs-shell.css")).toContain(
-    "./components/CodeBlock/CodeBlock.css",
+    "./components/DocOutline/DocOutline.css",
   );
 });
 test("init produces source/package/hybrid starters and preserves existing app configuration", async () => {
