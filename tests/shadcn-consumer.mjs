@@ -144,7 +144,10 @@ try {
     "utf8",
   );
   assert.ok(code.includes("CodeCopyIcon"));
-  assert.ok(code.includes('import "./CodeBlock.css"'), "component owns its CSS import");
+  assert.ok(
+    code.includes('import "./CodeBlock.css"'),
+    "component owns its CSS import",
+  );
   await run("npm", ["exec", "--", "tsc", "--noEmit"], root);
   await run("npm", ["run", "build"], root);
   server = spawn("npm", ["run", "dev"], {
