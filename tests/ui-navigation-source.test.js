@@ -98,3 +98,20 @@ test("docs-layout installs as a standalone React component", async () => {
   expect(source).not.toContain("@moyarich/moyaforge-mdx");
   expect(source).not.toContain("react-router-dom");
 });
+
+test("documentation-site installs independently of framework routing and DocsLayout", async () => {
+  const item = registry.items.find((entry) => entry.name === "documentation-site");
+  expect(item).toBeDefined();
+  expect(item.dependencies).toEqual(["react@>=18"]);
+  expect(item.files.filter((entry) => entry.path.startsWith("packages/moyaforge/src/"))).toEqual([]);
+  const paths = item.files.map((entry) => entry.path);
+  expect(paths).toContain("packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx");
+  expect(paths).not.toContain("packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx");
+  const source = await readFile(
+    new URL("../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx", import.meta.url),
+    "utf8",
+  );
+  expect(source).not.toContain("@moyarich/moyaforge-mdx");
+  expect(source).not.toContain("react-router-dom");
+  expect(source).not.toContain("useContentRouting");
+});
