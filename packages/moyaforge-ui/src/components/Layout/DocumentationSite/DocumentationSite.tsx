@@ -26,9 +26,21 @@ export interface DocumentationSiteProps {
 
 /** Standalone documentation chrome. Routing, page discovery and search are provided by the consumer. */
 export function DocumentationSite({
-  title, children, repository, pages = [], currentPath,
-  sidebar, sidebarHeader, sidebarFooter, sidebarLabel, sidebarVersion,
-  outline, outlineHeader, outlineFooter, search, onNavigate,
+  title,
+  children,
+  repository,
+  pages = [],
+  currentPath,
+  sidebar,
+  sidebarHeader,
+  sidebarFooter,
+  sidebarLabel,
+  sidebarVersion,
+  outline,
+  outlineHeader,
+  outlineFooter,
+  search,
+  onNavigate,
 }: DocumentationSiteProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<readonly DocumentationSitePage[]>([]);
@@ -57,16 +69,22 @@ export function DocumentationSite({
     setError("");
     if (!search || !query.trim()) {
       setResults([]);
-      return () => { active = false; };
+      return () => {
+        active = false;
+      };
     }
-    search(query).then(value => {
-      if (active) setResults(value);
-    }).catch(() => {
-      if (active) setError("Search is unavailable. Please try again.");
-    });
-    return () => { active = false; };
+    search(query)
+      .then((value) => {
+        if (active) setResults(value);
+      })
+      .catch(() => {
+        if (active) setError("Search is unavailable. Please try again.");
+      });
+    return () => {
+      active = false;
+    };
   }, [query, search]);
-  const currentIndex = pages.findIndex(page => page.path === currentPath);
+  const currentIndex = pages.findIndex((page) => page.path === currentPath);
   const current = pages[currentIndex];
   const navigate = (path: string) => {
     setMenu(false);
@@ -74,49 +92,140 @@ export function DocumentationSite({
     onNavigate?.(path);
   };
   const link = (page: DocumentationSitePage, children: ReactNode) => (
-    <a href={page.path} onClick={event => {
-      if (onNavigate && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && event.button === 0) {
-        event.preventDefault();
-        navigate(page.path);
-      }
-    }}>{children}</a>
+    <a
+      href={page.path}
+      onClick={(event) => {
+        if (
+          onNavigate &&
+          !event.metaKey &&
+          !event.ctrlKey &&
+          !event.shiftKey &&
+          !event.altKey &&
+          event.button === 0
+        ) {
+          event.preventDefault();
+          navigate(page.path);
+        }
+      }}
+    >
+      {children}
+    </a>
   );
   return (
     <div className={`mf-docs${dark ? " mf-docs-dark" : ""}`}>
-      <a className="mf-skip" href="#main">Skip to content</a>
+      <a className="mf-skip" href="#main">
+        Skip to content
+      </a>
       <header className="mf-header">
-        <div className="mf-brand">{pages[0] ? link(pages[0], title) : title}</div>
-        {search ? <div className="mf-search">
-          <label><span aria-hidden="true">⌕</span><input ref={input} aria-label="Search documentation" placeholder="Search documentation…" value={query} onChange={event => setQuery(event.target.value)} /><kbd>⌘ K</kbd></label>
-          {query.trim() ? <div className="mf-results" aria-live="polite">
-            {error || (results.length ? results.map(page => <div key={page.path}>{link(page, page.label)}</div>) : "No matching pages")}
-          </div> : null}
-        </div> : null}
+        <div className="mf-brand">
+          {pages[0] ? link(pages[0], title) : title}
+        </div>
+        {search ? (
+          <div className="mf-search">
+            <label>
+              <span aria-hidden="true">⌕</span>
+              <input
+                ref={input}
+                aria-label="Search documentation"
+                placeholder="Search documentation…"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+              <kbd>⌘ K</kbd>
+            </label>
+            {query.trim() ? (
+              <div className="mf-results" aria-live="polite">
+                {error ||
+                  (results.length
+                    ? results.map((page) => (
+                        <div key={page.path}>{link(page, page.label)}</div>
+                      ))
+                    : "No matching pages")}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
         <nav aria-label="Main navigation">
           {pages[0] ? link(pages[0], "Guide") : null}
           {repository ? <a href={repository}>GitHub ↗</a> : null}
-          <button type="button" onClick={() => setDark(value => !value)} aria-label="Toggle appearance">{dark ? "☀" : "☾"}</button>
-          <button type="button" className="mf-menu" onClick={() => setMenu(value => !value)} aria-expanded={menu}>Menu</button>
+          <button
+            type="button"
+            onClick={() => setDark((value) => !value)}
+            aria-label="Toggle appearance"
+          >
+            {dark ? "☀" : "☾"}
+          </button>
+          <button
+            type="button"
+            className="mf-menu"
+            onClick={() => setMenu((value) => !value)}
+            aria-expanded={menu}
+          >
+            Menu
+          </button>
         </nav>
       </header>
-      <div className="mf-docs-grid" data-menu-open={menu} data-sidebar={sidebar === null ? "none" : undefined} data-outline={outline === null ? "none" : undefined}>
-        {sidebar !== undefined ? sidebar : <aside className="mf-sidebar">
-          {sidebarHeader ?? <div className="mf-version">{sidebarLabel ?? "Documentation"} <span>{sidebarVersion}</span></div>}
-          <nav aria-label="Documentation navigation"><ul>{pages.map(page => <li key={page.path}>{link(page, page.label)}</li>)}</ul></nav>
-          {sidebarFooter ? <div className="mf-sidebar-footer">{sidebarFooter}</div> : null}
-        </aside>}
+      <div
+        className="mf-docs-grid"
+        data-menu-open={menu}
+        data-sidebar={sidebar === null ? "none" : undefined}
+        data-outline={outline === null ? "none" : undefined}
+      >
+        {sidebar !== undefined ? (
+          sidebar
+        ) : (
+          <aside className="mf-sidebar">
+            {sidebarHeader ?? (
+              <div className="mf-version">
+                {sidebarLabel ?? "Documentation"} <span>{sidebarVersion}</span>
+              </div>
+            )}
+            <nav aria-label="Documentation navigation">
+              <ul>
+                {pages.map((page) => (
+                  <li key={page.path}>{link(page, page.label)}</li>
+                ))}
+              </ul>
+            </nav>
+            {sidebarFooter ? (
+              <div className="mf-sidebar-footer">{sidebarFooter}</div>
+            ) : null}
+          </aside>
+        )}
         <main ref={article} id="main" className="mf-article" tabIndex={-1}>
-          <div className="mf-breadcrumb">{current?.source ?? "Documentation"} <span>/</span> {current?.label ?? "No page selected"}</div>
+          <div className="mf-breadcrumb">
+            {current?.source ?? "Documentation"} <span>/</span>{" "}
+            {current?.label ?? "No page selected"}
+          </div>
           {children}
           <footer className="mf-page-footer">
-            {repository ? <a href={repository}>Contribute on GitHub ↗</a> : null}
+            {repository ? (
+              <a href={repository}>Contribute on GitHub ↗</a>
+            ) : null}
             <div>
-              {currentIndex > 0 ? link(pages[currentIndex - 1], <>Previous page ← {pages[currentIndex - 1].label}</>) : null}
-              {currentIndex >= 0 && currentIndex < pages.length - 1 ? link(pages[currentIndex + 1], <>Next page → {pages[currentIndex + 1].label}</>) : null}
+              {currentIndex > 0
+                ? link(
+                    pages[currentIndex - 1],
+                    <>Previous page ← {pages[currentIndex - 1].label}</>,
+                  )
+                : null}
+              {currentIndex >= 0 && currentIndex < pages.length - 1
+                ? link(
+                    pages[currentIndex + 1],
+                    <>Next page → {pages[currentIndex + 1].label}</>,
+                  )
+                : null}
             </div>
           </footer>
         </main>
-        {outline !== undefined ? outline : <aside className="mf-outline">{outlineHeader}{outlineFooter}</aside>}
+        {outline !== undefined ? (
+          outline
+        ) : (
+          <aside className="mf-outline">
+            {outlineHeader}
+            {outlineFooter}
+          </aside>
+        )}
       </div>
     </div>
   );
