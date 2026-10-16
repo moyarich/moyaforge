@@ -1,3 +1,4 @@
+import "./Monaco.css";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 export interface MonacoFile {
