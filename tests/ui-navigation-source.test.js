@@ -45,7 +45,7 @@ test("sidebar-v2 retains its Page source dependency in the installable registry"
   expect(
     paths.has("packages/moyaforge-ui/src/components/SidebarV2/Sidebar.tsx"),
   ).toBe(true);
-  expect(paths.has("packages/moyaforge/src/components/Page/index.ts")).toBe(
+  expect(paths.has("packages/moyaforge-ui/src/components/Page/index.ts")).toBe(
     true,
   );
 });
