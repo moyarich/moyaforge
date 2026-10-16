@@ -38,6 +38,7 @@ const packedExtractedUi = legacyComponentPaths.filter((path) =>
   ),
 );
 const stylesheetPaths = paths.filter((path) => path.endsWith(".css"));
+const sourceMaps = paths.filter((path) => path.endsWith(".js.map") || path.endsWith(".d.ts.map"));
 const uiOnlyPaths = paths.filter((path) => path.includes("moyaforge-ui"));
 // npm's files allowlist does not guarantee that every public export target
 // survives packing. Check both the JS and declaration targets before release.
@@ -83,12 +84,17 @@ const report = {
   legacyComponentFiles: legacyComponentPaths.length,
   extractedUiFiles: packedExtractedUi.length,
   stylesheetFiles: stylesheetPaths.length,
+  sourceMapFiles: sourceMaps.length,
   uiWorkspaceFiles: uiOnlyPaths.length,
   missingExports,
   brokenCssImports,
   examples: packedExtractedUi.slice(0, 25),
 };
 console.log(JSON.stringify(report, null, 2));
+if (sourceMaps.length) {
+  console.error("Published framework contains unnecessary generated source maps.");
+  process.exitCode = 1;
+}
 if (brokenCssImports.length) {
   console.error("Packed CSS references stylesheets missing from the tarball.");
   process.exitCode = 1;
