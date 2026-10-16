@@ -22,8 +22,7 @@ test.each([
 
 test("sidebar-v1 carries its structural navigation type without importing MDX", async () => {
   const item = registry.items.find((entry) => entry.name === "sidebar-v1");
-  const typePath =
-    "packages/moyaforge-ui/src/components/SidebarV1/types.ts";
+  const typePath = "packages/moyaforge-ui/src/components/SidebarV1/types.ts";
   expect(item.files.some((entry) => entry.path === typePath)).toBe(true);
 
   for (const filename of ["Navigation.tsx", "SidebarV1.tsx"]) {
@@ -43,6 +42,10 @@ test("sidebar-v1 carries its structural navigation type without importing MDX", 
 test("sidebar-v2 retains its Page source dependency in the installable registry", () => {
   const item = registry.items.find((entry) => entry.name === "sidebar-v2");
   const paths = new Set(item.files.map((entry) => entry.path));
-  expect(paths.has("packages/moyaforge-ui/src/components/SidebarV2/Sidebar.tsx")).toBe(true);
-  expect(paths.has("packages/moyaforge/src/components/Page/index.ts")).toBe(true);
+  expect(
+    paths.has("packages/moyaforge-ui/src/components/SidebarV2/Sidebar.tsx"),
+  ).toBe(true);
+  expect(paths.has("packages/moyaforge/src/components/Page/index.ts")).toBe(
+    true,
+  );
 });
