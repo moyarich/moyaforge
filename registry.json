@@ -285,12 +285,12 @@
           "target": "~/src/components/moyaforge/components/Layout/DocsLayout/utils.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
+          "path": "packages/moyaforge/src/components/SidebarV1/Navigation.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/Navigation.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/SidebarV1/SidebarV1.tsx",
+          "path": "packages/moyaforge/src/components/SidebarV1/SidebarV1.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
@@ -408,12 +408,12 @@
           "target": "~/src/components/moyaforge/components/Layout/DocsLayout/utils.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
+          "path": "packages/moyaforge/src/components/SidebarV1/Navigation.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/Navigation.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/SidebarV1/SidebarV1.tsx",
+          "path": "packages/moyaforge/src/components/SidebarV1/SidebarV1.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
@@ -521,12 +521,12 @@
           "target": "~/src/components/moyaforge/components/Routing/content-routing.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
+          "path": "packages/moyaforge/src/components/SidebarV1/Navigation.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/Navigation.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/SidebarV1/SidebarV1.tsx",
+          "path": "packages/moyaforge/src/components/SidebarV1/SidebarV1.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
