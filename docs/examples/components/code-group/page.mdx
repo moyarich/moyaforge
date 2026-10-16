@@ -1,0 +1,29 @@
+---
+title: CodeGroup
+label: CodeGroup
+description: Switch between grouped code snippets.
+---
+
+# CodeGroup
+
+Switch between grouped code snippets. This preview is rendered from the repository-owned MDX page, not a hardcoded playground route.
+
+## Preview
+
+<Demo>
+  <CodeGroup label="Package managers">
+    <CodeTab label="npm"><Source code="npm install @moyarich/moyaforge" language="shell" /></CodeTab>
+    <CodeTab label="pnpm"><Source code="pnpm add @moyarich/moyaforge" language="shell" /></CodeTab>
+  </CodeGroup>
+</Demo>
+
+## Usage
+
+```tsx
+import { CodeGroup, CodeTab, Source } from "@moyarich/moyaforge";
+
+<CodeGroup label="Package managers">
+  <CodeTab label="npm"><Source code="npm install @moyarich/moyaforge" /></CodeTab>
+  <CodeTab label="pnpm"><Source code="pnpm add @moyarich/moyaforge" /></CodeTab>
+</CodeGroup>
+```
