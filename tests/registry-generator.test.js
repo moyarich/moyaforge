@@ -52,6 +52,10 @@ test("discovers unknown nested components, complete imports, styles and declared
     "registry/templates/new-shell.tsx",
     'export {NewBadge} from "./components/Nested/NewBadge/index.js";',
   );
+  await put(
+    "packages/moyaforge/src/components/Unstyled/index.ts",
+    "export const Unstyled = 1;",
+  );
   const registry = await buildRegistry(root);
   expect(registry.items.map((item) => item.name)).toEqual([
     "new-badge",
@@ -83,6 +87,9 @@ test("discovers unknown nested components, complete imports, styles and declared
   await expect(buildRegistry(root, { check: true })).rejects.toThrow(
     "Registry is stale",
   );
+  await rm(resolve(root, "packages/moyaforge/src/components/Unstyled"), {
+    recursive: true,
+  });
   expect((await buildRegistry(root)).items).toEqual([]);
   await expect(
     readFile(resolve(root, "registry/styles/new-badge.css")),

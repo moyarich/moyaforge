@@ -152,12 +152,14 @@ export async function buildRegistry(root, { check = false } = {}) {
             await visit(resolve(dirname(file), sibling));
     }
     await visit(spec.entry, spec.template);
-    const stylesheet =
+    const stylesheet = await format(
       [...files]
         .filter((file) => file.endsWith(".css"))
         .sort()
         .map((file) => `@import "./${relative(sourceRoot, file)}";`)
-        .join("\n") + "\n";
+        .join("\n"),
+      { parser: "css" },
+    );
     const stylePath = `registry/styles/${name}.css`;
     styles.set(`${name}.css`, stylesheet);
     const installed = [...files].sort().map((file) => ({
