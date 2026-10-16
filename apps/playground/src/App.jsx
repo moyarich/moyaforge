@@ -63,14 +63,32 @@ function PlaygroundShell() {
   return (
     <DocumentationSite
       title="MoyaForge"
-      pages={routes.filter((item) => item.navigation !== "disabled").map((item) => ({ path: item.path, label: item.label ?? item.title, source: item.source }))}
+      pages={routes
+        .filter((item) => item.navigation !== "disabled")
+        .map((item) => ({
+          path: item.path,
+          label: item.label ?? item.title,
+          source: item.source,
+        }))}
       currentPath={page?.path}
       onNavigate={navigate}
       repository="https://github.com/moyarich/moyaforge"
-      search={async (query) => (await searchPages(query)).flatMap((key) => {
-        const match = routes.find((item) => `${item.source}/${item.file}` === key);
-        return match ? [{ path: match.path, label: match.label ?? match.title, source: match.source }] : [];
-      })}
+      search={async (query) =>
+        (await searchPages(query)).flatMap((key) => {
+          const match = routes.find(
+            (item) => `${item.source}/${item.file}` === key,
+          );
+          return match
+            ? [
+                {
+                  path: match.path,
+                  label: match.label ?? match.title,
+                  source: match.source,
+                },
+              ]
+            : [];
+        })
+      }
       sidebar={
         <SidebarV1 header={<VersionPicker />}>
           <Navigation groups={groups} />
