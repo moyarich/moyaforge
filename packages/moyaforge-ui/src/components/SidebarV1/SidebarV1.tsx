@@ -1,6 +1,6 @@
 import { Navigation } from "./Navigation.js";
 import type { ReactNode, HTMLAttributes } from "react";
-import type { NavigationNode } from "@moyarich/moyaforge-mdx/navigation";
+import type { SidebarNavigationNode } from "./types.js";
 export interface SourcePage {
   url: string;
   title: string;
@@ -8,7 +8,7 @@ export interface SourcePage {
 export interface DocumentationGroup {
   source: string;
   label: string;
-  nodes: NavigationNode[];
+  nodes: SidebarNavigationNode[];
 }
 
 export interface SidebarV1Props extends HTMLAttributes<HTMLElement> {
