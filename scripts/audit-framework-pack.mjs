@@ -58,6 +58,17 @@ const exportTargets = Object.entries(manifest.exports ?? {}).flatMap(
 const missingExports = exportTargets.filter(
   ({ target }) => !paths.includes(target),
 );
+const packedSet = new Set(paths);
+const brokenCssImports = [];
+for (const stylesheet of stylesheetPaths) {
+  const css = await readFile(resolve(pkg, stylesheet), "utf8");
+  for (const match of css.matchAll(/@import\s+(?:url\()?\s*["']([^"']+)["']/g)) {
+    const specifier = match[1];
+    if (!specifier.startsWith(".")) continue;
+    const target = relative(pkg, resolve(pkg, stylesheet, "..", specifier)).replaceAll("\\", "/");
+    if (!packedSet.has(target)) brokenCssImports.push({ stylesheet, target });
+  }
+}
 const report = {
   name: manifest.name,
   version: manifest.version,
