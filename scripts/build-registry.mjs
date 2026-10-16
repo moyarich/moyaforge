@@ -91,14 +91,21 @@ export async function buildRegistry(root, { check = false } = {}) {
       const entry = entries.find(
         (item) => item.isFile() && /^index\.(ts|tsx)$/.test(item.name),
       );
-      if (entry)
-        add(kebab(basename(folder)), { entry: resolve(folder, entry.name) });
+      if (entry) {
+        const name = kebab(basename(folder));
+        // During migration, the UI source workspace owns installable entries.
+        // The former framework copy remains runtime-only until imports migrate.
+        if (!(rootFolder === componentRoot && specs.get(name)?.uiSource))
+          add(name, {
+            entry: resolve(folder, entry.name),
+            uiSource: rootFolder === uiComponentRoot,
+          });
+      }
     }
     for (const entry of entries)
       if (entry.isDirectory())
         await discover(resolve(folder, entry.name), rootFolder);
   }
-  await discover(componentRoot);
   if (
     await stat(uiComponentRoot).then(
       () => true,
@@ -106,6 +113,7 @@ export async function buildRegistry(root, { check = false } = {}) {
     )
   )
     await discover(uiComponentRoot, uiComponentRoot);
+  await discover(componentRoot);
   for (const entry of (await readdir(templateRoot)).sort())
     if (/\.(tsx|ts)$/.test(entry))
       add(kebab(basename(entry, extname(entry))), {
@@ -218,8 +226,21 @@ export async function buildRegistry(root, { check = false } = {}) {
   const output = await format(JSON.stringify(registry), { parser: "json" });
   const stylesRoot = resolve(root, "registry/styles");
   if (check) {
-    if ((await readFile(resolve(root, "registry.json"), "utf8")) !== output)
-      throw Error("Registry is stale. Run npm run registry:build.");
+    const existingRegistry = await readFile(
+      resolve(root, "registry.json"),
+      "utf8",
+    );
+    if (existingRegistry !== output) {
+      let mismatch = 0;
+      while (
+        mismatch < Math.min(existingRegistry.length, output.length) &&
+        existingRegistry[mismatch] === output[mismatch]
+      )
+        mismatch++;
+      throw Error(
+        `Registry is stale at character ${mismatch}: expected ${JSON.stringify(output.slice(mismatch, mismatch + 100))}, found ${JSON.stringify(existingRegistry.slice(mismatch, mismatch + 100))}. Run npm run registry:build.`,
+      );
+    }
     const actual = (await readdir(stylesRoot))
       .filter((name) => name.endsWith(".css"))
       .sort();
