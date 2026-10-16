@@ -1,0 +1,23 @@
+---
+title: EditPageLink
+label: EditPageLink
+description: Link readers to a source page in GitHub.
+---
+
+# EditPageLink
+
+Link readers to a source page in GitHub. This preview is rendered from the repository-owned MDX page, not a hardcoded playground route.
+
+## Preview
+
+<Demo>
+  <EditPageLink repository="moyarich/moyaforge" path="docs/examples/components/edit-page-link/page.mdx" label="Edit this example" />
+</Demo>
+
+## Usage
+
+```tsx
+import { EditPageLink } from "@moyarich/moyaforge";
+
+<EditPageLink repository="moyarich/moyaforge" path="docs/examples/components/edit-page-link/page.mdx" />
+```
