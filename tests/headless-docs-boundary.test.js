@@ -83,3 +83,14 @@ test("playground imports routing from headless subpath rather than docs UI", asy
     /import \{ MoyaForgeRouter, useContentRouting \} from "@moyarich\/moyaforge\/headless"/,
   );
 });
+
+test("playground uses source-owned DocumentationSite with host adapters", async () => {
+  const source = await readFile(
+    new URL("../apps/playground/src/App.jsx", import.meta.url),
+    "utf8",
+  );
+  expect(source).toContain("packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx");
+  expect(source).toContain("onNavigate={navigate}");
+  expect(source).toContain("currentPath={page?.path}");
+  expect(source).not.toMatch(/import\s*\{\s*DocumentationSite[\s\S]*?from "@moyarich\/moyaforge\/docs"/);
+});
