@@ -174,3 +174,12 @@ test("documentation-site registry metadata matches generator conventions", () =>
     "Editable MoyaForge documentation-site source and CSS. Import the installed styles alongside the component.",
   );
 });
+
+test("framework publishes its stylesheet once from dist", async () => {
+  const manifest = JSON.parse(
+    await readFile(new URL("../packages/moyaforge/package.json", import.meta.url), "utf8"),
+  );
+  expect(manifest.exports["./components.css"]).toBe("./dist/components.css");
+  expect(manifest.files).not.toContain("src/components.css");
+  expect(manifest.files).not.toContain("src/components/**/*.css");
+});
