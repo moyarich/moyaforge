@@ -95,4 +95,10 @@
   [data-moyaforge-docs-article] {
     padding: 1.5rem 0 3rem;
   }
+  [data-moyaforge-docs-layout] [data-moyaforge-doc-outline] {
+    display: block;
+    position: static;
+    max-height: none;
+    margin-bottom: 2rem;
+  }
 }
