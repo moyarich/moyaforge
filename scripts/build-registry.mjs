@@ -92,13 +92,18 @@ export async function buildRegistry(root, { check = false } = {}) {
         (item) => item.isFile() && /^index\.(ts|tsx)$/.test(item.name),
       );
       if (entry)
-        add(kebab(basename(folder)), { entry: resolve(folder, entry.name) });
+        {
+          const name = kebab(basename(folder));
+          // During migration, the UI source workspace owns installable entries.
+          // The former framework copy remains runtime-only until imports migrate.
+          if (!(rootFolder === componentRoot && specs.get(name)?.uiSource))
+            add(name, { entry: resolve(folder, entry.name), uiSource: rootFolder === uiComponentRoot });
+        }
     }
     for (const entry of entries)
       if (entry.isDirectory())
         await discover(resolve(folder, entry.name), rootFolder);
   }
-  await discover(componentRoot);
   if (
     await stat(uiComponentRoot).then(
       () => true,
@@ -106,6 +111,7 @@ export async function buildRegistry(root, { check = false } = {}) {
     )
   )
     await discover(uiComponentRoot, uiComponentRoot);
+  await discover(componentRoot);
   for (const entry of (await readdir(templateRoot)).sort())
     if (/\.(tsx|ts)$/.test(entry))
       add(kebab(basename(entry, extname(entry))), {
