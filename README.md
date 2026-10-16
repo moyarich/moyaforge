@@ -113,7 +113,11 @@ Local setup and testing instructions live in [Development](docs/development/page
 
 The committed root `package-lock.json` is maintained by the shared lockfile self-heal workflow. Publishable packages live under `packages/`. `apps/playground` remains private and must not be selected for releases.
 
-The GitHub Pages site is built from the private `apps/playground` workspace; package releases target only `packages/moyaforge`.
+The GitHub Pages site is built from the private `apps/playground` workspace; package releases target the four publishable workspaces under `packages/` (the UI framework, MDX tooling, SQLite search adapter, and CLI).
+
+## Content discovery vs. component installation
+
+`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](registry/README.md) and [component examples](docs/examples/components/page.mdx).
 
 ## CLI and editable components
 

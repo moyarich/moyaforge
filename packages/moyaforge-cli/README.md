@@ -44,14 +44,13 @@ npx @moyarich/moyaforge-cli@latest add code-block code-group
 npx @moyarich/moyaforge-cli@latest add sidebar-v1 sidebar-v2 doc-outline docs-shell
 ```
 
-Import the installed component and its matching stylesheet:
+Import the installed component directly; its implementation imports its own CSS:
 
 ```tsx
 import {
   CodeGroup,
   CodeTab,
 } from "./components/moyaforge/components/CodeGroup/CodeGroup";
-import "./components/moyaforge/code-group.css";
 ```
 
 Relative source imports retain their canonical folder hierarchy, including when
@@ -98,7 +97,7 @@ npx shadcn@latest add moyarich/moyaforge/docs-shell
 This uses the public repository's root registry.json; no separate registry server
 is required. The shadcn path expects a consumer configured for its CLI. MoyaForge's
 native installer does not require that configuration or any Tailwind dependency.
-Import the installed CSS entry explicitly with either installer.
+The installed component modules import their own CSS. Legacy generated CSS entry files remain available for integrations that need them; avoid importing both an entry file and the component stylesheet unless necessary.
 
 ## Publishing and migration
 
@@ -108,9 +107,7 @@ All four runtime/tool packages remain public. The workspace and playground stay
 private. Component source stays on GitHub; copied components are not separately
 published npm packages.
 
-Release `@moyarich/moyaforge-mdx@0.2.0` before the framework and registry consumers
-that require its navigation export; release the framework/search 0.2.0 packages
-before advertising the corresponding CLI starter modes. Publish the CLI and
+Align and verify the current `0.1.0` package manifests and public registry artifacts before advertising CLI starter modes. Publish the MDX package before packages that depend on its exports, then publish the framework and standalone search adapter as needed. Publish the CLI and
 push the root registry/source files before advertising the commands above.
 Merging source does not itself publish packages to npm. Public installs require
 no GitHub credentials, and registry dependencies must be public npm packages.
