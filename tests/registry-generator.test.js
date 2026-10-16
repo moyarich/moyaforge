@@ -60,6 +60,7 @@ test("discovers unknown nested components, complete imports, styles and declared
   expect(registry.items.map((item) => item.name)).toEqual([
     "new-badge",
     "new-shell",
+    "unstyled",
   ]);
   expect(registry.items[0].dependencies).toEqual([
     "@example/icons@^1.0.0",
