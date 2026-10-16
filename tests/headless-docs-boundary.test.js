@@ -24,3 +24,14 @@ test("both framework entrypoints expose headless documentation routes", async ()
     expect(source).toContain("HeadlessDocsRoutes");
   }
 });
+
+test("legacy DocsRoutes delegates route rendering to the headless implementation", async () => {
+  const source = await readFile(
+    new URL("../packages/moyaforge/src/components/DocsRoutes/DocsRoutes.tsx", import.meta.url),
+    "utf8",
+  );
+  expect(source).toContain("HeadlessDocsRoutes");
+  expect(source).toContain("renderLayout");
+  expect(source).toContain("<DocsLayout");
+  expect(source).not.toContain("source.getPage(");
+});
