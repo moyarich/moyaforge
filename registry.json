@@ -11,22 +11,22 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/CodeBlock/CodeBlock.css",
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeBlock/CodeBlock.css"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeBlock/CodeBlock.tsx",
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeBlock/CodeBlock.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeBlock/CodeCopyIcon.tsx",
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeBlock/CodeCopyIcon.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeBlock/index.ts",
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeBlock/index.ts"
         },
@@ -60,32 +60,32 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/CodeBlock/CodeBlock.css",
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeBlock/CodeBlock.css"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeBlock/CodeBlock.tsx",
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeBlock/CodeBlock.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeBlock/CodeCopyIcon.tsx",
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeBlock/CodeCopyIcon.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeGroup/CodeGroup.css",
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeGroup/CodeGroup.css"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeGroup/CodeGroup.tsx",
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeGroup/CodeGroup.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/CodeGroup/index.ts",
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CodeGroup/index.ts"
         },
@@ -187,22 +187,22 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutlineShell.tsx",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutlineShell.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutlineShell.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/index.ts",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/index.ts"
         },
@@ -240,12 +240,12 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
@@ -358,12 +358,12 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
@@ -481,17 +481,17 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutlineShell.tsx",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutlineShell.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutlineShell.tsx"
         },
@@ -853,12 +853,12 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
