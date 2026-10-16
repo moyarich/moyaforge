@@ -128,3 +128,13 @@ test("documentation-site installs independently of framework routing and DocsLay
   expect(source).not.toContain("react-router-dom");
   expect(source).not.toContain("useContentRouting");
 });
+
+test("all UI-owned registry entries exclude framework implementation paths", () => {
+  for (const item of registry.items) {
+    if (!item.files.some((file) => file.path.startsWith("packages/moyaforge-ui/src/"))) continue;
+    expect(
+      item.files.filter((file) => file.path.startsWith("packages/moyaforge/src/")),
+      `framework source leaked into ${item.name}`,
+    ).toEqual([]);
+  }
+});
