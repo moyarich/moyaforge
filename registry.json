@@ -727,41 +727,6 @@
           "target": "~/src/components/moyaforge/components/NavigationTree/index.ts"
         },
         {
-          "path": "packages/moyaforge/src/utils/content/content.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/content.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/index.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/pageMetadata.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/pageMetadata.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/search.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/search.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/source.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/source.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/navigation/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/navigation/index.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/navigation/navigation.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/navigation/navigation.ts"
-        },
-        {
           "path": "LICENSE",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/LICENSE"
@@ -853,31 +818,6 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
-        },
-        {
-          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
-        },
-        {
-          "path": "packages/moyaforge/src/components/Layout/DocsLayout/DocsLayout.css",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocsLayout.css"
-        },
-        {
-          "path": "packages/moyaforge/src/components/Layout/DocsLayout/DocumentationSite.css",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocumentationSite.css"
-        },
-        {
-          "path": "packages/moyaforge/src/components/Layout/DocsLayout/utils.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/Layout/DocsLayout/utils.ts"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/Navigation.tsx"
@@ -896,46 +836,6 @@
           "path": "packages/moyaforge-ui/src/components/SidebarV1/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/index.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
-        },
-        {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/content.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/content.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/index.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/pageMetadata.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/pageMetadata.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/search.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/search.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/content/source.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/content/source.ts"
-        },
-        {
-          "path": "packages/moyaforge/src/utils/navigation/navigation.ts",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/utils/navigation/navigation.ts"
         },
         {
           "path": "LICENSE",
