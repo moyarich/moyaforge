@@ -1,3 +1,4 @@
+import "./Search.css";
 import type {
   ChangeEventHandler,
   ComponentPropsWithoutRef,
