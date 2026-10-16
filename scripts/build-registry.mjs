@@ -178,8 +178,8 @@ export async function buildRegistry(root, { check = false } = {}) {
     // An installable UI entry must carry all of its relative source imports in
     // the private UI workspace, never copy runtime framework implementation.
     if (spec.uiSource) {
-      const leaked = [...files].filter(
-        (file) => file.startsWith(sourceRoot + "/"),
+      const leaked = [...files].filter((file) =>
+        file.startsWith(sourceRoot + "/"),
       );
       if (leaked.length) {
         throw Error(
