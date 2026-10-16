@@ -71,3 +71,17 @@ test("sidebar-v1 does not require the MDX runtime package", () => {
     ),
   ).toBe(false);
 });
+
+test("docs-layout installs as a standalone React component", async () => {
+  const item = registry.items.find((entry) => entry.name === "docs-layout");
+  expect(item).toBeDefined();
+  expect(item.dependencies).toEqual(["react@>=18"]);
+  expect(item.files.filter((entry) => entry.path.startsWith("packages/moyaforge/src/"))).toEqual([]);
+  expect(item.files.some((entry) => entry.path === "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css")).toBe(true);
+  const source = await readFile(
+    new URL("../packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx", import.meta.url),
+    "utf8",
+  );
+  expect(source).not.toContain("@moyarich/moyaforge-mdx");
+  expect(source).not.toContain("react-router-dom");
+});
