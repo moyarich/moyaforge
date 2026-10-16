@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
-import { RegistryDocsRoutes } from "../dist/components/Routing/RegistryDocsRoutes.js";
+import { RegistryRoutes } from "../dist/components/Routing/RegistryRoutes.js";
 
 const routes = [
   {
@@ -40,7 +40,7 @@ function render(path, props = {}) {
     React.createElement(
       MemoryRouter,
       { initialEntries: [path] },
-      React.createElement(RegistryDocsRoutes, { routes, sources, ...props }),
+      React.createElement(RegistryRoutes, { routes, sources, ...props }),
     ),
   );
 }
