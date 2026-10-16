@@ -8,7 +8,10 @@ import {
   DocOutline,
   buildDocumentationGroups,
 } from "@moyarich/moyaforge/docs";
-import { MoyaForgeRouter, useContentRouting } from "@moyarich/moyaforge/headless";
+import {
+  MoyaForgeRouter,
+  useContentRouting,
+} from "@moyarich/moyaforge/headless";
 import registry from "../registry.config.ts";
 import { VersionPicker } from "./components/Shell/VersionPicker.jsx";
 import { Feedback } from "./components/Shell/Feedback.jsx";
