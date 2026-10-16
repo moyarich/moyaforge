@@ -64,16 +64,24 @@ test("embedded DocsRoutes coexists with host React Router navigation", async ({
   page,
 }) => {
   await page.goto("/app/host");
-  await expect(page.getByRole("heading", { name: "Host dashboard" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Host dashboard" }),
+  ).toBeVisible();
   await page.getByRole("link", { name: "Open docs" }).click();
   await expect(page).toHaveURL(/\/app\/docs\/guide$/);
-  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Embedded guide" }),
+  ).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Embedded guide" }),
+  ).toBeVisible();
   await page.goto("/app/docs/missing");
   await expect(page.getByText("Embedded docs not found")).toBeVisible();
   await page.goto("/app/host");
-  await expect(page.getByRole("heading", { name: "Host dashboard" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Host dashboard" }),
+  ).toBeVisible();
 });
 
 test("embedded docs preserve browser history and host routing", async ({
@@ -82,13 +90,19 @@ test("embedded docs preserve browser history and host routing", async ({
   await page.goto("/app/host");
   await page.getByRole("link", { name: "Open docs" }).click();
   await expect(page).toHaveURL(/\/app\/docs\/guide$/);
-  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Embedded guide" }),
+  ).toBeVisible();
 
   await page.goBack();
   await expect(page).toHaveURL(/\/app\/host$/);
-  await expect(page.getByRole("heading", { name: "Host dashboard" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Host dashboard" }),
+  ).toBeVisible();
 
   await page.goForward();
   await expect(page).toHaveURL(/\/app\/docs\/guide$/);
-  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Embedded guide" }),
+  ).toBeVisible();
 });

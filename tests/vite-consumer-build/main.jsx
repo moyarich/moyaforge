@@ -5,7 +5,13 @@ import {
   DocsRoutes,
   createMoyaForgeSource,
 } from "@moyarich/moyaforge";
-import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 
 const toc = getTableOfContents([
