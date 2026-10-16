@@ -50,7 +50,13 @@ export function Documentation({ source, pathname, Layout }) {
       source={source}
       pathname={pathname}
       renderLayout={(page, content) => (
-        <Layout currentPath={page.url} pages={source.getPages()}>
+        <Layout
+          currentPath={page.url}
+          pages={source.getPages().map((item) => ({
+            path: item.url,
+            label: item.title,
+          }))}
+        >
           {content}
         </Layout>
       )}
