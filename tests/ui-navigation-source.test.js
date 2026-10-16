@@ -49,3 +49,21 @@ test("sidebar-v2 retains its Page source dependency in the installable registry"
     true,
   );
 });
+
+test.each(["navigation-tree", "sidebar-v1", "sidebar-v2"])(
+  "%s installs its own UI source without framework component files",
+  (name) => {
+    const item = registry.items.find((entry) => entry.name === name);
+    expect(item).toBeDefined();
+    expect(
+      item.files.filter((entry) =>
+        entry.path.startsWith("packages/moyaforge/src/"),
+      ),
+    ).toEqual([]);
+  },
+);
+
+test("sidebar-v1 does not require the MDX runtime package", () => {
+  const item = registry.items.find((entry) => entry.name === "sidebar-v1");
+  expect(item.dependencies.some((entry) => entry.startsWith("@moyarich/moyaforge-mdx@"))).toBe(false);
+});
