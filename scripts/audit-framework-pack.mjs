@@ -62,10 +62,15 @@ const packedSet = new Set(paths);
 const brokenCssImports = [];
 for (const stylesheet of stylesheetPaths) {
   const css = await readFile(resolve(pkg, stylesheet), "utf8");
-  for (const match of css.matchAll(/@import\s+(?:url\()?\s*["']([^"']+)["']/g)) {
+  for (const match of css.matchAll(
+    /@import\s+(?:url\()?\s*["']([^"']+)["']/g,
+  )) {
     const specifier = match[1];
     if (!specifier.startsWith(".")) continue;
-    const target = relative(pkg, resolve(pkg, stylesheet, "..", specifier)).replaceAll("\\", "/");
+    const target = relative(
+      pkg,
+      resolve(pkg, stylesheet, "..", specifier),
+    ).replaceAll("\\", "/");
     if (!packedSet.has(target)) brokenCssImports.push({ stylesheet, target });
   }
 }
