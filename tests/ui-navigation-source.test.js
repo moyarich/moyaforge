@@ -131,9 +131,16 @@ test("documentation-site installs independently of framework routing and DocsLay
 
 test("all UI-owned registry entries exclude framework implementation paths", () => {
   for (const item of registry.items) {
-    if (!item.files.some((file) => file.path.startsWith("packages/moyaforge-ui/src/"))) continue;
+    if (
+      !item.files.some((file) =>
+        file.path.startsWith("packages/moyaforge-ui/src/"),
+      )
+    )
+      continue;
     expect(
-      item.files.filter((file) => file.path.startsWith("packages/moyaforge/src/")),
+      item.files.filter((file) =>
+        file.path.startsWith("packages/moyaforge/src/"),
+      ),
       `framework source leaked into ${item.name}`,
     ).toEqual([]);
   }
