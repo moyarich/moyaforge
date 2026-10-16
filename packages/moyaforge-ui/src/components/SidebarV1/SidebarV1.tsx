@@ -1,8 +1,15 @@
 import { Navigation } from "./Navigation.js";
 import type { ReactNode, HTMLAttributes } from "react";
 import type { NavigationNode } from "@moyarich/moyaforge-mdx/navigation";
-export interface SourcePage { url: string; title: string; }
-export interface DocumentationGroup { source: string; label: string; nodes: NavigationNode[]; }
+export interface SourcePage {
+  url: string;
+  title: string;
+}
+export interface DocumentationGroup {
+  source: string;
+  label: string;
+  nodes: NavigationNode[];
+}
 
 export interface SidebarV1Props extends HTMLAttributes<HTMLElement> {
   /** Used only when the children slot is undefined. */

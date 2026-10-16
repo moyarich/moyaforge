@@ -1,7 +1,19 @@
 import "./NavigationTree.css";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-export interface PageDescriptor { id: string; label: string; path: string; navPath: string[]; frontmatter: Record<string, unknown>; hidden: boolean; Component?: import("react").ComponentType; }
-export interface NavigationItem { label: string; children: NavigationItem[]; page?: PageDescriptor; }
+export interface PageDescriptor {
+  id: string;
+  label: string;
+  path: string;
+  navPath: string[];
+  frontmatter: Record<string, unknown>;
+  hidden: boolean;
+  Component?: import("react").ComponentType;
+}
+export interface NavigationItem {
+  label: string;
+  children: NavigationItem[];
+  page?: PageDescriptor;
+}
 
 export interface NavigationTreeProps {
   items: NavigationItem[];
