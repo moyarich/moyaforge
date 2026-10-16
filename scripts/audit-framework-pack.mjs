@@ -46,11 +46,18 @@ const exportTargets = Object.entries(manifest.exports ?? {}).flatMap(
     const targets =
       typeof declaration === "string"
         ? [declaration]
-        : Object.values(declaration).filter((value) => typeof value === "string");
-    return targets.map((target) => ({ subpath, target: target.replace(/^\.\//, "") }));
+        : Object.values(declaration).filter(
+            (value) => typeof value === "string",
+          );
+    return targets.map((target) => ({
+      subpath,
+      target: target.replace(/^\.\//, ""),
+    }));
   },
 );
-const missingExports = exportTargets.filter(({ target }) => !paths.includes(target));
+const missingExports = exportTargets.filter(
+  ({ target }) => !paths.includes(target),
+);
 const report = {
   name: manifest.name,
   version: manifest.version,
