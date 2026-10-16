@@ -69,9 +69,14 @@ const report = {
   stylesheetFiles: stylesheetPaths.length,
   uiWorkspaceFiles: uiOnlyPaths.length,
   missingExports,
+  brokenCssImports,
   examples: packedExtractedUi.slice(0, 25),
 };
 console.log(JSON.stringify(report, null, 2));
+if (brokenCssImports.length) {
+  console.error("Packed CSS references stylesheets missing from the tarball.");
+  process.exitCode = 1;
+}
 if (missingExports.length) {
   console.error("Public package exports do not exist in the npm tarball.");
   process.exitCode = 1;
