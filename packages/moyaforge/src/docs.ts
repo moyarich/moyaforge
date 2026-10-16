@@ -16,4 +16,7 @@ export {
   type DocumentationSources,
 } from "./components/Layout/DocsLayout/utils.js";
 
-export { HeadlessDocsRoutes, type HeadlessDocsRoutesProps } from "./components/Routing/HeadlessDocsRoutes.js";
+export {
+  HeadlessDocsRoutes,
+  type HeadlessDocsRoutesProps,
+} from "./components/Routing/HeadlessDocsRoutes.js";

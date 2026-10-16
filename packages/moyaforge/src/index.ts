@@ -52,4 +52,7 @@ export {
   type RegistryLazySources,
 } from "./components/Routing/RegistryRoutes.js";
 
-export { HeadlessDocsRoutes, type HeadlessDocsRoutesProps } from "./components/Routing/HeadlessDocsRoutes.js";
+export {
+  HeadlessDocsRoutes,
+  type HeadlessDocsRoutesProps,
+} from "./components/Routing/HeadlessDocsRoutes.js";
