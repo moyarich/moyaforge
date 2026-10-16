@@ -147,15 +147,21 @@ test("all UI-owned registry entries exclude framework implementation paths", () 
 });
 
 test("the UI workspace remains private and is not an npm-distributed component bundle", async () => {
-  const manifest = JSON.parse(await readFile(
-    new URL("../packages/moyaforge-ui/package.json", import.meta.url),
-    "utf8",
-  ));
+  const manifest = JSON.parse(
+    await readFile(
+      new URL("../packages/moyaforge-ui/package.json", import.meta.url),
+      "utf8",
+    ),
+  );
   expect(manifest.private).toBe(true);
-  const framework = JSON.parse(await readFile(
-    new URL("../packages/moyaforge/package.json", import.meta.url),
-    "utf8",
-  ));
+  const framework = JSON.parse(
+    await readFile(
+      new URL("../packages/moyaforge/package.json", import.meta.url),
+      "utf8",
+    ),
+  );
   expect(framework.files).not.toContain("../moyaforge-ui");
-  expect(framework.files.some((entry) => entry.includes("moyaforge-ui"))).toBe(false);
+  expect(framework.files.some((entry) => entry.includes("moyaforge-ui"))).toBe(
+    false,
+  );
 });
