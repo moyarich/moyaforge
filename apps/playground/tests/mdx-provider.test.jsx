@@ -22,30 +22,35 @@ test("MDX resolves shared components through the playground provider", async () 
   expect(html).toContain("npm install moyaforge");
 });
 
-test("Shiki highlights fenced code through the shared MDX compiler", async () => {
-  const { default: rehypeShiki } = await import("@shikijs/rehype");
-  const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
-  const { default: Content } = await evaluate(
-    '```js\nconst greeting = "hello";\n```',
-    {
-      ...runtime,
-      useMDXComponents,
-      ...createMdxOptions({
-        shiki: [
-          rehypeShiki,
-          { themes: { light: "github-light", dark: "github-dark" } },
-        ],
-      }),
-    },
-  );
-  const html = renderToStaticMarkup(
-    createElement(PlaygroundMdxProvider, null, createElement(Content)),
-  );
-  expect(html).toContain('class="shiki shiki-themes');
-  expect(html).toContain("--shiki-dark:");
-  expect(html).toContain('class="line"');
-  expect(html).toContain("greeting");
-});
+// Cold Shiki grammar/WASM initialization can exceed five seconds on CI runners.
+test(
+  "Shiki highlights fenced code through the shared MDX compiler",
+  { timeout: 15_000 },
+  async () => {
+    const { default: rehypeShiki } = await import("@shikijs/rehype");
+    const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
+    const { default: Content } = await evaluate(
+      '```js\nconst greeting = "hello";\n```',
+      {
+        ...runtime,
+        useMDXComponents,
+        ...createMdxOptions({
+          shiki: [
+            rehypeShiki,
+            { themes: { light: "github-light", dark: "github-dark" } },
+          ],
+        }),
+      },
+    );
+    const html = renderToStaticMarkup(
+      createElement(PlaygroundMdxProvider, null, createElement(Content)),
+    );
+    expect(html).toContain('class="shiki shiki-themes');
+    expect(html).toContain("--shiki-dark:");
+    expect(html).toContain('class="line"');
+    expect(html).toContain("greeting");
+  },
+);
 
 test("MDX renders registered Lucide icons and forwards their props", async () => {
   const { default: Content } = await evaluate(

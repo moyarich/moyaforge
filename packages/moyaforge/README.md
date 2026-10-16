@@ -117,7 +117,7 @@ The independent SQLite adapter is optional: `sqliteSearchPlugin({ registry, root
 
 Use `createMdxOptions()` from `@moyarich/moyaforge-mdx` and `mdxRegistryPlugin()` from `@moyarich/moyaforge-mdx/vite`. The metadata-only virtual module provides parsed YAML content records, while `virtual:moyaforge-mdx/lazy-registry` provides component loaders without eager imports.
 
-The UI package does not export a separate MDX compiler or Vite registry plugin. `@moyarich/moyaforge/vite`, `@moyarich/moyaforge/mdx`, `virtual:moyaforge/pages`, and `virtual:moyaforge/lazy-pages` were experimental duplicate APIs and have been removed. Migrate to the canonical MDX package before upgrading.
+The UI package does not export a separate MDX compiler or Vite registry plugin. The old `@moyarich/moyaforge/vite`, `virtual:moyaforge/pages`, and `virtual:moyaforge/lazy-pages` APIs were removed. The current `@moyarich/moyaforge/mdx` entry provides a React component registry, not compiler options. Use the canonical MDX package for compilation and discovery.
 
 ## Repository layout
 
@@ -257,7 +257,7 @@ export default defineMoyaForgeConfig({
 });
 ```
 
-**These modes describe the intended composition, not a complete turnkey docs runtime yet.** The current package exposes components, content/navigation utilities and config. Configurable MDX registry discovery and optional Vite integration are available in `@moyarich/moyaforge-mdx`. The package also exposes router-independent `DocsRoutes` and basic CLI commands, but a complete turnkey docs-only application and framework-specific router adapters remain separate work; see [framework architecture](../../docs/framework-architecture.md).
+The separate `@moyarich/moyaforge-cli` scaffolds runnable docs, hybrid, and isolated existing-app starters. The configuration mode above remains descriptive; the installer uses `--template docs|hybrid|existing` to select concrete starter behavior and `--mode source|package` to select component ownership. Routing and shells are available from `/docs`; content discovery and compilation remain in the MDX package.
 
 ## Metadata-driven table of contents
 
@@ -269,7 +269,7 @@ MoyaForge is an open-source toolkit for any consuming project. `apps/playground`
 
 Prefer `createMdxOptions` from `@moyarich/moyaforge-mdx`, `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`, and `virtual:moyaforge-mdx/metadata` plus `virtual:moyaforge-mdx/lazy-registry` for new registry integrations.
 
-The published `@moyarich/moyaforge/vite` (`moyaforgeVite`) and `@moyarich/moyaforge/mdx` (`createMoyaForgeMdxOptions`) entry points remain supported. The latter delegates to shared MDX compiler defaults; the former provides collection manifest modules for consumers using that contract. `@moyarich/moyaforge-mdx/source-files` remains available for shared source discovery. Do not remove public entry points merely because the playground does not use them.
+Use `@moyarich/moyaforge-mdx/source-files` for shared source discovery. Compiler options come from the headless MDX package. The React `/docs` entry provides routing/shells, `/code` provides code blocks and tabs without optional editors, and `/mdx` provides the extended UI component registry (install its optional Console/editor integrations when using those features).
 
 ### Documentation routing and layout
 
@@ -343,3 +343,18 @@ set to `undefined` uses the default; `null` deliberately removes it.
 Explicit children replace generated navigation even when `groups` or `pages`
 are also supplied. Header and footer slots work independently of navigation
 mode. Label/version props remain optional conveniences for the default header.
+
+### CLI migration and component ownership
+
+The executable now belongs to `@moyarich/moyaforge-cli`, not this package:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --mode package
+npx @moyarich/moyaforge-cli@latest add docs-shell
+```
+
+Keep importing package-managed components from this public npm package, or install
+editable source from the GitHub registry. Both distributions use the canonical
+source in `src/components`; copied source becomes app-owned. See the
+[CLI guide](../moyaforge-cli/README.md) for release prerequisites, source-owned
+starters, shadcn compatibility, and existing-app setup.

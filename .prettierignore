@@ -7,3 +7,6 @@ package-lock.json
 .consumer-dist/
 playwright-report/
 test-results/
+
+# Opaque scaffolding templates contain substitution markers.
+packages/moyaforge-cli/templates/

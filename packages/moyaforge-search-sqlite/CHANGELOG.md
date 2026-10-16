@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+- Publish the standalone browser client entry used by optional CLI search integration.
+
 ## 0.1.0
 
 ### Added

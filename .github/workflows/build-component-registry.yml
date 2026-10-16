@@ -1,0 +1,56 @@
+name: Build component registry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/moyaforge/src/**"
+      - "scripts/build-registry.mjs"
+      - "registry/templates/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/build-component-registry.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-component-registry-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Generate canonical registry and CSS entries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Build the current branch tip so an older queued run cannot publish stale source.
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install generator dependencies
+        run: npm ci --ignore-scripts --include=optional
+      - name: Rebuild registry from canonical component source
+        run: npm run registry:build
+      - name: Verify generated registry freshness
+        run: npm run registry:check
+      - name: Validate shadcn compatibility
+        run: npx --yes shadcn@4.21.5 registry validate ./registry.json
+      - name: Commit generated registry files when changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- registry.json registry/styles
+          if git diff --cached --quiet; then
+            echo "Registry is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: rebuild component registry"
+          # Do not force-push if the branch changes during generation.
+          git push origin "HEAD:${GITHUB_REF_NAME}"

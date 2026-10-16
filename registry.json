@@ -1,0 +1,364 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "moyaforge",
+  "homepage": "https://github.com/moyarich/moyaforge",
+  "items": [
+    {
+      "name": "code-block",
+      "type": "registry:block",
+      "title": "Code Block",
+      "description": "Editable MoyaForge code-block source and CSS. Import the installed styles alongside the component.",
+      "dependencies": ["react@>=18"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/moyaforge/src/components/CodeBlock/CodeBlock.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CodeBlock/CodeBlock.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/CodeBlock/CodeBlock.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CodeBlock/CodeBlock.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/CodeBlock/CodeCopyIcon.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CodeBlock/CodeCopyIcon.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/code-block.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/code-block.css"
+        }
+      ]
+    },
+    {
+      "name": "code-group",
+      "type": "registry:block",
+      "title": "Code Group",
+      "description": "Editable MoyaForge code-group source and CSS. Import the installed styles alongside the component.",
+      "dependencies": ["react@>=18"],
+      "registryDependencies": ["moyarich/moyaforge/code-block"],
+      "files": [
+        {
+          "path": "packages/moyaforge/src/components/CodeGroup/CodeGroup.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CodeGroup/CodeGroup.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/CodeGroup/CodeGroup.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CodeGroup/CodeGroup.tsx"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/code-group.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/code-group.css"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-v1",
+      "type": "registry:block",
+      "title": "Sidebar V1",
+      "description": "Editable MoyaForge sidebar-v1 source and CSS. Import the installed styles alongside the component.",
+      "dependencies": [
+        "react@>=18",
+        "react-router-dom@^7.18.4",
+        "@moyarich/moyaforge-mdx@^0.2.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/Layout/DocsLayout/DocsLayout.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocsLayout.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/Layout/DocsLayout/DocumentationSite.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocumentationSite.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/Layout/DocsLayout/utils.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Layout/DocsLayout/utils.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV1/Navigation.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV1/Navigation.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV1/SidebarV1.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV1/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV1/index.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/utils/content/content.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/utils/content/content.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/utils/content/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/utils/content/index.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/utils/content/pageMetadata.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/utils/content/pageMetadata.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/utils/content/search.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/utils/content/search.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/utils/content/source.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/utils/content/source.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/utils/navigation/navigation.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/utils/navigation/navigation.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/sidebar-v1.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/sidebar-v1.css"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-v2",
+      "type": "registry:block",
+      "title": "Sidebar V2",
+      "description": "Editable MoyaForge sidebar-v2 source and CSS. Import the installed styles alongside the component.",
+      "dependencies": ["react@>=18"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/moyaforge/src/components/Page/Page.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Page/Page.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/Page/Page.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Page/Page.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/Page/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Page/index.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/Sidebar.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/Sidebar.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/Sidebar.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/Sidebar.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/SidebarContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/SidebarContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/SidebarFooter.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/SidebarFooter.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/SidebarGroup.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/SidebarGroup.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/SidebarHeader.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/SidebarHeader.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/SidebarItem.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/SidebarItem.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/SidebarOutline.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/SidebarOutline.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/SidebarSection.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/SidebarSection.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/SidebarV2/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/SidebarV2/index.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/sidebar-v2.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/sidebar-v2.css"
+        }
+      ]
+    },
+    {
+      "name": "doc-outline",
+      "type": "registry:block",
+      "title": "Doc Outline",
+      "description": "Editable MoyaForge doc-outline source and CSS. Import the installed styles alongside the component.",
+      "dependencies": ["react@>=18"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutlineShell.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/DocOutline/DocOutlineShell.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/DocOutline/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/DocOutline/index.ts"
+        },
+        {
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
+        },
+        {
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/doc-outline.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/doc-outline.css"
+        }
+      ]
+    },
+    {
+      "name": "docs-shell",
+      "type": "registry:block",
+      "title": "Docs Shell",
+      "description": "Editable MoyaForge docs-shell source and CSS. Import the installed styles alongside the component.",
+      "dependencies": [
+        "react@>=18",
+        "react-router-dom@^7.18.4",
+        "@moyarich/moyaforge-mdx@^0.2.0"
+      ],
+      "registryDependencies": [
+        "moyarich/moyaforge/sidebar-v1",
+        "moyarich/moyaforge/doc-outline",
+        "moyarich/moyaforge/code-group"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge/src/components/Layout/DocsLayout/DocumentationSite.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocumentationSite.tsx"
+        },
+        {
+          "path": "packages/moyaforge/src/components/Routing/content-routing.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Routing/content-routing.tsx"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/docs-shell.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/docs-shell.css"
+        },
+        {
+          "path": "registry/templates/docs-shell.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/docs-shell.tsx"
+        }
+      ]
+    }
+  ]
+}

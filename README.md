@@ -114,3 +114,13 @@ Local setup and testing instructions live in [Development](docs/development/page
 The committed root `package-lock.json` is maintained by the shared lockfile self-heal workflow. Publishable packages live under `packages/`. `apps/playground` remains private and must not be selected for releases.
 
 The GitHub Pages site is built from the private `apps/playground` workspace; package releases target only `packages/moyaforge`.
+
+## CLI and editable components
+
+The separate `@moyarich/moyaforge-cli` package initializes consumer applications
+and installs editable components from this repository. The React framework stays
+publicly available on npm; it no longer owns the CLI executable.
+
+See [CLI installation and publishing](packages/moyaforge-cli/README.md) and
+[registry architecture](registry/README.md). These commands require the matching
+CLI/framework releases to be published; merging source alone does not publish npm packages.
