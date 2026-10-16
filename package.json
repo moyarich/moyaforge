@@ -33,7 +33,9 @@
     "test:cli:consumer": "node tests/cli-consumer.mjs",
     "test:registry:consumer": "node tests/shadcn-consumer.mjs",
     "pack:audit": "node scripts/audit-framework-pack.mjs",
-    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict"
+    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
+    "imports:audit": "node scripts/audit-framework-imports.mjs",
+    "imports:audit:strict": "node scripts/audit-framework-imports.mjs --strict"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
