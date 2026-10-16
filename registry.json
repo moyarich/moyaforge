@@ -8,7 +8,9 @@
       "type": "registry:component",
       "title": "Code Block",
       "description": "Editable MoyaForge code-block source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -57,7 +59,9 @@
       "type": "registry:component",
       "title": "Code Group",
       "description": "Editable MoyaForge code-group source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -116,7 +120,9 @@
       "type": "registry:component",
       "title": "Copy Button",
       "description": "Editable MoyaForge copy-button source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -150,7 +156,9 @@
       "type": "registry:component",
       "title": "Demo",
       "description": "Editable MoyaForge demo source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Demo/Demo.css",
@@ -184,7 +192,9 @@
       "type": "registry:component",
       "title": "Doc Outline",
       "description": "Editable MoyaForge doc-outline source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
@@ -233,7 +243,9 @@
       "type": "registry:component",
       "title": "Docs Layout",
       "description": "Editable MoyaForge docs-layout source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
@@ -504,11 +516,49 @@
       ]
     },
     {
+      "name": "documentation-site",
+      "type": "registry:component",
+      "title": "Documentation Site",
+      "description": "Editable standalone documentation chrome. Routing and search are supplied by the host application.",
+      "dependencies": [
+        "react@>=18"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Layout/DocumentationSite/DocumentationSite.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Layout/DocumentationSite/DocumentationSite.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Layout/DocumentationSite/index.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/documentation-site.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/documentation-site.css"
+        }
+      ]
+    },
+    {
       "name": "edit-page-link",
       "type": "registry:component",
       "title": "Edit Page Link",
       "description": "Editable MoyaForge edit-page-link source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
@@ -542,7 +592,9 @@
       "type": "registry:component",
       "title": "Empty State",
       "description": "Editable MoyaForge empty-state source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EmptyState/EmptyState.tsx",
@@ -625,7 +677,9 @@
       "type": "registry:component",
       "title": "Navigation Tree",
       "description": "Editable MoyaForge navigation-tree source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.css",
@@ -659,7 +713,9 @@
       "type": "registry:component",
       "title": "Page",
       "description": "Editable MoyaForge page source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -693,7 +749,9 @@
       "type": "registry:component",
       "title": "Search",
       "description": "Editable MoyaForge search source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Search/Search.css",
@@ -727,7 +785,10 @@
       "type": "registry:component",
       "title": "Sidebar V1",
       "description": "Editable MoyaForge sidebar-v1 source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18", "react-router-dom@^7.18.4"],
+      "dependencies": [
+        "react@>=18",
+        "react-router-dom@^7.18.4"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
@@ -766,7 +827,9 @@
       "type": "registry:component",
       "title": "Sidebar V2",
       "description": "Editable MoyaForge sidebar-v2 source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -850,7 +913,9 @@
       "type": "registry:component",
       "title": "Source",
       "description": "Editable MoyaForge source source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Source/Source.css",
@@ -884,7 +949,9 @@
       "type": "registry:component",
       "title": "Table Of Contents",
       "description": "Editable MoyaForge table-of-contents source and CSS. Import the installed styles alongside the component.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
