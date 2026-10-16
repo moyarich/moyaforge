@@ -4,7 +4,13 @@ import { dirname, relative, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const src = resolve(root, "packages/moyaforge/src");
-const entrypoints = ["index.ts", "docs.ts", "code.ts", "registry-routes.tsx", "utils/mdx/index.ts"];
+const entrypoints = [
+  "index.ts",
+  "docs.ts",
+  "code.ts",
+  "registry-routes.tsx",
+  "utils/mdx/index.ts",
+];
 const groups = [
   "NavigationTree",
   "SidebarV1",
