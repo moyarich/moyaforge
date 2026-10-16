@@ -19,3 +19,5 @@ async function copyStyles(folder) {
 }
 
 await copyStyles(source);
+// The public stylesheet imports sibling component CSS from dist/components/.
+await cp(join(pkg, "src/components.css"), join(pkg, "dist/components.css"));
