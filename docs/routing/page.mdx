@@ -1,0 +1,72 @@
+---
+title: Routing and navigation
+label: Routing
+order: 2
+---
+
+# Routing and navigation
+
+MoyaForge owns the connection between your content inventory and React Router DOM. Your application selects the URL strategy and supplies its pages.
+
+## Choose a router
+
+`MoyaForgeRouter` provides a browser router by default. Use `basename` when mounting under a subdirectory. Your host must serve your application for each content URL.
+
+```jsx
+<MoyaForgeRouter pages={routes} basename="/guide">
+  <DocumentationSite title="My docs">
+    <ContentPage />
+  </DocumentationSite>
+</MoyaForgeRouter>
+```
+
+Use `mode="hash"` on static hosting without rewrite rules. The playground uses this mode, so direct links and refreshes work on GitHub Pages.
+
+## Render a content page
+
+Read the selected page through `useContentRouting`. The generated lazy registry loads the matching MDX module on demand.
+
+```jsx
+import { lazy, Suspense } from "react";
+import { useContentRouting } from "@moyarich/moyaforge";
+import { sources } from "virtual:moyaforge-mdx/lazy-registry";
+
+const components = new Map();
+
+function ContentPage() {
+  const { page } = useContentRouting();
+  const loader = page && sources[page.source]?.lazyPages?.[page.file];
+  if (loader && !components.has(loader)) components.set(loader, lazy(loader));
+  const Page = components.get(loader);
+
+  if (!Page) return <h1>Page not found</h1>;
+  return (
+    <Suspense fallback={<p>Loading…</p>}>
+      <Page />
+    </Suspense>
+  );
+}
+```
+
+## Embed in an existing app
+
+Already using React Router? Put `MoyaForgeRouting` inside your router to share navigation and browser history. It supplies the content context without creating another router.
+
+```jsx
+import { BrowserRouter } from "react-router-dom";
+import { MoyaForgeRouting } from "@moyarich/moyaforge";
+
+<BrowserRouter>
+  <MoyaForgeRouting pages={routes}>
+    <DocumentationSite title="Product guide">
+      <ContentPage />
+    </DocumentationSite>
+  </MoyaForgeRouting>
+</BrowserRouter>;
+```
+
+## Navigate and resolve results
+
+Use React Router's `Link` or `NavLink` for links. The hook also exposes `navigateContent` for programmatic navigation and `searchResultPage(key)` to map indexed document keys to canonical pages.
+
+Disabled pages are excluded from routing. Hidden pages remain routable but stay out of the sidebar. Unknown URLs display your not-found content; only the root entry redirects to the first available page.

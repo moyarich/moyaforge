@@ -1,4 +1,4 @@
-@import "./components/Sidebar/Sidebar.css";
+@import "./components/SidebarV2/Sidebar.css";
 @import "./components/NavigationTree/NavigationTree.css";
 @import "./components/Source/Source.css";
 @import "./components/Demo/Demo.css";
@@ -6,8 +6,10 @@
 @import "./components/TableOfContents/TableOfContents.css";
 @import "./components/CopyButton/CopyButton.css";
 @import "./components/Search/Search.css";
+@import "./components/CodeBlock/CodeBlock.css";
 @import "./components/CodeGroup/CodeGroup.css";
 @import "./components/Monaco/Monaco.css";
 @import "./components/DocOutline/DocOutline.css";
 @import "./components/EditPageLink/EditPageLink.css";
-@import "./components/DocsLayout/DocsLayout.css";
+@import "./components/Layout/DocsLayout/DocsLayout.css";
+@import "./components/Layout/DocsLayout/DocumentationSite.css";

@@ -14,13 +14,15 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./vite": "./vite-plugin/index.js"
+    "./vite": "./vite-plugin/index.js",
+    "./client": "./src/search/search-client.js"
   },
   "files": [
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "vite-plugin"
+    "vite-plugin",
+    "src/search"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

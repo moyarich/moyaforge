@@ -270,3 +270,76 @@ MoyaForge is an open-source toolkit for any consuming project. `apps/playground`
 Prefer `createMdxOptions` from `@moyarich/moyaforge-mdx`, `mdxRegistryPlugin` from `@moyarich/moyaforge-mdx/vite`, and `virtual:moyaforge-mdx/metadata` plus `virtual:moyaforge-mdx/lazy-registry` for new registry integrations.
 
 The published `@moyarich/moyaforge/vite` (`moyaforgeVite`) and `@moyarich/moyaforge/mdx` (`createMoyaForgeMdxOptions`) entry points remain supported. The latter delegates to shared MDX compiler defaults; the former provides collection manifest modules for consumers using that contract. `@moyarich/moyaforge-mdx/source-files` remains available for shared source discovery. Do not remove public entry points merely because the playground does not use them.
+
+### Documentation routing and layout
+
+`MoyaForgeRouter` integrates the MDX page inventory with React Router DOM.
+Pass `pages={routes}` from `virtual:moyaforge-mdx/metadata`, then render
+`DocumentationSite` with your lazy content renderer as its child. Import
+`@moyarich/moyaforge/components.css` for the shared documentation shell.
+
+Browser routing is the default; `mode="hash"` supports static hosts without
+rewrite rules. Use `basename` for browser deployments under a subdirectory.
+For an app that already has a React Router, use `MoyaForgeRouting` inside that
+router instead. `useContentRouting` exposes the current page, canonical routes,
+search-key resolution, and `navigateContent`.
+
+The shell includes navigation, an article outline, previous/next links, mobile
+navigation, an appearance toggle, and optional search. Supply a `search` function
+that returns document keys; the SQLite package's `/client` export provides a
+Vite browser adapter. See `docs/routing/page.mdx` and the playground for complete
+integration examples. Reusable UI and routing live in `src/components`.
+
+### Component theme tokens
+
+Components resolve public overrides into private variables with fallback defaults:
+
+```css
+/* Inside the component stylesheet */
+[data-moyaforge-code-block] {
+  --_code-background: var(--code-block-background, var(--_mf-soft, #f6f6f7));
+  background: var(--_code-background);
+}
+
+/* In a consuming application's theme */
+.my-docs {
+  --mf-accent: #8b5cf6;
+  --code-block-background: #f7f7fa;
+  --code-block-border-radius: 10px;
+  --code-group-active-color: #8b5cf6;
+}
+```
+
+Set public tokens on an ancestor or the component itself. Component styles do not
+assign public tokens, so inherited overrides remain effective, including in dark
+mode. Names beginning with `--_` are implementation details. Code blocks and code
+groups accept separate background, color, padding, font-size, line-height,
+border-radius, and margin overrides. `CopyButton` accepts `--copy-button-*` tokens.
+
+### Shell slots
+
+Pass complete components to the layout's `sidebar` and `outline` slots. A slot
+set to `undefined` uses the default; `null` deliberately removes it.
+
+```jsx
+<DocumentationSite
+  title="Product docs"
+  sidebar={
+    <SidebarV1 header={<VersionPicker />} footer={<ProjectLinks />}>
+      <Navigation />
+    </SidebarV1>
+  }
+  outline={
+    <DocOutlineShell footer={<Feedback />}>
+      <DocOutline headings={headings} />
+    </DocOutlineShell>
+  }
+>
+  <ContentPage />
+</DocumentationSite>
+```
+
+`SidebarV1` renders `header`, `children`, `outline`, and `footer` in that order.
+Explicit children replace generated navigation even when `groups` or `pages`
+are also supplied. Header and footer slots work independently of navigation
+mode. Label/version props remain optional conveniences for the default header.

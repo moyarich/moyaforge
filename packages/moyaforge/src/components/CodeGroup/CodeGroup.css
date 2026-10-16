@@ -1,48 +1,66 @@
 [data-moyaforge-code-group] {
-  --_code-group-background: var(--code-group-background, #171e30);
-  --_code-group-color: var(--code-group-color, #e5e7eb);
-  --_code-group-border: var(--code-group-border, #30394d);
-  --_code-group-active-color: var(--code-group-active-color, #a5b4fc);
-  overflow: hidden;
-  border: 1px solid var(--_code-group-border);
-  border-radius: 0.7rem;
-  background: var(--_code-group-background);
-  color: var(--_code-group-color);
+  --_code-background: var(--code-group-background, var(--_mf-soft, #f6f6f7));
+  --_code-color: var(--code-group-color, var(--_mf-text, #303038));
+  --_code-muted: var(--code-group-muted-color, var(--_mf-muted, #73737c));
+  --_code-border: var(--code-group-border, var(--_mf-line, #e4e5e9));
+  --_code-radius: var(--code-group-border-radius, 8px);
+  --_code-padding: var(--code-group-padding, 20px 24px);
+  --_code-font-size: var(--code-group-font-size, 14px);
+  --_code-line-height: var(--code-group-line-height, 1.7);
+  --_code-margin: var(--code-group-margin, 20px 0);
+  --_code-group-active-color: var(
+    --code-group-active-color,
+    var(--_mf-accent, #d94f56)
+  );
+  --_code-group-tabs-gap: var(--code-group-tabs-gap, 24px);
+  --_code-group-tab-font-size: var(--code-group-tab-font-size, 12px);
+  --_code-group-tab-padding: var(--code-group-tab-padding, 13px 2px 11px);
+  --_code-group-toolbar-padding: var(
+    --code-group-toolbar-padding,
+    0 12px 0 16px
+  );
+  --_code-group-toolbar-height: var(--code-group-toolbar-height, 48px);
 }
-
+[data-moyaforge-code-toolbar] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_code-group-tabs-gap);
+  padding: var(--_code-group-toolbar-padding);
+  min-height: var(--_code-group-toolbar-height);
+  border-bottom: 1px solid var(--_code-border);
+}
 [data-moyaforge-code-tabs] {
   display: flex;
-  gap: 0.25rem;
+  gap: var(--_code-group-tabs-gap);
+  min-width: 0;
   overflow-x: auto;
-  border-bottom: 1px solid var(--_code-group-border);
+  align-self: stretch;
 }
-
 [data-moyaforge-code-tabs] button {
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
-  color: inherit;
-  padding: 0.65rem 0.85rem;
+  color: var(--_code-muted);
+  padding: var(--_code-group-tab-padding);
   cursor: pointer;
   font: inherit;
+  font-size: var(--_code-group-tab-font-size);
+  font-weight: 550;
+  white-space: nowrap;
 }
-
+[data-moyaforge-code-tabs] button:hover {
+  color: var(--_code-color);
+}
 [data-moyaforge-code-tabs] button[aria-selected="true"] {
+  color: var(--_code-group-active-color);
   border-bottom-color: var(--_code-group-active-color);
   font-weight: 650;
 }
-
 [data-moyaforge-code-tabs] button:focus-visible {
   outline: 2px solid var(--_code-group-active-color);
   outline-offset: -3px;
 }
-
 [data-moyaforge-code-panel][hidden] {
   display: none;
-}
-
-[data-moyaforge-code-panel] pre,
-[data-moyaforge-code-panel] figure {
-  margin: 0;
-  border-radius: 0;
 }

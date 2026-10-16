@@ -52,3 +52,59 @@ export default {
 Use `@moyarich/moyaforge-search-sqlite/vite` with the same registry object. The indexing adapter remains independent of the MoyaForge React package.
 
 The source of these examples is this page, not a hardcoded example catalog inside `apps/playground`.
+
+## Live component preview
+
+These components render directly from MDX using the shared component registry.
+
+<Demo>
+  <CodeGroup>
+    <CodeTab label="npm">
+      <pre>npm install @moyarich/moyaforge</pre>
+    </CodeTab>
+    <CodeTab label="pnpm">
+      <pre>pnpm add @moyarich/moyaforge</pre>
+    </CodeTab>
+  </CodeGroup>
+</Demo>
+
+<Callout>
+  Shared components are available in MDX without per-page imports.
+</Callout>
+
+## Lucide React icons
+
+Common icons are registered in the playground MDX provider. Use them directly with Lucide's `size`, `color`, and `strokeWidth` props.
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "20px",
+    padding: "20px 0",
+  }}
+>
+  <BookOpen size={28} aria-label="Documentation" />
+  <Camera size={28} aria-label="Camera" />
+  <Code size={28} aria-label="Code" />
+  <Check size={28} color="currentColor" aria-label="Complete" />
+  <Settings size={28} aria-label="Settings" />
+</div>
+
+```mdx
+<BookOpen size={28} aria-label="Documentation" />
+<Camera size={28} strokeWidth={1.5} aria-label="Camera" />
+<Check size={20} aria-hidden="true" />
+```
+
+Available without imports: `BookOpen`, `Camera`, `Check`, `ChevronRight`, `Code`, `ExternalLink`, `FileText`, `Info`, `SearchIcon`, `Settings`, and `TerminalIcon`.
+
+For any other Lucide icon, import it at the top of your MDX file:
+
+```mdx
+import { Rocket } from "lucide-react";
+
+<Rocket size={32} aria-label="Launch" />
+```
+
+Use `aria-hidden="true"` for decorative icons next to text. Give standalone meaningful icons an accessible label.

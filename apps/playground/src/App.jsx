@@ -1,200 +1,95 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
-  ArrowUpRight,
-  BookOpen,
-  Command,
-  GitBranch,
-  Search,
-  Terminal,
-  X,
-} from "lucide-react";
-import { ContentExplorer } from "./components/ContentExplorer.jsx";
-import {
-  readContentRoute,
-  searchResultPage,
-  contentHref,
-  navigateContent,
-} from "./content-routing.js";
-import { searchPages } from "./search/search-client.js";
+  DocumentationSite,
+  SidebarV1,
+  Navigation,
+  DocOutlineShell,
+  DocOutline,
+  buildDocumentationGroups,
+  MoyaForgeRouter,
+  useContentRouting,
+} from "@moyarich/moyaforge/docs";
+import registry from "../registry.config.ts";
+import { VersionPicker } from "./components/Shell/VersionPicker.jsx";
+import { Feedback } from "./components/Shell/Feedback.jsx";
+import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
+import { routes, headings } from "virtual:moyaforge-mdx/metadata";
+import { sources } from "virtual:moyaforge-mdx/lazy-registry";
+import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
 
-/**
- * Private app shell only. Docs and examples are owned by the repository's
- * docs/ tree and rendered through the registered MDX content inventory.
- */
-export function App() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const searchRef = useRef(null);
+const contentComponents = new Map();
+function ContentPage() {
+  const { page, routes, firstContentRoute } = useContentRouting();
+  const loader = page && sources[page.source]?.lazyPages?.[page.file];
+  if (loader && !contentComponents.has(loader))
+    contentComponents.set(loader, lazy(loader));
+  const Page = contentComponents.get(loader);
   useEffect(() => {
-    const onKeyDown = (event) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        searchRef.current?.focus();
-      }
-      if (
-        event.key === "Escape" &&
-        document.activeElement === searchRef.current
-      ) {
-        setSearchQuery("");
-        searchRef.current?.blur();
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
-  const [searchResults, setSearchResults] = useState([]);
-  const [searchError, setSearchError] = useState("");
-
-  useEffect(() => {
-    let active = true;
-    let requestId = 0;
-    const update = () => {
-      const id = ++requestId;
-      searchPages(searchQuery)
-        .then((results) => {
-          if (active && id === requestId) {
-            setSearchResults(results);
-            setSearchError("");
-          }
-        })
-        .catch((error) => {
-          if (active && id === requestId) setSearchError(String(error));
-        });
-    };
-    update();
-    window.addEventListener("moyaforge-search:updated", update);
-    return () => {
-      active = false;
-      requestId++;
-      window.removeEventListener("moyaforge-search:updated", update);
-    };
-  }, [searchQuery]);
-
+    document.title = `${page?.title ?? "Page not found"} | MoyaForge`;
+  }, [page]);
+  if (!Page)
+    return (
+      <>
+        <h1>{routes.length ? "Page not found" : "No content configured"}</h1>
+        <p>
+          {routes.length
+            ? "This page is not in the content registry."
+            : "Add content sources in registry.config.ts to load documentation."}
+        </p>
+        {firstContentRoute() && (
+          <Link to={firstContentRoute()}>Return to documentation</Link>
+        )}
+      </>
+    );
   return (
-    <div className="playground">
-      <header className="topbar">
-        <a
-          className="brand"
-          href="#main"
-          aria-label="MoyaForge documentation home"
-        >
-          <span className="brand-mark">
-            <Terminal size={18} aria-hidden="true" />
-          </span>{" "}
-          MoyaForge <span className="brand-subtitle">/ Documentation</span>
-        </a>
-        <a
-          href="https://github.com/moyarich/moyaforge"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <GitBranch size={17} aria-hidden="true" /> <span>GitHub</span>{" "}
-          <ArrowUpRight size={14} aria-hidden="true" />
-        </a>
-      </header>
-      <div className="layout">
-        <aside className="sidebar" aria-label="Documentation search">
-          <div className="sidebar-label">
-            <BookOpen size={14} aria-hidden="true" /> DOCUMENTATION
-          </div>
-          <label className="search-label" htmlFor="playground-search">
-            Search documentation
-          </label>
-          <div className="search-field">
-            <Search size={17} aria-hidden="true" />
-            <input
-              ref={searchRef}
-              id="playground-search"
-              type="search"
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
-              placeholder="Search docs and packages"
-              aria-controls="playground-search-results"
+    <Suspense fallback={<p role="status">Loading documentation…</p>}>
+      <Page key={page.path} />
+    </Suspense>
+  );
+}
+function PlaygroundShell() {
+  const { page } = useContentRouting();
+  const groups = buildDocumentationGroups(routes, registry.sources);
+  const toc = page
+    ? getTableOfContents(
+        headings[`${page.source}/${page.file}`] ?? [],
+        page.toc,
+      )
+    : null;
+  return (
+    <DocumentationSite
+      title="MoyaForge"
+      sources={registry.sources}
+      repository="https://github.com/moyarich/moyaforge"
+      search={searchPages}
+      sidebar={
+        <SidebarV1 header={<VersionPicker />}>
+          <Navigation groups={groups} />
+        </SidebarV1>
+      }
+      outline={
+        toc && toc.options.placement !== "none" ? (
+          <DocOutlineShell footer={<Feedback />}>
+            <DocOutline
+              key={page.path}
+              headings={toc.headings}
+              title={toc.options.label}
+              collapsible={toc.options.collapsible}
+              defaultOpen={toc.options.defaultOpen}
             />
-            {searchQuery ? (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                aria-label="Clear search"
-              >
-                <X size={15} />
-              </button>
-            ) : (
-              <kbd>
-                <Command size={12} aria-hidden="true" /> K
-              </kbd>
-            )}
-          </div>
-          <div id="playground-search-results" aria-live="polite">
-            {searchError && <p role="alert">{searchError}</p>}
-            {searchQuery.trim() &&
-              !searchError &&
-              searchResults.length === 0 && <p>No matching pages found.</p>}
-            {searchQuery.trim() && !searchError && searchResults.length > 0 && (
-              <ul>
-                {searchResults.map((key) => {
-                  const page = searchResultPage(key);
-                  const path = page?.path;
-                  return (
-                    <li key={key}>
-                      {path ? (
-                        <a
-                          href={contentHref(path)}
-                          onClick={(event) => {
-                            if (
-                              event.button !== 0 ||
-                              event.metaKey ||
-                              event.ctrlKey ||
-                              event.shiftKey ||
-                              event.altKey
-                            )
-                              return;
-                            event.preventDefault();
-                            navigateContent(path);
-                          }}
-                        >
-                          {page.title || page.label || path}
-                        </a>
-                      ) : (
-                        <code>{key}</code>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-          <p className="sidebar-note">
-            Documentation and examples come from the repository's docs
-            directory.
-          </p>
-        </aside>
-        <main id="main" className="main" tabIndex={-1}>
-          <p className="eyebrow">
-            <BookOpen size={14} aria-hidden="true" /> REPOSITORY DOCUMENTATION
-          </p>
-          <h1>MoyaForge Docs</h1>
-          <p className="intro">
-            Guides and examples maintained in the repository.
-          </p>
-          <div className="quickstart" aria-label="Getting started command">
-            <div className="quickstart-title">
-              <span className="terminal-dots" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-              <Terminal size={15} aria-hidden="true" /> Quick start
-            </div>
-            <code>
-              <span className="prompt">$</span> npm run dev --workspace
-              @moyarich/moyaforge-playground
-            </code>
-          </div>
-          <div className="panel">
-            <ContentExplorer />
-          </div>
-        </main>
-      </div>
-    </div>
+          </DocOutlineShell>
+        ) : null
+      }
+    >
+      <ContentPage />
+    </DocumentationSite>
+  );
+}
+export function App() {
+  return (
+    <MoyaForgeRouter pages={routes} mode="hash">
+      <PlaygroundShell />
+    </MoyaForgeRouter>
   );
 }

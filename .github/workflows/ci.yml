@@ -104,10 +104,10 @@ jobs:
             throw Error('Playground must depend on @moyarich/moyaforge-mdx');
           }
           const vite = readFileSync('apps/playground/vite.config.js', 'utf8');
-          const explorer = readFileSync('apps/playground/src/components/ContentExplorer.jsx', 'utf8');
+          const app = readFileSync('apps/playground/src/App.jsx', 'utf8');
           if (!vite.includes('mdxRegistryPlugin(')) throw Error('Playground must use shared MDX Vite plugin');
-          if (!explorer.includes('virtual:moyaforge-mdx/metadata') ||
-              !explorer.includes('virtual:moyaforge-mdx/lazy-registry')) {
+          if (!app.includes('virtual:moyaforge-mdx/metadata') ||
+              !app.includes('virtual:moyaforge-mdx/lazy-registry')) {
             throw Error('Playground must use shared metadata and lazy page loader');
           }
           console.log('Verified playground uses MDX package APIs.');

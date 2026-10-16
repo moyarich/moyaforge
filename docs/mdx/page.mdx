@@ -1,0 +1,56 @@
+---
+title: Markdown and MDX
+label: Markdown & MDX
+order: 3
+---
+
+# Markdown and MDX
+
+The MDX package discovers content and provides compiler conventions independently of the React documentation shell.
+
+## Register your content
+
+Define sources relative to your app. A source can contain Markdown pages, MDX pages, and metadata.
+
+```js
+// registry.config.js
+export default {
+  sources: {
+    docs: {
+      base: "../../docs",
+      include: ["**/*.md", "**/page.mdx"],
+      navigation: { label: "Guide", order: 1 },
+    },
+  },
+};
+```
+
+## Configure Vite
+
+The registry plugin generates metadata and lazy imports. The MDX plugin compiles your content into React components.
+
+```js
+import mdx from "@mdx-js/rollup";
+import react from "@vitejs/plugin-react";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
+import registry from "./registry.config.js";
+
+export default {
+  plugins: [
+    mdxRegistryPlugin({ registry, root: import.meta.dirname }),
+    { enforce: "pre", ...mdx(createMdxOptions()) },
+    react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
+  ],
+};
+```
+
+## Control page visibility
+
+Frontmatter supports `title`, `label`, `description`, `order`, `navigation`, and `toc`. Set `navigation: hidden` to keep a page linkable without displaying it in the sidebar. Set `navigation: disabled` to exclude it from the routable inventory.
+
+## Use components in MDX
+
+Import a component directly into a page, then render it alongside your Markdown. See the [examples](../examples) for working integrations.
+
+The compiler includes GFM, frontmatter parsing, heading slugs, and table-of-contents extraction. A compiled JavaScript frontmatter export is opt-in. See [MDX conventions](../mdx-conventions.md) for details.

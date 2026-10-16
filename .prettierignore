@@ -3,3 +3,7 @@ dist/
 **/dist/
 package-lock.json
 .github/workflows/
+
+.consumer-dist/
+playwright-report/
+test-results/

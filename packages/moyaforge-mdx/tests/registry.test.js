@@ -76,3 +76,19 @@ test("project TOC configuration is validated even for empty sources", () => {
     false,
   );
 });
+
+test("ordinary configured Markdown files have distinct routes", () => {
+  const registry = buildPageRegistry({
+    docs: [{ file: "page.mdx" }, { file: "architecture.md" }],
+    packages: [{ file: "moyaforge/README.md" }],
+  });
+  assert.equal(
+    registry.byPath.get("/docs/architecture")?.file,
+    "architecture.md",
+  );
+  assert.equal(
+    registry.byPath.get("/packages/moyaforge/README")?.file,
+    "moyaforge/README.md",
+  );
+  assert.equal(registry.byPath.get("/docs")?.file, "page.mdx");
+});

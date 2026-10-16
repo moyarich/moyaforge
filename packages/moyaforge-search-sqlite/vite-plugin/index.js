@@ -69,7 +69,7 @@ function docsFor(registry, root) {
         entries
           .sort()
           .filter((file) =>
-            /^page\.mdx?$/.test(
+            (source.pageFiles === "all" ? /\.mdx?$/ : /^page\.mdx?$/).test(
               file.replaceAll("\\", "/").split("/").at(-1) ?? "",
             ),
           )

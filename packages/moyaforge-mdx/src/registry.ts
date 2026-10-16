@@ -101,9 +101,13 @@ function segments(file: string): string[] {
   const safe = file.replace(/\\/g, "/").replace(/^\.\//, "");
   if (safe.startsWith("/") || safe.split("/").includes(".."))
     throw Error(`${file}: invalid content path`);
-  if (!/(?:^|\/)page\.mdx?$/.test(safe))
-    throw Error(`${file}: expected page.md or page.mdx`);
-  return safe.split("/").slice(0, -1);
+  if (!/\.mdx?$/.test(safe))
+    throw Error(`${file}: expected Markdown or MDX file`);
+  const parts = safe.split("/");
+  const filename = parts.pop()!;
+  return /^page\.mdx?$/.test(filename)
+    ? parts
+    : [...parts, filename.replace(/\.mdx?$/, "")];
 }
 export function buildPageRegistry(
   sources: Record<string, readonly PageInput[]>,

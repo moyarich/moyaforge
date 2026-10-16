@@ -1,7 +1,9 @@
+import { filterDepth } from "./utils.js";
+import { SidebarV1 } from "../../SidebarV1/SidebarV1.js";
 import type { ReactNode } from "react";
-import type { SourcePage } from "../../utils/content/source.js";
-import { EditPageLink } from "../EditPageLink/EditPageLink.js";
-import { DocOutline, type DocHeading } from "../DocOutline/DocOutline.js";
+import type { SourcePage } from "../../../utils/content/source.js";
+import { EditPageLink } from "../../EditPageLink/EditPageLink.js";
+import { DocOutline, type DocHeading } from "../../DocOutline/DocOutline.js";
 
 export interface DocsLayoutProps {
   pages: readonly SourcePage[];
@@ -10,6 +12,7 @@ export interface DocsLayoutProps {
   title?: string;
   header?: ReactNode;
   footer?: ReactNode;
+  /** Complete sidebar slot. Defaults to SidebarV1; pass SidebarV2 or null to replace it. */
   sidebar?: ReactNode;
   outline?: ReactNode;
   /** Optional normalized TOC input from the content metadata registry. */
@@ -63,30 +66,18 @@ export function DocsLayout({
         {header ?? <a href={visiblePages[0]?.url ?? "/"}>{title}</a>}
       </header>
       <div data-moyaforge-docs-columns="">
-        <aside
-          data-moyaforge-docs-sidebar=""
-          aria-label="Documentation navigation"
-        >
-          {sidebar ?? (
-            <nav>
-              <ul>
-                {visiblePages.map((page) => (
-                  <li key={page.url}>
-                    <a
-                      href={page.url}
-                      aria-current={
-                        page.url === currentUrl ? "page" : undefined
-                      }
-                    >
-                      {page.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
-          {toc && placement === "sidebar" ? configuredOutline : null}
-        </aside>
+        {sidebar !== undefined ? (
+          sidebar
+        ) : (
+          <SidebarV1
+            data-moyaforge-docs-sidebar=""
+            className=""
+            aria-label="Documentation navigation"
+            pages={visiblePages}
+            currentUrl={currentUrl}
+            outline={toc && placement === "sidebar" ? configuredOutline : null}
+          />
+        )}
         <main data-moyaforge-docs-article="">
           {toc && placement === "inline" ? configuredOutline : null}
           {children}
@@ -101,26 +92,14 @@ export function DocsLayout({
           ) : null}
           {footer}
         </main>
-        {outline ??
-          (toc === undefined ? (
-            <DocOutline />
-          ) : placement === "right" ? (
-            configuredOutline
-          ) : null)}
+        {outline !== undefined ? (
+          outline
+        ) : toc === undefined ? (
+          <DocOutline />
+        ) : placement === "right" ? (
+          configuredOutline
+        ) : null}
       </div>
     </div>
   );
-}
-
-function filterDepth(
-  headings: readonly DocHeading[],
-  min: number,
-  max: number,
-): DocHeading[] {
-  return headings.flatMap((heading) => {
-    const children = filterDepth(heading.children ?? [], min, max);
-    if (heading.depth < min) return children;
-    if (heading.depth > max) return [];
-    return [{ ...heading, children }];
-  });
 }

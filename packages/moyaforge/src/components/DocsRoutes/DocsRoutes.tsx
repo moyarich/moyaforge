@@ -3,7 +3,10 @@ import type {
   MoyaForgeSource,
   SourcePage,
 } from "../../utils/content/source.js";
-import { DocsLayout, type DocsLayoutProps } from "../DocsLayout/DocsLayout.js";
+import {
+  DocsLayout,
+  type DocsLayoutProps,
+} from "../Layout/DocsLayout/DocsLayout.js";
 
 export interface DocsRoutesProps {
   source: MoyaForgeSource;

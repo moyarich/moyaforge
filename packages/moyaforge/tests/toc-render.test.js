@@ -2,7 +2,7 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsLayout } from "../dist/components/DocsLayout/DocsLayout.js";
+import { DocsLayout } from "../dist/components/Layout/DocsLayout/DocsLayout.js";
 import { DocOutline } from "../dist/components/DocOutline/DocOutline.js";
 
 const headings = [
@@ -110,7 +110,7 @@ test("TOC placements render in the intended landmark with a single accessible la
     });
     const section =
       placement === "sidebar"
-        ? /<aside data-moyaforge-docs-sidebar=""[\s\S]*?<\/aside>/
+        ? /<aside[^>]*data-moyaforge-docs-sidebar=""[\s\S]*?<\/aside>/
         : placement === "inline"
           ? /<main data-moyaforge-docs-article=""[\s\S]*?<\/main>/
           : /<aside data-moyaforge-doc-outline=""[\s\S]*?<\/aside>/;

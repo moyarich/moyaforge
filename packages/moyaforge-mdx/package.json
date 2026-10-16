@@ -25,6 +25,10 @@
     "./toc": {
       "types": "./dist/toc.d.ts",
       "import": "./dist/toc.js"
+    },
+    "./navigation": {
+      "types": "./dist/navigation.d.ts",
+      "import": "./dist/navigation.js"
     }
   },
   "files": [
