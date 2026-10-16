@@ -1,3 +1,4 @@
+import "./CodeGroup.css";
 import { CodeCopyIcon } from "../CodeBlock/CodeCopyIcon.js";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 import { CodeGroupContext } from "../CodeBlock/CodeBlock.js";
