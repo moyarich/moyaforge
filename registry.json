@@ -240,12 +240,12 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
@@ -295,12 +295,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
@@ -358,12 +358,12 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
@@ -418,12 +418,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
@@ -481,17 +481,17 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutlineShell.tsx",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutlineShell.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutlineShell.tsx"
         },
@@ -531,12 +531,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
@@ -853,12 +853,12 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
+          "path": "packages/moyaforge/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
         },
@@ -893,12 +893,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/index.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
