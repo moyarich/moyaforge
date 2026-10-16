@@ -1,0 +1,11 @@
+{
+  "name": "@moyarich/moyaforge-ui-source",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Source-only workspace for editable MoyaForge components distributed via GitHub registry",
+  "type": "module",
+  "scripts": {
+    "registry:check": "node ../../scripts/build-registry.mjs --check"
+  },
+  "license": "MIT"
+}
