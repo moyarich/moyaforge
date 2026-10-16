@@ -45,3 +45,5 @@ export * from "./utils/index.js";
 export * from "./components/index.js";
 
 export * from "./components/Routing/content-routing.js";
+
+export * from "./components/Routing/RegistryDocsRoutes.js";
