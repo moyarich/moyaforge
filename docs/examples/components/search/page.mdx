@@ -1,0 +1,30 @@
+---
+title: Search
+label: Search
+description: Render a flexible search input.
+---
+
+# Search
+
+Render a flexible search input. This preview is rendered from the repository-owned MDX page, not a hardcoded playground route.
+
+## Preview
+
+<Demo>
+  <Search
+    inputProps={{
+      placeholder: "Search examples",
+      "aria-label": "Search example",
+    }}
+  />
+</Demo>
+
+## Usage
+
+```tsx
+import { Search } from "@moyarich/moyaforge";
+
+<Search
+  inputProps={{ placeholder: "Search docs", "aria-label": "Search docs" }}
+/>;
+```

@@ -1,0 +1,34 @@
+---
+title: NavigationTree
+label: NavigationTree
+description: Render hierarchical navigation items.
+---
+
+# NavigationTree
+
+Render hierarchical navigation items.
+
+## Preview
+
+<Demo>
+  <NavigationTree
+    items={[
+      { label: "Introduction", children: [] },
+      {
+        label: "Components",
+        children: [
+          { label: "Search", children: [] },
+          { label: "Sidebar", children: [] },
+        ],
+      },
+    ]}
+  />
+</Demo>
+
+## Usage
+
+```tsx
+import { NavigationTree } from "@moyarich/moyaforge";
+
+<NavigationTree items={[{ label: "Guides", children: [] }]} />;
+```

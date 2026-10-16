@@ -1,0 +1,28 @@
+---
+title: Page
+label: Page
+description: Choose a semantic HTML element for a page container.
+---
+
+# Page
+
+Choose a semantic HTML element for a page container. This preview is rendered from the repository-owned MDX page, not a hardcoded playground route.
+
+## Preview
+
+<Demo>
+  <Page as="section" aria-label="Preview page">
+    <strong>Page section</strong>
+    <p>Use Page with the element appropriate to your layout.</p>
+  </Page>
+</Demo>
+
+## Usage
+
+```tsx
+import { Page } from "@moyarich/moyaforge";
+
+<Page as="article">
+  <h2>Article content</h2>
+</Page>;
+```
