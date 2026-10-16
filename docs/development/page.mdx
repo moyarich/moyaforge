@@ -33,6 +33,28 @@ npm run test:e2e
 
 Playwright browser tests require Chromium to be installed, for example `npx playwright install chromium`.
 
+## Component registry generation
+
+The source of truth for installable components is `packages/moyaforge/src/components/` and compositions in `registry/templates/`. The generated `registry.json` and `registry/styles/*.css` are **not** the playground's authored-content `registry.config.ts`.
+
+After changing components, imports, package dependencies, or templates, regenerate and verify before opening a PR:
+
+```sh
+npm run registry:build
+npm run registry:check
+npx --yes shadcn@4.21.5 registry validate ./registry.json
+```
+
+Include the generated manifest and styles in the PR. Normal PR CI rejects stale output.
+
+### Manual GitHub Actions verification
+
+In **Actions → Build component registry → Run workflow**, select the branch to test and start the run. This invokes `workflow_dispatch` on the selected ref. For an unchanged branch, verify that regeneration, freshness checks, and shadcn validation pass and the final step reports **Registry is already current.** with no new commit.
+
+To exercise changed output, push a temporary test branch with a canonical component-source change but without regenerated files, then dispatch the workflow on that branch. Verify that it creates a `github-actions[bot]` commit containing **only** `registry.json` and `registry/styles/**`. Inspect the commit before merging or deleting the branch. A validation failure must stop before the commit step.
+
+The workflow uses the repository `GITHUB_TOKEN` with `contents: write`, checks out the selected branch tip, and serializes runs by Git ref without canceling an in-progress run. The final push is an ordinary non-force push; if another commit moves the branch, its push must be rejected rather than overwriting the new head. Repository branch-protection/ruleset settings must permit the intended bot update, or the workflow will fail visibly. Do not grant bypass permissions or configure a personal token just to make the job succeed. This workflow does **not** publish npm packages.
+
 ## Ownership and release notes
 
 - `docs/` owns the documentation, examples, and development guide; `apps/playground` only renders them.
