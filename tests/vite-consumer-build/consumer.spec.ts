@@ -64,14 +64,22 @@ test("embedded DocsRoutes coexists with host React Router navigation", async ({
   page,
 }) => {
   await page.goto("/host");
-  await expect(page.getByRole("heading", { name: "Host dashboard" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Host dashboard" }),
+  ).toBeVisible();
   await page.getByRole("link", { name: "Open docs" }).click();
   await expect(page).toHaveURL(/\/docs\/guide$/);
-  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Embedded guide" }),
+  ).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Embedded guide" }),
+  ).toBeVisible();
   await page.goto("/docs/missing");
   await expect(page.getByText("Embedded docs not found")).toBeVisible();
   await page.goto("/host");
-  await expect(page.getByRole("heading", { name: "Host dashboard" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Host dashboard" }),
+  ).toBeVisible();
 });
