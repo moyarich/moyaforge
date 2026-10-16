@@ -65,5 +65,9 @@ test.each(["navigation-tree", "sidebar-v1", "sidebar-v2"])(
 
 test("sidebar-v1 does not require the MDX runtime package", () => {
   const item = registry.items.find((entry) => entry.name === "sidebar-v1");
-  expect(item.dependencies.some((entry) => entry.startsWith("@moyarich/moyaforge-mdx@"))).toBe(false);
+  expect(
+    item.dependencies.some((entry) =>
+      entry.startsWith("@moyarich/moyaforge-mdx@"),
+    ),
+  ).toBe(false);
 });
