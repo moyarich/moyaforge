@@ -4,7 +4,10 @@ import { execFileSync } from "node:child_process";
 test("framework import audit follows TypeScript .js source re-exports", () => {
   const output = execFileSync(
     process.execPath,
-    [new URL("../scripts/audit-framework-imports.mjs", import.meta.url).pathname],
+    [
+      new URL("../scripts/audit-framework-imports.mjs", import.meta.url)
+        .pathname,
+    ],
     { encoding: "utf8" },
   );
   const report = JSON.parse(output);
