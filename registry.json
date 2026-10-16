@@ -119,17 +119,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.css",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.css"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.tsx",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/index.ts",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/index.ts"
         },
@@ -595,17 +595,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/EditPageLink/EditPageLink.css",
+          "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/EditPageLink/EditPageLink.css"
         },
         {
-          "path": "packages/moyaforge/src/components/EditPageLink/EditPageLink.tsx",
+          "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/EditPageLink/EditPageLink.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/EditPageLink/index.ts",
+          "path": "packages/moyaforge-ui/src/components/EditPageLink/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/EditPageLink/index.ts"
         },
