@@ -31,12 +31,12 @@
           "target": "~/src/components/moyaforge/components/CodeBlock/index.ts"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.css",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.css"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.tsx",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.tsx"
         },
@@ -90,12 +90,12 @@
           "target": "~/src/components/moyaforge/components/CodeGroup/index.ts"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.css",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.css"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.tsx",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.tsx"
         },
@@ -207,12 +207,12 @@
           "target": "~/src/components/moyaforge/components/DocOutline/index.ts"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
@@ -295,12 +295,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
@@ -418,12 +418,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
@@ -531,12 +531,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
@@ -893,12 +893,12 @@
           "target": "~/src/components/moyaforge/components/SidebarV1/index.ts"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
