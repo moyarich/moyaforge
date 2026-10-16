@@ -91,6 +91,7 @@ try {
           strict: true,
           skipLibCheck: true,
           noEmit: true,
+          types: ["vite/client"],
           paths: { "@/*": ["./src/*"] },
         },
         include: ["src"],
