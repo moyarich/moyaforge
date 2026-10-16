@@ -177,7 +177,10 @@ test("documentation-site registry metadata matches generator conventions", () =>
 
 test("framework publishes its stylesheet once from dist", async () => {
   const manifest = JSON.parse(
-    await readFile(new URL("../packages/moyaforge/package.json", import.meta.url), "utf8"),
+    await readFile(
+      new URL("../packages/moyaforge/package.json", import.meta.url),
+      "utf8",
+    ),
   );
   expect(manifest.exports["./components.css"]).toBe("./dist/components.css");
   expect(manifest.files).not.toContain("src/components.css");
