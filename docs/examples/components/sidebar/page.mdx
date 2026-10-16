@@ -13,7 +13,14 @@ Compose a documentation sidebar.
 <Demo>
   <Sidebar aria-label="Sidebar demo">
     <Sidebar.Header>Guides</Sidebar.Header>
-    <Sidebar.Content><Sidebar.Section><Sidebar.Group><Sidebar.Item>Introduction</Sidebar.Item><Sidebar.Item>Components</Sidebar.Item></Sidebar.Group></Sidebar.Section></Sidebar.Content>
+    <Sidebar.Content>
+      <Sidebar.Section>
+        <Sidebar.Group>
+          <Sidebar.Item>Introduction</Sidebar.Item>
+          <Sidebar.Item>Components</Sidebar.Item>
+        </Sidebar.Group>
+      </Sidebar.Section>
+    </Sidebar.Content>
     <Sidebar.Footer>Documentation</Sidebar.Footer>
   </Sidebar>
 </Demo>
@@ -25,6 +32,12 @@ import { Sidebar } from "@moyarich/moyaforge";
 
 <Sidebar>
   <Sidebar.Header>Guides</Sidebar.Header>
-  <Sidebar.Content><Sidebar.Section><Sidebar.Group><Sidebar.Item>Introduction</Sidebar.Item></Sidebar.Group></Sidebar.Section></Sidebar.Content>
-</Sidebar>
+  <Sidebar.Content>
+    <Sidebar.Section>
+      <Sidebar.Group>
+        <Sidebar.Item>Introduction</Sidebar.Item>
+      </Sidebar.Group>
+    </Sidebar.Section>
+  </Sidebar.Content>
+</Sidebar>;
 ```

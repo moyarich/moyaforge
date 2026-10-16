@@ -11,7 +11,15 @@ Display a structured outline of headings.
 ## Preview
 
 <Demo>
-  <DocOutline title="Page outline" collapsible defaultOpen headings={[{id:"preview",value:"Preview",depth:2},{id:"usage",value:"Usage",depth:2}]} />
+  <DocOutline
+    title="Page outline"
+    collapsible
+    defaultOpen
+    headings={[
+      { id: "preview", value: "Preview", depth: 2 },
+      { id: "usage", value: "Usage", depth: 2 },
+    ]}
+  />
 </Demo>
 
 ## Usage
@@ -19,5 +27,5 @@ Display a structured outline of headings.
 ```tsx
 import { DocOutline } from "@moyarich/moyaforge";
 
-<DocOutline headings={[{ id: "intro", value: "Introduction", depth: 2 }]} />
+<DocOutline headings={[{ id: "intro", value: "Introduction", depth: 2 }]} />;
 ```

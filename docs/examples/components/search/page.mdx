@@ -11,7 +11,12 @@ Render a flexible search input. This preview is rendered from the repository-own
 ## Preview
 
 <Demo>
-  <Search inputProps={{ placeholder: "Search examples", "aria-label": "Search example" }} />
+  <Search
+    inputProps={{
+      placeholder: "Search examples",
+      "aria-label": "Search example",
+    }}
+  />
 </Demo>
 
 ## Usage
@@ -19,5 +24,7 @@ Render a flexible search input. This preview is rendered from the repository-own
 ```tsx
 import { Search } from "@moyarich/moyaforge";
 
-<Search inputProps={{ placeholder: "Search docs", "aria-label": "Search docs" }} />
+<Search
+  inputProps={{ placeholder: "Search docs", "aria-label": "Search docs" }}
+/>;
 ```

@@ -11,7 +11,18 @@ Render hierarchical navigation items.
 ## Preview
 
 <Demo>
-  <NavigationTree items={[{ label: "Introduction", children: [] }, { label: "Components", children: [{ label: "Search", children: [] }, { label: "Sidebar", children: [] }] }]} />
+  <NavigationTree
+    items={[
+      { label: "Introduction", children: [] },
+      {
+        label: "Components",
+        children: [
+          { label: "Search", children: [] },
+          { label: "Sidebar", children: [] },
+        ],
+      },
+    ]}
+  />
 </Demo>
 
 ## Usage
@@ -19,5 +30,5 @@ Render hierarchical navigation items.
 ```tsx
 import { NavigationTree } from "@moyarich/moyaforge";
 
-<NavigationTree items={[{ label: "Guides", children: [] }]} />
+<NavigationTree items={[{ label: "Guides", children: [] }]} />;
 ```

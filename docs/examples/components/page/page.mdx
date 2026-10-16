@@ -11,7 +11,10 @@ Choose a semantic HTML element for a page container. This preview is rendered fr
 ## Preview
 
 <Demo>
-  <Page as="section" aria-label="Preview page"><strong>Page section</strong><p>Use Page with the element appropriate to your layout.</p></Page>
+  <Page as="section" aria-label="Preview page">
+    <strong>Page section</strong>
+    <p>Use Page with the element appropriate to your layout.</p>
+  </Page>
 </Demo>
 
 ## Usage
@@ -19,5 +22,7 @@ Choose a semantic HTML element for a page container. This preview is rendered fr
 ```tsx
 import { Page } from "@moyarich/moyaforge";
 
-<Page as="article"><h2>Article content</h2></Page>
+<Page as="article">
+  <h2>Article content</h2>
+</Page>;
 ```
