@@ -45,7 +45,10 @@ test("headless package subpath exports routing without legacy layout imports", a
     "utf8",
   );
   const pkg = JSON.parse(
-    await readFile(new URL("../packages/moyaforge/package.json", import.meta.url), "utf8"),
+    await readFile(
+      new URL("../packages/moyaforge/package.json", import.meta.url),
+      "utf8",
+    ),
   );
   expect(pkg.exports["./headless"]).toEqual({
     types: "./dist/headless.d.ts",
@@ -53,5 +56,7 @@ test("headless package subpath exports routing without legacy layout imports", a
   });
   expect(source).toContain("HeadlessDocsRoutes");
   expect(source).toContain("RegistryRouteView");
-  expect(source).not.toMatch(/DocsLayout|DocumentationSite|SidebarV1|SidebarV2|DocOutline/);
+  expect(source).not.toMatch(
+    /DocsLayout|DocumentationSite|SidebarV1|SidebarV2|DocOutline/,
+  );
 });
