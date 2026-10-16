@@ -39,6 +39,18 @@ const packedExtractedUi = legacyComponentPaths.filter((path) =>
 );
 const stylesheetPaths = paths.filter((path) => path.endsWith(".css"));
 const uiOnlyPaths = paths.filter((path) => path.includes("moyaforge-ui"));
+// npm's files allowlist does not guarantee that every public export target
+// survives packing. Check both the JS and declaration targets before release.
+const exportTargets = Object.entries(manifest.exports ?? {}).flatMap(
+  ([subpath, declaration]) => {
+    const targets =
+      typeof declaration === "string"
+        ? [declaration]
+        : Object.values(declaration).filter((value) => typeof value === "string");
+    return targets.map((target) => ({ subpath, target: target.replace(/^\.\//, "") }));
+  },
+);
+const missingExports = exportTargets.filter(({ target }) => !paths.includes(target));
 const report = {
   name: manifest.name,
   version: manifest.version,
@@ -49,9 +61,14 @@ const report = {
   extractedUiFiles: packedExtractedUi.length,
   stylesheetFiles: stylesheetPaths.length,
   uiWorkspaceFiles: uiOnlyPaths.length,
+  missingExports,
   examples: packedExtractedUi.slice(0, 25),
 };
 console.log(JSON.stringify(report, null, 2));
+if (missingExports.length) {
+  console.error("Public package exports do not exist in the npm tarball.");
+  process.exitCode = 1;
+}
 if (uiOnlyPaths.length) {
   console.error(
     "Private moyaforge-ui files must never appear in the framework tarball.",
