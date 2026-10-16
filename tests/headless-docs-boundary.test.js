@@ -60,3 +60,13 @@ test("headless package subpath exports routing without legacy layout imports", a
     /DocsLayout|DocumentationSite|SidebarV1|SidebarV2|DocOutline/,
   );
 });
+
+test("docs-routes registry installs its headless renderer dependency", async () => {
+  const registry = JSON.parse(
+    await readFile(new URL("../registry.json", import.meta.url), "utf8"),
+  );
+  const docsRoutes = registry.items.find((entry) => entry.name === "docs-routes");
+  expect(docsRoutes.files.map((file) => file.path)).toContain(
+    "packages/moyaforge/src/components/Routing/HeadlessDocsRoutes.tsx",
+  );
+});
