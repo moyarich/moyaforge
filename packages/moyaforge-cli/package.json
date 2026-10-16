@@ -1,0 +1,36 @@
+{
+  "name": "@moyarich/moyaforge-cli",
+  "version": "0.1.0",
+  "description": "Initialize MoyaForge sites and install editable documentation components from GitHub",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "moyaforge": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/registry.js"
+  },
+  "files": [
+    "src",
+    "templates",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyarich/moyaforge.git",
+    "directory": "packages/moyaforge-cli"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "build": "node --check src/cli.js && node --check src/registry.js && node --check src/project.js",
+    "test": "vitest run",
+    "prepack": "npm run build"
+  }
+}

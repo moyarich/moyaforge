@@ -7,17 +7,17 @@ import { test } from "vitest";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifests = Object.fromEntries(
   await Promise.all(
-    ["moyaforge", "moyaforge-mdx", "moyaforge-search-sqlite"].map(
-      async (name) => [
-        name,
-        JSON.parse(
-          await readFile(
-            resolve(root, "packages", name, "package.json"),
-            "utf8",
-          ),
-        ),
-      ],
-    ),
+    [
+      "moyaforge",
+      "moyaforge-mdx",
+      "moyaforge-search-sqlite",
+      "moyaforge-cli",
+    ].map(async (name) => [
+      name,
+      JSON.parse(
+        await readFile(resolve(root, "packages", name, "package.json"), "utf8"),
+      ),
+    ]),
   ),
 );
 
@@ -60,4 +60,17 @@ test("published package export targets and command entry points exist after buil
       assert.ok(file.isFile(), `${name}: missing published entry ${target}`);
     }
   }
+});
+
+test("installer ownership and optional editor peers stay outside basic UI installs", () => {
+  assert.equal(manifests.moyaforge.bin, undefined);
+  assert.equal(manifests["moyaforge-cli"].bin.moyaforge, "./src/cli.js");
+  assert.equal(manifests["moyaforge-cli"].dependencies, undefined);
+  for (const name of [
+    "@monaco-editor/react",
+    "@typefox/monaco-editor-react",
+    "monaco-languageclient",
+    "@moyarich/console",
+  ])
+    assert.equal(manifests.moyaforge.peerDependenciesMeta[name].optional, true);
 });

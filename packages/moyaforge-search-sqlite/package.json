@@ -1,6 +1,6 @@
 {
   "name": "@moyarich/moyaforge-search-sqlite",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Standalone SQLite-backed documentation search indexing and querying",
   "license": "MIT",
@@ -14,8 +14,14 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./vite": "./vite-plugin/index.js",
-    "./client": "./src/search/search-client.js"
+    "./vite": {
+      "types": "./vite-plugin/index.d.ts",
+      "import": "./vite-plugin/index.js"
+    },
+    "./client": {
+      "types": "./src/search/search-client.d.ts",
+      "import": "./src/search/search-client.js"
+    }
   },
   "files": [
     "dist",

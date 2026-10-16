@@ -19,7 +19,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run typecheck && npm test && npm run check:links && npm run build && npm run test:unit && npm run test:consumer:browser",
+    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run test:unit && npm run test:consumer:browser",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:all": "npm run test",
     "test:boundaries": "vitest run tests/workspace.test.js",
@@ -27,7 +27,11 @@
     "test:consumer:browser": "npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
     "build": "npm run build --workspaces",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "test:cli:consumer": "node tests/cli-consumer.mjs",
+    "test:registry:consumer": "node tests/shadcn-consumer.mjs"
   },
   "devDependencies": {
     "prettier": "^3.9.10",

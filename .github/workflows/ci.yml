@@ -67,6 +67,8 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
+      - name: Validate canonical component registry
+        run: npm run registry:check
       - name: Test all workspaces
         run: npm test --workspaces --if-present
       - name: Validate registered content links and anchors
@@ -79,7 +81,8 @@ jobs:
           npm pack --workspace @moyarich/moyaforge-mdx --dry-run --json > /tmp/moyaforge-mdx-pack.json
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
-          const [pkg] = JSON.parse(readFileSync('/tmp/moyaforge-mdx-pack.json', 'utf8'));
+          const result = JSON.parse(readFileSync('/tmp/moyaforge-mdx-pack.json', 'utf8'));
+          const pkg = Array.isArray(result) ? result[0] : Object.values(result)[0];
           if (pkg.name !== '@moyarich/moyaforge-mdx') throw Error('Unexpected tarball package');
           const files = new Set(pkg.files.map(({ path }) => path));
           for (const file of [
@@ -120,5 +123,13 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run end-to-end browser tests
         run: npm run test:e2e
+      - name: Test packed CLI and source/package consumer apps
+        run: npm run test:cli:consumer
+      - name: Validate shadcn registry compatibility
+        run: npx --yes shadcn@4.21.5 registry validate ./registry.json
+      - name: Test public GitHub component installation through shadcn
+        env:
+          MOYAFORGE_REGISTRY_REF: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: npm run test:registry:consumer
       - name: Check Pages output
         run: test -s apps/playground/dist/index.html
