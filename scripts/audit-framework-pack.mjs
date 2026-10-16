@@ -21,6 +21,21 @@ const legacyComponentPaths = paths.filter(
   (path) =>
     path.startsWith("dist/components/") || path.startsWith("src/components/"),
 );
+// Routing is framework infrastructure, not installable UI. Only flag UI
+// implementations that must be removed after consumer migration.
+const extractedUiGroups = [
+  "NavigationTree",
+  "SidebarV1",
+  "SidebarV2",
+  "Page",
+  "Layout/DocsLayout",
+];
+const packedExtractedUi = legacyComponentPaths.filter((path) =>
+  extractedUiGroups.some((group) =>
+    path.startsWith(`dist/components/${group}/`) ||
+    path.startsWith(`src/components/${group}/`)
+  )
+);
 const stylesheetPaths = paths.filter((path) => path.endsWith(".css"));
 const uiOnlyPaths = paths.filter((path) => path.includes("moyaforge-ui"));
 const report = {
@@ -30,9 +45,10 @@ const report = {
   unpackedBytes: pack.unpackedSize,
   totalFiles: paths.length,
   legacyComponentFiles: legacyComponentPaths.length,
+  extractedUiFiles: packedExtractedUi.length,
   stylesheetFiles: stylesheetPaths.length,
   uiWorkspaceFiles: uiOnlyPaths.length,
-  examples: legacyComponentPaths.slice(0, 25),
+  examples: packedExtractedUi.slice(0, 25),
 };
 console.log(JSON.stringify(report, null, 2));
 if (uiOnlyPaths.length) {
@@ -41,9 +57,9 @@ if (uiOnlyPaths.length) {
   );
   process.exitCode = 1;
 }
-if (process.argv.includes("--strict") && legacyComponentPaths.length) {
+if (process.argv.includes("--strict") && packedExtractedUi.length) {
   console.error(
-    "Framework still packs legacy components; finish issue #149 before release.",
+    "Framework still packs extracted UI implementation files; finish issue #149 before release.",
   );
   process.exitCode = 1;
 }
