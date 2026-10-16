@@ -16,3 +16,19 @@ test("EmptyState installs from its independent UI source", async () => {
       /^packages\/moyaforge-ui\/src\/components\/EmptyState\//,
     );
 });
+
+test.each([
+  ["copy-button", "CopyButton"],
+  ["edit-page-link", "EditPageLink"],
+])("%s installs canonical editable UI source", async (name, folder) => {
+  const registry = JSON.parse(
+    await readFile(new URL("../registry.json", import.meta.url), "utf8"),
+  );
+  const entry = registry.items.find((item) => item.name === name);
+  expect(entry).toBeDefined();
+  const ownFiles = entry.files.filter((file) =>
+    file.path.startsWith(`packages/moyaforge-ui/src/components/${folder}/`),
+  );
+  expect(ownFiles).toHaveLength(3);
+  expect(ownFiles.some((file) => file.path.endsWith(".css"))).toBe(true);
+});

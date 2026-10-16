@@ -119,17 +119,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.css",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.css"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/CopyButton.tsx",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/CopyButton/index.ts",
+          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/CopyButton/index.ts"
         },
@@ -153,17 +153,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/Demo/Demo.css",
+          "path": "packages/moyaforge/src/components/Demo/Demo.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Demo/Demo.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Demo/Demo.tsx",
+          "path": "packages/moyaforge/src/components/Demo/Demo.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Demo/Demo.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Demo/index.ts",
+          "path": "packages/moyaforge/src/components/Demo/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Demo/index.ts"
         },
@@ -595,17 +595,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/EditPageLink/EditPageLink.css",
+          "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/EditPageLink/EditPageLink.css"
         },
         {
-          "path": "packages/moyaforge/src/components/EditPageLink/EditPageLink.tsx",
+          "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/EditPageLink/EditPageLink.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/EditPageLink/index.ts",
+          "path": "packages/moyaforge-ui/src/components/EditPageLink/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/EditPageLink/index.ts"
         },
@@ -781,17 +781,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/Page/Page.css",
+          "path": "packages/moyaforge/src/components/Page/Page.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Page/Page.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Page/Page.tsx",
+          "path": "packages/moyaforge/src/components/Page/Page.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Page/Page.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Page/index.ts",
+          "path": "packages/moyaforge/src/components/Page/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Page/index.ts"
         },
@@ -815,17 +815,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/Search/Search.css",
+          "path": "packages/moyaforge/src/components/Search/Search.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Search/Search.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Search/Search.tsx",
+          "path": "packages/moyaforge/src/components/Search/Search.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Search/Search.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Search/index.ts",
+          "path": "packages/moyaforge/src/components/Search/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Search/index.ts"
         },
@@ -1036,17 +1036,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/Source/Source.css",
+          "path": "packages/moyaforge/src/components/Source/Source.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Source/Source.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Source/Source.tsx",
+          "path": "packages/moyaforge/src/components/Source/Source.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Source/Source.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Source/index.ts",
+          "path": "packages/moyaforge/src/components/Source/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Source/index.ts"
         },
@@ -1070,17 +1070,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
+          "path": "packages/moyaforge/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/index.ts",
+          "path": "packages/moyaforge/src/components/TableOfContents/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/TableOfContents/index.ts"
         },
