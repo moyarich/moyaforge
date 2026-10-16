@@ -22,3 +22,17 @@ The native CLI resolves same-repository item dependencies from the selected
 registry snapshot. Shadcn GitHub item references resolve their own refs: when
 validating a release pinned to a tag, pin the registry dependency references too
 if you need the entire graph held to that tag. Default references follow main.
+
+## Automatic builds
+
+The **Build component registry** GitHub workflow runs when canonical UI source,
+registry templates, generator code, or dependency manifests change on `main`.
+It regenerates the registry and CSS entries, checks freshness, validates the
+shadcn schema, and commits only changed generated files. Unchanged output creates
+no commit. It can also be run manually on a selected repository branch.
+
+Pull requests still run the freshness check in CI; include generated changes in
+the PR (`npm run registry:build`) so consumers and reviewers see the complete
+result before merge. The automatic main-branch workflow provides a maintenance
+backstop. It uses GitHub's repository token without npm publishing credentials,
+never force-pushes, and requires repository rules to allow its generated commit.
