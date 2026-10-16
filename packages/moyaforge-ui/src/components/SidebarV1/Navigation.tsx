@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
-import type { NavigationNode } from "@moyarich/moyaforge-mdx/navigation";
+import type { SidebarNavigationNode } from "./types.js";
 import type { DocumentationGroup } from "./SidebarV1.js";
 
 export interface NavigationProps {
@@ -8,7 +8,7 @@ export interface NavigationProps {
   onNavigate?: () => void;
 }
 export function Navigation({ groups, onNavigate }: NavigationProps) {
-  const renderNodes = (nodes: NavigationNode[]): ReactNode =>
+  const renderNodes = (nodes: SidebarNavigationNode[]): ReactNode =>
     nodes.map((node) => (
       <li key={node.path}>
         {node.page ? (
