@@ -133,9 +133,7 @@ test("failed regeneration preserves previously generated registry and styles", a
   await expect(buildRegistry(root)).rejects.toThrow(
     "Unresolved registry import",
   );
-  expect(await readFile(resolve(root, "registry.json"), "utf8")).toBe(
-    manifest,
-  );
+  expect(await readFile(resolve(root, "registry.json"), "utf8")).toBe(manifest);
   expect(
     await readFile(resolve(root, "registry/styles/new-badge.css"), "utf8"),
   ).toBe(styles);
