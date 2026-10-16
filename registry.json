@@ -712,17 +712,17 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/NavigationTree/NavigationTree.css",
+          "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/NavigationTree/NavigationTree.css"
         },
         {
-          "path": "packages/moyaforge/src/components/NavigationTree/NavigationTree.tsx",
+          "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/NavigationTree/NavigationTree.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/NavigationTree/index.ts",
+          "path": "packages/moyaforge-ui/src/components/NavigationTree/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/NavigationTree/index.ts"
         },
@@ -878,17 +878,17 @@
           "target": "~/src/components/moyaforge/components/Layout/DocsLayout/utils.ts"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV1/Navigation.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/Navigation.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV1/SidebarV1.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV1/SidebarV1.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/SidebarV1.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV1/index.ts",
+          "path": "packages/moyaforge-ui/src/components/SidebarV1/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV1/index.ts"
         },
@@ -967,52 +967,52 @@
           "target": "~/src/components/moyaforge/components/Page/index.ts"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/Sidebar.css",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/Sidebar.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/Sidebar.css"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/Sidebar.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/Sidebar.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/Sidebar.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/SidebarContent.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarContent.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/SidebarContent.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/SidebarFooter.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarFooter.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/SidebarFooter.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/SidebarGroup.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarGroup.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/SidebarGroup.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/SidebarHeader.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarHeader.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/SidebarHeader.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/SidebarItem.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarItem.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/SidebarItem.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/SidebarOutline.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarOutline.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/SidebarOutline.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/SidebarSection.tsx",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarSection.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/SidebarSection.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/SidebarV2/index.ts",
+          "path": "packages/moyaforge-ui/src/components/SidebarV2/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/SidebarV2/index.ts"
         },
