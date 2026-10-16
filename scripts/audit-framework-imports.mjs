@@ -9,7 +9,7 @@ const groups = ["NavigationTree", "SidebarV1", "SidebarV2", "Page", "Layout/Docs
 function resolveLocal(from, specifier) {
   if (!specifier.startsWith(".")) return null;
   const base = resolve(dirname(from), specifier);
-  const candidates = [base, base.replace(/\\.js$/, ".ts"), base.replace(/\\.js$/, ".tsx"), base + ".ts", base + ".tsx", resolve(base, "index.ts"), resolve(base, "index.tsx")];
+  const candidates = [base, base.replace(/\.js$/, ".ts"), base.replace(/\.js$/, ".tsx"), base + ".ts", base + ".tsx", resolve(base, "index.ts"), resolve(base, "index.tsx")];
   return candidates.find((candidate) => existsSync(candidate)) ?? null;
 }
 function visit(filename, found) {
