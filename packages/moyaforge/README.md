@@ -380,4 +380,3 @@ export function App() {
 ```
 
 Each MDX page discovered from the consumer's configuration becomes addressable without a per-page React Router declaration. React Router remains owned by the host, including its basename, hash strategy, and other application routes.
-

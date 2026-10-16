@@ -4,7 +4,14 @@ declare module "virtual:moyaforge-mdx/metadata" {
 }
 declare module "virtual:moyaforge-mdx/lazy-registry" {
   import type { ComponentType } from "react";
-  export const sources: Readonly<Record<string, {
-    lazyPages?: Readonly<Record<string, () => Promise<{ default: ComponentType }>>>;
-  }>>;
+  export const sources: Readonly<
+    Record<
+      string,
+      {
+        lazyPages?: Readonly<
+          Record<string, () => Promise<{ default: ComponentType }>>
+        >;
+      }
+    >
+  >;
 }
