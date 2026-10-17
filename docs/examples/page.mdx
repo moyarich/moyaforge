@@ -8,6 +8,12 @@ description: Install, configure, and render MoyaForge packages.
 
 These are repository-owned examples. The playground renders these documents using the MoyaForge MDX registry.
 
+## Browse live component examples
+
+- [Code Block](/ui/components/code-block) — rendered code, copy action, and highlighted MDX fences.
+
+Each component page is part of the repository-owned MDX content registry and opens directly in the playground.
+
 ## Install
 
 ```sh
@@ -17,7 +23,8 @@ npm install @moyarich/moyaforge @moyarich/moyaforge-mdx
 ## Render reusable UI
 
 ```tsx
-import { CodeGroup, CodeTab, DocOutline } from "@moyarich/moyaforge";
+// CodeGroup and CodeTab are installed from the MoyaForge component registry.
+import { CodeGroup, CodeTab } from "@/components/ui/code-group";
 
 export function Example() {
   return (

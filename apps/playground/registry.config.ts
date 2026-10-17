@@ -9,11 +9,16 @@ export default {
       pageFiles: "all",
       navigation: { label: "Guide", order: 1 },
     },
+    ui: {
+      base: "../../packages/moyaforge-ui/docs",
+      include: ["**/page.mdx"],
+      navigation: { label: "UI Components", order: 2 },
+    },
     packages: {
       base: "../../packages",
       include: ["*/README.md", "**/page.md", "**/page.mdx"],
       pageFiles: "all",
-      exclude: ["**/node_modules/**", "**/dist/**"],
+      exclude: ["**/node_modules/**", "**/dist/**", "moyaforge-ui/docs/**"],
       metadata: ["*/package.json"],
       navigation: { label: "Packages", order: 2 },
     },
