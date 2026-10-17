@@ -6,29 +6,50 @@ import { RegistryRouteView } from "../packages/moyaforge/src/components/Routing/
 
 const routes = [
   { path: "/docs", source: "docs", file: "index.mdx", navigation: "visible" },
-  { path: "/docs/hidden", source: "docs", file: "hidden.mdx", navigation: "hidden" },
-  { path: "/docs/disabled", source: "docs", file: "disabled.mdx", navigation: "disabled" },
+  {
+    path: "/docs/hidden",
+    source: "docs",
+    file: "hidden.mdx",
+    navigation: "hidden",
+  },
+  {
+    path: "/docs/disabled",
+    source: "docs",
+    file: "disabled.mdx",
+    navigation: "disabled",
+  },
 ];
-const loader = async () => ({ default: () => createElement("p", null, "Loaded MDX") });
-const sources = { docs: { lazyPages: {
-  "index.mdx": loader,
-  "hidden.mdx": loader,
-  "disabled.mdx": loader,
-} } };
+const loader = async () => ({
+  default: () => createElement("p", null, "Loaded MDX"),
+});
+const sources = {
+  docs: {
+    lazyPages: {
+      "index.mdx": loader,
+      "hidden.mdx": loader,
+      "disabled.mdx": loader,
+    },
+  },
+};
 
 function render(path: string, basename?: string) {
   return renderToStaticMarkup(
     <MemoryRouter initialEntries={[path]} basename={basename}>
       <Routes>
         <Route path="/dashboard" element={<p>Host dashboard</p>} />
-        <Route path="/docs/*" element={<RegistryRouteView
-          routes={routes as any}
-          sources={sources}
-          notFound={<p>Missing documentation</p>}
-          fallback={<p>Loading documentation</p>}
-        />} />
+        <Route
+          path="/docs/*"
+          element={
+            <RegistryRouteView
+              routes={routes as any}
+              sources={sources}
+              notFound={<p>Missing documentation</p>}
+              fallback={<p>Loading documentation</p>}
+            />
+          }
+        />
       </Routes>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 }
 
@@ -48,6 +69,10 @@ test("disabled MDX pages are not publicly routable", () => {
 });
 
 test("React Router basename and trailing slash use the same route metadata", () => {
-  expect(render("/app/docs/hidden/", "/app")).not.toContain("Missing documentation");
-  expect(render("/app/docs/disabled", "/app")).toContain("Missing documentation");
+  expect(render("/app/docs/hidden/", "/app")).not.toContain(
+    "Missing documentation",
+  );
+  expect(render("/app/docs/disabled", "/app")).toContain(
+    "Missing documentation",
+  );
 });
