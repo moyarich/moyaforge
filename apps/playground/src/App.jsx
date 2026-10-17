@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { HashRouter, useLocation, useNavigate } from "react-router-dom";
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import {
