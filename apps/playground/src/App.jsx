@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { HashRouter, useLocation, useNavigate } from "react-router-dom";
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import {
   SidebarV1,
@@ -10,51 +10,25 @@ import {
   DocOutline,
 } from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
 import { buildDocumentationGroups } from "./documentation-groups.js";
-import {
-  MoyaForgeRouter,
-  useContentRouting,
-} from "@moyarich/moyaforge/headless";
+import { RegistryRoutes } from "@moyarich/moyaforge/registry-routes";
 import registry from "../registry.config.ts";
 import { VersionPicker } from "./components/Shell/VersionPicker.jsx";
 import { Feedback } from "./components/Shell/Feedback.jsx";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 import { routes, headings } from "virtual:moyaforge-mdx/metadata";
-import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
 
-const contentComponents = new Map();
-function ContentPage() {
-  const { page, routes, firstContentRoute } = useContentRouting();
-  const loader = page && sources[page.source]?.lazyPages?.[page.file];
-  if (loader && !contentComponents.has(loader))
-    contentComponents.set(loader, lazy(loader));
-  const Page = contentComponents.get(loader);
+function PlaygroundShell() {
+  const { pathname } = useLocation();
+  const page = routes.find(
+    (item) =>
+      item.path === (pathname.replace(/\/+$/, "") || "/") &&
+      item.navigation !== "disabled",
+  );
+  const navigate = useNavigate();
   useEffect(() => {
     document.title = `${page?.title ?? "Page not found"} | MoyaForge`;
   }, [page]);
-  if (!Page)
-    return (
-      <>
-        <h1>{routes.length ? "Page not found" : "No content configured"}</h1>
-        <p>
-          {routes.length
-            ? "This page is not in the content registry."
-            : "Add content sources in registry.config.ts to load documentation."}
-        </p>
-        {firstContentRoute() && (
-          <Link to={firstContentRoute()}>Return to documentation</Link>
-        )}
-      </>
-    );
-  return (
-    <Suspense fallback={<p role="status">Loading documentation…</p>}>
-      <Page key={page.path} />
-    </Suspense>
-  );
-}
-function PlaygroundShell() {
-  const { page } = useContentRouting();
-  const navigate = useNavigate();
   const groups = buildDocumentationGroups(routes, registry.sources);
   const toc = page
     ? getTableOfContents(
@@ -110,14 +84,14 @@ function PlaygroundShell() {
         ) : null
       }
     >
-      <ContentPage />
+      <RegistryRoutes notFound={<h1>Page not found</h1>} />
     </DocumentationSite>
   );
 }
 export function App() {
   return (
-    <MoyaForgeRouter pages={routes} mode="hash">
+    <HashRouter>
       <PlaygroundShell />
-    </MoyaForgeRouter>
+    </HashRouter>
   );
 }

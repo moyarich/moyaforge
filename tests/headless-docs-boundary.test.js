@@ -79,13 +79,15 @@ test("registry distributes UI shells without bundling headless framework routing
   }
 });
 
-test("playground imports routing from headless subpath rather than docs UI", async () => {
+test("playground uses public RegistryRoutes inside its host router", async () => {
   const source = await readFile(
     new URL("../apps/playground/src/App.jsx", import.meta.url),
     "utf8",
   );
-  expect(source).toContain('from "@moyarich/moyaforge/headless"');
-  expect(source).toMatch(/from "@moyarich\/moyaforge\/headless"/);
+  expect(source).toContain('from "@moyarich/moyaforge/registry-routes"');
+  expect(source).toContain("<HashRouter>");
+  expect(source).toContain("<RegistryRoutes");
+  expect(source).not.toContain("MoyaForgeRouter");
 });
 
 test("playground uses source-owned DocumentationSite with host adapters", async () => {
