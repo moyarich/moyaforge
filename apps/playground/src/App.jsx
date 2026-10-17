@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { HashRouter, useLocation, useNavigate } from "react-router-dom";
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import {
@@ -29,7 +29,41 @@ function PlaygroundShell() {
   useEffect(() => {
     document.title = `${page?.title ?? "Page not found"} | MoyaForge`;
   }, [page]);
-  const groups = buildDocumentationGroups(routes, registry.sources);
+  const groups = useMemo(
+    () => buildDocumentationGroups(routes, registry.sources),
+    [],
+  );
+  const visiblePages = useMemo(
+    () =>
+      routes
+        .filter((item) => item.navigation === "visible")
+        .map((item) => ({
+          path: item.path,
+          label: item.label ?? item.title,
+          source: item.source,
+        })),
+    [],
+  );
+  const pagesByKey = useMemo(
+    () => new Map(routes.map((item) => [`${item.source}/${item.file}`, item])),
+    [],
+  );
+  const search = useCallback(
+    async (query) =>
+      (await searchPages(query)).flatMap((key) => {
+        const match = pagesByKey.get(key);
+        return match
+          ? [
+              {
+                path: match.path,
+                label: match.label ?? match.title,
+                source: match.source,
+              },
+            ]
+          : [];
+      }),
+    [pagesByKey],
+  );
   const toc = page
     ? getTableOfContents(
         headings[`${page.source}/${page.file}`] ?? [],
@@ -39,32 +73,11 @@ function PlaygroundShell() {
   return (
     <DocumentationSite
       title="MoyaForge"
-      pages={routes
-        .filter((item) => item.navigation === "visible")
-        .map((item) => ({
-          path: item.path,
-          label: item.label ?? item.title,
-          source: item.source,
-        }))}
+      pages={visiblePages}
       currentPath={page?.path}
       onNavigate={navigate}
       repository="https://github.com/moyarich/moyaforge"
-      search={async (query) =>
-        (await searchPages(query)).flatMap((key) => {
-          const match = routes.find(
-            (item) => `${item.source}/${item.file}` === key,
-          );
-          return match
-            ? [
-                {
-                  path: match.path,
-                  label: match.label ?? match.title,
-                  source: match.source,
-                },
-              ]
-            : [];
-        })
-      }
+      search={search}
       sidebar={
         <SidebarV1 header={<VersionPicker />}>
           <Navigation groups={groups} />
