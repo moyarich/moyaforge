@@ -38,6 +38,9 @@ import { TableOfContents } from "../../../packages/moyaforge-ui/src/components/T
 import { EmptyState } from "../../../packages/moyaforge-ui/src/components/EmptyState/index.ts";
 import { EditPageLink } from "../../../packages/moyaforge-ui/src/components/EditPageLink/index.ts";
 import { DocOutline } from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
+import { SidebarV1 } from "../../../packages/moyaforge-ui/src/components/SidebarV1/index.ts";
+import { DocsLayout } from "../../../packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx";
+import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import { PlaygroundCallout } from "./components/index.js";
 
 const components = defineMdxComponentRegistry({
@@ -62,6 +65,9 @@ const components = defineMdxComponentRegistry({
   EditPageLink,
   EmptyState,
   DocOutline,
+  SidebarV1,
+  DocsLayout,
+  DocumentationSite,
   Console,
   Terminal,
   BookOpen,
