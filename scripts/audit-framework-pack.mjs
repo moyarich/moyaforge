@@ -84,6 +84,10 @@ const report = {
   examples: packedExtractedUi.slice(0, 25),
 };
 console.log(JSON.stringify(report, null, 2));
+if (process.argv.includes("--strict") && stylesheetPaths.length) {
+  console.error("Headless framework tarball must not include component CSS.");
+  process.exitCode = 1;
+}
 if (sourceMaps.length) {
   console.error(
     "Published framework contains unnecessary generated source maps.",
