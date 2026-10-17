@@ -8,7 +8,6 @@ export {
   type RegistryRouteViewProps,
   type RegistryLazySources,
 } from "./components/Routing/RegistryRoutes.js";
-export * from "./components/Routing/content-routing.js";
 
 export {
   defineMdxComponentRegistry,
