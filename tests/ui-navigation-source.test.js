@@ -182,7 +182,7 @@ test("framework publishes its stylesheet once from dist", async () => {
       "utf8",
     ),
   );
-  expect(manifest.exports["./components.css"]).toBe("./dist/components.css");
+  expect(manifest.exports["./components.css"]).toBeUndefined();
   expect(manifest.files).not.toContain("src/components.css");
   expect(manifest.files).not.toContain("src/components/**/*.css");
 });
