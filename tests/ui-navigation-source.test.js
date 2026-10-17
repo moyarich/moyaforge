@@ -186,3 +186,14 @@ test("framework publishes its stylesheet once from dist", async () => {
   expect(manifest.files).not.toContain("src/components.css");
   expect(manifest.files).not.toContain("src/components/**/*.css");
 });
+
+test("registry source files follow generator ordering", () => {
+  for (const item of registry.items) {
+    const sourcePaths = item.files
+      .map((file) => file.path)
+      .filter((path) => path !== "LICENSE" && !path.startsWith("registry/styles/"));
+    expect(sourcePaths, `stale source ordering in ${item.name}`).toEqual(
+      [...sourcePaths].sort(),
+    );
+  }
+});
