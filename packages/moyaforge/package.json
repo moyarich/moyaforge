@@ -7,19 +7,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./components.css": "./dist/components.css",
-    "./docs": {
-      "types": "./dist/docs.d.ts",
-      "import": "./dist/docs.js"
-    },
-    "./mdx": {
-      "types": "./dist/utils/mdx/index.d.ts",
-      "import": "./dist/utils/mdx/index.js"
-    },
-    "./code": {
-      "types": "./dist/code.d.ts",
-      "import": "./dist/code.js"
-    },
     "./registry-routes": {
       "types": "./dist/registry-routes.d.ts",
       "import": "./dist/registry-routes.js"
@@ -51,7 +38,7 @@
     "react-router-dom": "^7.18.4"
   },
   "scripts": {
-    "build": "npm run build --workspace @moyarich/moyaforge-mdx && node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json && node ../../scripts/copy-component-styles.mjs",
+    "build": "npm run build --workspace @moyarich/moyaforge-mdx && node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
     "typecheck": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json --noEmit",
     "test": "npm run build && vitest run",
     "prepack": "npm run build"
