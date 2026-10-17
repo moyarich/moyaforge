@@ -1,4 +1,4 @@
-import ts from "typescript";
+import * as ts from "typescript";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 
@@ -6,10 +6,8 @@ const root = resolve(import.meta.dirname, "..");
 const src = resolve(root, "packages/moyaforge/src");
 const entrypoints = [
   "index.ts",
-  "docs.ts",
-  "code.ts",
   "registry-routes.tsx",
-  "utils/mdx/index.ts",
+  "headless.ts",
 ];
 const groups = [
   "NavigationTree",
