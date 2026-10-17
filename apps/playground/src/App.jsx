@@ -40,7 +40,7 @@ function PlaygroundShell() {
     <DocumentationSite
       title="MoyaForge"
       pages={routes
-        .filter((item) => item.navigation !== "disabled")
+        .filter((item) => item.navigation === "visible")
         .map((item) => ({
           path: item.path,
           label: item.label ?? item.title,
