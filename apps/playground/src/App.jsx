@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { HashRouter, useLocation, useNavigate } from "react-router-dom";
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import {
@@ -21,6 +22,9 @@ function PlaygroundShell() {
   const { pathname } = useLocation();
   const page = routes.find((item) => item.path === (pathname.replace(/\/+$/, "") || "/") && item.navigation !== "disabled");
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = `${page?.title ?? "Page not found"} | MoyaForge`;
+  }, [page]);
   const groups = buildDocumentationGroups(routes, registry.sources);
   const toc = page
     ? getTableOfContents(
