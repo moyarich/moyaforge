@@ -177,13 +177,6 @@ test("framework TypeScript build is rooted at published entrypoints", async () =
       "utf8",
     ),
   );
-  expect(config.include).toEqual([
-    "src/index.ts",
-    "src/docs.ts",
-    "src/code.ts",
-    "src/registry-routes.tsx",
-    "src/headless.ts",
-    "src/utils/mdx/index.ts",
-  ]);
+  expect(config.include).toEqual(["src/index.ts", "src/registry-routes.tsx", "src/headless.ts"]);
   expect(config.include).not.toContain("src/**/*.tsx");
 });
