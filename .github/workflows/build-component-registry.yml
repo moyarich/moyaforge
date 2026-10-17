@@ -8,6 +8,7 @@ on:
       - "packages/moyaforge/src/**"
       - "scripts/build-registry.mjs"
       - "packages/moyaforge/package.json"
+      - "packages/moyaforge-ui/package.json"
       - "registry/templates/**"
       - "package.json"
       - "package-lock.json"
