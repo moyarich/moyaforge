@@ -1,7 +1,4 @@
-import { useContentRouting } from "@moyarich/moyaforge/headless";
-
-export function Feedback() {
-  const { page } = useContentRouting();
+export function Feedback({ page }) {
   const issue = new URL("https://github.com/moyarich/moyaforge/issues/new");
   issue.searchParams.set(
     "title",
