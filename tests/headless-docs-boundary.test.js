@@ -185,3 +185,12 @@ test("framework TypeScript build is rooted at published entrypoints", async () =
   ]);
   expect(config.include).not.toContain("src/**/*.tsx");
 });
+
+test("playground styles are source-owned, not imported from framework package", async () => {
+  const entry = await readFile(
+    new URL("../apps/playground/src/main.jsx", import.meta.url),
+    "utf8",
+  );
+  expect(entry).not.toContain("@moyarich/moyaforge/components.css");
+  expect(entry).toContain('import "./styles.css"');
+});
