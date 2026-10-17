@@ -1,22 +1,30 @@
-[data-moyaforge-shell-wide] [data-moyaforge-docs-columns] {
-  max-width: none;
-  grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr) minmax(
-      11rem,
-      14rem
-    );
-  gap: clamp(1rem, 2vw, 2rem);
-  padding: 0 clamp(1rem, 2vw, 2rem);
+[data-moyaforge-shell-wide] {
+  --_wide-panel-width: var(--wide-panel-width, 16rem);
+  min-height: 100vh;
 }
-
-@media (max-width: 1100px) {
-  [data-moyaforge-shell-wide] [data-moyaforge-docs-columns] {
-    grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
-  }
+[data-moyaforge-wide-header],
+[data-moyaforge-wide-toolbar],
+[data-moyaforge-wide-footer] {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--wide-border, #e5e7eb);
 }
-
+[data-moyaforge-wide-grid] {
+  display: grid;
+  grid-template-columns: minmax(0, var(--_wide-panel-width)) minmax(0, 1fr) minmax(0, var(--_wide-panel-width));
+  min-height: 60vh;
+}
+[data-moyaforge-wide-navigation],
+[data-moyaforge-wide-inspector] {
+  padding: 1rem;
+  border-inline-end: 1px solid var(--wide-border, #e5e7eb);
+  min-width: 0;
+}
+[data-moyaforge-wide-content] { padding: clamp(1rem, 3vw, 2.5rem); min-width: 0; }
+@media (max-width: 1000px) {
+  [data-moyaforge-wide-grid] { grid-template-columns: minmax(0, var(--_wide-panel-width)) minmax(0, 1fr); }
+  [data-moyaforge-wide-inspector] { grid-column: 1 / -1; }
+}
 @media (max-width: 700px) {
-  [data-moyaforge-shell-wide] [data-moyaforge-docs-columns] {
-    display: block;
-    padding: 0 1rem;
-  }
+  [data-moyaforge-wide-grid] { display: block; }
+  [data-moyaforge-wide-navigation], [data-moyaforge-wide-inspector] { border: 0; border-bottom: 1px solid var(--wide-border, #e5e7eb); }
 }
