@@ -1,4 +1,6 @@
-import * as ts from "typescript";
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const ts = require("typescript");
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 
