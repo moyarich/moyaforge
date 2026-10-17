@@ -618,32 +618,32 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge/src/components/Monaco/Monaco.css",
+          "path": "packages/moyaforge-ui/src/components/Monaco/Monaco.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Monaco/Monaco.css"
         },
         {
-          "path": "packages/moyaforge/src/components/Monaco/Monaco.tsx",
+          "path": "packages/moyaforge-ui/src/components/Monaco/Monaco.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Monaco/Monaco.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/Monaco/MonacoCodeGroup.tsx",
+          "path": "packages/moyaforge-ui/src/components/Monaco/MonacoCodeGroup.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Monaco/MonacoCodeGroup.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/Monaco/ReactMonacoSourceEditor.tsx",
+          "path": "packages/moyaforge-ui/src/components/Monaco/ReactMonacoSourceEditor.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Monaco/ReactMonacoSourceEditor.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/Monaco/TypeFoxSourceEditor.tsx",
+          "path": "packages/moyaforge-ui/src/components/Monaco/TypeFoxSourceEditor.tsx",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Monaco/TypeFoxSourceEditor.tsx"
         },
         {
-          "path": "packages/moyaforge/src/components/Monaco/index.ts",
+          "path": "packages/moyaforge-ui/src/components/Monaco/index.ts",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Monaco/index.ts"
         },
