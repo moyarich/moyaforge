@@ -74,7 +74,16 @@ export async function buildRegistry(root, { check = false } = {}) {
   const manifest = JSON.parse(
     await readFile(resolve(root, "packages/moyaforge/package.json"), "utf8"),
   );
-  const declared = { ...manifest.peerDependencies, ...manifest.dependencies };
+  const uiManifestPath = resolve(root, "packages/moyaforge-ui/package.json");
+  const uiManifest = (await isFile(uiManifestPath))
+    ? JSON.parse(await readFile(uiManifestPath, "utf8"))
+    : {};
+  // Registry components declare dependencies independently of framework peers.
+  const declared = {
+    ...manifest.peerDependencies,
+    ...manifest.dependencies,
+    ...uiManifest.registryDependencies,
+  };
   const specs = new Map();
   function add(name, spec) {
     if (specs.has(name))
@@ -175,6 +184,20 @@ export async function buildRegistry(root, { check = false } = {}) {
             await visit(resolve(dirname(file), sibling));
     }
     await visit(spec.entry, spec.template);
+    // An installable UI entry must carry all of its relative source imports in
+    // the private UI workspace, never copy runtime framework implementation.
+    if (spec.uiSource) {
+      const leaked = [...files].filter((file) =>
+        file.startsWith(sourceRoot + "/"),
+      );
+      if (leaked.length) {
+        throw Error(
+          `UI registry entry '${name}' imports framework files: ${leaked
+            .map((file) => relative(root, file))
+            .join(", ")}`,
+        );
+      }
+    }
     const itemSourceRoot = spec.entry.startsWith(uiSourceRoot + "/")
       ? uiSourceRoot
       : sourceRoot;

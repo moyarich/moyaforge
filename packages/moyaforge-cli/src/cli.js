@@ -134,10 +134,10 @@ async function main() {
       template: values.template,
       search: values.search,
     });
-    const components =
-      mode === "source"
-        ? await planItems({ ...options, names: ["docs-shell", "code-group"] })
-        : { files: [], dependencies: [] };
+    const components = await planItems({
+      ...options,
+      names: ["docs-shell", "code-group"],
+    });
     plan = {
       files: [...components.files, ...project.files],
       dependencies: project.dependencies,

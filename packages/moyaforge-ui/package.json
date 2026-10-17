@@ -1,14 +1,22 @@
 {
-  "name": "@moyarich/moyaforge-ui-source",
+  "name": "@moyarich/moyaforge-ui",
   "version": "0.0.0",
   "private": true,
-  "description": "Source-only workspace for editable MoyaForge components distributed via GitHub registry",
+  "description": "MoyaForge components distributed",
   "type": "module",
   "scripts": {
     "build": "node -e \"console.log('UI source workspace: no npm artifact')\"",
     "typecheck": "node -e \"console.log('UI source workspace: source checks run through registry')\"",
-    "test": "node -e \"console.log('UI source workspace: registry consumer tests run at root')\"",
+    "test": "vitest run tests",
     "registry:check": "node ../../scripts/build-registry.mjs --check"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "registryDependencies": {
+    "@monaco-editor/react": ">=4",
+    "@typefox/monaco-editor-react": ">=8",
+    "monaco-languageclient": ">=11",
+    "@moyarich/moyaforge-mdx": "^0.1.0",
+    "react": ">=18",
+    "react-router-dom": "^7.18.4"
+  }
 }

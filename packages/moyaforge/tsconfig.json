@@ -6,13 +6,18 @@
     "lib": ["ES2022", "DOM"],
     "strict": true,
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "declarationMap": false,
+    "sourceMap": false,
     "outDir": "dist",
     "rootDir": "src",
     "skipLibCheck": true,
     "jsx": "react-jsx",
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "src/index.ts",
+    "src/registry-routes.tsx",
+    "src/headless.ts",
+    "src/registry-virtual.d.ts"
+  ]
 }

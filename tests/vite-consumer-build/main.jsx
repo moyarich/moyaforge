@@ -1,10 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import {
-  DocsLayout,
-  DocsRoutes,
-  createMoyaForgeSource,
-} from "@moyarich/moyaforge";
+import { createMoyaForgeSource } from "@moyarich/moyaforge";
+import { HeadlessDocsRoutes } from "@moyarich/moyaforge/headless";
+import { DocsLayout } from "../../packages/moyaforge-ui/src/components/Layout/DocsLayout/index.ts";
 import {
   BrowserRouter,
   Routes,
@@ -39,7 +37,7 @@ const hostSource = createMoyaForgeSource({
 function HostDocs() {
   const { pathname } = useLocation();
   return (
-    <DocsRoutes
+    <HeadlessDocsRoutes
       source={hostSource}
       pathname={pathname}
       notFound={<p>Embedded docs not found</p>}

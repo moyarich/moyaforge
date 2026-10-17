@@ -41,8 +41,9 @@ export function defineMoyaForgeConfig(config: MoyaForgeConfig = {}) {
   };
 }
 
-export * from "./utils/index.js";
-export * from "./components/index.js";
+// Framework-only helpers. Install UI components from the source registry.
+export * from "./utils/content/index.js";
+export * from "./utils/navigation/index.js";
 
 export * from "./components/Routing/content-routing.js";
 
@@ -51,3 +52,8 @@ export {
   type RegistryRouteViewProps,
   type RegistryLazySources,
 } from "./components/Routing/RegistryRoutes.js";
+
+export {
+  HeadlessDocsRoutes,
+  type HeadlessDocsRoutesProps,
+} from "./components/Routing/HeadlessDocsRoutes.js";

@@ -46,22 +46,11 @@ export async function planProject({
   const ui = local(appRoot, within(root, directory));
   const replacements = {
     __UI__: ui,
-    __DOCS_IMPORT__:
-      mode === "source"
-        ? `${ui}/components/Routing/content-routing.js`
-        : "@moyarich/moyaforge/docs",
-    __SHELL_IMPORT__:
-      mode === "source" ? `${ui}/docs-shell.js` : "@moyarich/moyaforge/docs",
-    __STYLE__:
-      mode === "source"
-        ? `${ui}/docs-shell.css`
-        : "@moyarich/moyaforge/components.css",
-    "/* __CODE_STYLE_IMPORT__ */":
-      mode === "source" ? `import "${ui}/code-group.css";` : "",
-    __CODE_IMPORT__:
-      mode === "source"
-        ? `${ui}/components/CodeBlock/CodeBlock.js`
-        : "@moyarich/moyaforge/code",
+    __DOCS_IMPORT__: `${ui}/components/Routing/content-routing.js`,
+    __SHELL_IMPORT__: `${ui}/docs-shell.js`,
+    __STYLE__: `${ui}/docs-shell.css`,
+    "/* __CODE_STYLE_IMPORT__ */": `import "${ui}/code-group.css";`,
+    __CODE_IMPORT__: `${ui}/components/CodeBlock/CodeBlock.js`,
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
   };
   const files = [];
@@ -92,15 +81,11 @@ export async function planProject({
     if (name === "src/App.tsx") {
       content = content.replace(
         "/* __SHELL_IMPORTS__ */",
-        mode === "source"
-          ? `import { DocsShell } from "${ui}/docs-shell.js";`
-          : `import { DocumentationSite as DocsShell } from "@moyarich/moyaforge/docs";`,
+        `import { DocsShell } from "${ui}/docs-shell.js";`,
       );
       content = content.replace(
         "/* __CODE_IMPORTS__ */",
-        mode === "source"
-          ? `import { CodeBlock } from "${ui}/components/CodeBlock/CodeBlock.js";\nimport { CodeGroup, CodeTab } from "${ui}/components/CodeGroup/CodeGroup.js";`
-          : 'import { CodeBlock, CodeGroup, CodeTab } from "@moyarich/moyaforge/code";',
+        `import { CodeBlock } from "${ui}/components/CodeBlock/CodeBlock.js";\nimport { CodeGroup, CodeTab } from "${ui}/components/CodeGroup/CodeGroup.js";`,
       );
       content = content
         .replace(

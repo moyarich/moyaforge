@@ -10,20 +10,19 @@ test("consumer-facing package entry points compose independently", async () => {
     import("@moyarich/moyaforge-search-sqlite/vite"),
     import("@moyarich/moyaforge-mdx/toc"),
   ]);
-  // React/Monaco UI imports CSS and needs a bundler. Resolve its public
-  // entry here; the playground and standalone Vite builds verify its runtime.
+  // Framework root is headless; UI is installed into consumer source.
   const uiEntry = import.meta.resolve("@moyarich/moyaforge");
   assert.match(uiEntry, /\/moyaforge\/dist\/index\.js$/);
   const uiSource = await readFile(new URL(uiEntry), "utf8");
-  assert.match(uiSource, /components\/index\.js/);
+  assert.doesNotMatch(uiSource, /components\/index\.js/);
   assert.equal(typeof mdx.createMdxOptions, "function");
   assert.equal(typeof registry.mdxRegistryPlugin, "function");
   assert.equal(typeof search.buildSearchDatabase, "function");
   assert.equal(typeof searchVite.sqliteSearchPlugin, "function");
   assert.equal(typeof toc.getTableOfContents, "function");
   assert.match(
-    import.meta.resolve("@moyarich/moyaforge/mdx"),
-    /\/dist\/utils\/mdx\/index\.js$/,
+    import.meta.resolve("@moyarich/moyaforge/headless"),
+    /\/dist\/headless\.js$/,
   );
 });
 

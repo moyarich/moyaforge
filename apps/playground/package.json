@@ -18,10 +18,11 @@
   },
   "scripts": {
     "dev": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite --host 0.0.0.0",
-    "build": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite build",
+    "build": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && npm run check:legacy-imports && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "check:links": "npm run build --workspace @moyarich/moyaforge-mdx && node ./scripts/check-links.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:legacy-imports": "node ./scripts/check-legacy-framework-imports.mjs"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",

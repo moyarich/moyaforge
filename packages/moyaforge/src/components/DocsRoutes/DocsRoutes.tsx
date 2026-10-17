@@ -3,6 +3,7 @@ import type {
   MoyaForgeSource,
   SourcePage,
 } from "../../utils/content/source.js";
+import { HeadlessDocsRoutes } from "../Routing/HeadlessDocsRoutes.js";
 import {
   DocsLayout,
   type DocsLayoutProps,
@@ -23,19 +24,21 @@ export function DocsRoutes({
   renderPage,
   notFound = <p>Page not found.</p>,
 }: DocsRoutesProps) {
-  const path = "/" + pathname.split("/").filter(Boolean).join("/");
-  const page = source.getPage(path);
-  if (!page) return <>{notFound}</>;
-  const Page = page.Component;
   return (
-    <DocsLayout pages={source.getPages()} currentUrl={path} {...layout}>
-      {renderPage ? (
-        renderPage(page)
-      ) : Page ? (
-        <Page />
-      ) : (
-        <p>This page has no rendered component.</p>
+    <HeadlessDocsRoutes
+      source={source}
+      pathname={pathname}
+      renderPage={renderPage}
+      notFound={notFound}
+      renderLayout={(_page, content) => (
+        <DocsLayout
+          pages={source.getPages()}
+          currentUrl={"/" + pathname.split("/").filter(Boolean).join("/")}
+          {...layout}
+        >
+          {content}
+        </DocsLayout>
       )}
-    </DocsLayout>
+    />
   );
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "@fontsource-variable/inter";
-import "@moyarich/moyaforge/components.css";
 import "@moyarich/console/styles.css";
 import "./styles.css";
 import { PlaygroundMdxProvider } from "./mdx-provider.jsx";

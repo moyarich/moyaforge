@@ -1,15 +1,19 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import {
-  DocumentationSite,
   SidebarV1,
   Navigation,
+} from "../../../packages/moyaforge-ui/src/components/SidebarV1/index.ts";
+import {
   DocOutlineShell,
   DocOutline,
-  buildDocumentationGroups,
+} from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
+import { buildDocumentationGroups } from "./documentation-groups.js";
+import {
   MoyaForgeRouter,
   useContentRouting,
-} from "@moyarich/moyaforge/docs";
+} from "@moyarich/moyaforge/headless";
 import registry from "../registry.config.ts";
 import { VersionPicker } from "./components/Shell/VersionPicker.jsx";
 import { Feedback } from "./components/Shell/Feedback.jsx";
@@ -50,6 +54,7 @@ function ContentPage() {
 }
 function PlaygroundShell() {
   const { page } = useContentRouting();
+  const navigate = useNavigate();
   const groups = buildDocumentationGroups(routes, registry.sources);
   const toc = page
     ? getTableOfContents(
@@ -60,9 +65,32 @@ function PlaygroundShell() {
   return (
     <DocumentationSite
       title="MoyaForge"
-      sources={registry.sources}
+      pages={routes
+        .filter((item) => item.navigation !== "disabled")
+        .map((item) => ({
+          path: item.path,
+          label: item.label ?? item.title,
+          source: item.source,
+        }))}
+      currentPath={page?.path}
+      onNavigate={navigate}
       repository="https://github.com/moyarich/moyaforge"
-      search={searchPages}
+      search={async (query) =>
+        (await searchPages(query)).flatMap((key) => {
+          const match = routes.find(
+            (item) => `${item.source}/${item.file}` === key,
+          );
+          return match
+            ? [
+                {
+                  path: match.path,
+                  label: match.label ?? match.title,
+                  source: match.source,
+                },
+              ]
+            : [];
+        })
+      }
       sidebar={
         <SidebarV1 header={<VersionPicker />}>
           <Navigation groups={groups} />

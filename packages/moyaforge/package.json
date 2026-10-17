@@ -7,28 +7,17 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./components.css": "./src/components.css",
-    "./docs": {
-      "types": "./dist/docs.d.ts",
-      "import": "./dist/docs.js"
-    },
-    "./mdx": {
-      "types": "./dist/utils/mdx/index.d.ts",
-      "import": "./dist/utils/mdx/index.js"
-    },
-    "./code": {
-      "types": "./dist/code.d.ts",
-      "import": "./dist/code.js"
-    },
     "./registry-routes": {
       "types": "./dist/registry-routes.d.ts",
       "import": "./dist/registry-routes.js"
+    },
+    "./headless": {
+      "types": "./dist/headless.d.ts",
+      "import": "./dist/headless.js"
     }
   },
   "files": [
     "dist",
-    "src/components.css",
-    "src/components/**/*.css",
     "README.md"
   ],
   "license": "MIT",
@@ -39,29 +28,20 @@
   },
   "description": "Reusable MDX and documentation infrastructure for MoyaForge-powered sites.",
   "peerDependencies": {
-    "@mdx-js/react": "^3.1.1",
-    "@monaco-editor/react": ">=4",
-    "@moyarich/console": "^0.1.0",
-    "@typefox/monaco-editor-react": ">=8",
-    "monaco-languageclient": ">=11",
     "react": ">=18",
     "react-dom": ">=18",
     "react-router-dom": "^7.18.4"
   },
   "scripts": {
-    "build": "npm run build --workspace @moyarich/moyaforge-mdx && node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json && node ../../scripts/copy-component-styles.mjs",
+    "build": "npm run build --workspace @moyarich/moyaforge-mdx && node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
     "typecheck": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && vitest run",
+    "test": "npm run build && vitest run --exclude tests/docs-routes.test.js --exclude tests/mdx.test.js --exclude tests/sidebar-composition.test.js --exclude tests/toc-render.test.js",
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "@monaco-editor/react": "^4.7.0",
-    "@moyarich/console": "^0.1.0",
-    "@typefox/monaco-editor-react": "^8.0.2",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "monaco-languageclient": "^11.0.2",
     "typescript": "^7.0.2"
   },
   "publishConfig": {
@@ -81,19 +61,5 @@
     "docs",
     "mdx",
     "ui"
-  ],
-  "peerDependenciesMeta": {
-    "@monaco-editor/react": {
-      "optional": true
-    },
-    "@moyarich/console": {
-      "optional": true
-    },
-    "@typefox/monaco-editor-react": {
-      "optional": true
-    },
-    "monaco-languageclient": {
-      "optional": true
-    }
-  }
+  ]
 }

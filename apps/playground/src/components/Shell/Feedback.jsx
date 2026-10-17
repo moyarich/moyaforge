@@ -1,4 +1,4 @@
-import { useContentRouting } from "@moyarich/moyaforge/docs";
+import { useContentRouting } from "@moyarich/moyaforge/headless";
 
 export function Feedback() {
   const { page } = useContentRouting();
