@@ -181,6 +181,7 @@ test("framework TypeScript build is rooted at published entrypoints", async () =
     "src/index.ts",
     "src/registry-routes.tsx",
     "src/headless.ts",
+    "src/registry-virtual.d.ts",
   ]);
   expect(config.include).not.toContain("src/**/*.tsx");
 });
