@@ -110,17 +110,17 @@ export async function planProject({
           : "",
       );
       content = content.replace(
-        "/* __SEARCH_UI__ */",
+        "{/* __SEARCH_UI__ */}",
         search ? "<SearchPanel />" : "",
       );
       content = content.replace(
-        "/* __HYBRID_NAV__ */",
+        "{/* __HYBRID_NAV__ */}",
         template === "hybrid"
           ? '<Link to="/playground">Interactive playground</Link>'
           : "",
       );
       content = content.replace(
-        "/* __HYBRID_ROUTE__ */",
+        "{/* __HYBRID_ROUTE__ */}",
         template === "hybrid"
           ? '<Route path="/playground" element={<main><h1>Interactive playground</h1><button onClick={() => setCount(count + 1)}>Count: {count}</button><Link to="/docs">Read the docs</Link></main>} />'
           : "",
