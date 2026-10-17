@@ -128,3 +128,17 @@ test("playground no longer imports framework's UI-heavy docs subpath", async () 
   expect(app).toContain('from "./documentation-groups.js"');
   expect(navigation).toContain('from "@moyarich/moyaforge-mdx/navigation"');
 });
+
+test("headless MDX registry composer does not import legacy UI", async () => {
+  const registry = await readFile(
+    new URL("../packages/moyaforge/src/mdx-registry.ts", import.meta.url),
+    "utf8",
+  );
+  const headless = await readFile(
+    new URL("../packages/moyaforge/src/headless.ts", import.meta.url),
+    "utf8",
+  );
+  expect(registry).not.toMatch(/from ["'][^"']*(?:components\/|monaco|console)/);
+  expect(registry).toContain("defineMdxComponentRegistry");
+  expect(headless).toContain("./mdx-registry.js");
+});
