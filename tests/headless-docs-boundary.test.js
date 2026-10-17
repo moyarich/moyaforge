@@ -171,9 +171,12 @@ test("framework root entrypoint does not re-export installable UI or bundled MDX
 });
 
 test("framework TypeScript build is rooted at published entrypoints", async () => {
-  const config = JSON.parse(await readFile(
-    new URL("../packages/moyaforge/tsconfig.json", import.meta.url), "utf8",
-  ));
+  const config = JSON.parse(
+    await readFile(
+      new URL("../packages/moyaforge/tsconfig.json", import.meta.url),
+      "utf8",
+    ),
+  );
   expect(config.include).toEqual([
     "src/index.ts",
     "src/docs.ts",
