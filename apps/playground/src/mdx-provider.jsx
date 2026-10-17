@@ -41,6 +41,8 @@ import { DocOutline } from "../../../packages/moyaforge-ui/src/components/DocOut
 import { SidebarV1 } from "../../../packages/moyaforge-ui/src/components/SidebarV1/index.ts";
 import { DocsLayout } from "../../../packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx";
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
+import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
+import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { PlaygroundCallout } from "./components/index.js";
 
 const components = defineMdxComponentRegistry({
@@ -68,6 +70,8 @@ const components = defineMdxComponentRegistry({
   SidebarV1,
   DocsLayout,
   DocumentationSite,
+  DocsShellFocused,
+  DocsShellWide,
   Console,
   Terminal,
   BookOpen,

@@ -1,0 +1,49 @@
+---
+title: Docs Shell
+label: Docs Shell
+description: Canonical Docs Shell example in the MoyaForge component gallery.
+---
+
+# Docs Shell
+
+The registry's Docs Shell item is an editable template wrapping DocsLayout; this preview renders its canonical layout dependency.
+
+## Live preview
+
+<DocsLayout
+  title="Docs Shell preview"
+  pages={[{ url: "/ui", title: "Components" }]}
+  currentUrl="/ui"
+  header={<strong>Docs Shell</strong>}
+  sidebar={null}
+  outline={null}
+>
+  <p>
+    Installable DocsShell composes this canonical DocsLayout with host-supplied
+    routes and slots.
+  </p>
+</DocsLayout>
+
+## Usage
+
+```tsx
+<DocsLayout
+  title="Docs Shell preview"
+  pages={[{ url: "/ui", title: "Components" }]}
+  currentUrl="/ui"
+  header={<strong>Docs Shell</strong>}
+  sidebar={null}
+  outline={null}
+>
+  <p>
+    Installable DocsShell composes this canonical DocsLayout with host-supplied
+    routes and slots.
+  </p>
+</DocsLayout>
+```
+
+## Installation
+
+Install `docs-shell` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+
+[All UI components](/ui)
