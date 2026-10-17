@@ -96,6 +96,10 @@ export async function planProject({
         )
         .replace("__SEARCH_PROP__", search ? "search={searchPages}" : "");
       content = content.replace(
+        "/* __SEARCH_UI__ */",
+        search ? `<label>Search documentation<input aria-label="Search documentation" onChange={async (event) => { const results = await searchPages(event.currentTarget.value); console.info("Documentation search", results); }} /></label>` : "",
+      );
+      content = content.replace(
         "/* __HYBRID_NAV__ */",
         template === "hybrid"
           ? '<Link to="/playground">Interactive playground</Link>'
