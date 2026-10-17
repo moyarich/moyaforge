@@ -109,9 +109,12 @@ jobs:
           const vite = readFileSync('apps/playground/vite.config.js', 'utf8');
           const app = readFileSync('apps/playground/src/App.jsx', 'utf8');
           if (!vite.includes('mdxRegistryPlugin(')) throw Error('Playground must use shared MDX Vite plugin');
+          const adapter = readFileSync('packages/moyaforge/src/registry-routes.tsx', 'utf8');
           if (!app.includes('virtual:moyaforge-mdx/metadata') ||
-              !app.includes('virtual:moyaforge-mdx/lazy-registry')) {
-            throw Error('Playground must use shared metadata and lazy page loader');
+              !app.includes('@moyarich/moyaforge/registry-routes') ||
+              !app.includes('<RegistryRoutes') ||
+              !adapter.includes('virtual:moyaforge-mdx/lazy-registry')) {
+            throw Error('Playground must use shared metadata through public RegistryRoutes');
           }
           console.log('Verified playground uses MDX package APIs.');
           NODE
