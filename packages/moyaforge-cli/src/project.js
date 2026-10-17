@@ -96,8 +96,20 @@ export async function planProject({
         )
         .replace("__SEARCH_PROP__", search ? "search={searchPages}" : "");
       content = content.replace(
+        "/* __SEARCH_COMPONENT__ */",
+        search ? `function SearchPanel() {
+  const [results, setResults] = useState<string[]>([]);
+  return <div><label>Search documentation<input aria-label="Search documentation" onChange={async event => setResults(await searchPages(event.currentTarget.value))} /></label>
+    <div className="mf-results">{results.map((result, index) => {
+      const page = routes.find(page => page.title === result || page.path === result);
+      return <Link key={index} to={page?.path ?? "/docs"}>{result}</Link>;
+    })}</div>
+  </div>;
+}` : "",
+      );
+      content = content.replace(
         "/* __SEARCH_UI__ */",
-        search ? `<label>Search documentation<input aria-label="Search documentation" onChange={async (event) => { const results = await searchPages(event.currentTarget.value); console.info("Documentation search", results); }} /></label>` : "",
+        search ? "<SearchPanel />" : "",
       );
       content = content.replace(
         "/* __HYBRID_NAV__ */",
