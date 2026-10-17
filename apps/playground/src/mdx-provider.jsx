@@ -35,6 +35,7 @@ import {
 } from "../../../packages/moyaforge-ui/src/components/SidebarV2/index.ts";
 import { Source } from "../../../packages/moyaforge-ui/src/components/Source/index.ts";
 import { TableOfContents } from "../../../packages/moyaforge-ui/src/components/TableOfContents/index.ts";
+import { EmptyState } from "../../../packages/moyaforge-ui/src/components/EmptyState/index.ts";
 import { EditPageLink } from "../../../packages/moyaforge-ui/src/components/EditPageLink/index.ts";
 import { DocOutline } from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
 import { PlaygroundCallout } from "./components/index.js";
@@ -59,6 +60,7 @@ const components = defineMdxComponentRegistry({
   Source,
   TableOfContents,
   EditPageLink,
+  EmptyState,
   DocOutline,
   Console,
   Terminal,
