@@ -15,7 +15,7 @@ const pages = routes.map(page => ({
 }));
 function ContentPage() {
   const { pathname } = useLocation();
-  const currentPath = pathname.replace(/\\/+$/, "") || "/";
+  const currentPath = pathname.replace(/\/+$/, "") || "/";
   const page = routes.find(entry => entry.path === currentPath);
   if (!page) return <><h1>Page not found</h1><Link to="/docs">Documentation</Link></>;
   const loader = sources[page.source]?.lazyPages?.[page.file];
@@ -28,14 +28,15 @@ function ContentPage() {
 function Site() {
   const [count, setCount] = useState(0);
   const { pathname } = useLocation();
-  const sidebar = <aside className="mf-sidebar">\n    /* __SEARCH_UI__ */<nav aria-label="Documentation navigation">
+  const sidebar = <aside className="mf-sidebar">
+    {/* __SEARCH_UI__ */}<nav aria-label="Documentation navigation">
     <Link className="mf-guide-link" to="/docs/guide">Guide</Link>
     <ul>{pages.map(page => <li key={page.url}><Link to={page.url}>{page.title}</Link></li>)}</ul>
   </nav></aside>;
   return <Routes>
-    /* __HYBRID_ROUTE__ */
+    {/* __HYBRID_ROUTE__ */}
     <Route path="*" element={<DocsShell title="My documentation" pages={pages} currentUrl={pathname} sidebar={sidebar}>
-      /* __HYBRID_NAV__ */
+      {/* __HYBRID_NAV__ */}
       <ContentPage />
     </DocsShell>} />
   </Routes>;
