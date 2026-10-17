@@ -96,13 +96,31 @@ export async function planProject({
         )
         .replace("__SEARCH_PROP__", search ? "search={searchPages}" : "");
       content = content.replace(
-        "/* __HYBRID_NAV__ */",
+        "/* __SEARCH_COMPONENT__ */",
+        search
+          ? `function SearchPanel() {
+  const [results, setResults] = useState<string[]>([]);
+  return <div><label>Search documentation<input aria-label="Search documentation" onChange={async event => setResults(await searchPages(event.currentTarget.value))} /></label>
+    <div className="mf-results">{results.map((result, index) => {
+      const page = routes.find(page => page.title === result || page.path === result);
+      return <Link key={index} to={page?.path ?? "/docs"}>{result}</Link>;
+    })}</div>
+  </div>;
+}`
+          : "",
+      );
+      content = content.replace(
+        "{/* __SEARCH_UI__ */}",
+        search ? "<SearchPanel />" : "",
+      );
+      content = content.replace(
+        "{/* __HYBRID_NAV__ */}",
         template === "hybrid"
           ? '<Link to="/playground">Interactive playground</Link>'
           : "",
       );
       content = content.replace(
-        "/* __HYBRID_ROUTE__ */",
+        "{/* __HYBRID_ROUTE__ */}",
         template === "hybrid"
           ? '<Route path="/playground" element={<main><h1>Interactive playground</h1><button onClick={() => setCount(count + 1)}>Count: {count}</button><Link to="/docs">Read the docs</Link></main>} />'
           : "",

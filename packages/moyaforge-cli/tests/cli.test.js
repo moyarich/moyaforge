@@ -51,7 +51,7 @@ test("source installation is canonical, preserves edits, shows diffs, and explic
   expect(original).toBe(
     await read(
       repository,
-      "packages/moyaforge/src/components/CodeGroup/CodeGroup.tsx",
+      "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
     ),
   );
   await writeFile(join(root, path), "// locally customized\n");
@@ -72,10 +72,10 @@ test("custom destinations retain portable relative imports", async () => {
       .status,
   ).toBe(0);
   expect(await read(root, "ui/docs/docs-shell.tsx")).toContain(
-    "./components/SidebarV1/SidebarV1.js",
+    "./components/Layout/DocsLayout/DocsLayout.js",
   );
   expect(await read(root, "ui/docs/docs-shell.css")).toContain(
-    "./components/DocOutline/DocOutline.css",
+    "./components/Layout/DocsLayout/DocsLayout.css",
   );
 });
 test("init produces source/package/hybrid starters and preserves existing app configuration", async () => {
@@ -98,9 +98,10 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(manifest.dependencies.react).toBe("^18.3.1");
   expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
   expect(manifest.dependencies).not.toHaveProperty("@moyarich/moyaforge");
-  expect(await read(root, "moyaforge/src/App.tsx")).toContain(
-    "../../src/components/moyaforge/docs-shell.js",
-  );
+  const existingApp = await read(root, "moyaforge/src/App.tsx");
+  expect(existingApp).toContain("../../src/components/moyaforge/docs-shell.js");
+  expect(existingApp).toContain("sidebar={sidebar}");
+  expect(existingApp).not.toContain("components/Routing/content-routing.js");
   expect(await read(root, "moyaforge/vite.config.ts")).toContain(
     "@moyarich/moyaforge-mdx/vite",
   );
@@ -128,7 +129,14 @@ test("init produces source/package/hybrid starters and preserves existing app co
   ).toBe(0);
   const app = await read(packageRoot, "src/App.tsx");
   expect(app).toContain('path="/playground"');
-  expect(app).toContain("search={searchPages}");
+  expect(app).toContain("searchPages(event.currentTarget.value)");
+  expect(app).toContain("<SearchPanel />");
+  expect(app).toContain("<HashRouter>");
+  expect(app).toContain("pages={pages}");
+  expect(app).toContain("sidebar={sidebar}");
+  expect(app).not.toContain("MoyaForgeRouter");
+  expect(app).not.toContain("useContentRouting");
+  expect(app).not.toContain("sources={registry.sources}");
   expect(app).not.toContain("__");
   expect(await read(packageRoot, "vite.config.ts")).toContain(
     "sqliteSearchPlugin",

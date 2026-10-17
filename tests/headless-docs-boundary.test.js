@@ -61,16 +61,22 @@ test("headless package subpath exports routing without legacy layout imports", a
   );
 });
 
-test("docs-routes registry installs its headless renderer dependency", async () => {
+test("registry distributes UI shells without bundling headless framework routing", async () => {
   const registry = JSON.parse(
     await readFile(new URL("../registry.json", import.meta.url), "utf8"),
   );
-  const docsRoutes = registry.items.find(
-    (entry) => entry.name === "docs-routes",
+  expect(registry.items.some((entry) => entry.name === "docs-routes")).toBe(
+    false,
   );
-  expect(docsRoutes.files.map((file) => file.path)).toContain(
-    "packages/moyaforge/src/components/Routing/HeadlessDocsRoutes.tsx",
-  );
+  for (const name of ["docs-shell", "docs-shell-focused", "docs-shell-wide"]) {
+    const shell = registry.items.find((entry) => entry.name === name);
+    expect(shell).toBeDefined();
+    expect(
+      shell.files.every(
+        (file) => !file.path.startsWith("packages/moyaforge/src/"),
+      ),
+    ).toBe(true);
+  }
 });
 
 test("playground imports routing from headless subpath rather than docs UI", async () => {
