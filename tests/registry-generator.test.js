@@ -24,24 +24,25 @@ async function fixture() {
     }),
   );
   await mkdir(resolve(root, "registry/templates"), { recursive: true });
+  await mkdir(resolve(root, "packages/moyaforge/src/components"), { recursive: true });
   await put(
-    "packages/moyaforge/src/components/Nested/NewBadge/index.ts",
+    "packages/moyaforge-ui/src/components/Nested/NewBadge/index.ts",
     'export * from "./NewBadge.js";',
   );
   await put(
-    "packages/moyaforge/src/components/Nested/NewBadge/NewBadge.tsx",
+    "packages/moyaforge-ui/src/components/Nested/NewBadge/NewBadge.tsx",
     'import {createElement} from "react"; import type {Icon} from "@example/icons/types"; export const NewBadge = () => createElement("span"); export const load = () => import("../../../utils/lazy.js");',
   );
   await put(
-    "packages/moyaforge/src/components/Nested/NewBadge/badge.css",
+    "packages/moyaforge-ui/src/components/Nested/NewBadge/badge.css",
     '@import "./tokens.css";',
   );
   await put(
-    "packages/moyaforge/src/components/Nested/NewBadge/tokens.css",
+    "packages/moyaforge-ui/src/components/Nested/NewBadge/tokens.css",
     "span { color: red; }",
   );
   await put(
-    "packages/moyaforge/src/utils/lazy.ts",
+    "packages/moyaforge-ui/src/utils/lazy.ts",
     "export const loaded = true;",
   );
   return { root, put };
@@ -50,10 +51,10 @@ test("discovers unknown nested components, complete imports, styles and declared
   const { root, put } = await fixture();
   await put(
     "registry/templates/new-shell.tsx",
-    'export {NewBadge} from "./components/Nested/NewBadge/index.js";',
+    'export const NewShell = 1;',
   );
   await put(
-    "packages/moyaforge/src/components/Unstyled/index.ts",
+    "packages/moyaforge-ui/src/components/Unstyled/index.ts",
     "export const Unstyled = 1;",
   );
   const registry = await buildRegistry(root);
@@ -81,14 +82,14 @@ test("discovers unknown nested components, complete imports, styles and declared
   await expect(
     readFile(resolve(root, "registry/styles/obsolete.css")),
   ).rejects.toThrow();
-  await rm(resolve(root, "packages/moyaforge/src/components/Nested"), {
+  await rm(resolve(root, "packages/moyaforge-ui/src/components/Nested"), {
     recursive: true,
   });
   await rm(resolve(root, "registry/templates/new-shell.tsx"));
   await expect(buildRegistry(root, { check: true })).rejects.toThrow(
     "Registry is stale",
   );
-  await rm(resolve(root, "packages/moyaforge/src/components/Unstyled"), {
+  await rm(resolve(root, "packages/moyaforge-ui/src/components/Unstyled"), {
     recursive: true,
   });
   expect((await buildRegistry(root)).items).toEqual([]);
@@ -101,7 +102,7 @@ test("rejects naming collisions, missing imports, undeclared packages and bounda
   await put("registry/templates/new-badge.tsx", "export const Example = 1;");
   await expect(buildRegistry(root)).rejects.toThrow("Duplicate registry name");
   await rm(resolve(root, "registry/templates/new-badge.tsx"));
-  const entry = "packages/moyaforge/src/components/Nested/NewBadge/index.ts";
+  const entry = "packages/moyaforge-ui/src/components/Nested/NewBadge/index.ts";
   await put(entry, 'export * from "./missing.js";');
   await expect(buildRegistry(root)).rejects.toThrow(
     "Unresolved registry import",
@@ -127,7 +128,7 @@ test("failed regeneration preserves previously generated registry and styles", a
     "utf8",
   );
   await put(
-    "packages/moyaforge/src/components/Nested/NewBadge/index.ts",
+    "packages/moyaforge-ui/src/components/Nested/NewBadge/index.ts",
     'export * from "./does-not-exist.js";',
   );
   await expect(buildRegistry(root)).rejects.toThrow(
