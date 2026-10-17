@@ -225,7 +225,7 @@ export async function buildRegistry(root, { check = false } = {}) {
     homepage: "https://github.com/moyarich/moyaforge",
     items,
   };
-  const output = await format(JSON.stringify(registry), { parser: "json" });
+  const output = `${JSON.stringify(registry, null, 2)}\n`;
   const stylesRoot = resolve(root, "registry/styles");
   if (check) {
     const existingRegistry = await readFile(
