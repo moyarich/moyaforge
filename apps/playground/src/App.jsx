@@ -72,7 +72,7 @@ function PlaygroundShell() {
       }
       outline={
         toc && toc.options.placement !== "none" ? (
-          <DocOutlineShell footer={<Feedback />}>
+          <DocOutlineShell footer={<Feedback page={page} />}>
             <DocOutline
               key={page.path}
               headings={toc.headings}
