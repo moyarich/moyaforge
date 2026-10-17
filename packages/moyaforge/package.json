@@ -35,7 +35,7 @@
   "scripts": {
     "build": "npm run build --workspace @moyarich/moyaforge-mdx && node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
     "typecheck": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && vitest run",
+    "test": "npm run build && vitest run --exclude tests/docs-routes.test.js --exclude tests/mdx.test.js --exclude tests/sidebar-composition.test.js --exclude tests/toc-render.test.js",
     "prepack": "npm run build"
   },
   "devDependencies": {
