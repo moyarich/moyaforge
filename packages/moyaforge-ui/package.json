@@ -10,5 +10,13 @@
     "test": "node -e \"console.log('UI source workspace: registry consumer tests run at root')\"",
     "registry:check": "node ../../scripts/build-registry.mjs --check"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "registryDependencies": {
+    "@monaco-editor/react": ">=4",
+    "@typefox/monaco-editor-react": ">=8",
+    "monaco-languageclient": ">=11",
+    "@moyarich/moyaforge-mdx": "^0.1.0",
+    "react": ">=18",
+    "react-router-dom": "^7.18.4"
+  }
 }
