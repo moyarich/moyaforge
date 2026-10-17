@@ -1,6 +1,4 @@
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const ts = require("typescript");
+import { parse } from "@babel/parser";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 
@@ -34,17 +32,20 @@ function visit(filename, found) {
   if (found.has(filename) || !existsSync(filename)) return;
   found.add(filename);
   const code = readFileSync(filename, "utf8");
-  const ast = ts.createSourceFile(filename, code, ts.ScriptTarget.Latest, true);
+  const ast = parse(code, { sourceType: "module", plugins: ["typescript", "jsx"] });
   function walk(node) {
     if (
-      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-      node.moduleSpecifier &&
-      ts.isStringLiteral(node.moduleSpecifier)
+      ["ImportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"].includes(node?.type) &&
+      node.source?.type === "StringLiteral"
     ) {
-      const target = resolveLocal(filename, node.moduleSpecifier.text);
+      const target = resolveLocal(filename, node.source.value);
       if (target) visit(target, found);
     }
-    ts.forEachChild(node, walk);
+    if (!node || typeof node !== "object") return;
+    for (const child of Object.values(node)) {
+      if (Array.isArray(child)) child.forEach(walk);
+      else if (child && typeof child === "object") walk(child);
+    }
   }
   walk(ast);
 }
