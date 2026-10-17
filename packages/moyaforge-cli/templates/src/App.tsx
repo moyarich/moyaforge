@@ -24,6 +24,7 @@ function ContentPage() {
   const Page = loaded.get(page.path)!;
   return <Suspense fallback={<p role="status">Loading page…</p>}><Page /></Suspense>;
 }
+/* __SEARCH_COMPONENT__ */
 function Site() {
   const [count, setCount] = useState(0);
   const { pathname } = useLocation();
