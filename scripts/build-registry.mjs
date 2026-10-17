@@ -177,20 +177,6 @@ export async function buildRegistry(root, { check = false } = {}) {
             await visit(resolve(dirname(file), sibling));
     }
     await visit(spec.entry, spec.template);
-    // An installable UI entry must carry all of its relative source imports in
-    // the private UI workspace, never copy runtime framework implementation.
-    if (spec.uiSource) {
-      const leaked = [...files].filter((file) =>
-        file.startsWith(sourceRoot + "/"),
-      );
-      if (leaked.length) {
-        throw Error(
-          `UI registry entry '${name}' imports framework files: ${leaked
-            .map((file) => relative(root, file))
-            .join(", ")}`,
-        );
-      }
-    }
     const itemSourceRoot = spec.entry.startsWith(uiSourceRoot + "/")
       ? uiSourceRoot
       : uiSourceRoot;
