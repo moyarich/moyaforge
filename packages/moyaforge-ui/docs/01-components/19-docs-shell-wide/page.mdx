@@ -1,0 +1,39 @@
+---
+title: Docs Shell Wide
+label: Docs Shell Wide
+description: Canonical Docs Shell Wide example in the MoyaForge component gallery.
+---
+
+# Docs Shell Wide
+
+Navigation, toolbar, inspector, and footer are optional independent slots.
+
+## Live preview
+
+<DocsShellWide
+  title="Workspace layout"
+  navigationItems={[{ label: "Overview", href: "/ui" }]}
+  inspector={<p>Inspector panel</p>}
+  toolbar={<span>Workspace tools</span>}
+>
+  <p>Wide workspace content.</p>
+</DocsShellWide>
+
+## Usage
+
+```tsx
+<DocsShellWide
+  title="Workspace layout"
+  navigationItems={[{ label: "Overview", href: "/ui" }]}
+  inspector={<p>Inspector panel</p>}
+  toolbar={<span>Workspace tools</span>}
+>
+  <p>Wide workspace content.</p>
+</DocsShellWide>
+```
+
+## Installation
+
+Install `docs-shell-wide` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+
+[All UI components](/ui)
