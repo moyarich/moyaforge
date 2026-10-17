@@ -5,8 +5,8 @@ components in `packages/moyaforge-ui/src/components/`.
 
 The playground discovers the `ui` content source from
 `apps/playground/registry.config.ts` and renders these MDX pages using the
-canonical workspace UI source. New `components/<name>/page.mdx` pages become
-routable without adding application routes.
+canonical workspace UI source. New `01-components/01-code-block/page.mdx`-style pages become
+routable without adding application routes. Numeric folder prefixes determine sibling ordering and are stripped from public URLs and displayed labels; for example, `01-components/01-code-block/page.mdx` resolves to `/ui/components/code-block`.
 
 Component documentation should provide a working preview, usage, installation,
 relevant variations and accessibility guidance. Import canonical component source
