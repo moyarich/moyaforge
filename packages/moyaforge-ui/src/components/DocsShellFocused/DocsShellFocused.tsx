@@ -26,12 +26,13 @@ export function DocsShellFocused({
   footer,
   articleActions,
 }: DocsShellFocusedProps) {
-  const defaultHeader = title || subtitle ? (
-    <div>
-      {title ? <h1>{title}</h1> : null}
-      {subtitle ? <p>{subtitle}</p> : null}
-    </div>
-  ) : null;
+  const defaultHeader =
+    title || subtitle ? (
+      <div>
+        {title ? <h1>{title}</h1> : null}
+        {subtitle ? <p>{subtitle}</p> : null}
+      </div>
+    ) : null;
   const defaultNavigation = backHref ? <a href={backHref}>← Back</a> : null;
 
   return (
@@ -46,7 +47,9 @@ export function DocsShellFocused({
         </header>
       ) : null}
       <main data-moyaforge-focused-article="">{children}</main>
-      {footer != null ? <footer data-moyaforge-focused-footer="">{footer}</footer> : null}
+      {footer != null ? (
+        <footer data-moyaforge-focused-footer="">{footer}</footer>
+      ) : null}
     </div>
   );
 }
