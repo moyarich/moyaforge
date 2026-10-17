@@ -23,19 +23,10 @@ const legacyComponentPaths = paths.filter(
 );
 // Routing is framework infrastructure, not installable UI. Only flag UI
 // implementations that must be removed after consumer migration.
-const extractedUiGroups = [
-  "NavigationTree",
-  "SidebarV1",
-  "SidebarV2",
-  "Page",
-  "Layout/DocsLayout",
-];
-const packedExtractedUi = legacyComponentPaths.filter((path) =>
-  extractedUiGroups.some(
-    (group) =>
-      path.startsWith(`dist/components/${group}/`) ||
-      path.startsWith(`src/components/${group}/`),
-  ),
+const packedExtractedUi = legacyComponentPaths.filter(
+  (path) =>
+    !path.startsWith("dist/components/Routing/") &&
+    !path.startsWith("src/components/Routing/"),
 );
 const stylesheetPaths = paths.filter((path) => path.endsWith(".css"));
 const sourceMaps = paths.filter(
