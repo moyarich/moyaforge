@@ -7,7 +7,11 @@ import { DocsShellWide } from "../src/components/DocsShellWide/DocsShellWide.js"
 describe("independently composable documentation shells", () => {
   it("renders focused defaults and supports replacing or omitting them", () => {
     const defaults = renderToStaticMarkup(
-      createElement(DocsShellFocused, { title: "Guide", backHref: "/docs", children: "Article" }),
+      createElement(DocsShellFocused, {
+        title: "Guide",
+        backHref: "/docs",
+        children: "Article",
+      }),
     );
     expect(defaults).toContain("Guide");
     expect(defaults).toContain('href="/docs"');
