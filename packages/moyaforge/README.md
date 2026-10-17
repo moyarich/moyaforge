@@ -1,5 +1,7 @@
 # @moyarich/moyaforge
 
+> **Package split (breaking change):** The framework npm package exposes only the root, `./headless`, and `./registry-routes` entry points. The former `./docs`, `./code`, `./mdx`, and `./components.css` entry points are no longer published. Install UI and styles from the component registry into the consuming application; use `@moyarich/moyaforge-mdx` for compilation and discovery. Examples below illustrating legacy UI imports describe the previous API and must be migrated before use.
+
 Open-source, reusable helpers and components for documentation sites,
 component libraries, and interactive playgrounds.
 
