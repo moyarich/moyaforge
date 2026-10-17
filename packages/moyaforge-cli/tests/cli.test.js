@@ -51,7 +51,7 @@ test("source installation is canonical, preserves edits, shows diffs, and explic
   expect(original).toBe(
     await read(
       repository,
-      "packages/moyaforge/src/components/CodeGroup/CodeGroup.tsx",
+      "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
     ),
   );
   await writeFile(join(root, path), "// locally customized\n");
@@ -72,10 +72,10 @@ test("custom destinations retain portable relative imports", async () => {
       .status,
   ).toBe(0);
   expect(await read(root, "ui/docs/docs-shell.tsx")).toContain(
-    "./components/SidebarV1/SidebarV1.js",
+    "./components/Layout/DocsLayout/DocsLayout.js",
   );
   expect(await read(root, "ui/docs/docs-shell.css")).toContain(
-    "./components/DocOutline/DocOutline.css",
+    "./components/Layout/DocsLayout/DocsLayout.css",
   );
 });
 test("init produces source/package/hybrid starters and preserves existing app configuration", async () => {
