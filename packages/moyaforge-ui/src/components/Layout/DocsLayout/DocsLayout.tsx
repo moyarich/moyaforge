@@ -1,5 +1,5 @@
 import "./DocsLayout.css";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 /** Page metadata needed by the editable documentation layout. */
 export interface DocsLayoutPage {
@@ -60,18 +60,20 @@ function visibleHeadings(
 
 function HeadingLinks({
   headings,
+  activeId,
 }: {
   headings: readonly DocsLayoutHeading[];
+  activeId: string;
 }) {
   return (
     <ul>
       {headings.map((heading) => (
         <li key={heading.id}>
-          <a href={`#${heading.id}`}>
+          <a href={`#${heading.id}`} aria-current={activeId === heading.id ? "location" : undefined}>
             {heading.text ?? heading.title ?? heading.id}
           </a>
           {heading.children?.length ? (
-            <HeadingLinks headings={heading.children} />
+            <HeadingLinks headings={heading.children} activeId={activeId} />
           ) : null}
         </li>
       ))}
@@ -92,6 +94,13 @@ export function DocsLayout({
   toc,
   editLink,
 }: DocsLayoutProps) {
+  const [activeId, setActiveId] = useState("");
+  useEffect(() => {
+    const update = () => setActiveId(decodeURIComponent(window.location.hash.slice(1)));
+    update();
+    window.addEventListener("hashchange", update);
+    return () => window.removeEventListener("hashchange", update);
+  }, []);
   const current = pages.find((page) => page.url === currentUrl);
   const visiblePages = pages.filter(
     (page) =>
@@ -106,7 +115,7 @@ export function DocsLayout({
   const configuredOutline = headings.length ? (
     <nav aria-label={toc && toc.label ? toc.label : "On this page"}>
       <strong>{toc && toc.label ? toc.label : "On this page"}</strong>
-      <HeadingLinks headings={headings} />
+      <HeadingLinks headings={headings} activeId={activeId} />
     </nav>
   ) : null;
   const sidebarContent = (
@@ -156,8 +165,8 @@ export function DocsLayout({
         </main>
         {outline !== undefined
           ? outline
-          : placement === "right"
-            ? configuredOutline
+          : placement === "right" && configuredOutline
+            ? <aside data-moyaforge-doc-outline="">{configuredOutline}</aside>
             : null}
       </div>
     </div>
