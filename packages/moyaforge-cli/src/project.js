@@ -97,7 +97,8 @@ export async function planProject({
         .replace("__SEARCH_PROP__", search ? "search={searchPages}" : "");
       content = content.replace(
         "/* __SEARCH_COMPONENT__ */",
-        search ? `function SearchPanel() {
+        search
+          ? `function SearchPanel() {
   const [results, setResults] = useState<string[]>([]);
   return <div><label>Search documentation<input aria-label="Search documentation" onChange={async event => setResults(await searchPages(event.currentTarget.value))} /></label>
     <div className="mf-results">{results.map((result, index) => {
@@ -105,7 +106,8 @@ export async function planProject({
       return <Link key={index} to={page?.path ?? "/docs"}>{result}</Link>;
     })}</div>
   </div>;
-}` : "",
+}`
+          : "",
       );
       content = content.replace(
         "/* __SEARCH_UI__ */",
