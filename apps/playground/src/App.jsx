@@ -20,7 +20,11 @@ import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
 
 function PlaygroundShell() {
   const { pathname } = useLocation();
-  const page = routes.find((item) => item.path === (pathname.replace(/\/+$/, "") || "/") && item.navigation !== "disabled");
+  const page = routes.find(
+    (item) =>
+      item.path === (pathname.replace(/\/+$/, "") || "/") &&
+      item.navigation !== "disabled",
+  );
   const navigate = useNavigate();
   useEffect(() => {
     document.title = `${page?.title ?? "Page not found"} | MoyaForge`;
