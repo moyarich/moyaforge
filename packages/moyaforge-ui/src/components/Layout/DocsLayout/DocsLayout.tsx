@@ -69,7 +69,10 @@ function HeadingLinks({
     <ul>
       {headings.map((heading) => (
         <li key={heading.id}>
-          <a href={`#${heading.id}`} aria-current={activeId === heading.id ? "location" : undefined}>
+          <a
+            href={`#${heading.id}`}
+            aria-current={activeId === heading.id ? "location" : undefined}
+          >
             {heading.text ?? heading.title ?? heading.id}
           </a>
           {heading.children?.length ? (
@@ -96,7 +99,8 @@ export function DocsLayout({
 }: DocsLayoutProps) {
   const [activeId, setActiveId] = useState("");
   useEffect(() => {
-    const update = () => setActiveId(decodeURIComponent(window.location.hash.slice(1)));
+    const update = () =>
+      setActiveId(decodeURIComponent(window.location.hash.slice(1)));
     update();
     window.addEventListener("hashchange", update);
     return () => window.removeEventListener("hashchange", update);
@@ -163,11 +167,11 @@ export function DocsLayout({
           ) : null}
           {footer}
         </main>
-        {outline !== undefined
-          ? outline
-          : placement === "right" && configuredOutline
-            ? <aside data-moyaforge-doc-outline="">{configuredOutline}</aside>
-            : null}
+        {outline !== undefined ? (
+          outline
+        ) : placement === "right" && configuredOutline ? (
+          <aside data-moyaforge-doc-outline="">{configuredOutline}</aside>
+        ) : null}
       </div>
     </div>
   );
