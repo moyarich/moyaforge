@@ -6,38 +6,47 @@ export interface DocsShellFocusedProps {
   title?: string;
   subtitle?: string;
   backHref?: string;
+  /** Undefined uses the default heading; null intentionally removes it. */
   header?: ReactNode;
-  footer?: ReactNode;
-  /** Reading-focused shell deliberately does not own navigation or routing. */
+  /** Undefined uses the default back link when backHref exists. */
+  navigation?: ReactNode;
+  /** Undefined or null omits this optional slot. */
   articleActions?: ReactNode;
+  footer?: ReactNode;
 }
 
-/** Standalone reading experience, not a DocsLayout variant. */
+/** Standalone reading shell with independently replaceable slots. */
 export function DocsShellFocused({
   children,
   title,
   subtitle,
   backHref,
   header,
+  navigation,
   footer,
   articleActions,
 }: DocsShellFocusedProps) {
+  const defaultHeader = title || subtitle ? (
+    <div>
+      {title ? <h1>{title}</h1> : null}
+      {subtitle ? <p>{subtitle}</p> : null}
+    </div>
+  ) : null;
+  const defaultNavigation = backHref ? <a href={backHref}>← Back</a> : null;
+
   return (
     <div data-moyaforge-shell-focused="">
-      <header data-moyaforge-focused-header="">
-        {header ?? (
-          <div>
-            {backHref ? <a href={backHref}>← Back</a> : null}
-            {title ? <h1>{title}</h1> : null}
-            {subtitle ? <p>{subtitle}</p> : null}
-          </div>
-        )}
-        {articleActions}
-      </header>
-      <main data-moyaforge-focused-article="">{children}</main>
-      {footer ? (
-        <footer data-moyaforge-focused-footer="">{footer}</footer>
+      {(header === undefined ? defaultHeader : header) !== null ||
+      (navigation === undefined ? defaultNavigation : navigation) !== null ||
+      articleActions != null ? (
+        <header data-moyaforge-focused-header="">
+          {navigation === undefined ? defaultNavigation : navigation}
+          {header === undefined ? defaultHeader : header}
+          {articleActions}
+        </header>
       ) : null}
+      <main data-moyaforge-focused-article="">{children}</main>
+      {footer != null ? <footer data-moyaforge-focused-footer="">{footer}</footer> : null}
     </div>
   );
 }
