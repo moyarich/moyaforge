@@ -74,7 +74,15 @@ export async function buildRegistry(root, { check = false } = {}) {
   const manifest = JSON.parse(
     await readFile(resolve(root, "packages/moyaforge/package.json"), "utf8"),
   );
-  const declared = { ...manifest.peerDependencies, ...manifest.dependencies };
+  const uiManifest = JSON.parse(
+    await readFile(resolve(root, "packages/moyaforge-ui/package.json"), "utf8"),
+  );
+  // Registry components declare dependencies independently of framework peers.
+  const declared = {
+    ...manifest.peerDependencies,
+    ...manifest.dependencies,
+    ...uiManifest.registryDependencies,
+  };
   const specs = new Map();
   function add(name, spec) {
     if (specs.has(name))
