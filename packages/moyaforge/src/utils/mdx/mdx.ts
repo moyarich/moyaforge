@@ -62,6 +62,11 @@ export const moyaForgeComponents = Object.freeze({
 
 export type MdxComponents = Record<string, ComponentType<any>>;
 
+/** Merge host-installed UI mappings without loading the bundled defaults.
+ *
+ * Pass a source-owned registry as the first argument when migrating away
+ * from the legacy framework components.
+ */
 export function createMdxComponents(
   defaults: MdxComponents = moyaForgeComponents,
   overrides: MdxComponents = {},
