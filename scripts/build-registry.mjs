@@ -128,7 +128,9 @@ export async function buildRegistry(root, { check = false } = {}) {
   const legacyEntries = new Set(["docs-routes", "docs-shell"]);
   for (const [name, spec] of specs) {
     if (!spec.uiSource && !legacyEntries.has(name))
-      throw Error(`Registry entry '${name}' uses framework UI source. Move it to packages/moyaforge-ui/src/components before adding it to the registry.`);
+      throw Error(
+        `Registry entry '${name}' uses framework UI source. Move it to packages/moyaforge-ui/src/components before adding it to the registry.`,
+      );
   }
   for (const entry of (await readdir(templateRoot)).sort())
     if (/\.(tsx|ts)$/.test(entry))
