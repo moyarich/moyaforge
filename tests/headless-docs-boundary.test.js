@@ -144,3 +144,15 @@ test("headless MDX registry composer does not import legacy UI", async () => {
   expect(registry).toContain("defineMdxComponentRegistry");
   expect(headless).toContain("./mdx-registry.js");
 });
+
+test("playground MDX provider uses source-owned UI without legacy MDX registry", async () => {
+  const provider = await readFile(
+    new URL("../apps/playground/src/mdx-provider.jsx", import.meta.url),
+    "utf8",
+  );
+  expect(provider).toContain('from "@moyarich/moyaforge/headless"');
+  expect(provider).toContain("defineMdxComponentRegistry");
+  expect(provider).toContain("packages/moyaforge-ui/src/components/CodeBlock/index.ts");
+  expect(provider).not.toContain("@moyarich/moyaforge/mdx");
+  expect(provider).not.toContain("moyaForgeComponents");
+});
