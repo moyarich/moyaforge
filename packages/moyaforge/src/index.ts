@@ -45,7 +45,6 @@ export function defineMoyaForgeConfig(config: MoyaForgeConfig = {}) {
 export * from "./utils/content/index.js";
 export * from "./utils/navigation/index.js";
 
-
 export {
   RegistryRouteView,
   type RegistryRouteViewProps,
