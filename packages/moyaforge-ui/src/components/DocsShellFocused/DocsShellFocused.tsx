@@ -35,7 +35,9 @@ export function DocsShellFocused({
         {articleActions}
       </header>
       <main data-moyaforge-focused-article="">{children}</main>
-      {footer ? <footer data-moyaforge-focused-footer="">{footer}</footer> : null}
+      {footer ? (
+        <footer data-moyaforge-focused-footer="">{footer}</footer>
+      ) : null}
     </div>
   );
 }

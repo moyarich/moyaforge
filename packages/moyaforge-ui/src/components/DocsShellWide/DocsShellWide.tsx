@@ -24,9 +24,13 @@ export function DocsShellWide({
       {header ? <header data-moyaforge-wide-header="">{header}</header> : null}
       {toolbar ? <div data-moyaforge-wide-toolbar="">{toolbar}</div> : null}
       <div data-moyaforge-wide-grid="">
-        {navigation ? <aside data-moyaforge-wide-navigation="">{navigation}</aside> : null}
+        {navigation ? (
+          <aside data-moyaforge-wide-navigation="">{navigation}</aside>
+        ) : null}
         <main data-moyaforge-wide-content="">{children}</main>
-        {inspector ? <aside data-moyaforge-wide-inspector="">{inspector}</aside> : null}
+        {inspector ? (
+          <aside data-moyaforge-wide-inspector="">{inspector}</aside>
+        ) : null}
       </div>
       {footer ? <footer data-moyaforge-wide-footer="">{footer}</footer> : null}
     </div>
