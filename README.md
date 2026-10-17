@@ -97,6 +97,41 @@ npm install @moyarich/moyaforge @moyarich/console
 
 The repository's `.npmrc` routes `@moyarich` packages to the public npm registry. Public package installation does not require a GitHub Packages token or extra Actions permissions.
 
+## Component registry maintenance
+
+The installable UI source of truth is `packages/moyaforge-ui/src/components/`.
+`scripts/build-registry.mjs` generates `registry.json` and
+`registry/styles/*.css` for selected component installs. These generated
+files are committed to this repository; they are not npm package publishing.
+
+To regenerate locally before submitting a PR:
+
+```sh
+npm ci --ignore-scripts --include=optional
+npm run registry:build
+npm run registry:check
+npx --yes shadcn@4.21.5 registry validate ./registry.json
+```
+
+Include changes to `registry.json` and `registry/styles/` in the same PR as
+the source changes. CI checks registry freshness on pull requests.
+
+The [Build component registry](.github/workflows/build-component-registry.yml)
+workflow also runs automatically when relevant source, generator, or dependency
+files change on `main`. To run it manually, open **Actions → Build component
+registry → Run workflow**, select the branch, and run it. It checks out the
+selected branch's latest tip, regenerates and validates the registry, and only
+commits if generated files changed. The bot commit stages **only**
+`registry.json` and `registry/styles/`; a clean run creates no commit.
+
+The workflow uses the default `GITHUB_TOKEN` with `contents: write` and a
+normal non-force push. Repository branch protection must permit the
+`github-actions[bot]` push for generated changes; the workflow does **not**
+bypass protection. A rejected push is a failure to resolve through the normal
+PR process. Runs are serialized per branch, and a concurrent update cannot be
+overwritten with a force push. Validation failures stop before any commit.
+There are no npm tokens or publish steps in this workflow.
+
 ## Repository workflows
 
 This npm-workspace repository follows the Console release model and consumes workflow definitions from [moyarich/reusable-workflows](https://github.com/moyarich/reusable-workflows) at `main`.
