@@ -46,16 +46,11 @@ export async function planProject({
   const ui = local(appRoot, within(root, directory));
   const replacements = {
     __UI__: ui,
-    __DOCS_IMPORT__:
-      `${ui}/components/Routing/content-routing.js`,
-    __SHELL_IMPORT__:
-      `${ui}/docs-shell.js`,
-    __STYLE__:
-      `${ui}/docs-shell.css`,
-    "/* __CODE_STYLE_IMPORT__ */":
-      `import "${ui}/code-group.css";`,
-    __CODE_IMPORT__:
-      `${ui}/components/CodeBlock/CodeBlock.js`,
+    __DOCS_IMPORT__: `${ui}/components/Routing/content-routing.js`,
+    __SHELL_IMPORT__: `${ui}/docs-shell.js`,
+    __STYLE__: `${ui}/docs-shell.css`,
+    "/* __CODE_STYLE_IMPORT__ */": `import "${ui}/code-group.css";`,
+    __CODE_IMPORT__: `${ui}/components/CodeBlock/CodeBlock.js`,
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
   };
   const files = [];
