@@ -114,3 +114,17 @@ test("playground sidebar and outline use private UI source instead of framework 
     /import\s*\{[^}]*SidebarV1[^}]*\}\s*from "@moyarich\/moyaforge\/docs"/,
   );
 });
+
+test("playground no longer imports framework's UI-heavy docs subpath", async () => {
+  const app = await readFile(
+    new URL("../apps/playground/src/App.jsx", import.meta.url),
+    "utf8",
+  );
+  const navigation = await readFile(
+    new URL("../apps/playground/src/documentation-groups.js", import.meta.url),
+    "utf8",
+  );
+  expect(app).not.toContain('from "@moyarich/moyaforge/docs"');
+  expect(app).toContain('from "./documentation-groups.js"');
+  expect(navigation).toContain('from "@moyarich/moyaforge-mdx/navigation"');
+});
