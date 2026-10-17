@@ -1,0 +1,38 @@
+---
+title: Navigation Tree
+label: Navigation Tree
+description: Canonical MoyaForge Navigation Tree component example.
+---
+
+# Navigation Tree
+
+This live example uses the canonical component source in `packages/moyaforge-ui/src/components/`.
+
+## Live preview
+
+<NavigationTree
+  items={[
+    {
+      label: "Guides",
+      children: [
+        { label: "Getting started", children: [] },
+        { label: "Configuration", children: [] },
+      ],
+    },
+    { label: "Reference", children: [] },
+  ]}
+/>
+
+## Usage
+
+```tsx
+<NavigationTree
+  items={[{ label: "Guides", children: [{ label: "Install", children: [] }] }]}
+/>
+```
+
+## Installation
+
+Install the `navigation-tree` registry item through the MoyaForge CLI to copy editable component source and styles.
+
+[UI Components](/ui)
