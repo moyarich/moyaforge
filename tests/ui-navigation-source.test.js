@@ -191,7 +191,9 @@ test("registry source files follow generator ordering", () => {
   for (const item of registry.items) {
     const sourcePaths = item.files
       .map((file) => file.path)
-      .filter((path) => path !== "LICENSE" && !path.startsWith("registry/styles/"));
+      .filter(
+        (path) => path !== "LICENSE" && !path.startsWith("registry/styles/"),
+      );
     expect(sourcePaths, `stale source ordering in ${item.name}`).toEqual(
       [...sourcePaths].sort(),
     );
