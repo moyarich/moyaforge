@@ -154,7 +154,6 @@ test("a no-change build preserves generated output byte-for-byte", async () => {
   expect(await readFile(cssPath, "utf8")).toBe(before[1]);
 });
 
-
 test("rejects newly added registry components from framework source", async () => {
   const { root, put } = await fixture();
   await put(
