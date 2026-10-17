@@ -1,0 +1,15 @@
+[data-moyaforge-shell-focused] [data-moyaforge-docs-columns] {
+  display: block;
+  max-width: 52rem;
+  padding: 0 1.25rem;
+}
+
+[data-moyaforge-shell-focused] [data-moyaforge-docs-article] {
+  padding-top: 3rem;
+}
+
+@media (max-width: 700px) {
+  [data-moyaforge-shell-focused] [data-moyaforge-docs-columns] {
+    padding: 0 0.5rem;
+  }
+}
