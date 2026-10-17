@@ -67,6 +67,8 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
+      - name: Dry-run registry workflow acceptance cases
+        run: node --test tests/registry-workflow-acceptance.test.mjs
       - name: Validate canonical component registry
         run: npm run registry:check
       - name: Test all workspaces
