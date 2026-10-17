@@ -9,7 +9,7 @@ import {
   DocOutlineShell,
   DocOutline,
 } from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
-import { buildDocumentationGroups } from "@moyarich/moyaforge/docs";
+import { buildDocumentationGroups } from "./documentation-groups.js";
 import {
   MoyaForgeRouter,
   useContentRouting,
