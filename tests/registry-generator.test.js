@@ -24,7 +24,9 @@ async function fixture() {
     }),
   );
   await mkdir(resolve(root, "registry/templates"), { recursive: true });
-  await mkdir(resolve(root, "packages/moyaforge/src/components"), { recursive: true });
+  await mkdir(resolve(root, "packages/moyaforge/src/components"), {
+    recursive: true,
+  });
   await put(
     "packages/moyaforge-ui/src/components/Nested/NewBadge/index.ts",
     'export * from "./NewBadge.js";',
@@ -49,10 +51,7 @@ async function fixture() {
 }
 test("discovers unknown nested components, complete imports, styles and declared npm ranges deterministically", async () => {
   const { root, put } = await fixture();
-  await put(
-    "registry/templates/new-shell.tsx",
-    'export const NewShell = 1;',
-  );
+  await put("registry/templates/new-shell.tsx", "export const NewShell = 1;");
   await put(
     "packages/moyaforge-ui/src/components/Unstyled/index.ts",
     "export const Unstyled = 1;",
