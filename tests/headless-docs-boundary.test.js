@@ -152,7 +152,9 @@ test("playground MDX provider uses source-owned UI without legacy MDX registry",
   );
   expect(provider).toContain('from "@moyarich/moyaforge/headless"');
   expect(provider).toContain("defineMdxComponentRegistry");
-  expect(provider).toContain("packages/moyaforge-ui/src/components/CodeBlock/index.ts");
+  expect(provider).toContain(
+    "packages/moyaforge-ui/src/components/CodeBlock/index.ts",
+  );
   expect(provider).not.toContain("@moyarich/moyaforge/mdx");
   expect(provider).not.toContain("moyaForgeComponents");
 });
