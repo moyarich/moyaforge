@@ -30,8 +30,8 @@ function Site() {
   const { pathname } = useLocation();
   const sidebar = <aside className="mf-sidebar">
     {/* __SEARCH_UI__ */}<nav aria-label="Documentation navigation">
-    <Link className="mf-guide-link" to="/docs/guide">Guide</Link>
-    <ul>{pages.map(page => <li key={page.url}><Link to={page.url}>{page.title}</Link></li>)}</ul>
+    
+    <ul>{pages.map(page => <li key={page.url}><Link className={page.url === "/docs/guide" ? "mf-guide-link" : undefined} to={page.url}>{page.title}</Link></li>)}</ul>
   </nav></aside>;
   return <Routes>
     {/* __HYBRID_ROUTE__ */}
