@@ -71,6 +71,8 @@ test("installer ownership and optional editor peers stay outside basic UI instal
     "@typefox/monaco-editor-react",
     "monaco-languageclient",
     "@moyarich/console",
-  ])
-    assert.equal(manifests.moyaforge.peerDependenciesMeta[name].optional, true);
+    "@mdx-js/react",
+  ]) {
+    assert.equal(allDeps(manifests.moyaforge)[name], undefined, name);
+  }
 });
