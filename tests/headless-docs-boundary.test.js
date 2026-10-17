@@ -158,3 +158,14 @@ test("playground MDX provider uses source-owned UI without legacy MDX registry",
   expect(provider).not.toContain("@moyarich/moyaforge/mdx");
   expect(provider).not.toContain("moyaForgeComponents");
 });
+
+test("framework root entrypoint does not re-export installable UI or bundled MDX", async () => {
+  const root = await readFile(
+    new URL("../packages/moyaforge/src/index.ts", import.meta.url),
+    "utf8",
+  );
+  expect(root).not.toContain('export * from "./components/index.js"');
+  expect(root).not.toContain('export * from "./utils/index.js"');
+  expect(root).toContain('export * from "./utils/content/index.js"');
+  expect(root).toContain('export * from "./utils/navigation/index.js"');
+});
