@@ -44,7 +44,7 @@ describe("source-owned documentation UI", () => {
       ),
     );
     expect(html).toContain("Custom navigation");
-    expect(html).not.toContain('href="/generated"');
+    expect(html).not.toContain('<nav aria-label="Documentation navigation">');
     expect(html).toContain("Article");
   });
 
