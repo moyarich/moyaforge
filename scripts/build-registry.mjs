@@ -100,9 +100,9 @@ export async function buildRegistry(root, { check = false } = {}) {
       if (entry) {
         const name = kebab(basename(folder));
         add(name, {
-            entry: resolve(folder, entry.name),
-            uiSource: rootFolder === uiComponentRoot,
-          });
+          entry: resolve(folder, entry.name),
+          uiSource: rootFolder === uiComponentRoot,
+        });
       }
     }
     for (const entry of entries)
