@@ -133,7 +133,9 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(await read(packageRoot, "vite.config.ts")).toContain(
     "sqliteSearchPlugin",
   );
-  expect(await read(packageRoot, "src/components/moyaforge/docs-shell.tsx")).toContain("DocsShell");
+  expect(
+    await read(packageRoot, "src/components/moyaforge/docs-shell.tsx"),
+  ).toContain("DocsShell");
   expect(await read(packageRoot, "package.json")).not.toMatch(
     /monaco|shadcn|tailwind|radix|console/,
   );
