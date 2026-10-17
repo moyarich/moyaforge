@@ -1,0 +1,36 @@
+---
+title: Doc Outline
+label: Doc Outline
+description: Canonical MoyaForge Doc Outline component example.
+---
+
+# Doc Outline
+
+This live example uses the canonical component source in `packages/moyaforge-ui/src/components/`.
+
+## Live preview
+
+<DocOutline
+  title="On this page"
+  collapsible
+  defaultOpen
+  headings={[
+    { id: "installation", value: "Installation", depth: 2 },
+    { id: "configuration", value: "Configuration", depth: 2 },
+  ]}
+/>
+
+## Usage
+
+```tsx
+<DocOutline
+  headings={[{ id: "overview", value: "Overview", depth: 2 }]}
+  collapsible
+/>
+```
+
+## Installation
+
+Install the `doc-outline` registry item through the MoyaForge CLI to copy editable component source and styles.
+
+[UI Components](/ui)
