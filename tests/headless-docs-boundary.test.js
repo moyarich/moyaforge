@@ -169,3 +169,18 @@ test("framework root entrypoint does not re-export installable UI or bundled MDX
   expect(root).toContain('export * from "./utils/content/index.js"');
   expect(root).toContain('export * from "./utils/navigation/index.js"');
 });
+
+test("framework TypeScript build is rooted at published entrypoints", async () => {
+  const config = JSON.parse(await readFile(
+    new URL("../packages/moyaforge/tsconfig.json", import.meta.url), "utf8",
+  ));
+  expect(config.include).toEqual([
+    "src/index.ts",
+    "src/docs.ts",
+    "src/code.ts",
+    "src/registry-routes.tsx",
+    "src/headless.ts",
+    "src/utils/mdx/index.ts",
+  ]);
+  expect(config.include).not.toContain("src/**/*.tsx");
+});
