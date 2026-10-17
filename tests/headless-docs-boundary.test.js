@@ -138,7 +138,9 @@ test("headless MDX registry composer does not import legacy UI", async () => {
     new URL("../packages/moyaforge/src/headless.ts", import.meta.url),
     "utf8",
   );
-  expect(registry).not.toMatch(/from ["'][^"']*(?:components\/|monaco|console)/);
+  expect(registry).not.toMatch(
+    /from ["'][^"']*(?:components\/|monaco|console)/,
+  );
   expect(registry).toContain("defineMdxComponentRegistry");
   expect(headless).toContain("./mdx-registry.js");
 });

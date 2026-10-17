@@ -10,4 +10,7 @@ export {
 } from "./components/Routing/RegistryRoutes.js";
 export * from "./components/Routing/content-routing.js";
 
-export { defineMdxComponentRegistry, type MdxComponentRegistry } from "./mdx-registry.js";
+export {
+  defineMdxComponentRegistry,
+  type MdxComponentRegistry,
+} from "./mdx-registry.js";
