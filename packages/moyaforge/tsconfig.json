@@ -3,7 +3,10 @@
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022", "DOM"],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "strict": true,
     "declaration": true,
     "declarationMap": false,
@@ -12,7 +15,14 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src/index.ts", "src/registry-routes.tsx", "src/headless.ts"]
+  "include": [
+    "src/index.ts",
+    "src/registry-routes.tsx",
+    "src/headless.ts",
+    "src/registry-virtual.d.ts"
+  ]
 }
