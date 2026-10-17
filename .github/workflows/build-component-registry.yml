@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - "packages/moyaforge-ui/src/**"
       - "packages/moyaforge/src/**"
       - "scripts/build-registry.mjs"
       - "packages/moyaforge/package.json"
