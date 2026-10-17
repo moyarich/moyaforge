@@ -299,14 +299,14 @@
           "target": "~/src/components/moyaforge/docs-shell.tsx"
         },
         {
-          "path": "registry/styles/docs-shell.css",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/docs-shell.css"
-        },
-        {
           "path": "LICENSE",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/docs-shell.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/docs-shell.css"
         }
       ]
     },
