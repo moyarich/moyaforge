@@ -128,7 +128,7 @@ test("init produces source/package/hybrid starters and preserves existing app co
   ).toBe(0);
   const app = await read(packageRoot, "src/App.tsx");
   expect(app).toContain('path="/playground"');
-  expect(app).toContain("search={searchPages}");
+  expect(app).toContain("searchPages(event.currentTarget.value)");
   expect(app).not.toContain("__");
   expect(await read(packageRoot, "vite.config.ts")).toContain(
     "sqliteSearchPlugin",
