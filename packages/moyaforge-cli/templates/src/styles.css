@@ -1,4 +1,5 @@
 :root { font-family: system-ui, sans-serif; font-synthesis: none; }
 body { margin: 0; }
+.mf-guide-link { color: var(--mf-accent, #d94f56); }
 /* Optional theme example: .my-theme { --mf-accent: #d94f56; } */
 /* Set public overrides on your own theme ancestor; component defaults stay private. */
