@@ -154,3 +154,15 @@ test("a no-change build preserves generated output byte-for-byte", async () => {
   expect(await readFile(manifestPath, "utf8")).toBe(before[0]);
   expect(await readFile(cssPath, "utf8")).toBe(before[1]);
 });
+
+
+test("rejects newly added registry components from framework source", async () => {
+  const { root, put } = await fixture();
+  await put(
+    "packages/moyaforge/src/components/Forbidden/index.ts",
+    "export const Forbidden = true;",
+  );
+  await expect(buildRegistry(root)).rejects.toThrow(
+    "Registry entry 'forbidden' uses framework UI source",
+  );
+});
