@@ -64,12 +64,9 @@ function imports(text, file) {
 
 export async function buildRegistry(root, { check = false } = {}) {
   root = await realpath(root);
-  const sourceRoot = resolve(root, "packages/moyaforge/src");
   const uiSourceRoot = resolve(root, "packages/moyaforge-ui/src");
   const uiComponentRoot = resolve(uiSourceRoot, "components");
-  // Until all installable components are migrated, discover both source roots.
-  const componentRoot = resolve(sourceRoot, "components");
-  const sourceRoots = [sourceRoot, uiSourceRoot];
+  const sourceRoots = [uiSourceRoot];
   const templateRoot = resolve(root, "registry/templates");
   const manifest = JSON.parse(
     await readFile(resolve(root, "packages/moyaforge/package.json"), "utf8"),
@@ -92,7 +89,7 @@ export async function buildRegistry(root, { check = false } = {}) {
       );
     specs.set(name, spec);
   }
-  async function discover(folder, rootFolder = componentRoot) {
+  async function discover(folder, rootFolder = uiComponentRoot) {
     const entries = (await readdir(folder, { withFileTypes: true })).sort(
       (a, b) => a.name.localeCompare(b.name, "en"),
     );
@@ -102,10 +99,7 @@ export async function buildRegistry(root, { check = false } = {}) {
       );
       if (entry) {
         const name = kebab(basename(folder));
-        // During migration, the UI source workspace owns installable entries.
-        // The former framework copy remains runtime-only until imports migrate.
-        if (!(rootFolder === componentRoot && specs.get(name)?.uiSource))
-          add(name, {
+        add(name, {
             entry: resolve(folder, entry.name),
             uiSource: rootFolder === uiComponentRoot,
           });
@@ -122,16 +116,6 @@ export async function buildRegistry(root, { check = false } = {}) {
     )
   )
     await discover(uiComponentRoot, uiComponentRoot);
-  await discover(componentRoot);
-  // Only these pre-#157 entries may temporarily depend on framework-side UI.
-  // Do not extend the legacy discovery surface during the remaining migration.
-  const legacyEntries = new Set(["docs-routes", "docs-shell"]);
-  for (const [name, spec] of specs) {
-    if (!spec.uiSource && !legacyEntries.has(name))
-      throw Error(
-        `Registry entry '${name}' uses framework UI source. Move it to packages/moyaforge-ui/src/components before adding it to the registry.`,
-      );
-  }
   for (const entry of (await readdir(templateRoot)).sort())
     if (/\.(tsx|ts)$/.test(entry))
       add(kebab(basename(entry, extname(entry))), {
@@ -174,7 +158,7 @@ export async function buildRegistry(root, { check = false } = {}) {
       for (const specifier of imports(text, file)) {
         if (specifier.startsWith(".")) {
           // Templates retain their installed location alongside the copied source tree.
-          const base = template ? resolve(sourceRoot, basename(file)) : file;
+          const base = template ? resolve(uiSourceRoot, basename(file)) : file;
           await visit(await resolveImport(base, specifier));
         } else {
           const pkg = specifier.startsWith("@")
@@ -209,7 +193,7 @@ export async function buildRegistry(root, { check = false } = {}) {
     }
     const itemSourceRoot = spec.entry.startsWith(uiSourceRoot + "/")
       ? uiSourceRoot
-      : sourceRoot;
+      : uiSourceRoot;
     const stylesheet = await format(
       [...files]
         .filter((file) => file.endsWith(".css"))
