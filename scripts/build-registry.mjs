@@ -123,6 +123,13 @@ export async function buildRegistry(root, { check = false } = {}) {
   )
     await discover(uiComponentRoot, uiComponentRoot);
   await discover(componentRoot);
+  // Only these pre-#157 entries may temporarily depend on framework-side UI.
+  // Do not extend the legacy discovery surface during the remaining migration.
+  const legacyEntries = new Set(["docs-routes", "docs-shell"]);
+  for (const [name, spec] of specs) {
+    if (!spec.uiSource && !legacyEntries.has(name))
+      throw Error(`Registry entry '${name}' uses framework UI source. Move it to packages/moyaforge-ui/src/components before adding it to the registry.`);
+  }
   for (const entry of (await readdir(templateRoot)).sort())
     if (/\.(tsx|ts)$/.test(entry))
       add(kebab(basename(entry, extname(entry))), {
