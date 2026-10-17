@@ -10,10 +10,9 @@
 }
 [data-moyaforge-wide-grid] {
   display: grid;
-  grid-template-columns: minmax(0, var(--_wide-panel-width)) minmax(
-      0,
-      1fr
-    ) minmax(0, var(--_wide-panel-width));
+  grid-template-columns:
+    minmax(0, var(--_wide-panel-width)) minmax(0, 1fr)
+    minmax(0, var(--_wide-panel-width));
   min-height: 60vh;
 }
 [data-moyaforge-wide-navigation],
