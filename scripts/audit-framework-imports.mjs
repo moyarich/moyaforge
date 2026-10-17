@@ -32,10 +32,17 @@ function visit(filename, found) {
   if (found.has(filename) || !existsSync(filename)) return;
   found.add(filename);
   const code = readFileSync(filename, "utf8");
-  const ast = parse(code, { sourceType: "module", plugins: ["typescript", "jsx"] });
+  const ast = parse(code, {
+    sourceType: "module",
+    plugins: ["typescript", "jsx"],
+  });
   function walk(node) {
     if (
-      ["ImportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"].includes(node?.type) &&
+      [
+        "ImportDeclaration",
+        "ExportNamedDeclaration",
+        "ExportAllDeclaration",
+      ].includes(node?.type) &&
       node.source?.type === "StringLiteral"
     ) {
       const target = resolveLocal(filename, node.source.value);
