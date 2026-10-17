@@ -28,11 +28,6 @@
   },
   "description": "Reusable MDX and documentation infrastructure for MoyaForge-powered sites.",
   "peerDependencies": {
-    "@mdx-js/react": "^3.1.1",
-    "@monaco-editor/react": ">=4",
-    "@moyarich/console": "^0.1.0",
-    "@typefox/monaco-editor-react": ">=8",
-    "monaco-languageclient": ">=11",
     "react": ">=18",
     "react-dom": ">=18",
     "react-router-dom": "^7.18.4"
@@ -44,13 +39,9 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "@monaco-editor/react": "^4.7.0",
-    "@moyarich/console": "^0.1.0",
-    "@typefox/monaco-editor-react": "^8.0.2",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "monaco-languageclient": "^11.0.2",
     "typescript": "^7.0.2"
   },
   "publishConfig": {
@@ -70,19 +61,5 @@
     "docs",
     "mdx",
     "ui"
-  ],
-  "peerDependenciesMeta": {
-    "@monaco-editor/react": {
-      "optional": true
-    },
-    "@moyarich/console": {
-      "optional": true
-    },
-    "@typefox/monaco-editor-react": {
-      "optional": true
-    },
-    "monaco-languageclient": {
-      "optional": true
-    }
-  }
+  ]
 }
