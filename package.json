@@ -19,7 +19,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit && npm run test:unit && npm run test:consumer:browser",
+    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit:strict && npm run test:unit && npm run test:consumer:browser",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:all": "npm run test",
     "test:boundaries": "vitest run tests/workspace.test.js",
