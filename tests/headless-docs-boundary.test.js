@@ -79,9 +79,7 @@ test("playground imports routing from headless subpath rather than docs UI", asy
     "utf8",
   );
   expect(source).toContain('from "@moyarich/moyaforge/headless"');
-  expect(source).toMatch(
-    /from "@moyarich\/moyaforge\/headless"/,
-  );
+  expect(source).toMatch(/from "@moyarich\/moyaforge\/headless"/);
 });
 
 test("playground uses source-owned DocumentationSite with host adapters", async () => {
