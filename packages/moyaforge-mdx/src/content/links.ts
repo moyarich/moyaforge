@@ -4,8 +4,8 @@ import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkMdx from "remark-mdx";
 import remarkFrontmatter from "remark-frontmatter";
-import type { PageRegistry } from "./registry.js";
-import type { TocHeading } from "./toc.js";
+import type { PageRegistry } from "../registry/registry.js";
+import type { TocHeading } from "../navigation/toc.js";
 
 export interface LinkIssue {
   file: string;

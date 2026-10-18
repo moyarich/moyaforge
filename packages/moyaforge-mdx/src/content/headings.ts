@@ -7,7 +7,7 @@ import remarkRehype from "remark-rehype";
 import rehypeSlug from "rehype-slug";
 import rehypeExtractToc from "@stefanprobst/rehype-extract-toc";
 import { VFile } from "vfile";
-import type { TocHeading } from "./toc.js";
+import type { TocHeading } from "../navigation/toc.js";
 
 /**
  * Extract headings using the same rehype-slug + rehype-extract-toc combination

@@ -15,3 +15,5 @@ jobs:
       pr-number: ${{ github.event.pull_request.number }}
       exclude-label: skip-changelog
       public-source-pattern: '^packages/[^/]+/(src|vite-plugin|bin)/'
+    secrets:
+      classification-token: ${{ secrets._WORKFLOW_TOKEN }}

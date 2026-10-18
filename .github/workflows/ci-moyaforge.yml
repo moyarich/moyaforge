@@ -58,7 +58,8 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
-      - name: Validate canonical component registry
+      - name: Validate canonical component registry on main
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run registry:check
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
@@ -82,9 +83,9 @@ jobs:
           const files = new Set(pkg.files.map(({ path }) => path));
           for (const file of [
             'dist/index.js', 'dist/index.d.ts',
-            'dist/vite.js', 'dist/vite.d.ts',
-            'dist/toc.js', 'dist/toc.d.ts',
-            'dist/source-files.js', 'dist/source-files.d.ts',
+            'dist/vite/plugin.js', 'dist/vite/plugin.d.ts',
+            'dist/navigation/toc.js', 'dist/navigation/toc.d.ts',
+            'dist/content/source-files.js', 'dist/content/source-files.d.ts',
             'README.md', 'CHANGELOG.md', 'package.json',
           ]) {
             if (!files.has(file)) throw Error('Publish tarball missing ' + file);

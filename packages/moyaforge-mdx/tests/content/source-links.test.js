@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkMdx from "remark-mdx";
-import { remarkSourceLinks } from "../../src/remark-source-links.ts";
+import { remarkSourceLinks } from "../../src/plugins/remark/remark-source-links.ts";
 
 const config = {
   sources: {
