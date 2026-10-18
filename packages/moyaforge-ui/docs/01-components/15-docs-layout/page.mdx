@@ -38,6 +38,28 @@ This example uses the real source-owned MoyaForge UI component. It does not crea
 </DocsLayout>
 ```
 
+## CSS-only outline expand/collapse
+
+Set `toc.collapsible` to enable native HTML `<details>` disclosure, and
+`toc.defaultOpen` to control its initial state. No React disclosure state or
+JavaScript click handler is required. Custom `outline` and `sidebar` slots
+continue to replace the defaults.
+
+<DocsLayout
+  title="Collapsible outline example"
+  pages={[{ url: "/guide", title: "Guide" }]}
+  currentUrl="/guide"
+  sidebar={null}
+  toc={{
+    collapsible: true,
+    defaultOpen: false,
+    headings: [{ id: "example-heading", text: "Example heading", depth: 2 }],
+  }}
+>
+  <h2 id="example-heading">Example heading</h2>
+  <p>Expand the outline using its summary control.</p>
+</DocsLayout>
+
 ## Installation
 
 Install `docs-layout` from the MoyaForge registry to copy the selected component source and CSS into your application.
