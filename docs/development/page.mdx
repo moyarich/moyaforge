@@ -34,7 +34,6 @@ npm run test:e2e
 
 Playwright browser tests require Chromium to be installed, for example `npx playwright install chromium`.
 
-
 ## Authoring documentation links
 
 The playground reads the authored-content registry from `apps/playground/registry.config.ts`. This is separate from the installable component registry described above. The MDX link transform runs at **build time**, using the registry's source directories and discovered public routes; the browser router determines the final URL format.
@@ -51,15 +50,24 @@ Write a relative Markdown link to the real `.md` or `.mdx` file. For example, fr
 GitHub can follow these file paths directly. In the built playground, the opt-in `remarkSourceLinks` transform looks up the target file in the discovered registry and rewrites it to the public route, such as `/ui/components/code-block`. The site's `HashRouter` then renders that as a GitHub Pages URL containing `#/ui/components/code-block`; a `BrowserRouter` host uses normal paths instead.
 
 ```js
-import { discoverContent, remarkSourceLinks, createMdxOptions } from "@moyarich/moyaforge-mdx";
+import {
+  discoverContent,
+  remarkSourceLinks,
+  createMdxOptions,
+} from "@moyarich/moyaforge-mdx";
 
 const { registry: discovered } = await discoverContent(registry, root);
 const mdxOptions = createMdxOptions({
-  remarkPlugins: [[remarkSourceLinks, {
-    config: registry,
-    root,
-    routes: discovered.routes,
-  }]],
+  remarkPlugins: [
+    [
+      remarkSourceLinks,
+      {
+        config: registry,
+        root,
+        routes: discovered.routes,
+      },
+    ],
+  ],
 });
 ```
 
