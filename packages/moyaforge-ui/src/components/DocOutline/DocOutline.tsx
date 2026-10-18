@@ -1,23 +1,13 @@
 import "./DocOutline.css";
 import { useEffect, useState, type ReactNode, type RefObject } from "react";
 import type { TableOfContentsItem } from "../TableOfContents/TableOfContents.js";
+import { headingIdFromHash } from "../../utils/heading-fragment.js";
 
 export interface DocHeading {
   id: string;
   value: string;
   depth: number;
   children?: DocHeading[];
-}
-
-/** Resolve the final heading fragment from BrowserRouter or HashRouter URLs. */
-export function headingIdFromHash(hash: string): string {
-  const fragment = hash.lastIndexOf("#");
-  if (fragment < 0 || (fragment === 0 && hash.startsWith("#/"))) return "";
-  try {
-    return decodeURIComponent(hash.slice(fragment + 1));
-  } catch {
-    return hash.slice(fragment + 1);
-  }
 }
 
 export interface DocOutlineProps {
