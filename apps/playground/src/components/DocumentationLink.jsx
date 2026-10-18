@@ -1,8 +1,10 @@
+import { createContext, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { routes } from "virtual:moyaforge-mdx/metadata";
+
+export const DocumentationRoutesContext = createContext([]);
 
 /** Resolve MDX links against public routes discovered by the registry, not filesystem paths. */
-export function resolveDocumentationHref(href, pathname, availableRoutes = routes) {
+export function resolveDocumentationHref(href, pathname, availableRoutes = []) {
   if (!href || /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href) || href.startsWith("?")) return null;
   const [pathAndQuery, fragment] = href.split("#", 2);
   const [path, query] = pathAndQuery.split("?", 2);
@@ -28,8 +30,9 @@ export function resolveDocumentationHref(href, pathname, availableRoutes = route
 /** Internal registry links use the router; unknown and external URLs remain native links. */
 export function DocumentationLink({ href, children, ...props }) {
   const { pathname } = useLocation();
+  const routes = useContext(DocumentationRoutesContext);
   const destination = typeof href === "string"
-    ? resolveDocumentationHref(href, pathname)
+    ? resolveDocumentationHref(href, pathname, routes)
     : null;
   return destination === null
     ? <a href={href} {...props}>{children}</a>
