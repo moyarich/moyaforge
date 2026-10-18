@@ -1,5 +1,4 @@
 import "./PreviewExample.css";
-import { useState } from "react";
 import {
   Preview, PreviewHeader, PreviewTitle, PreviewActions, PreviewCodeToggle,
   PreviewCopyButton, PreviewContent, PreviewSource, PreviewFooter,
