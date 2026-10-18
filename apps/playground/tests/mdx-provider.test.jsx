@@ -151,19 +151,27 @@ test("wildcard directive mapping emits semantic components with type/title and s
   const { default: Content } = await evaluate(source, {
     ...runtime,
     useMDXComponents,
-    ...createMdxOptions({ directiveComponents: {
-      "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
-    } }),
+    ...createMdxOptions({
+      directiveComponents: {
+        "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
+      },
+    }),
   });
   function AlternativeBlock({ type, title, children }) {
-    return createElement("aside", { "data-custom-renderer": type },
-      createElement("strong", null, title), children);
+    return createElement(
+      "aside",
+      { "data-custom-renderer": type },
+      createElement("strong", null, title),
+      children,
+    );
   }
-  const html = renderToStaticMarkup(createElement(
-    PlaygroundMdxProvider,
-    { components: { CustomBlock: AlternativeBlock } },
-    createElement(Content),
-  ));
+  const html = renderToStaticMarkup(
+    createElement(
+      PlaygroundMdxProvider,
+      { components: { CustomBlock: AlternativeBlock } },
+      createElement(Content),
+    ),
+  );
   expect(html).toContain('data-custom-renderer="my-alert"');
   expect(html).toContain("Attention");
   expect(html).toContain("Custom");
