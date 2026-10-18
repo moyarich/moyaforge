@@ -69,4 +69,5 @@ export * from "./headings.js";
 export * from "./links.js";
 
 export * from "./check-links.js";
-\nexport * from "./remark-source-links.js";
+
+export * from "./remark-source-links.js";
