@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { createContentRouting } from "../../../../packages/moyaforge/src/components/Routing/content-routing";
+import { createContentRouting } from "../../../../packages/moyaforge/src/routing/content-routing";
 
 const pages = [
   {
