@@ -6,6 +6,8 @@ description: Slot-based live React previews with source viewing and copy actions
 ---
 
 import PreviewExample from "./PreviewExample.tsx";
+import SimplePreviewExample from "./SimplePreviewExample.tsx";
+import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
 
 # Preview
 
@@ -15,6 +17,16 @@ Compose an interactive preview with replaceable header, title, actions, content,
 
 <PreviewExample />
 
+## Custom trigger and raw TSX source
+
+<SimplePreviewExample />
+
+## Optional Monaco editor
+
+<MonacoPreviewExample />
+
+The Monaco example is loaded only by the page that uses it; Preview itself has no Monaco dependency. The editable source is not executed or compiled automatically.
+
 ## Files
 
 ```text
@@ -22,6 +34,9 @@ Compose an interactive preview with replaceable header, title, actions, content,
 ├── page.mdx
 ├── PreviewExample.tsx
 ├── PreviewExample.css
+├── SimplePreviewExample.tsx
+├── MonacoPreviewExample.tsx
+├── MonacoPreviewExample.css
 └── CounterExample.tsx
 ```
 
@@ -62,7 +77,7 @@ import source from "./ButtonExample.tsx?raw";
 </Preview>;
 ```
 
-The `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.
+Use `PreviewContent asChild` and `PreviewSource asChild` to compose one DOM-forwarding child, such as a custom layout or editor. `asChild` does not compile or run edited source.\n\nThe `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.
 
 ## Custom trigger with `asChild`
 
@@ -81,3 +96,7 @@ The child must be a single native button or a button-like React component that f
 ## Theme variables
 
 Use `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius`, and `--mf-preview-padding` in application CSS.
+
+## External examples such as CSS Color Parser
+
+A consuming application can use the same structure as CSS Color Parser's `FunctionExample` and `CssColorEditor`: import a standalone example `.tsx` module into MDX and supply its raw source using `?raw`. Put the interactive parsing UI in `PreviewContent`; wrap an optional editor in `PreviewSource asChild`. Preview has no parser-specific dependency.
