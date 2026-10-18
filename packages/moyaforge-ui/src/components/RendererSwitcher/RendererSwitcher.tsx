@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useMDXComponents, MDXProvider } from "@mdx-js/react";
 import { CustomBlock } from "../CustomBlock/index.js";
-import {
-  CodeGroup,
-  CodeTab,
-} from "../CodeGroup/index.js";
+import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 
 function AlternativeBlock({ type, title, children }) {
   return (
