@@ -64,7 +64,6 @@ export function flattenNavigation(
   return pages;
 }
 
-
 /** A source-specific navigation tree with its configured sidebar label. */
 export interface DocumentationGroup {
   source: string;
