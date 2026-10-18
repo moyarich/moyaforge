@@ -46,12 +46,12 @@ export function remarkPreviewDirectives({
         if (!match) continue;
         const value = match[2];
         if (
-          !/^\.\/[a-zA-Z0-9_./-]+\.(?:tsx|jsx|ts|js|css)$/.test(value) ||
+          !(match[1] === "example" ? /^\.\/[a-zA-Z0-9_./-]+\.(?:tsx|jsx)$/.test(value) : /^\.\/[a-zA-Z0-9_./-]+\.(?:tsx|jsx|ts|js|css)$/.test(value)) ||
           value.includes("\\") ||
           value
             .slice(2)
             .split("/")
-            .some((part) => part === ".." || part === "." || part === "") ||
+            .some((part) => part === ".." || part.startsWith(".") || part === "") ||
           /[?#]/.test(value)
         )
           throw new Error(
