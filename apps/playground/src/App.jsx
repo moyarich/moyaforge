@@ -9,7 +9,7 @@ import {
   DocOutlineShell,
   DocOutline,
 } from "../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
-import { buildDocumentationGroups } from "./documentation-groups.js";
+import { buildDocumentationGroups } from "@moyarich/moyaforge-mdx/navigation";
 import { RegistryRoutes } from "@moyarich/moyaforge/registry-routes";
 import registry from "../registry.config.ts";
 import { VersionPicker } from "./components/Shell/VersionPicker.jsx";
