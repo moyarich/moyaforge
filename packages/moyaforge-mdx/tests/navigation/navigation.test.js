@@ -4,7 +4,7 @@ import {
   buildPageRegistry,
   buildNavigationTree,
   flattenNavigation,
-} from "../dist/index.js";
+} from "../../dist/index.js";
 
 test("navigation follows nested section order rather than flattening global numeric prefixes", () => {
   const registry = buildPageRegistry({

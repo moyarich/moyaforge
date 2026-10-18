@@ -3,7 +3,7 @@ import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "vitest";
-import { mdxRegistryPlugin } from "../dist/vite.js";
+import { mdxRegistryPlugin } from "../../dist/vite.js";
 
 test("lazy registry emits only dynamic imports, while existing registry stays compatible", async () => {
   const root = await mkdtemp(join(tmpdir(), "moyaforge-mdx-"));

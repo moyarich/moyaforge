@@ -4,7 +4,7 @@ import {
   getTableOfContents,
   resolveTocOptions,
   filterTableOfContents,
-} from "../dist/index.js";
+} from "../../dist/index.js";
 
 const tree = [
   {

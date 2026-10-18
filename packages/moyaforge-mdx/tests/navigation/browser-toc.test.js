@@ -1,11 +1,11 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { getTableOfContents } from "../dist/toc.js";
+import { getTableOfContents } from "../../dist/toc.js";
 
 test("TOC entrypoint is usable without Node content-discovery modules", async () => {
   const source = await readFile(
-    new URL("../dist/toc.js", import.meta.url),
+    new URL("../../dist/toc.js", import.meta.url),
     "utf8",
   );
   assert.doesNotMatch(
