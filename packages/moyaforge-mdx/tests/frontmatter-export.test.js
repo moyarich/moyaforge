@@ -9,8 +9,8 @@ test("registry metadata does not require a compiled JavaScript frontmatter expor
     navigation: "hidden",
   });
   const defaults = createMdxOptions();
-  assert.equal(defaults.remarkPlugins.length, 2);
+  assert.equal(defaults.remarkPlugins.length, 3);
   const legacy = createMdxOptions({ frontmatterExport: true });
-  assert.equal(legacy.remarkPlugins.length, 3);
+  assert.equal(legacy.remarkPlugins.length, 4);
   assert.equal(legacy.rehypePlugins.length, defaults.rehypePlugins.length);
 });

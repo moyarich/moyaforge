@@ -55,5 +55,5 @@ test("compiler plugin options do not mutate later calls", () => {
   const plain = createMdxOptions();
   assert.equal(withExtension.rehypePlugins.at(-1), extra);
   assert.equal(plain.rehypePlugins.includes(extra), false);
-  assert.equal(plain.remarkPlugins.length, 2);
+  assert.equal(plain.remarkPlugins.length, 3);
 });
