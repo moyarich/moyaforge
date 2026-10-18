@@ -69,3 +69,4 @@ export * from "./headings.js";
 export * from "./links.js";
 
 export * from "./check-links.js";
+\nexport * from "./source-links.js";
