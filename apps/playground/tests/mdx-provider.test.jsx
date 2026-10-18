@@ -66,7 +66,6 @@ test("MDX renders registered Lucide icons and forwards their props", async () =>
   expect(html).toContain('aria-label="Camera preview"');
 });
 
-
 test("custom-block directives and CodeGroup tabs coexist in compiled MDX", async () => {
   const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
   const source = [
@@ -76,7 +75,7 @@ test("custom-block directives and CodeGroup tabs coexist in compiled MDX", async
     "This API may change.",
     ":::",
     "",
-    "<CodeGroup label=\"Package managers\">",
+    '<CodeGroup label="Package managers">',
     '  <CodeTab label="npm"><pre>npm install example</pre></CodeTab>',
     '  <CodeTab label="pnpm"><pre>pnpm add example</pre></CodeTab>',
     "</CodeGroup>",
