@@ -65,3 +65,39 @@ test("MDX renders registered Lucide icons and forwards their props", async () =>
   expect(html).toContain('stroke-width="1.5"');
   expect(html).toContain('aria-label="Camera preview"');
 });
+
+
+test("custom-block directives and CodeGroup tabs coexist in compiled MDX", async () => {
+  const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
+  const source = [
+    ":::: experimental Experimental Feature",
+    "",
+    "::: warning Compatibility",
+    "This API may change.",
+    ":::",
+    "",
+    "<CodeGroup label=\"Package managers\">",
+    '  <CodeTab label="npm"><pre>npm install example</pre></CodeTab>',
+    '  <CodeTab label="pnpm"><pre>pnpm add example</pre></CodeTab>',
+    "</CodeGroup>",
+    "",
+    "::::",
+  ].join("\n");
+  const { default: Content } = await evaluate(source, {
+    ...runtime,
+    useMDXComponents,
+    ...createMdxOptions(),
+  });
+  const html = renderToStaticMarkup(
+    createElement(PlaygroundMdxProvider, null, createElement(Content)),
+  );
+  expect(html).toContain("custom-block experimental");
+  expect(html).toContain("custom-block warning");
+  expect(html).toContain('data-type="experimental"');
+  expect(html).toContain('data-type="warning"');
+  expect(html).toContain("Compatibility");
+  expect(html).toContain('role="tablist"');
+  expect(html).toContain('role="tab"');
+  expect(html).toContain("npm install example");
+  expect(html).toContain("pnpm add example");
+});
