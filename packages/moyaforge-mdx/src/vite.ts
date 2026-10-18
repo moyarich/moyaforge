@@ -45,12 +45,20 @@ export function mdxRegistryPlugin({
       directory = parent;
     }
   };
-  const editRoot = repositoryRoot ? resolve(appRoot, repositoryRoot) : findRepositoryRoot();
+  const editRoot = repositoryRoot
+    ? resolve(appRoot, repositoryRoot)
+    : findRepositoryRoot();
   const withSourcePath = (page: { source: string; file: string }) => {
     if (!editRoot) return page;
-    const absolute = resolve(appRoot, registry.sources[page.source].base, page.file);
+    const absolute = resolve(
+      appRoot,
+      registry.sources[page.source].base,
+      page.file,
+    );
     const path = relative(editRoot, absolute).split(sep).join("/");
-    return path.startsWith("../") || path === ".." ? page : { ...page, sourcePath: path };
+    return path.startsWith("../") || path === ".."
+      ? page
+      : { ...page, sourcePath: path };
   };
   const directories = Object.values(registry.sources).map((source) =>
     resolve(appRoot, source.base),
