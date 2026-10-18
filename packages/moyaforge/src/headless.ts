@@ -2,12 +2,12 @@
 export {
   HeadlessDocsRoutes,
   type HeadlessDocsRoutesProps,
-} from "./components/Routing/HeadlessDocsRoutes.js";
+} from "./routing/HeadlessDocsRoutes.js";
 export {
   RegistryRouteView,
   type RegistryRouteViewProps,
   type RegistryLazySources,
-} from "./components/Routing/RegistryRoutes.js";
+} from "./routing/RegistryRoutes.js";
 
 export {
   defineMdxComponentRegistry,
