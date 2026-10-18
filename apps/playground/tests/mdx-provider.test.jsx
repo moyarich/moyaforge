@@ -125,7 +125,11 @@ test("Markdown code-group directives render React tabs while other directives st
     useMDXComponents,
     ...createMdxOptions({
       directiveComponents: {
-        "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" },
+        "code-group": {
+          component: "CodeGroup",
+          childType: "tab",
+          childComponent: "CodeTab",
+        },
       },
     }),
   });
