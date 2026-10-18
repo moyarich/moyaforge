@@ -1,6 +1,4 @@
-import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
-import type { Root } from "mdast";
-import type { Plugin } from "unified";
+import { dirname, resolve } from "node:path";
 import type { ContentSourcesConfig } from "./content.js";
 import type { NormalizedPage } from "./registry.js";
 
@@ -14,14 +12,14 @@ export interface SourceLinkOptions {
  * Rewrite Markdown links targeting real .md/.mdx source files into public
  * registry routes. The authored links remain usable when browsing GitHub.
  */
-export function remarkSourceLinks({ config, root, routes }: SourceLinkOptions): Plugin<[], Root> {
+export function remarkSourceLinks({ config, root, routes }: SourceLinkOptions) {
   const routeByFile = new Map<string, string>();
   for (const page of routes) {
     if (page.navigation === "disabled") continue;
     const source = config.sources[page.source];
     if (source) routeByFile.set(resolve(root, source.base, page.file), page.path);
   }
-  return () => (tree, file) => {
+  return (tree: any, file: { path?: string }) => {
     const filename = file.path;
     if (!filename) return;
     const visit = (node: any) => {
