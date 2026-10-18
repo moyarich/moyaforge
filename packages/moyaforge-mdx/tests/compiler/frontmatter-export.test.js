@@ -9,8 +9,17 @@ test("registry metadata does not require a compiled JavaScript frontmatter expor
     navigation: "hidden",
   });
   const defaults = createMdxOptions();
-  assert.equal(defaults.remarkPlugins.some((plugin) => Array.isArray(plugin) && plugin[1]?.name === "frontmatter"), false);
+  assert.equal(
+    defaults.remarkPlugins.some(
+      (plugin) => Array.isArray(plugin) && plugin[1]?.name === "frontmatter",
+    ),
+    false,
+  );
   const legacy = createMdxOptions({ frontmatterExport: true });
-  assert.ok(legacy.remarkPlugins.some((plugin) => Array.isArray(plugin) && plugin[1]?.name === "frontmatter"));
+  assert.ok(
+    legacy.remarkPlugins.some(
+      (plugin) => Array.isArray(plugin) && plugin[1]?.name === "frontmatter",
+    ),
+  );
   assert.deepEqual(legacy.rehypePlugins, defaults.rehypePlugins);
 });
