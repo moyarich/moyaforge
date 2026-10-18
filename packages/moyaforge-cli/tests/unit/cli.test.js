@@ -99,7 +99,9 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
   expect(manifest.dependencies).not.toHaveProperty("@moyarich/moyaforge");
   const existingApp = await read(root, "moyaforge/src/App.tsx");
-  expect(existingApp).toContain("../../../src/components/moyaforge/docs-shell.js");
+  expect(existingApp).toContain(
+    "../../../src/components/moyaforge/docs-shell.js",
+  );
   expect(existingApp).toContain("sidebar={sidebar}");
   expect(existingApp).not.toContain("components/Routing/content-routing.js");
   expect(await read(root, "moyaforge/vite.config.ts")).toContain(

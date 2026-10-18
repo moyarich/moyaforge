@@ -26,7 +26,11 @@ describe("registry-aware MDX links", () => {
       "/docs/guide/setup",
     );
     expect(
-      resolveDocumentationHref("../../intro#installation", "/docs/guide", routes),
+      resolveDocumentationHref(
+        "../../intro#installation",
+        "/docs/guide",
+        routes,
+      ),
     ).toBe("/docs/intro#installation");
     expect(resolveDocumentationHref("#examples", "/docs/guide", routes)).toBe(
       "/docs/guide#examples",
