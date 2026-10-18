@@ -118,6 +118,9 @@ jobs:
       - name: Build standalone Vite consumer on main
         if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run test:consumer:browser
+      - name: Run CLI Playwright browser tests on main
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: npm run test:cli:browser
       - name: Run end-to-end browser tests on main
         if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run test:e2e
