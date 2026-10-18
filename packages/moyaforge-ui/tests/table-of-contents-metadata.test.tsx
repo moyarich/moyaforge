@@ -34,13 +34,15 @@ describe("TableOfContents compiler metadata", () => {
   });
 });
 
-
 describe("DocOutline router integration", () => {
   it("renders host-supplied heading links without changing heading metadata", () => {
-    const html = renderToStaticMarkup(createElement(DocOutline, {
-      headings: [{ id: "install", value: "Install", depth: 2 }],
-      renderLink: (item) => createElement("a", { href: "/docs/guide#" + item.id }, item.label),
-    }));
+    const html = renderToStaticMarkup(
+      createElement(DocOutline, {
+        headings: [{ id: "install", value: "Install", depth: 2 }],
+        renderLink: (item) =>
+          createElement("a", { href: "/docs/guide#" + item.id }, item.label),
+      }),
+    );
     expect(html).toContain('href="/docs/guide#install"');
     expect(html).toContain("Install");
   });
