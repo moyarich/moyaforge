@@ -59,13 +59,13 @@ The workflow uses the repository `GITHUB_TOKEN` with `contents: write`, checks o
 
 The implementation of `@moyarich/moyaforge-mdx` is grouped by responsibility instead of keeping all source modules at the root:
 
-| Directory | Responsibility |
-| --- | --- |
-| `src/content/` | Content discovery, headings, source-file rules, link analysis and validation |
-| `src/navigation/` | Navigation trees, documentation groups and table-of-contents selection |
-| `src/registry/` | Normalized page registry and route metadata |
-| `src/plugins/remark/` | Remark plugins and custom directive mapping |
-| `src/vite/` | Vite adapter and virtual module generation |
+| Directory             | Responsibility                                                               |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `src/content/`        | Content discovery, headings, source-file rules, link analysis and validation |
+| `src/navigation/`     | Navigation trees, documentation groups and table-of-contents selection       |
+| `src/registry/`       | Normalized page registry and route metadata                                  |
+| `src/plugins/remark/` | Remark plugins and custom directive mapping                                  |
+| `src/vite/`           | Vite adapter and virtual module generation                                   |
 
 The `src/index.ts` package entry point aggregates the public compiler and registry API. Other supported package subpaths (`/navigation`, `/toc`, `/source-files`, `/vite`) point directly to their implementation files through `package.json` exports. **Do not add source-level compatibility re-export files** solely to retain old directory paths. When relocating source code, update internal imports, the public export map, compiled-module test imports, and CI tarball assertions together.
 
