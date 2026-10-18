@@ -7,7 +7,11 @@ export default function PreviewExample() {
   const [count, setCount] = useState(0);
   return (
     <Preview title="Counter" source={counterSource} language="tsx">
-      <button className="mf-preview-example-button" type="button" onClick={() => setCount((n) => n + 1)}>
+      <button
+        className="mf-preview-example-button"
+        type="button"
+        onClick={() => setCount((n) => n + 1)}
+      >
         Clicked {count} times
       </button>
     </Preview>
