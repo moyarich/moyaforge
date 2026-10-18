@@ -22,6 +22,9 @@ export default defineConfig({
       enforce: "pre",
       ...mdx(
         createMdxOptions({
+          directiveComponents: {
+            "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" },
+          },
           shiki: [
             rehypeShiki,
             {
