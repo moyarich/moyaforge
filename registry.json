@@ -251,6 +251,11 @@
           "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/utils/heading-fragment.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/utils/heading-fragment.ts"
+        },
+        {
           "path": "LICENSE",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/LICENSE"
@@ -270,16 +275,6 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocsLayout.css"
@@ -295,14 +290,9 @@
           "target": "~/src/components/moyaforge/components/Layout/DocsLayout/index.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge-ui/src/utils/heading-fragment.ts",
           "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
+          "target": "~/src/components/moyaforge/utils/heading-fragment.ts"
         },
         {
           "path": "LICENSE",
@@ -324,16 +314,6 @@
       "dependencies": ["react@>=18"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/DocOutline/DocOutline.tsx"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
           "type": "registry:file",
           "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocsLayout.css"
@@ -344,14 +324,9 @@
           "target": "~/src/components/moyaforge/components/Layout/DocsLayout/DocsLayout.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
+          "path": "packages/moyaforge-ui/src/utils/heading-fragment.ts",
           "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/moyaforge/components/TableOfContents/TableOfContents.tsx"
+          "target": "~/src/components/moyaforge/utils/heading-fragment.ts"
         },
         {
           "path": "registry/templates/docs-shell.tsx",
