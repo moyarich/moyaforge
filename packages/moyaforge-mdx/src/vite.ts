@@ -1,7 +1,6 @@
 import { discoverContent, type ContentSourcesConfig } from "./content.js";
-import { relative, resolve, sep } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { existsSync } from "node:fs";
-import { dirname, join } from "node:path";
 import type { Plugin } from "vite";
 
 export interface RegistrySource {
