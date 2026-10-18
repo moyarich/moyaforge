@@ -14,6 +14,7 @@ import {
 import { MDXProvider } from "@mdx-js/react";
 import { defineMdxComponentRegistry } from "@moyarich/moyaforge/headless";
 import { Console, Terminal } from "@moyarich/console";
+import { CustomBlock } from "../../../packages/moyaforge-ui/src/components/CustomBlock/index.ts";
 import { CodeBlock } from "../../../packages/moyaforge-ui/src/components/CodeBlock/index.ts";
 import {
   CodeGroup,
@@ -48,6 +49,7 @@ import { PlaygroundCallout } from "./components/index.js";
 const components = defineMdxComponentRegistry({
   pre: CodeBlock,
   CodeBlock,
+  CustomBlock,
   CodeGroup,
   CodeTab,
   CopyButton,
