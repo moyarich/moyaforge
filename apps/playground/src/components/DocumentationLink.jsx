@@ -1,44 +1,37 @@
-import { useLocation, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { routes } from "virtual:moyaforge-mdx/metadata";
 
-/** Resolve authored MDX links against the current docs route under HashRouter. */
-export function resolveDocumentationHref(href, pathname) {
-  if (!href || /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href)) return null;
-  if (href.startsWith("?")) return null;
+/** Resolve MDX links against public routes discovered by the registry, not filesystem paths. */
+export function resolveDocumentationHref(href, pathname, availableRoutes = routes) {
+  if (!href || /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href) || href.startsWith("?")) return null;
   const [pathAndQuery, fragment] = href.split("#", 2);
   const [path, query] = pathAndQuery.split("?", 2);
-  // Paths relative to the current page are resolved as directory links,
-  // mirroring the link validator's canonical route convention.
-  const segments = path.startsWith("/")
-    ? []
-    : pathname.split("/").filter(Boolean);
+  const parts = path.startsWith("/") ? [] : pathname.split("/").filter(Boolean);
   for (const part of path.split("/")) {
     if (!part || part === ".") continue;
-    if (part === "..") segments.pop();
-    else segments.push(part);
+    if (part === "..") parts.pop();
+    else parts.push(part);
   }
-  let target = "/" + segments.join("/");
-  target =
-    target.replace(/\/(?:page\.mdx?|index\.html?)$/, "").replace(/\/$/, "") ||
-    "/";
-  return (
-    target +
-    (query !== undefined ? "?" + query : "") +
-    (fragment !== undefined ? "#" + fragment : "")
+  const candidate = ("/" + parts.join("/"))
+    .replace(/\/(?:page\.mdx?|index\.html?)$/, "")
+    .replace(/\/$/, "") || "/";
+  const target = availableRoutes.find((page) =>
+    page.path === candidate && page.navigation !== "disabled"
   );
+  // Don't reinterpret non-page links as routes.
+  if (!target) return null;
+  return target.path +
+    (query !== undefined ? "?" + query : "") +
+    (fragment !== undefined ? "#" + fragment : "");
 }
 
-/** Preserve external links and let React Router handle internal routes and anchors. */
+/** Internal registry links use the router; unknown and external URLs remain native links. */
 export function DocumentationLink({ href, children, ...props }) {
   const { pathname } = useLocation();
-  const destination =
-    typeof href === "string" ? resolveDocumentationHref(href, pathname) : null;
-  return destination === null ? (
-    <a href={href} {...props}>
-      {children}
-    </a>
-  ) : (
-    <Link to={destination} {...props}>
-      {children}
-    </Link>
-  );
+  const destination = typeof href === "string"
+    ? resolveDocumentationHref(href, pathname)
+    : null;
+  return destination === null
+    ? <a href={href} {...props}>{children}</a>
+    : <Link to={destination} {...props}>{children}</Link>;
 }
