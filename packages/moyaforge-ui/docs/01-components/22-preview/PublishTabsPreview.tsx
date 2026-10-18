@@ -49,7 +49,12 @@ export default function PublishTabsPreview() {
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-publish-preview-editor">
-          <MonacoCodeGroup files={files} editable height={220} theme="vs-dark" />
+          <MonacoCodeGroup
+            files={files}
+            editable
+            height={220}
+            theme="vs-dark"
+          />
         </div>
       </PreviewSource>
     </Preview>
