@@ -15,7 +15,9 @@ describe("RendererSwitcher", () => {
   });
 
   test("accepts reusable preview content instead of requiring a playground fixture", () => {
-    const html = renderToStaticMarkup(h(RendererSwitcher, null, h("p", null, "Reusable example")));
+    const html = renderToStaticMarkup(
+      h(RendererSwitcher, null, h("p", null, "Reusable example")),
+    );
     expect(html).toContain("Reusable example");
     expect(html).not.toContain("Experimental Feature");
   });
