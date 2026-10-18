@@ -52,3 +52,11 @@ test("preview transformation is opt-in and unrelated directives continue working
   expect(result).toContain("custom-block");
   expect(result).not.toContain("PreviewDirective");
 });
+
+
+test("preview directives reject malformed references and duplicate declarations", async () => {
+  for (const ref of ["./", "./.hidden.tsx", "./a//b.tsx", "./file.txt", "./file.tsx#fragment", "./sub/./Example.tsx"]) {
+    await expect(compile({ value: `::: preview Invalid\n\nexample: ${ref}\n\n:::`, path: "page.md" }, createMdxOptions({ previewDirectives: true }))).rejects.toThrow(/Invalid preview/);
+  }
+  await expect(compile({ value: "::: preview Duplicate\n\nexample: ./A.tsx\n\nexample: ./B.tsx\n\n:::", path: "page.md" }, createMdxOptions({ previewDirectives: true }))).rejects.toThrow(/Duplicate preview/);
+});

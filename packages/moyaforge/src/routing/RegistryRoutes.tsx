@@ -1,4 +1,4 @@
-import { lazy, Suspense, type ComponentType, type ReactNode } from "react";
+import { Component as ReactComponent, lazy, Suspense, type ComponentType, type ErrorInfo, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
 
@@ -25,6 +25,36 @@ const cache = new WeakMap<
   ComponentType
 >();
 
+/** A removed asset from a previous Pages deployment must never crash the entire documentation shell. */
+class PageLoadBoundary extends ReactComponent<
+  { children: ReactNode; pagePath: string },
+  { error: Error | null }
+> {
+  state: { error: Error | null } = { error: null };
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, _info: ErrorInfo) {
+    console.error("Failed to load documentation page:", this.props.pagePath, error);
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <section role="alert">
+          <p>Unable to load this documentation page. A recently deployed version may have replaced its JavaScript files.</p>
+          <button type="button" onClick={() => window.location.reload()}>
+            Reload documentation
+          </button>
+        </section>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 /**
  * Renders any discovered MDX page under the consumer's existing React Router.
  * Mount once at a host wildcard route; no per-page Route elements or router wrapper.
@@ -49,9 +79,11 @@ export function RegistryRouteView({
     cache.set(loader, Component);
   }
   const content = (
-    <Suspense fallback={fallback}>
-      <Component />
-    </Suspense>
+    <PageLoadBoundary key={path} pagePath={path}>
+      <Suspense fallback={fallback}>
+        <Component />
+      </Suspense>
+    </PageLoadBoundary>
   );
   return <>{renderPage ? renderPage(page, content) : content}</>;
 }
