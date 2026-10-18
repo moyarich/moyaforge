@@ -23,7 +23,11 @@ export default defineConfig({
       ...mdx(
         createMdxOptions({
           directiveComponents: {
-            "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" },
+            "code-group": {
+              component: "CodeGroup",
+              childType: "tab",
+              childComponent: "CodeTab",
+            },
           },
           shiki: [
             rehypeShiki,

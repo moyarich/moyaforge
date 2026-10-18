@@ -1,6 +1,9 @@
 import remarkFlexibleContainers from "remark-flexible-containers";
 import { customBlockOptions } from "./custom-blocks.js";
-import { remarkDirectiveComponents, type DirectiveComponentMap } from "./directive-components.js";
+import {
+  remarkDirectiveComponents,
+  type DirectiveComponentMap,
+} from "./directive-components.js";
 import type { PluggableList } from "unified";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
@@ -33,7 +36,9 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       remarkFrontmatter,
       remarkGfm,
       [remarkFlexibleContainers, customBlockOptions],
-      ...(options.directiveComponents ? [[remarkDirectiveComponents, options.directiveComponents] as const] : []),
+      ...(options.directiveComponents
+        ? [[remarkDirectiveComponents, options.directiveComponents] as const]
+        : []),
       ...(options.remarkPlugins ?? []),
       ...(options.frontmatterExport
         ? [[remarkMdxFrontmatter, { name: "frontmatter" }] as const]

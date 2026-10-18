@@ -12,7 +12,12 @@ export interface DirectiveComponent {
 
 export type DirectiveComponentMap = Record<string, DirectiveComponent>;
 
-type Node = { type: string; children?: Node[]; data?: { hProperties?: Record<string, unknown> }; value?: string };
+type Node = {
+  type: string;
+  children?: Node[];
+  data?: { hProperties?: Record<string, unknown> };
+  value?: string;
+};
 type Attribute = { type: "mdxJsxAttribute"; name: string; value: string };
 
 function titleOf(node: Node): string {
@@ -35,7 +40,12 @@ function jsx(name: string, content: Node[], attributes: Attribute[]): Node {
   } as unknown as Node;
 }
 
-function transform(node: Node, mappings: DirectiveComponentMap, childType?: string, childComponent?: string): Node {
+function transform(
+  node: Node,
+  mappings: DirectiveComponentMap,
+  childType?: string,
+  childComponent?: string,
+): Node {
   const type = directiveType(node);
   const definition = type ? mappings[type] : undefined;
   if (definition || (type === childType && childComponent)) {
@@ -43,13 +53,32 @@ function transform(node: Node, mappings: DirectiveComponentMap, childType?: stri
     const children = [...(node.children ?? [])];
     const first = children[0];
     const cls = first?.data?.hProperties?.className;
-    const classes = Array.isArray(cls) ? cls : typeof cls === "string" ? cls.split(/\\s+/) : [];
-    const title = classes.includes("custom-block-title") ? titleOf(children.shift()!) : undefined;
-    return jsx(selected.component,
-      children.map(child => transform(child, mappings, selected.childType, selected.childComponent)),
-      title ? [{ type: "mdxJsxAttribute", name: selected.titleProp ?? "label", value: title }] : []);
+    const classes = Array.isArray(cls)
+      ? cls
+      : typeof cls === "string"
+        ? cls.split(/\\s+/)
+        : [];
+    const title = classes.includes("custom-block-title")
+      ? titleOf(children.shift()!)
+      : undefined;
+    return jsx(
+      selected.component,
+      children.map((child) =>
+        transform(child, mappings, selected.childType, selected.childComponent),
+      ),
+      title
+        ? [
+            {
+              type: "mdxJsxAttribute",
+              name: selected.titleProp ?? "label",
+              value: title,
+            },
+          ]
+        : [],
+    );
   }
-  if (node.children) node.children = node.children.map(child => transform(child, mappings));
+  if (node.children)
+    node.children = node.children.map((child) => transform(child, mappings));
   return node;
 }
 
@@ -57,6 +86,8 @@ function transform(node: Node, mappings: DirectiveComponentMap, childType?: stri
 export function remarkDirectiveComponents(mappings: DirectiveComponentMap) {
   return (tree: Root) => {
     const root = tree as unknown as Node;
-    root.children = (root.children ?? []).map(node => transform(node, mappings));
+    root.children = (root.children ?? []).map((node) =>
+      transform(node, mappings),
+    );
   };
 }
