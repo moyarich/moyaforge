@@ -45,7 +45,10 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { PlaygroundCallout } from "./components/index.js";
-import { DocumentationLink, DocumentationRoutesContext } from "./components/DocumentationLink.jsx";
+import {
+  DocumentationLink,
+  DocumentationRoutesContext,
+} from "./components/DocumentationLink.jsx";
 
 const components = defineMdxComponentRegistry({
   a: DocumentationLink,
