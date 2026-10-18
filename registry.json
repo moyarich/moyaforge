@@ -633,6 +633,50 @@
       ]
     },
     {
+      "name": "preview",
+      "type": "registry:component",
+      "title": "Preview",
+      "description": "Editable MoyaForge preview source and CSS. Import the installed styles alongside the component.",
+      "dependencies": ["react@>=18"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Preview/Preview.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Preview/Preview.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/Preview/index.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/preview.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/preview.css"
+        }
+      ]
+    },
+    {
       "name": "search",
       "type": "registry:component",
       "title": "Search",
