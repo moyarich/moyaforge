@@ -57,11 +57,23 @@ test("Preview supports minimal custom slots without automatic toolbar", () => {
 
 test("asChild composes toggle semantics without nesting buttons", () => {
   const html = renderToStaticMarkup(
-    h(Preview, { source: "const x = 1" },
-      h(PreviewHeader, null,
-        h(PreviewActions, null,
-          h(PreviewCodeToggle, { asChild: true },
-            h("button", { className: "custom-trigger", type: "button" }, "Show code"),
+    h(
+      Preview,
+      { source: "const x = 1" },
+      h(
+        PreviewHeader,
+        null,
+        h(
+          PreviewActions,
+          null,
+          h(
+            PreviewCodeToggle,
+            { asChild: true },
+            h(
+              "button",
+              { className: "custom-trigger", type: "button" },
+              "Show code",
+            ),
           ),
         ),
       ),
@@ -76,9 +88,13 @@ test("asChild composes toggle semantics without nesting buttons", () => {
 });
 
 test("asChild rejects noninteractive intrinsic elements", () => {
-  expect(() => renderToStaticMarkup(
-    h(Preview, null,
-      h(PreviewCodeToggle, { asChild: true }, h("div", null, "Not a button")),
+  expect(() =>
+    renderToStaticMarkup(
+      h(
+        Preview,
+        null,
+        h(PreviewCodeToggle, { asChild: true }, h("div", null, "Not a button")),
+      ),
     ),
-  )).toThrow(/button or button-like/);
+  ).toThrow(/button or button-like/);
 });
