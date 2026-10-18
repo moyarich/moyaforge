@@ -146,6 +146,40 @@
       ]
     },
     {
+      "name": "custom-block",
+      "type": "registry:component",
+      "title": "Custom Block",
+      "description": "Editable MoyaForge custom-block source and CSS. Import the installed styles alongside the component.",
+      "dependencies": ["react@>=18"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CustomBlock/CustomBlock.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CustomBlock/CustomBlock.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CustomBlock/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/components/CustomBlock/index.ts"
+        },
+        {
+          "path": "LICENSE",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/LICENSE"
+        },
+        {
+          "path": "registry/styles/custom-block.css",
+          "type": "registry:file",
+          "target": "~/src/components/moyaforge/custom-block.css"
+        }
+      ]
+    },
+    {
       "name": "demo",
       "type": "registry:component",
       "title": "Demo",
