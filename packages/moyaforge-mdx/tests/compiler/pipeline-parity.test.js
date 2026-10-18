@@ -56,5 +56,10 @@ test("compiler plugin options do not mutate later calls", () => {
   assert.equal(withExtension.rehypePlugins.at(-1), extra);
   assert.equal(plain.rehypePlugins.includes(extra), false);
   assert.notStrictEqual(withExtension.remarkPlugins, plain.remarkPlugins);
-  assert.ok(plain.remarkPlugins.some((plugin) => Array.isArray(plugin) && plugin[1]?.containerTagName === "div"));
+  assert.ok(
+    plain.remarkPlugins.some(
+      (plugin) =>
+        Array.isArray(plugin) && plugin[1]?.containerTagName === "div",
+    ),
+  );
 });
