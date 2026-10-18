@@ -38,18 +38,23 @@ jobs:
       - name: Install generator dependencies
         run: npm ci --ignore-scripts --include=optional
       - name: Rebuild registry from canonical component source
+        id: generate
         run: npm run registry:build
       - name: Verify generated registry freshness
+        id: freshness
         run: npm run registry:check
       - name: Validate shadcn compatibility
+        id: schema
         run: npx --yes shadcn@4.21.5 registry validate ./registry.json
       - name: Commit generated registry files when changed
+        id: commit
         shell: bash
         run: |
           set -euo pipefail
           git add -- registry.json registry/styles
           if git diff --cached --quiet; then
             echo "Registry is already current."
+            echo "result=unchanged" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -57,3 +62,15 @@ jobs:
           git commit -m "chore: rebuild component registry"
           # Do not force-push if the branch changes during generation.
           git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "result=committed" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Detailed registry summary
+        if: always()
+        env:
+          GENERATE_RESULT: ${{ steps.generate.outcome }}
+          FRESHNESS_RESULT: ${{ steps.freshness.outcome }}
+          SCHEMA_RESULT: ${{ steps.schema.outcome }}
+          COMMIT_RESULT: ${{ steps.commit.outcome }}
+          CHANGE_RESULT: ${{ steps.commit.outputs.result }}
+          COMMIT_SHA: ${{ steps.commit.outputs.commit_sha }}
+        run: node scripts/report-registry-summary.mjs
