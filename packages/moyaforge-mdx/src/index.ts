@@ -3,7 +3,7 @@ import { customBlockOptions } from "./plugins/remark/custom-blocks.js";
 import {
   remarkDirectiveComponents,
   type DirectiveComponentMap,
-} from "./plugins/remark/directive-components.js";
+} from "./plugins/remark/remark-directive-components.js";
 import type { PluggableList } from "unified";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
