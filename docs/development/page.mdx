@@ -37,7 +37,7 @@ Playwright browser tests require Chromium to be installed, for example `npx play
 
 The source of truth for installable components is `packages/moyaforge/src/components/` and compositions in `registry/templates/`. The generated `registry.json` and `registry/styles/*.css` are **not** the playground's authored-content `registry.config.ts`.
 
-After changing components, imports, package dependencies, or templates, regenerate and verify before opening a PR:
+To check generated registry output locally, run:
 
 ```sh
 npm run registry:build
@@ -45,15 +45,15 @@ npm run registry:check
 npx --yes shadcn@4.21.5 registry validate ./registry.json
 ```
 
-Include the generated manifest and styles in the PR. Normal PR CI rejects stale output.
+Registry generation and freshness enforcement run on `main`, not feature branches. PR CI runs workspace tests and other checks without rejecting changes merely because the generated registry is stale.
 
 ### Manual GitHub Actions verification
 
-In **Actions → Build component registry → Run workflow**, select the branch to test and start the run. This invokes `workflow_dispatch` on the selected ref. For an unchanged branch, verify that regeneration, freshness checks, and shadcn validation pass and the final step reports **Registry is already current.** with no new commit.
+In **Actions → Build component registry → Run workflow**, select `main` and start the run. This invokes `workflow_dispatch` on the selected ref. For an unchanged branch, verify that regeneration, freshness checks, and shadcn validation pass and the final step reports **Registry is already current.** with no new commit.
 
-To exercise changed output, push a temporary test branch with a canonical component-source change but without regenerated files, then dispatch the workflow on that branch. Verify that it creates a `github-actions[bot]` commit containing **only** `registry.json` and `registry/styles/**`. Inspect the commit before merging or deleting the branch. A validation failure must stop before the commit step.
+To exercise changed output, merge a canonical component-source change into `main`; the workflow rebuilds the registry and commits only `registry.json` and `registry/styles/**` when needed. A validation failure must stop before the commit step.
 
-The workflow runs for changes to canonical registry inputs on both `main` and feature branches, plus manual dispatch. It uses `contents: write`, checks out the selected branch tip, and serializes runs by Git ref without canceling an in-progress run. When configured, `_WORKFLOW_TOKEN` is used for checkout and push so the generated commit can trigger subsequent pull-request CI; otherwise it falls back to `GITHUB_TOKEN` (whose pushes do not trigger most other workflows). The final push is an ordinary non-force push; if another commit moves the branch, its push must be rejected rather than overwriting the new head. Repository branch-protection/ruleset settings must permit the intended bot update, or the workflow will fail visibly. Do not grant bypass permissions or configure a personal token just to make the job succeed. This workflow does **not** publish npm packages.
+The workflow runs only on `main`, including manual dispatch on `main`. It uses `GITHUB_TOKEN` with `contents: write`, checks out the current `main` tip, and serializes runs by Git ref without canceling an in-progress run. The final push is an ordinary non-force push; if another commit moves the branch, its push must be rejected rather than overwriting the new head. Repository branch-protection/ruleset settings must permit the intended bot update, or the workflow will fail visibly. Do not grant bypass permissions or configure a personal token just to make the job succeed. This workflow does **not** publish npm packages.
 
 ## MDX package source ownership
 
