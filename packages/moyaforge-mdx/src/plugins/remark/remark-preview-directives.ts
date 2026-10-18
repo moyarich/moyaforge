@@ -13,7 +13,9 @@ type Node = {
 type Attribute = { type: "mdxJsxAttribute"; name: string; value: string };
 
 function directiveType(node: Node): unknown {
-  return node.type === "container" ? node.data?.hProperties?.["data-type"] : undefined;
+  return node.type === "container"
+    ? node.data?.hProperties?.["data-type"]
+    : undefined;
 }
 
 /** Parse a deliberately small, declarative file reference format. No dynamic execution. */
@@ -31,25 +33,49 @@ export function remarkPreviewDirectives({
       const title = titleNode?.data?.hProperties?.className;
       const titled = Array.isArray(title)
         ? title.includes("custom-block-title")
-        : typeof title === "string" && title.split(/\s+/).includes("custom-block-title");
-      const label = titled ? (children.shift()?.children ?? []).map(n => n.value ?? "").join("") : undefined;
+        : typeof title === "string" &&
+          title.split(/\s+/).includes("custom-block-title");
+      const label = titled
+        ? (children.shift()?.children ?? []).map((n) => n.value ?? "").join("")
+        : undefined;
       const refs: Record<string, string> = {};
       for (const child of children) {
         if (child.type !== "paragraph" || !child.children) continue;
-        const text = child.children.map(n => n.value ?? "").join("");
+        const text = child.children.map((n) => n.value ?? "").join("");
         const match = /^(example|source):\s*(\S+)\s*$/.exec(text);
         if (!match) continue;
         const value = match[2];
-        if (!value.startsWith("./") || value.includes("\\") || value.split("/").some(part => part === "..") || /[?#]/.test(value))
-          throw new Error(`Invalid preview ${match[1]} reference: ${value}. Use a relative file in the current example directory.`);
+        if (
+          !value.startsWith("./") ||
+          value.includes("\\") ||
+          value.split("/").some((part) => part === "..") ||
+          /[?#]/.test(value)
+        )
+          throw new Error(
+            `Invalid preview ${match[1]} reference: ${value}. Use a relative file in the current example directory.`,
+          );
         refs[match[1]] = value;
       }
-      if (!refs.example) throw new Error("::: preview requires an example: ./Example.tsx reference.");
+      if (!refs.example)
+        throw new Error(
+          "::: preview requires an example: ./Example.tsx reference.",
+        );
       const attributes: Attribute[] = [
-        ...(label ? [{ type: "mdxJsxAttribute" as const, name: "title", value: label }] : []),
-        ...Object.entries(refs).map(([name, value]) => ({ type: "mdxJsxAttribute" as const, name, value })),
+        ...(label
+          ? [{ type: "mdxJsxAttribute" as const, name: "title", value: label }]
+          : []),
+        ...Object.entries(refs).map(([name, value]) => ({
+          type: "mdxJsxAttribute" as const,
+          name,
+          value,
+        })),
       ];
-      return { type: "mdxJsxFlowElement", name: component, attributes, children: [] } as unknown as Node;
+      return {
+        type: "mdxJsxFlowElement",
+        name: component,
+        attributes,
+        children: [],
+      } as unknown as Node;
     };
     const root = tree as unknown as Node;
     root.children = (root.children ?? []).map(visit);
