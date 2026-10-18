@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useMDXComponents, MDXProvider } from "@mdx-js/react";
-import { CustomBlock } from "../../../../packages/moyaforge-ui/src/components/CustomBlock/index.ts";
-import {
-  CodeGroup,
-  CodeTab,
-} from "../../../../packages/moyaforge-ui/src/components/CodeGroup/index.ts";
+import { CustomBlock } from "../CustomBlock/index.js";
+import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 
 function AlternativeBlock({ type, title, children }) {
   return (
@@ -66,10 +63,10 @@ function PreviewContent() {
   );
 }
 
-export function RendererSwitcher() {
+export function RendererSwitcher({ renderers, themes, children }) {
   const [renderer, setRenderer] = useState("default");
   const [theme, setTheme] = useState("neutral");
-  const overrides =
+  const defaults =
     renderer === "alternative"
       ? {
           CustomBlock: AlternativeBlock,
@@ -77,10 +74,12 @@ export function RendererSwitcher() {
           CodeTab: AlternativeCodeTab,
         }
       : { CustomBlock, CodeGroup, CodeTab };
-  const themeStyle =
+  const overrides = renderers?.[renderer] ?? defaults;
+  const defaultThemeStyle =
     theme === "violet"
       ? { "--mf-color-surface": "#f5f3ff", "--mf-color-border": "#7c3aed" }
       : { "--mf-color-surface": "#f3f4f6", "--mf-color-border": "#6b7280" };
+  const themeStyle = themes?.[theme] ?? defaultThemeStyle;
   return (
     <div>
       <p>
@@ -113,7 +112,7 @@ export function RendererSwitcher() {
         data-preview-renderer={renderer}
       >
         <MDXProvider components={overrides}>
-          <PreviewContent />
+          {children ?? <PreviewContent />}
         </MDXProvider>
       </div>
     </div>

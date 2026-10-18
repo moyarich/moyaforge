@@ -147,7 +147,13 @@ test("Markdown code-group directives render React tabs while other directives st
 
 test("wildcard directive mapping emits semantic components with type/title and supports provider overrides", async () => {
   const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
-  const source = "::: my-alert Attention\\n\\nCustom **content**.\\n\\n:::";
+  const source = [
+    "::: my-alert Attention",
+    "",
+    "Custom **content**.",
+    "",
+    ":::",
+  ].join("\n");
   const { default: Content } = await evaluate(source, {
     ...runtime,
     useMDXComponents,
