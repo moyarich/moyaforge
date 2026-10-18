@@ -1,0 +1,111 @@
+---
+title: Preview
+label: Preview
+order: 22
+description: Slot-based live React previews with source viewing and copy actions.
+---
+
+import PreviewExample from "./PreviewExample.tsx";
+import SimplePreviewExample from "./SimplePreviewExample.tsx";
+import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
+import PublishTabsPreview from "./PublishTabsPreview.tsx";
+
+# Preview
+
+Compose an interactive preview with replaceable header, title, actions, content, source and footer slots. Each example is a standalone TSX file; the MDX page imports it.
+
+## Live example
+
+<PreviewExample />
+
+## Custom trigger and raw TSX source
+
+<SimplePreviewExample />
+
+## Optional Monaco editor
+
+<MonacoPreviewExample />
+
+The Monaco example is loaded only by the page that uses it; Preview itself has no Monaco dependency. The editable source is not executed or compiled automatically.
+
+## Monaco file tabs: publishing commands
+
+<PublishTabsPreview />
+
+The editable Monaco tabs demonstrate both npm and GitHub Packages dry-run commands, following the Workspace Tools publishing documentation. File tabs are managed by `MonacoCodeGroup`, while `PreviewSource asChild` controls the editor panel visibility. Editing the example does not execute the commands.
+
+## Files
+
+```text
+22-preview/
+├── page.mdx
+├── PreviewExample.tsx
+├── PreviewExample.css
+├── SimplePreviewExample.tsx
+├── MonacoPreviewExample.tsx
+├── MonacoPreviewExample.css
+├── PublishTabsPreview.tsx
+├── PublishTabsPreview.css
+└── CounterExample.tsx
+```
+
+## Usage
+
+```mdx
+import PreviewExample from "./PreviewExample.tsx";
+
+<PreviewExample />
+```
+
+```tsx
+import {
+  Preview,
+  PreviewHeader,
+  PreviewTitle,
+  PreviewActions,
+  PreviewCodeToggle,
+  PreviewCopyButton,
+  PreviewContent,
+  PreviewSource,
+} from "@/components/moyaforge/components/Preview";
+import ButtonExample from "./ButtonExample";
+import source from "./ButtonExample.tsx?raw";
+
+<Preview source={source}>
+  <PreviewHeader>
+    <PreviewTitle>Button</PreviewTitle>
+    <PreviewActions>
+      <PreviewCodeToggle />
+      <PreviewCopyButton />
+    </PreviewActions>
+  </PreviewHeader>
+  <PreviewContent>
+    <ButtonExample />
+  </PreviewContent>
+  <PreviewSource code={source} language="tsx" />
+</Preview>;
+```
+
+Use `PreviewContent asChild` and `PreviewSource asChild` to compose one DOM-forwarding child, such as a custom layout or editor. `asChild` does not compile or run edited source.\n\nThe `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.
+
+## Custom trigger with `asChild`
+
+Use `asChild` on the code toggle to apply its behavior to a custom button without nesting interactive elements.
+
+```tsx
+<PreviewCodeToggle asChild>
+  <button type="button" className="my-code-trigger">
+    Show source
+  </button>
+</PreviewCodeToggle>
+```
+
+The child must be a single native button or a button-like React component that forwards click handlers and ARIA attributes. For non-button elements, provide your own appropriate accessible semantics and handlers instead of using this trigger.
+
+## Theme variables
+
+Use `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius`, and `--mf-preview-padding` in application CSS.
+
+## External examples such as CSS Color Parser
+
+A consuming application can use the same structure as CSS Color Parser's `FunctionExample` and `CssColorEditor`: import a standalone example `.tsx` module into MDX and supply its raw source using `?raw`. Put the interactive parsing UI in `PreviewContent`; wrap an optional editor in `PreviewSource asChild`. Preview has no parser-specific dependency.
