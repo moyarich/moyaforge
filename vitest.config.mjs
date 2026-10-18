@@ -26,9 +26,10 @@ export default defineConfig({
       "apps/*/tests/**/*.test.{js,jsx,mjs,ts,tsx}",
     ],
     // Browser-backed consumer suites run on main, where Chromium is installed.
-    exclude: process.env.MOYAFORGE_MAIN_ONLY_BROWSER === "true"
-      ? ["**/packed-consumers.test.mjs", "**/shadcn-consumer.test.mjs"]
-      : [],
+    exclude:
+      process.env.MOYAFORGE_MAIN_ONLY_BROWSER === "true"
+        ? ["**/packed-consumers.test.mjs", "**/shadcn-consumer.test.mjs"]
+        : [],
     environment: "node",
   },
 });
