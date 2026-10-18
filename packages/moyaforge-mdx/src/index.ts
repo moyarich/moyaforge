@@ -3,7 +3,7 @@ import { customBlockOptions } from "./custom-blocks.js";
 import {
   remarkDirectiveComponents,
   type DirectiveComponentMap,
-} from "./directive-components.js";
+} from "./remark-directive-components.js";
 import type { PluggableList } from "unified";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
@@ -54,7 +54,7 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
   };
 }
 
-export * from "./directive-components.js";
+export * from "./remark-directive-components.js";
 
 export * from "./registry.js";
 
@@ -69,3 +69,5 @@ export * from "./headings.js";
 export * from "./links.js";
 
 export * from "./check-links.js";
+
+export * from "./remark-source-links.js";

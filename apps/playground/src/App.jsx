@@ -41,6 +41,7 @@ function PlaygroundShell() {
           path: item.path,
           label: item.label ?? item.title,
           source: item.source,
+          sourcePath: item.sourcePath,
         })),
     [],
   );

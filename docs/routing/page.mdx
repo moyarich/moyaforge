@@ -65,6 +65,21 @@ import { MoyaForgeRouting } from "@moyarich/moyaforge";
 </BrowserRouter>;
 ```
 
+## Links authored in MDX
+
+Documentation authors can write either public route links or, when the host enables the source-link transform, actual relative source-file links:
+
+```mdx
+[Code Block](/ui/components/code-block)
+[Code Block source](../../packages/moyaforge-ui/docs/01-components/01-code-block/page.mdx)
+```
+
+The first link is an existing registry route. The second is resolved against the authoring MDX file's directory at compilation and mapped to the matching public route. Do not copy the second relative path to unrelated pages: relative source-file paths depend on the current file's location.
+
+The host router handles URLs after compilation: the same public `/ui/components/code-block` route appears under `#/ui/components/code-block` when using a `HashRouter`. These transforms are optional and should not be confused with repository-relative `sourcePath` metadata, which is for GitHub edit links.
+
+See [Development](/docs/development) for configuration, GitHub source-viewer behavior, limitations, and verification.
+
 ## Navigate and resolve results
 
 Use React Router's `Link` or `NavLink` for links. The hook also exposes `navigateContent` for programmatic navigation and `searchResultPage(key)` to map indexed document keys to canonical pages.

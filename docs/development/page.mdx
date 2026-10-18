@@ -21,10 +21,11 @@ npm run dev
 
 ## Test and build
 
+Unit and regression tests use **Vitest** across the workspaces. Run the workspace test scripts through npm rather than replacing the repository's test command:
+
 ```sh
 npm run typecheck
-npm test
-npm run test:unit
+npm test --workspaces
 npm run check:links
 npm run build
 npm run test:consumer:browser
@@ -32,6 +33,74 @@ npm run test:e2e
 ```
 
 Playwright browser tests require Chromium to be installed, for example `npx playwright install chromium`.
+
+## Authoring documentation links
+
+The playground reads the authored-content registry from `apps/playground/registry.config.ts`. This is separate from the installable component registry described above. The MDX link transform runs at **build time**, using the registry's source directories and discovered public routes; the browser router determines the final URL format.
+
+### Source-file links (recommended for repository browsing)
+
+Write a relative Markdown link to the real `.md` or `.mdx` file. For example, from `packages/moyaforge-ui/docs/page.mdx`:
+
+```mdx
+[Code Block](./01-components/01-code-block/page.mdx)
+[Code Block usage](./01-components/01-code-block/page.mdx#usage)
+```
+
+GitHub can follow these file paths directly. In the built playground, the opt-in `remarkSourceLinks` transform looks up the target file in the discovered registry and rewrites it to the public route, such as `/ui/components/code-block`. The site's `HashRouter` then renders that as a GitHub Pages URL containing `#/ui/components/code-block`; a `BrowserRouter` host uses normal paths instead.
+
+```js
+import {
+  discoverContent,
+  remarkSourceLinks,
+  createMdxOptions,
+} from "@moyarich/moyaforge-mdx";
+
+const { registry: discovered } = await discoverContent(registry, root);
+const mdxOptions = createMdxOptions({
+  remarkPlugins: [
+    [
+      remarkSourceLinks,
+      {
+        config: registry,
+        root,
+        routes: discovered.routes,
+      },
+    ],
+  ],
+});
+```
+
+The transform needs the original MDX file path supplied by the compiler. It resolves relative filenames against that file's directory, **not** against the page URL. Paths must correspond to an enabled registered page to be rewritten; the compiler does not invent routes for arbitrary repository files.
+
+### Public-route links
+
+If the author intends an application-specific documentation URL, link to its registry route:
+
+```mdx
+[Code Block](/ui/components/code-block)
+[UI overview](/ui)
+```
+
+These are already public paths, so they do not undergo filesystem-source resolution. The playground MDX renderer uses the discovered routes for in-app navigation. Because GitHub itself does not serve those paths as repository files, prefer source-file links when the Markdown must be navigable in GitHub's source viewer.
+
+### External links, assets, and fragments
+
+```mdx
+[MoyaForge repository](https://github.com/moyarich/moyaforge)
+[Contact](mailto:example@example.com)
+[Jump to this section](#authoring-documentation-links)
+```
+
+External schemes are not rewritten. Bare heading fragments keep the current page and are handled by the host's router. Asset links and unregistered file destinations are not converted into documentation pages.
+
+### Source links versus GitHub edit links
+
+A link **inside the MDX document** can target either a source file or a public route. The **Contribute on GitHub** control is different: it derives the repository-relative `sourcePath` from registry discovery and constructs the GitHub edit URL. The playground must not hardcode per-source directory mappings.
+
+### Validation
+
+Run `npm run check:links` and `npm test --workspaces` (Vitest) after changing documentation structure. A successful build alone does not guarantee that an unregistered source-file link, invalid heading fragment, or external destination is valid. Missing-target diagnostics and coverage for cross-source source links are tracked in [issue #193](https://github.com/moyarich/moyaforge/issues/193).
 
 ## Component registry generation
 
