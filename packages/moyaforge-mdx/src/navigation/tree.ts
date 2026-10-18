@@ -1,4 +1,4 @@
-import type { NormalizedPage } from "./../registry/registry.js";
+import type { NormalizedPage } from "../registry/registry.js";
 
 /**
  * A node in the documentation navigation hierarchy.

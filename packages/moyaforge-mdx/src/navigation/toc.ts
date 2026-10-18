@@ -1,4 +1,4 @@
-import type { TocOptions, TocSetting } from "./../registry/registry.js";
+import type { TocOptions, TocSetting } from "../registry/registry.js";
 
 /** Heading IDs must originate from rehype-slug, never a second slug generator. */
 export interface TocHeading {

@@ -1,4 +1,4 @@
-import { discoverContent, type ContentSourcesConfig } from "./../content/discovery.js";
+import { discoverContent, type ContentSourcesConfig } from "../content/discovery.js";
 import { resolve, sep } from "node:path";
 import type { Plugin } from "vite";
 
