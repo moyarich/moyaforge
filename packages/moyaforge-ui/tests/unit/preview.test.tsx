@@ -101,8 +101,12 @@ test("asChild rejects noninteractive intrinsic elements", () => {
 
 test("asChild content uses its child as the stage without wrapping it", () => {
   const html = renderToStaticMarkup(
-    h(Preview, null,
-      h(PreviewContent, { asChild: true },
+    h(
+      Preview,
+      null,
+      h(
+        PreviewContent,
+        { asChild: true },
         h("article", { className: "consumer-stage" }, "Parser form"),
       ),
     ),
@@ -114,9 +118,13 @@ test("asChild content uses its child as the stage without wrapping it", () => {
 });
 test("asChild source supports arbitrary DOM-forwarding editors", () => {
   const html = renderToStaticMarkup(
-    h(Preview, { defaultView: "code", source: "#06c" },
+    h(
+      Preview,
+      { defaultView: "code", source: "#06c" },
       h(PreviewContent, null, "Color preview"),
-      h(PreviewSource, { asChild: true },
+      h(
+        PreviewSource,
+        { asChild: true },
         h("div", { "aria-label": "Color source editor" }, "Editor"),
       ),
     ),
@@ -126,7 +134,9 @@ test("asChild source supports arbitrary DOM-forwarding editors", () => {
   expect(html).toContain("Editor");
 });
 test("asChild source requires a single element", () => {
-  expect(() => renderToStaticMarkup(h(Preview, null,
-    h(PreviewSource, { asChild: true }, "text"),
-  ))).toThrow(/exactly one/);
+  expect(() =>
+    renderToStaticMarkup(
+      h(Preview, null, h(PreviewSource, { asChild: true }, "text")),
+    ),
+  ).toThrow(/exactly one/);
 });
