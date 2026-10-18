@@ -9,7 +9,7 @@ import {
   PreviewContent,
   PreviewSource,
 } from "../../../src/components/Preview/index.js";
-import { Monaco } from "../../../src/components/Monaco/Monaco.js";
+import { MonacoCodeGroup } from "../../../src/components/Monaco/MonacoCodeGroup.js";
 import CounterExample from "./CounterExample.js";
 import counterSource from "./CounterExample.tsx?raw";
 import exampleCSS from "./PreviewExample.css?raw";
@@ -44,18 +44,7 @@ export default function MonacoPreviewExample() {
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-monaco-preview-editor">
-          <Monaco
-            files={files}
-            renderEditor={({ file, value, onChange }) => (
-              <textarea
-                aria-label={file.name}
-                rows={12}
-                value={value}
-                onChange={(event) => onChange(event.target.value)}
-                style={{ width: "100%" }}
-              />
-            )}
-          />
+          <MonacoCodeGroup files={files} editable height={320} theme="vs-dark" />
         </div>
       </PreviewSource>
     </Preview>
