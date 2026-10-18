@@ -59,11 +59,14 @@ class PageLoadBoundary extends ReactComponent<
             Unable to load this documentation page. A recently deployed version
             may have replaced its JavaScript files.
           </p>
-          <button type="button" onClick={() => {
+          <button
+            type="button"
+            onClick={() => {
               const url = new URL(window.location.href);
               url.searchParams.set("_asset_refresh", Date.now().toString());
               window.location.replace(url.href);
-            }}>
+            }}
+          >
             Reload documentation
           </button>
         </section>
