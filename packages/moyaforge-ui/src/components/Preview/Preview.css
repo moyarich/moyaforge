@@ -1,0 +1,36 @@
+[data-moyaforge-preview] {
+  --_preview-background: var(--mf-preview-background, var(--mf-color-surface, transparent));
+  --_preview-border: var(--mf-preview-border, var(--mf-color-border, currentColor));
+  --_preview-radius: var(--mf-preview-radius, 0.75rem);
+  --_preview-padding: var(--mf-preview-padding, 1.5rem);
+  border: 1px solid var(--_preview-border);
+  border-radius: var(--_preview-radius);
+  background: var(--_preview-background);
+  overflow: hidden;
+}
+[data-moyaforge-preview-toolbar] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--_preview-border);
+}
+[data-moyaforge-preview-actions] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+[data-moyaforge-preview-stage] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10rem;
+  padding: var(--_preview-padding);
+}
+[data-moyaforge-preview-source] {
+  padding: var(--_preview-padding);
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
+}

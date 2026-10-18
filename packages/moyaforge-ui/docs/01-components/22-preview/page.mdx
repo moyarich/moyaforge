@@ -1,0 +1,36 @@
+---
+title: Preview
+label: Preview
+order: 22
+description: Live component previews with optional source viewing and copy actions.
+---
+
+# Preview
+
+`Preview` displays a live component example and, when the author supplies source text, allows switching to the source and copying it. It is installed from the canonical MoyaForge UI registry.
+
+## Live example
+
+import { Preview } from "../../../src/components/Preview/Preview.tsx";
+
+<Preview title="Interactive example" source={'<button type="button">Try it</button>'} language="tsx">
+  <button type="button">Try it</button>
+</Preview>
+
+## Usage
+
+```tsx
+import { Preview } from "@/components/moyaforge/components/Preview";
+
+<Preview title="Button" source={'<button type="button">Click me</button>'}>
+  <button type="button">Click me</button>
+</Preview>
+```
+
+Source text is explicit; the component does not attempt to serialize React children. MDX tooling can supply precompiled source without coupling Preview to an MDX compiler.
+
+## Theme variables
+
+Set `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius` and `--mf-preview-padding` from application CSS.
+
+[Browse UI components](/ui)
