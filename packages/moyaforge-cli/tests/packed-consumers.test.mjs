@@ -15,7 +15,7 @@ import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
 
 const repo = resolve(import.meta.dirname, "../../..");
-test("packed CLI consumers", async () => {
+test.skipIf(process.env.MOYAFORGE_MAIN_ONLY_BROWSER === "true")("packed CLI consumers", async () => {
   const temp = await mkdtemp(join(tmpdir(), "moyaforge-packed-consumers-"));
   async function run(cmd, args, cwd) {
     const child = spawn(cmd, args, { cwd, stdio: ["ignore", "pipe", "pipe"] });
