@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { TableOfContents } from "../src/components/TableOfContents/TableOfContents.tsx";
+import { DocOutline } from "../src/components/DocOutline/DocOutline.tsx";
 
 describe("TableOfContents compiler metadata", () => {
   it("renders supplied headings without a browser DOM", () => {
@@ -30,5 +31,17 @@ describe("TableOfContents compiler metadata", () => {
         }),
       ),
     ).not.toThrow();
+  });
+});
+
+
+describe("DocOutline router integration", () => {
+  it("renders host-supplied heading links without changing heading metadata", () => {
+    const html = renderToStaticMarkup(createElement(DocOutline, {
+      headings: [{ id: "install", value: "Install", depth: 2 }],
+      renderLink: (item) => createElement("a", { href: "/docs/guide#" + item.id }, item.label),
+    }));
+    expect(html).toContain('href="/docs/guide#install"');
+    expect(html).toContain("Install");
   });
 });
