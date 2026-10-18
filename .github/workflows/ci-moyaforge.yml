@@ -67,7 +67,6 @@ jobs:
       - name: Test all workspaces
         env:
           MOYAFORGE_REGISTRY_REF: ${{ github.event.pull_request.head.sha || github.sha }}
-          MOYAFORGE_MAIN_ONLY_BROWSER: ${{ github.ref != 'refs/heads/main' }}
         run: npm test --workspaces --if-present
       - name: Validate registered content links and anchors
         run: npm run check:links
@@ -119,6 +118,9 @@ jobs:
       - name: Build standalone Vite consumer on main
         if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run test:consumer:browser
+      - name: Run Chromium-backed Vitest consumer tests on main
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: npx vitest run --config vitest.browser.config.mjs
       - name: Run end-to-end browser tests on main
         if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run test:e2e
