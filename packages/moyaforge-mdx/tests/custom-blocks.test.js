@@ -57,8 +57,18 @@ test("nested custom blocks retain independent types and titles", async () => {
     "",
     "::::",
   ].join("\n");
-  const output = String(await compile({ value: source, path: "page.mdx" }, createMdxOptions()));
-  for (const expected of ["experimental", "warning", "tip", "Experimental Feature", "Compatibility", "Performance", "Caching is recommended"]) {
+  const output = String(
+    await compile({ value: source, path: "page.mdx" }, createMdxOptions()),
+  );
+  for (const expected of [
+    "experimental",
+    "warning",
+    "tip",
+    "Experimental Feature",
+    "Compatibility",
+    "Performance",
+    "Caching is recommended",
+  ]) {
     assert.ok(output.includes(expected), expected);
   }
   assert.equal((output.match(/custom-block-title/g) ?? []).length, 3);
