@@ -102,3 +102,19 @@
     margin-bottom: 2rem;
   }
 }
+
+/* Native disclosure keeps TOC expansion keyboard accessible without JS state. */
+[data-moyaforge-docs-layout] [data-moyaforge-docs-disclosure] > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.4rem 0;
+}
+
+[data-moyaforge-docs-layout] [data-moyaforge-docs-disclosure] > summary:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+[data-moyaforge-docs-layout] [data-moyaforge-docs-disclosure] > nav {
+  padding-top: 0.5rem;
+}
