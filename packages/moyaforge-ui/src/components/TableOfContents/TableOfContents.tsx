@@ -23,13 +23,17 @@ export function TableOfContents({
   renderLink,
   ...props
 }: TableOfContentsProps) {
-  const headings = items ?? (root
-    ? Array.from(root.querySelectorAll<HTMLElement>(selector)).map((heading) => ({
-        id: heading.id,
-        label: heading.textContent ?? heading.id,
-        level: Number(heading.tagName.slice(1)),
-      }))
-    : []);
+  const headings =
+    items ??
+    (root
+      ? Array.from(root.querySelectorAll<HTMLElement>(selector)).map(
+          (heading) => ({
+            id: heading.id,
+            label: heading.textContent ?? heading.id,
+            level: Number(heading.tagName.slice(1)),
+          }),
+        )
+      : []);
 
   return (
     <nav data-moyaforge-toc="" aria-label="Table of contents" {...props}>
