@@ -4,6 +4,6 @@ declare module "virtual:moyaforge-mdx/metadata" {
 }
 
 declare module "virtual:moyaforge-mdx/lazy-registry" {
-  import type { RegistryLazySources } from "./components/Routing/RegistryRoutes.js";
+  import type { RegistryLazySources } from "./routing/RegistryRoutes.js";
   export const sources: RegistryLazySources;
 }

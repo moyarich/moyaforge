@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type {
   MoyaForgeSource,
   SourcePage,
-} from "../../utils/content/source.js";
+} from "../utils/content/source.js";
 
 export interface HeadlessDocsRoutesProps {
   source: MoyaForgeSource;
