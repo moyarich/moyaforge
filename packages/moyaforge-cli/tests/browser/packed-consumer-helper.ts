@@ -138,7 +138,14 @@ export async function verifyPackedConsumer(fixture, index) {
       await run(process.execPath, [packedCLI, "build"], root);
       if (fixture.template === "existing")
         assert.equal(manifest.scripts.dev, "echo host-app");
-      const port = 4280 + ["source-docs", "package-docs-search", "existing-app", "hybrid-app"].indexOf(index);
+      const port =
+        4280 +
+        [
+          "source-docs",
+          "package-docs-search",
+          "existing-app",
+          "hybrid-app",
+        ].indexOf(index);
       assert.ok(port >= 4280, `unknown consumer fixture: ${index}`);
       const server = spawn(
         process.execPath,
