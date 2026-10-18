@@ -90,9 +90,10 @@ export function DocumentationSite({
   }, [query, search]);
   const currentIndex = pages.findIndex((page) => page.path === currentPath);
   const current = pages[currentIndex];
-  const contributeHref = current?.sourcePath && repository
-    ? `${repository.replace(/\/$/, "")}/edit/main/${current.sourcePath.split("/").map(encodeURIComponent).join("/")}`
-    : repository;
+  const contributeHref =
+    current?.sourcePath && repository
+      ? `${repository.replace(/\/$/, "")}/edit/main/${current.sourcePath.split("/").map(encodeURIComponent).join("/")}`
+      : repository;
   const navigate = (path: string) => {
     setMenu(false);
     setQuery("");
@@ -207,7 +208,13 @@ export function DocumentationSite({
           {children}
           <footer className="mf-page-footer">
             {repository ? (
-              <a href={contributeHref} target="_blank" rel="noopener noreferrer">Contribute on GitHub ↗</a>
+              <a
+                href={contributeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Contribute on GitHub ↗
+              </a>
             ) : null}
             <div>
               {currentIndex > 0
