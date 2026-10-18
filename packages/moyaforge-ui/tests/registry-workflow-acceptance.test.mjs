@@ -27,7 +27,10 @@ const git = (cwd, ...args) =>
 
 // Use the exact commit step from the checked-in workflow rather than a copy of its commands.
 const workflow = readFileSync(
-  new URL("../../../.github/workflows/build-component-registry.yml", import.meta.url),
+  new URL(
+    "../../../.github/workflows/build-component-registry.yml",
+    import.meta.url,
+  ),
   "utf8",
 );
 const match = workflow.match(
