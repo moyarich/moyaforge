@@ -1,5 +1,7 @@
 import { discoverContent, type ContentSourcesConfig } from "./content.js";
-import { resolve, sep } from "node:path";
+import { relative, resolve, sep } from "node:path";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
 import type { Plugin } from "vite";
 
 export interface RegistrySource {
@@ -17,6 +19,8 @@ export interface RegistryConfiguration extends ContentSourcesConfig {
 export interface RegistryPluginOptions {
   registry: RegistryConfiguration;
   root: string;
+  /** Repository root for generated GitHub edit paths; discovered from .git when omitted. */
+  repositoryRoot?: string;
 }
 
 const publicId = "virtual:moyaforge-mdx/registry";
@@ -30,8 +34,25 @@ const metadataResolvedId = "\0" + metadataPublicId;
 export function mdxRegistryPlugin({
   registry,
   root,
+  repositoryRoot,
 }: RegistryPluginOptions): Plugin {
   const appRoot = resolve(root);
+  const findRepositoryRoot = () => {
+    let directory = appRoot;
+    while (true) {
+      if (existsSync(join(directory, ".git"))) return directory;
+      const parent = dirname(directory);
+      if (parent === directory) return undefined;
+      directory = parent;
+    }
+  };
+  const editRoot = repositoryRoot ? resolve(appRoot, repositoryRoot) : findRepositoryRoot();
+  const withSourcePath = (page: { source: string; file: string }) => {
+    if (!editRoot) return page;
+    const absolute = resolve(appRoot, registry.sources[page.source].base, page.file);
+    const path = relative(editRoot, absolute).split(sep).join("/");
+    return path.startsWith("../") || path === ".." ? page : { ...page, sourcePath: path };
+  };
   const directories = Object.values(registry.sources).map((source) =>
     resolve(appRoot, source.base),
   );
@@ -83,7 +104,7 @@ export function mdxRegistryPlugin({
           headings,
           metadata,
         } = await getDiscovery();
-        return `export const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages)};\nexport const routes = ${JSON.stringify(pages.routes)};\nexport const navigation = ${JSON.stringify(pages.navigation)};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
+        return `export const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages.map(withSourcePath))};\nexport const routes = ${JSON.stringify(pages.routes.map(withSourcePath))};\nexport const navigation = ${JSON.stringify(pages.navigation.map(withSourcePath))};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
       }
     },
     configureServer(server) {
