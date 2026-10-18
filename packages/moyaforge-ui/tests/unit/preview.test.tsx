@@ -98,3 +98,35 @@ test("asChild rejects noninteractive intrinsic elements", () => {
     ),
   ).toThrow(/button or button-like/);
 });
+
+test("asChild content uses its child as the stage without wrapping it", () => {
+  const html = renderToStaticMarkup(
+    h(Preview, null,
+      h(PreviewContent, { asChild: true },
+        h("article", { className: "consumer-stage" }, "Parser form"),
+      ),
+    ),
+  );
+  expect(html).toContain('data-moyaforge-preview-content=""');
+  expect(html).toContain('class="consumer-stage"');
+  expect(html).toContain("<article");
+  expect(html).not.toContain('data-moyaforge-preview-stage=""');
+});
+test("asChild source supports arbitrary DOM-forwarding editors", () => {
+  const html = renderToStaticMarkup(
+    h(Preview, { defaultView: "code", source: "#06c" },
+      h(PreviewContent, null, "Color preview"),
+      h(PreviewSource, { asChild: true },
+        h("div", { "aria-label": "Color source editor" }, "Editor"),
+      ),
+    ),
+  );
+  expect(html).toContain('data-moyaforge-preview-source=""');
+  expect(html).toContain('aria-label="Color source editor"');
+  expect(html).toContain("Editor");
+});
+test("asChild source requires a single element", () => {
+  expect(() => renderToStaticMarkup(h(Preview, null,
+    h(PreviewSource, { asChild: true }, "text"),
+  ))).toThrow(/exactly one/);
+});
