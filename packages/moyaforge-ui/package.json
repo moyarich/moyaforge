@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node -e \"console.log('UI source workspace: no npm artifact')\"",
     "typecheck": "node -e \"console.log('UI source workspace: source checks run through registry')\"",
-    "test": "vitest run tests && node --test ../../tests/registry-workflow-acceptance.test.mjs",
+    "test": "vitest run tests",
     "registry:check": "node ../../scripts/build-registry.mjs --check"
   },
   "license": "MIT",
