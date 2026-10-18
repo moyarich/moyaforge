@@ -103,8 +103,10 @@ export function PreviewTitle(props: ComponentPropsWithoutRef<"span">) {
 export function PreviewActions(props: ComponentPropsWithoutRef<"div">) {
   return <div data-moyaforge-preview-actions="" {...props} />;
 }
-export interface PreviewCodeToggleProps
-  extends Omit<ComponentPropsWithoutRef<"button">, "type"> {
+export interface PreviewCodeToggleProps extends Omit<
+  ComponentPropsWithoutRef<"button">,
+  "type"
+> {
   /** Merge trigger behavior onto one child button or forwardRef button component. */
   asChild?: boolean;
 }
@@ -128,11 +130,18 @@ export function PreviewCodeToggle({
     onClick: toggle,
   };
   if (asChild) {
-    if (!isValidElement(children) || children.type === Symbol.for("react.fragment"))
-      throw new Error("PreviewCodeToggle asChild requires exactly one non-fragment element.");
+    if (
+      !isValidElement(children) ||
+      children.type === Symbol.for("react.fragment")
+    )
+      throw new Error(
+        "PreviewCodeToggle asChild requires exactly one non-fragment element.",
+      );
     const child = children as ReactElement<ComponentPropsWithoutRef<"button">>;
     if (typeof child.type === "string" && child.type !== "button")
-      throw new Error("PreviewCodeToggle asChild requires a button or button-like component.");
+      throw new Error(
+        "PreviewCodeToggle asChild requires a button or button-like component.",
+      );
     return cloneElement(child, {
       ...triggerProps,
       ...child.props,
@@ -144,7 +153,11 @@ export function PreviewCodeToggle({
       },
     });
   }
-  return <button type="button" {...triggerProps}>{children ?? (view === "code" ? "Preview" : "Code")}</button>;
+  return (
+    <button type="button" {...triggerProps}>
+      {children ?? (view === "code" ? "Preview" : "Code")}
+    </button>
+  );
 }
 export function PreviewCopyButton(
   props: Omit<
