@@ -100,3 +100,43 @@ test("custom-block directives and CodeGroup tabs coexist in compiled MDX", async
   expect(html).toContain("npm install example");
   expect(html).toContain("pnpm add example");
 });
+
+test("Markdown code-group directives render React tabs while other directives stay generic", async () => {
+  const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
+  const input = [
+    ":::: code-group Package managers",
+    "",
+    "::: tab npm",
+    "npm install sample",
+    ":::",
+    "",
+    "::: tab pnpm",
+    "pnpm add sample",
+    ":::",
+    "",
+    "::::",
+    "",
+    "::: warning Compatibility",
+    "Still a generic block.",
+    ":::",
+  ].join("\n");
+  const { default: Content } = await evaluate(input, {
+    ...runtime,
+    useMDXComponents,
+    ...createMdxOptions({
+      directiveComponents: {
+        "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" },
+      },
+    }),
+  });
+  const html = renderToStaticMarkup(
+    createElement(PlaygroundMdxProvider, null, createElement(Content)),
+  );
+  expect(html).toContain('aria-label="Package managers"');
+  expect(html).toContain('role="tablist"');
+  expect(html).toContain("npm install sample");
+  expect(html).toContain("pnpm add sample");
+  expect(html).toContain("Compatibility");
+  expect(html).toContain('data-type="warning"');
+  expect(html).not.toContain('data-type="code-group"');
+});
