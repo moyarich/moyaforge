@@ -1,13 +1,27 @@
 import type { NormalizedPage } from "./registry.js";
 
-/** Navigation nodes can represent a directory even when it has no landing page. */
+/**
+ * A node in the documentation navigation hierarchy.
+ * Directory nodes may exist without a corresponding page, allowing nested
+ * routes to be represented without inventing a landing page.
+ */
 export interface NavigationNode {
+  /** Canonical absolute route, including virtual directory routes. */
   path: string;
+  /** Registered page at this route, if it has a landing page. */
   page?: NormalizedPage;
+  /** Nested navigation nodes ordered for display. */
   children: NavigationNode[];
 }
 
-/** Build a hierarchy from normalized paths, without a second authored nav manifest. */
+/**
+ * Build a navigation hierarchy from the normalized page registry.
+ * Only visible pages participate; missing ancestor paths become virtual nodes.
+ * Siblings sort by explicit or inherited page order and then route path.
+ *
+ * @param pages - Normalized registry pages.
+ * @returns Ordered root navigation nodes.
+ */
 export function buildNavigationTree(
   pages: readonly NormalizedPage[],
 ): NavigationNode[] {
@@ -30,6 +44,7 @@ export function buildNavigationTree(
     }
     if (parent) parent.page = page;
   }
+  /** Sort sibling nodes recursively by explicit or inherited page order. */
   function sort(nodes: NavigationNode[]): void {
     nodes.sort(
       (a, b) =>
@@ -42,7 +57,12 @@ export function buildNavigationTree(
   return roots;
 }
 
-/** A group without a landing page inherits its earliest child's order. */
+/**
+ * Find the lowest order of a virtual directory's descendant pages.
+ *
+ * @param node - Navigation node whose descendants provide its order.
+ * @returns Lowest descendant order, or MAX_SAFE_INTEGER if empty.
+ */
 function descendantOrder(node: NavigationNode): number {
   return node.children.reduce(
     (min, child) => Math.min(min, child.page?.order ?? descendantOrder(child)),
@@ -50,10 +70,18 @@ function descendantOrder(node: NavigationNode): number {
   );
 }
 
+/**
+ * Collect registered pages from a navigation tree in depth-first order.
+ * Virtual directories without pages are omitted.
+ *
+ * @param tree - Root navigation nodes.
+ * @returns Pages in navigation display order.
+ */
 export function flattenNavigation(
   tree: readonly NavigationNode[],
 ): NormalizedPage[] {
   const pages: NormalizedPage[] = [];
+  /** Visit real pages recursively without including virtual directories. */
   const visit = (nodes: readonly NavigationNode[]) => {
     for (const node of nodes) {
       if (node.page) pages.push(node.page);
@@ -64,20 +92,36 @@ export function flattenNavigation(
   return pages;
 }
 
-/** A source-specific navigation tree with its configured sidebar label. */
+/** A sidebar section for one registered documentation source. */
 export interface DocumentationGroup {
+  /** Unique source key from the content registry. */
   source: string;
+  /** Sidebar label, falling back to the source key. */
   label: string;
+  /** Source-specific navigation roots in display order. */
   nodes: NavigationNode[];
 }
 
+/** Source-level options for navigation group display and ordering. */
 export interface DocumentationSourceNavigation {
-  navigation?: { label?: string; order?: number };
+  /** Optional sidebar presentation metadata. */
+  navigation?: {
+    /** Human-readable group label. */
+    label?: string;
+    /** Ascending group order; defaults to zero. */
+    order?: number;
+  };
 }
 
 /**
- * Group discovered routes by source, honoring source navigation metadata.
- * No host-specific route lists or filesystem locations are required.
+ * Group discovered routes into source-specific sidebar sections.
+ * Groups sort by source navigation order, then source key. Each group uses
+ * buildNavigationTree; virtual source roots are unwrapped, while real source
+ * landing pages remain in the hierarchy.
+ *
+ * @param routes - Registered normalized pages from content discovery.
+ * @param sources - Source navigation labels and ordering configuration.
+ * @returns Ordered groups containing visible navigation nodes.
  */
 export function buildDocumentationGroups(
   routes: readonly NormalizedPage[],
