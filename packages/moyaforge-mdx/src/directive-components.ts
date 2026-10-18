@@ -65,10 +65,20 @@ function transform(
       ? titleOf(children.shift()!)
       : undefined;
     const attributes: Attribute[] = title
-      ? [{ type: "mdxJsxAttribute", name: selected.titleProp ?? "label", value: title }]
+      ? [
+          {
+            type: "mdxJsxAttribute",
+            name: selected.titleProp ?? "label",
+            value: title,
+          },
+        ]
       : [];
     if (selected.typeProp && type) {
-      attributes.push({ type: "mdxJsxAttribute", name: selected.typeProp, value: type });
+      attributes.push({
+        type: "mdxJsxAttribute",
+        name: selected.typeProp,
+        value: type,
+      });
     }
     return jsx(
       selected.component,
