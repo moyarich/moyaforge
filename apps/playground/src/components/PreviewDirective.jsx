@@ -8,8 +8,8 @@ import {
   PreviewContent,
   PreviewSource,
 } from "../../../../packages/moyaforge-ui/src/components/Preview/index.ts";
-import CounterExample from "../../../../docs/examples/preview/CounterExample.tsx";
-import counterSource from "../../../../docs/examples/preview/CounterExample.tsx?raw";
+import CounterExample from "../../../../packages/moyaforge-ui/docs/01-components/22-preview/markdown/CounterExample.tsx";
+import counterSource from "../../../../packages/moyaforge-ui/docs/01-components/22-preview/markdown/CounterExample.tsx?raw";
 
 /** Explicit host registry: Markdown references cannot cause dynamic imports or arbitrary execution. */
 const examples = {

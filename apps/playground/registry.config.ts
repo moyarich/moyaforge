@@ -11,7 +11,8 @@ export default {
     },
     ui: {
       base: "../../packages/moyaforge-ui/docs",
-      include: ["**/page.mdx"],
+      include: ["**/page.mdx", "**/page.md"],
+      pageFiles: "all",
       navigation: { label: "UI Components", order: 2 },
     },
     packages: {
