@@ -100,3 +100,80 @@ test("custom-block directives and CodeGroup tabs coexist in compiled MDX", async
   expect(html).toContain("npm install example");
   expect(html).toContain("pnpm add example");
 });
+
+test("Markdown code-group directives render React tabs while other directives stay generic", async () => {
+  const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
+  const input = [
+    ":::: code-group Package managers",
+    "",
+    "::: tab npm",
+    "npm install sample",
+    ":::",
+    "",
+    "::: tab pnpm",
+    "pnpm add sample",
+    ":::",
+    "",
+    "::::",
+    "",
+    "::: warning Compatibility",
+    "Still a generic block.",
+    ":::",
+  ].join("\n");
+  const { default: Content } = await evaluate(input, {
+    ...runtime,
+    useMDXComponents,
+    ...createMdxOptions({
+      directiveComponents: {
+        "code-group": {
+          component: "CodeGroup",
+          childType: "tab",
+          childComponent: "CodeTab",
+        },
+      },
+    }),
+  });
+  const html = renderToStaticMarkup(
+    createElement(PlaygroundMdxProvider, null, createElement(Content)),
+  );
+  expect(html).toContain('aria-label="Package managers"');
+  expect(html).toContain('role="tablist"');
+  expect(html).toContain("npm install sample");
+  expect(html).toContain("pnpm add sample");
+  expect(html).toContain("Compatibility");
+  expect(html).toContain('data-type="warning"');
+  expect(html).not.toContain('data-type="code-group"');
+});
+
+test("wildcard directive mapping emits semantic components with type/title and supports provider overrides", async () => {
+  const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
+  const source = "::: my-alert Attention\\n\\nCustom **content**.\\n\\n:::";
+  const { default: Content } = await evaluate(source, {
+    ...runtime,
+    useMDXComponents,
+    ...createMdxOptions({
+      directiveComponents: {
+        "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
+      },
+    }),
+  });
+  function AlternativeBlock({ type, title, children }) {
+    return createElement(
+      "aside",
+      { "data-custom-renderer": type },
+      createElement("strong", null, title),
+      children,
+    );
+  }
+  const html = renderToStaticMarkup(
+    createElement(
+      PlaygroundMdxProvider,
+      { components: { CustomBlock: AlternativeBlock } },
+      createElement(Content),
+    ),
+  );
+  expect(html).toContain('data-custom-renderer="my-alert"');
+  expect(html).toContain("Attention");
+  expect(html).toContain("Custom");
+  expect(html).not.toContain('class="custom-block');
+});

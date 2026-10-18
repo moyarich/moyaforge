@@ -1,5 +1,9 @@
 import remarkFlexibleContainers from "remark-flexible-containers";
 import { customBlockOptions } from "./custom-blocks.js";
+import {
+  remarkDirectiveComponents,
+  type DirectiveComponentMap,
+} from "./directive-components.js";
 import type { PluggableList } from "unified";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
@@ -11,6 +15,8 @@ import rehypeExportToc from "@stefanprobst/rehype-extract-toc/mdx";
 /** Host-specific remark/rehype plugins are supplied by each consuming app. */
 export interface MdxToolingOptions {
   remarkPlugins?: PluggableList;
+  /** Optional mapping from ::: directives to host MDX components. */
+  directiveComponents?: DirectiveComponentMap;
   rehypePlugins?: PluggableList;
   /** Opt into a compiled MDX frontmatter export for older module consumers. YAML registry metadata does not require it. */
   frontmatterExport?: boolean;
@@ -30,6 +36,9 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       remarkFrontmatter,
       remarkGfm,
       [remarkFlexibleContainers, customBlockOptions],
+      ...(options.directiveComponents
+        ? [[remarkDirectiveComponents, options.directiveComponents] as const]
+        : []),
       ...(options.remarkPlugins ?? []),
       ...(options.frontmatterExport
         ? [[remarkMdxFrontmatter, { name: "frontmatter" }] as const]
@@ -44,6 +53,8 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
     ] as PluggableList,
   };
 }
+
+export * from "./directive-components.js";
 
 export * from "./registry.js";
 

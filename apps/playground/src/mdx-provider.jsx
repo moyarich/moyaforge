@@ -45,11 +45,13 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { PlaygroundCallout } from "./components/index.js";
+import { RendererSwitcher } from "./components/RendererSwitcher.jsx";
 
 const components = defineMdxComponentRegistry({
   pre: CodeBlock,
   CodeBlock,
   CustomBlock,
+  RendererSwitcher,
   CodeGroup,
   CodeTab,
   CopyButton,
@@ -90,6 +92,13 @@ const components = defineMdxComponentRegistry({
   Callout: PlaygroundCallout,
 });
 
-export function PlaygroundMdxProvider({ children }) {
-  return <MDXProvider components={components}>{children}</MDXProvider>;
+export function PlaygroundMdxProvider({
+  children,
+  components: overrides = {},
+}) {
+  return (
+    <MDXProvider components={{ ...components, ...overrides }}>
+      {children}
+    </MDXProvider>
+  );
 }
