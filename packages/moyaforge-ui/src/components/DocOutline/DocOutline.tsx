@@ -1,5 +1,5 @@
 import "./DocOutline.css";
-import { useEffect, useState, type RefObject } from "react";
+import { useEffect, useState, type ReactNode, type RefObject } from "react";
 import type { TableOfContentsItem } from "../TableOfContents/TableOfContents.js";
 
 export interface DocHeading {
@@ -18,6 +18,8 @@ export interface DocOutlineProps {
   selector?: string;
   title?: string;
   className?: string;
+  /** Host-controlled links for router-specific heading navigation. */
+  renderLink?: (item: TableOfContentsItem, active: boolean) => ReactNode;
 }
 
 /** Sticky-ready, scroll-aware outline for an MDX article. Add heading ids in the MDX pipeline. */
@@ -29,6 +31,7 @@ export function DocOutline({
   selector = "h2[id], h3[id]",
   title = "On this page",
   className,
+  renderLink,
 }: DocOutlineProps) {
   const [items, setItems] = useState<TableOfContentsItem[]>([]);
   const flattened = (nodes: readonly DocHeading[]): TableOfContentsItem[] =>
@@ -109,12 +112,14 @@ export function DocOutline({
           <ul>
             {visibleItems.map((item) => (
               <li key={item.id} data-level={item.level}>
-                <a
-                  href={`#${item.id}`}
-                  aria-current={active === item.id ? "location" : undefined}
-                >
-                  {item.label}
-                </a>
+                {renderLink ? renderLink(item, active === item.id) : (
+                  <a
+                    href={`#${item.id}`}
+                    aria-current={active === item.id ? "location" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
