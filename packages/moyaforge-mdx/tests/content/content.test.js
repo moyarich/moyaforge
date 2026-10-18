@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { parsePageFrontmatter, discoverContent } from "../../dist/content.js";
+import {
+  parsePageFrontmatter,
+  discoverContent,
+} from "../../dist/content/discovery.js";
 import { mdxRegistryPlugin } from "../../dist/vite.js";
 
 test("YAML metadata is parsed for Markdown and MDX without JS exports", () => {
