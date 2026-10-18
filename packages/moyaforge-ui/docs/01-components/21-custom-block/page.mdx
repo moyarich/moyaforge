@@ -88,3 +88,11 @@ Override CSS custom properties in the consuming application instead of hardcodin
   --custom-block-background: color-mix(in srgb, rebeccapurple 8%, transparent);
 }
 ```
+
+## Switch renderer and theme
+
+Change the renderer and CSS theme independently. The semantic content is the same; only the React component mapping and public CSS variables change.
+
+<RendererSwitcher />
+
+The playground's shared MDX compiler maps arbitrary unconfigured directive types to the stable `CustomBlock` component using `type` and `title` props. `code-group` and nested `tab` use stable `CodeGroup` and `CodeTab` names. Consumers override these components through `MDXProvider` without recompilation.
