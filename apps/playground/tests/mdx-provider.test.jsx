@@ -144,3 +144,28 @@ test("Markdown code-group directives render React tabs while other directives st
   expect(html).toContain('data-type="warning"');
   expect(html).not.toContain('data-type="code-group"');
 });
+
+test("wildcard directive mapping emits semantic components with type/title and supports provider overrides", async () => {
+  const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
+  const source = "::: my-alert Attention\\n\\nCustom **content**.\\n\\n:::";
+  const { default: Content } = await evaluate(source, {
+    ...runtime,
+    useMDXComponents,
+    ...createMdxOptions({ directiveComponents: {
+      "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
+    } }),
+  });
+  function AlternativeBlock({ type, title, children }) {
+    return createElement("aside", { "data-custom-renderer": type },
+      createElement("strong", null, title), children);
+  }
+  const html = renderToStaticMarkup(createElement(
+    PlaygroundMdxProvider,
+    { components: { CustomBlock: AlternativeBlock } },
+    createElement(Content),
+  ));
+  expect(html).toContain('data-custom-renderer="my-alert"');
+  expect(html).toContain("Attention");
+  expect(html).toContain("Custom");
+  expect(html).not.toContain('class="custom-block');
+});
