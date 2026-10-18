@@ -18,7 +18,9 @@ export function CustomBlock({
 }: CustomBlockProps) {
   const normalized = type?.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
   const safeType = normalized
-    ? (/^[a-z_]/.test(normalized) ? normalized : `type-${normalized}`)
+    ? /^[a-z_]/.test(normalized)
+      ? normalized
+      : `type-${normalized}`
     : undefined;
   const classes = new Set([
     "custom-block",
@@ -26,8 +28,14 @@ export function CustomBlock({
     ...(className ?? "").split(/\s+/).filter(Boolean),
   ]);
   return (
-    <div {...props} data-type={props["data-type"] ?? safeType} className={[...classes].join(" ")}>
-      {title != null && title !== "" && <p className="custom-block-title">{title}</p>}
+    <div
+      {...props}
+      data-type={props["data-type"] ?? safeType}
+      className={[...classes].join(" ")}
+    >
+      {title != null && title !== "" && (
+        <p className="custom-block-title">{title}</p>
+      )}
       {children}
     </div>
   );

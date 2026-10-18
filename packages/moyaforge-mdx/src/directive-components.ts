@@ -50,7 +50,9 @@ function transform(
 ): Node {
   const type = directiveType(node);
   const nested = type === childType && Boolean(childComponent);
-  const definition = type ? (mappings[type] ?? (nested ? undefined : mappings["*"])) : undefined;
+  const definition = type
+    ? (mappings[type] ?? (nested ? undefined : mappings["*"]))
+    : undefined;
   if (definition || (type === childType && childComponent)) {
     const selected = definition ?? { component: childComponent! };
     const children = [...(node.children ?? [])];

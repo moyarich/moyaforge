@@ -23,7 +23,11 @@ export default defineConfig({
       ...mdx(
         createMdxOptions({
           directiveComponents: {
-            "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
+            "*": {
+              component: "CustomBlock",
+              typeProp: "type",
+              titleProp: "title",
+            },
             "code-group": {
               component: "CodeGroup",
               childType: "tab",
