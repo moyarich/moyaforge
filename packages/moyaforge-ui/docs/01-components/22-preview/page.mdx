@@ -35,8 +35,14 @@ import PreviewExample from "./PreviewExample.tsx";
 
 ```tsx
 import {
-  Preview, PreviewHeader, PreviewTitle, PreviewActions,
-  PreviewCodeToggle, PreviewCopyButton, PreviewContent, PreviewSource,
+  Preview,
+  PreviewHeader,
+  PreviewTitle,
+  PreviewActions,
+  PreviewCodeToggle,
+  PreviewCopyButton,
+  PreviewContent,
+  PreviewSource,
 } from "@/components/moyaforge/components/Preview";
 import ButtonExample from "./ButtonExample";
 import source from "./ButtonExample.tsx?raw";
@@ -44,11 +50,16 @@ import source from "./ButtonExample.tsx?raw";
 <Preview source={source}>
   <PreviewHeader>
     <PreviewTitle>Button</PreviewTitle>
-    <PreviewActions><PreviewCodeToggle /><PreviewCopyButton /></PreviewActions>
+    <PreviewActions>
+      <PreviewCodeToggle />
+      <PreviewCopyButton />
+    </PreviewActions>
   </PreviewHeader>
-  <PreviewContent><ButtonExample /></PreviewContent>
+  <PreviewContent>
+    <ButtonExample />
+  </PreviewContent>
   <PreviewSource code={source} language="tsx" />
-</Preview>
+</Preview>;
 ```
 
 The `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.

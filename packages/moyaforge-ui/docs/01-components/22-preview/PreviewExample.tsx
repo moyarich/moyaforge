@@ -1,7 +1,14 @@
 import "./PreviewExample.css";
 import {
-  Preview, PreviewHeader, PreviewTitle, PreviewActions, PreviewCodeToggle,
-  PreviewCopyButton, PreviewContent, PreviewSource, PreviewFooter,
+  Preview,
+  PreviewHeader,
+  PreviewTitle,
+  PreviewActions,
+  PreviewCodeToggle,
+  PreviewCopyButton,
+  PreviewContent,
+  PreviewSource,
+  PreviewFooter,
 } from "../../../src/components/Preview/index.js";
 import source from "./CounterExample.tsx?raw";
 import CounterExample from "./CounterExample.js";
@@ -17,7 +24,9 @@ export default function PreviewExample() {
           <PreviewCopyButton />
         </PreviewActions>
       </PreviewHeader>
-      <PreviewContent><CounterExample /></PreviewContent>
+      <PreviewContent>
+        <CounterExample />
+      </PreviewContent>
       <PreviewSource code={source} language="tsx" />
       <PreviewFooter>Click the button, then inspect its source.</PreviewFooter>
     </Preview>
