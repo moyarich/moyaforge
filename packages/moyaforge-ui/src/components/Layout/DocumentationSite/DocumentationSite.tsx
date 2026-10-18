@@ -12,6 +12,7 @@ export interface DocumentationSiteProps {
   title: string;
   children: ReactNode;
   repository?: string;
+  repositoryBranch?: string;
   pages?: readonly DocumentationSitePage[];
   currentPath?: string;
   sidebar?: ReactNode;
@@ -31,6 +32,7 @@ export function DocumentationSite({
   title,
   children,
   repository,
+  repositoryBranch = "main",
   pages = [],
   currentPath,
   sidebar,
