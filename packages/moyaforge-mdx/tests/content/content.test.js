@@ -7,7 +7,7 @@ import {
   parsePageFrontmatter,
   discoverContent,
 } from "../../dist/content/discovery.js";
-import { mdxRegistryPlugin } from "../../dist/vite.js";
+import { mdxRegistryPlugin } from "../../dist/vite/plugin.js";
 
 test("YAML metadata is parsed for Markdown and MDX without JS exports", () => {
   assert.deepEqual(
