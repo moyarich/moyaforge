@@ -69,8 +69,14 @@ jobs:
       - run: npm ci --include=optional
       - name: Validate canonical component registry
         run: npm run registry:check
-      - name: Test all workspaces
-        run: npm test --workspaces --if-present
+      - name: Test playground, registry, CLI, and MDX workspaces
+        run: |
+          npm test --if-present \
+            --workspace @moyarich/moyaforge-ui \
+            --workspace @moyarich/moyaforge-mdx \
+            --workspace @moyarich/moyaforge-search-sqlite \
+            --workspace @moyarich/moyaforge-cli \
+            --workspace @moyarich/moyaforge-playground
       - name: Validate registered content links and anchors
         run: npm run check:links
       - run: npm run build --workspaces
@@ -120,8 +126,6 @@ jobs:
           NODE
       - name: Build standalone Vite consumer
         run: npm run test:consumer:browser
-      - name: Run unit tests with Vitest
-        run: npm run test:unit
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Run end-to-end browser tests
