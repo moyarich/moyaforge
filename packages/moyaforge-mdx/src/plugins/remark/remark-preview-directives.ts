@@ -4,7 +4,11 @@ import type { Root } from "mdast";
 export interface PreviewDirectiveConfig {
   component?: string;
   /** Host-owned validation of a file reference. Undefined rejects the build. */
-  resolveReference?: (reference: string, authoredFile: string | undefined, kind: "example" | "source") => string | undefined;
+  resolveReference?: (
+    reference: string,
+    authoredFile: string | undefined,
+    kind: "example" | "source",
+  ) => string | undefined;
 }
 type Node = {
   type: string;
@@ -69,7 +73,10 @@ export function remarkPreviewDirectives({
         const resolved = resolveReference
           ? resolveReference(value, file.path, match[1] as "example" | "source")
           : value;
-        if (!resolved) throw new Error("Unresolved preview " + match[1] + " reference: " + value);
+        if (!resolved)
+          throw new Error(
+            "Unresolved preview " + match[1] + " reference: " + value,
+          );
         refs[match[1]] = resolved;
       }
       if (!refs.example)

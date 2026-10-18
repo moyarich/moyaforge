@@ -5,7 +5,10 @@ import {
   type DirectiveComponentMap,
 } from "./plugins/remark/remark-directive-components.js";
 import type { PluggableList } from "unified";
-import { remarkPreviewDirectives, type PreviewDirectiveConfig } from "./plugins/remark/remark-preview-directives.js";
+import {
+  remarkPreviewDirectives,
+  type PreviewDirectiveConfig,
+} from "./plugins/remark/remark-preview-directives.js";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -40,7 +43,14 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       remarkGfm,
       [remarkFlexibleContainers, customBlockOptions],
       ...(options.previewDirectives
-        ? [[remarkPreviewDirectives, options.previewDirectives === true ? {} : options.previewDirectives] as const]
+        ? [
+            [
+              remarkPreviewDirectives,
+              options.previewDirectives === true
+                ? {}
+                : options.previewDirectives,
+            ] as const,
+          ]
         : []),
       ...(options.directiveComponents
         ? [[remarkDirectiveComponents, options.directiveComponents] as const]
