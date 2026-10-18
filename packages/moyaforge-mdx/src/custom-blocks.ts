@@ -1,35 +1,22 @@
-import type { Root, RootContent } from "mdast";
-import type { ContainerDirective } from "mdast-util-directive";
-import { visit } from "unist-util-visit";
-
 /**
- * Render arbitrary container directives as styling-neutral custom blocks.
- * Presentation is deliberately owned by the consuming application.
+ * Presentation-neutral mapping for arbitrary ::: type Title custom blocks.
+ *
+ * No type enumerations: consumers own the styling for every generated class.
  */
-export function remarkCustomBlocks() {
-  return (tree: Root) => {
-    visit(tree, "containerDirective", (node: ContainerDirective) => {
-      // Directive names are authored identifiers, not a fixed set of variants.
-      // Keep them to safe CSS-token characters and avoid empty/invalid classes.
-      const type = node.name.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
-      if (!/^[a-z_]/.test(type)) return;
-      const title = node.children[0];
-      const hasTitle = title?.type === "paragraph" && !!title.data?.directiveLabel;
-      if (hasTitle) {
-        title.data = {
-          ...title.data,
-          hName: "p",
-          hProperties: { className: ["custom-block-title"] },
-        };
-      }
-      node.data = {
-        ...node.data,
-        hName: "div",
-        hProperties: {
-          className: ["custom-block", type],
-          "data-type": type,
-        },
-      };
-    });
-  };
+export const customBlockOptions = {
+  containerTagName: "div",
+  containerClassName: (type?: string) => [
+    "custom-block",
+    ...(type ? [normalizeType(type)] : []),
+  ],
+  containerProperties: (type?: string) =>
+    type ? { "data-type": normalizeType(type) } : {},
+  titleTagName: "p",
+  titleClassName: "custom-block-title",
+};
+
+/** Prevent user-provided type names from escaping a single CSS class token. */
+function normalizeType(type: string): string {
+  const normalized = type.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
+  return /^[a-z_]/.test(normalized) ? normalized : `type-${normalized}`;
 }
