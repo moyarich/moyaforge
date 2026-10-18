@@ -31,6 +31,7 @@ export interface PageInput {
 export interface NormalizedPage {
   source: string;
   file: string;
+  sourcePath?: string;
   path: string;
   title: string;
   label: string;

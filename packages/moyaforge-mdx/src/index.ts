@@ -54,7 +54,7 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
   };
 }
 
-export * from "./plugins/remark/directive-components.js";
+export * from "./plugins/remark/remark-directive-components.js";
 
 export * from "./registry/registry.js";
 
@@ -69,3 +69,5 @@ export * from "./content/headings.js";
 export * from "./content/links.js";
 
 export * from "./content/check-links.js";
+
+export * from "./plugins/remark/remark-source-links.js";

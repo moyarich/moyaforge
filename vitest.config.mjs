@@ -21,9 +21,9 @@ export default defineConfig({
   plugins: [componentCssForNodeTests],
   test: {
     include: [
-      "tests/**/*.test.{js,jsx,ts,tsx}",
-      "packages/*/tests/**/*.test.{js,jsx,ts,tsx}",
-      "apps/*/tests/**/*.test.{js,jsx,ts,tsx}",
+      "tests/**/*.test.{js,jsx,mjs,ts,tsx}",
+      "packages/*/tests/**/*.test.{js,jsx,mjs,ts,tsx}",
+      "apps/*/tests/**/*.test.{js,jsx,mjs,ts,tsx}",
     ],
     environment: "node",
   },

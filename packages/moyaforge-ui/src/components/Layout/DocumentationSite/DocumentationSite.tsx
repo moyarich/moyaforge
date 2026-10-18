@@ -5,11 +5,14 @@ export interface DocumentationSitePage {
   path: string;
   label: string;
   source?: string;
+  /** Repository-relative path to the page's source file. */
+  sourcePath?: string;
 }
 export interface DocumentationSiteProps {
   title: string;
   children: ReactNode;
   repository?: string;
+  repositoryBranch?: string;
   pages?: readonly DocumentationSitePage[];
   currentPath?: string;
   sidebar?: ReactNode;
@@ -29,6 +32,7 @@ export function DocumentationSite({
   title,
   children,
   repository,
+  repositoryBranch = "main",
   pages = [],
   currentPath,
   sidebar,
@@ -86,6 +90,10 @@ export function DocumentationSite({
   }, [query, search]);
   const currentIndex = pages.findIndex((page) => page.path === currentPath);
   const current = pages[currentIndex];
+  const contributeHref =
+    current?.sourcePath && repository
+      ? `${repository.replace(/\/$/, "")}/edit/main/${current.sourcePath.split("/").map(encodeURIComponent).join("/")}`
+      : repository;
   const navigate = (path: string) => {
     setMenu(false);
     setQuery("");
@@ -200,7 +208,13 @@ export function DocumentationSite({
           {children}
           <footer className="mf-page-footer">
             {repository ? (
-              <a href={repository}>Contribute on GitHub ↗</a>
+              <a
+                href={contributeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Contribute on GitHub ↗
+              </a>
             ) : null}
             <div>
               {currentIndex > 0
