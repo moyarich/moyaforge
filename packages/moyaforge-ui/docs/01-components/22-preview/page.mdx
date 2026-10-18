@@ -64,6 +64,21 @@ import source from "./ButtonExample.tsx?raw";
 
 The `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.
 
+
+## Custom trigger with `asChild`
+
+Use `asChild` on the code toggle to apply its behavior to a custom button without nesting interactive elements.
+
+```tsx
+<PreviewCodeToggle asChild>
+  <button type="button" className="my-code-trigger">
+    Show source
+  </button>
+</PreviewCodeToggle>
+```
+
+The child must be a single native button or a button-like React component that forwards click handlers and ARIA attributes. For non-button elements, provide your own appropriate accessible semantics and handlers instead of using this trigger.
+
 ## Theme variables
 
 Use `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius`, and `--mf-preview-padding` in application CSS.
