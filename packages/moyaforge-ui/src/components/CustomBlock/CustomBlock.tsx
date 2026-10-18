@@ -16,7 +16,10 @@ export function CustomBlock({
   children,
   ...props
 }: CustomBlockProps) {
-  const classes = new Set(["custom-block", ...(className ?? "").split(/\s+/).filter(Boolean)]);
+  const classes = new Set([
+    "custom-block",
+    ...(className ?? "").split(/\s+/).filter(Boolean),
+  ]);
   return (
     <div {...props} className={[...classes].join(" ")}>
       {children}

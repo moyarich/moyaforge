@@ -5,7 +5,8 @@
   --custom-block-background: transparent;
   --custom-block-radius: 0.375rem;
   padding: var(--custom-block-padding);
-  border-inline-start: var(--custom-block-border-width) solid var(--custom-block-border-color);
+  border-inline-start: var(--custom-block-border-width) solid
+    var(--custom-block-border-color);
   border-radius: var(--custom-block-radius);
   background: var(--custom-block-background);
 }
