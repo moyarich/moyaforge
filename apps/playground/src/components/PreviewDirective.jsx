@@ -1,6 +1,12 @@
 import {
-  Preview, PreviewHeader, PreviewTitle, PreviewActions, PreviewCodeToggle,
-  PreviewCopyButton, PreviewContent, PreviewSource,
+  Preview,
+  PreviewHeader,
+  PreviewTitle,
+  PreviewActions,
+  PreviewCodeToggle,
+  PreviewCopyButton,
+  PreviewContent,
+  PreviewSource,
 } from "../../../../packages/moyaforge-ui/src/components/Preview/index.ts";
 import CounterExample from "../../../../docs/examples/preview/CounterExample.tsx";
 import counterSource from "../../../../docs/examples/preview/CounterExample.tsx?raw";
@@ -11,7 +17,9 @@ const examples = {
 };
 
 export function PreviewDirective({ title = "Preview", example, source }) {
-  const registered = Object.hasOwn(examples, example) ? examples[example] : undefined;
+  const registered = Object.hasOwn(examples, example)
+    ? examples[example]
+    : undefined;
   if (!registered || (source && source !== example)) {
     return <p role="alert">Unknown Preview example.</p>;
   }
@@ -20,9 +28,14 @@ export function PreviewDirective({ title = "Preview", example, source }) {
     <Preview source={registered.source}>
       <PreviewHeader>
         <PreviewTitle>{title}</PreviewTitle>
-        <PreviewActions><PreviewCodeToggle /><PreviewCopyButton /></PreviewActions>
+        <PreviewActions>
+          <PreviewCodeToggle />
+          <PreviewCopyButton />
+        </PreviewActions>
       </PreviewHeader>
-      <PreviewContent><Component /></PreviewContent>
+      <PreviewContent>
+        <Component />
+      </PreviewContent>
       <PreviewSource code={registered.source} language="tsx" />
     </Preview>
   );
