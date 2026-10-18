@@ -112,7 +112,9 @@ export function DocOutline({
           <ul>
             {visibleItems.map((item) => (
               <li key={item.id} data-level={item.level}>
-                {renderLink ? renderLink(item, active === item.id) : (
+                {renderLink ? (
+                  renderLink(item, active === item.id)
+                ) : (
                   <a
                     href={`#${item.id}`}
                     aria-current={active === item.id ? "location" : undefined}
