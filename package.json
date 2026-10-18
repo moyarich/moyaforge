@@ -27,14 +27,14 @@
     "test:consumer:browser": "npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
     "build": "npm run build --workspaces",
     "test:unit": "vitest run --exclude packages/moyaforge/tests/docs-routes.test.js --exclude packages/moyaforge/tests/mdx.test.js --exclude packages/moyaforge/tests/sidebar-composition.test.js --exclude packages/moyaforge/tests/toc-render.test.js",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --project=vite-consumer",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check",
     "pack:audit": "node scripts/audit-framework-pack.mjs",
     "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
     "imports:audit": "node scripts/audit-framework-imports.mjs",
     "imports:audit:strict": "node scripts/audit-framework-imports.mjs --strict",
-    "test:cli:browser": "playwright test --config playwright.cli.config.ts"
+    "test:cli:browser": "playwright test --project=cli-consumer"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
