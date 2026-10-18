@@ -3,10 +3,13 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
 import rehypeShiki from "@shikijs/rehype";
-import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+import { createMdxOptions, discoverContent, remarkSourceLinks } from "@moyarich/moyaforge-mdx";
 import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
 import registry from "./registry.config.ts";
 import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
+
+const contentRoot = fileURLToPath(new URL(".", import.meta.url));
+const { registry: discovered } = await discoverContent(registry, contentRoot);
 
 export default defineConfig({
   plugins: [
@@ -22,6 +25,7 @@ export default defineConfig({
       enforce: "pre",
       ...mdx(
         createMdxOptions({
+          remarkPlugins: [[remarkSourceLinks, { config: registry, root: contentRoot, routes: discovered.routes }]],
           directiveComponents: {
             "*": {
               component: "CustomBlock",
