@@ -1,7 +1,13 @@
 import "./PublishTabsPreview.css";
 import {
-  Preview, PreviewHeader, PreviewTitle, PreviewActions, PreviewCodeToggle,
-  PreviewContent, PreviewSource, PreviewCopyButton,
+  Preview,
+  PreviewHeader,
+  PreviewTitle,
+  PreviewActions,
+  PreviewCodeToggle,
+  PreviewContent,
+  PreviewSource,
+  PreviewCopyButton,
 } from "../../../src/components/Preview/index.js";
 import { MonacoCodeGroup } from "../../../src/components/Monaco/MonacoCodeGroup.js";
 
@@ -21,7 +27,9 @@ const files = [
 /** Multi-file Monaco tabs are owned by Monaco, not Preview. */
 export default function PublishTabsPreview() {
   return (
-    <Preview source={files.map((file) => `# ${file.name}\n${file.value}`).join("\n")}>
+    <Preview
+      source={files.map((file) => `# ${file.name}\n${file.value}`).join("\n")}
+    >
       <PreviewHeader>
         <PreviewTitle>Publishing commands</PreviewTitle>
         <PreviewActions>
@@ -33,13 +41,20 @@ export default function PublishTabsPreview() {
       </PreviewHeader>
       <PreviewContent asChild>
         <div className="mf-publish-preview-stage">
-          <p>Open the editor to switch between npm and GitHub Packages commands.</p>
+          <p>
+            Open the editor to switch between npm and GitHub Packages commands.
+          </p>
           <p>These are dry-run examples; they do not publish packages.</p>
         </div>
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-publish-preview-editor">
-          <MonacoCodeGroup files={files} editable height={220} theme="vs-dark" />
+          <MonacoCodeGroup
+            files={files}
+            editable
+            height={220}
+            theme="vs-dark"
+          />
         </div>
       </PreviewSource>
     </Preview>
