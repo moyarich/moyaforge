@@ -48,7 +48,7 @@ export function remarkPreviewDirectives({
         if (
           !/^\.\/[a-zA-Z0-9_./-]+\.(?:tsx|jsx|ts|js|css)$/.test(value) ||
           value.includes("\\") ||
-          value.split("/").some((part) => part === ".." || part === "." || part === "") ||
+          value.slice(2).split("/").some((part) => part === ".." || part === "." || part === "") ||
           /[?#]/.test(value)
         )
           throw new Error(
