@@ -2,7 +2,6 @@ name: Build component registry
 
 on:
   push:
-    branches: [main]
     paths:
       - "packages/moyaforge-ui/src/**"
       - "packages/moyaforge/src/**"
@@ -24,6 +23,7 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ github.actor != 'github-actions[bot]' }}
     name: Generate canonical registry and CSS entries
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +31,8 @@ jobs:
         with:
           # Build the current branch tip so an older queued run cannot publish stale source.
           ref: ${{ github.ref_name }}
+          # A configured workflow token can trigger follow-up PR CI after regeneration.
+          token: ${{ secrets._WORKFLOW_TOKEN || github.token }}
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
