@@ -31,7 +31,7 @@ const workflow = readFileSync(
   "utf8",
 );
 const match = workflow.match(
-  /      - name: Commit generated registry files when changed\n        shell: bash\n        run: \|\n((?:          .*\n|\n)+)/,
+  /      - name: Commit generated registry files when changed\n(?:        id: [^\n]+\n)?        shell: bash\n        run: \|\n((?:          .*\n|\n)+)/,
 );
 assert.ok(match, "registry workflow commit step exists");
 const script = match[1]
@@ -68,7 +68,10 @@ function fixture(fn) {
       repo,
       peer,
       execute: () =>
-        run(repo, "bash", ["-e", "-c", script], { GITHUB_REF_NAME: "main" }),
+        run(repo, "bash", ["-e", "-c", script], {
+          GITHUB_REF_NAME: "main",
+          GITHUB_OUTPUT: join(root, "outputs"),
+        }),
     });
   } finally {
     rmSync(root, { recursive: true, force: true });
