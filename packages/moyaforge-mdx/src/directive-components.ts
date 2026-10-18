@@ -8,6 +8,8 @@ export interface DirectiveComponent {
   childComponent?: string;
   /** Attribute receiving the directive's optional heading. Defaults to label. */
   titleProp?: string;
+  /** Forward the authored directive type to a generic component. */
+  typeProp?: string;
 }
 
 export type DirectiveComponentMap = Record<string, DirectiveComponent>;
@@ -47,7 +49,7 @@ function transform(
   childComponent?: string,
 ): Node {
   const type = directiveType(node);
-  const definition = type ? mappings[type] : undefined;
+  const definition = type ? (mappings[type] ?? mappings["*"]) : undefined;
   if (definition || (type === childType && childComponent)) {
     const selected = definition ?? { component: childComponent! };
     const children = [...(node.children ?? [])];
@@ -61,20 +63,18 @@ function transform(
     const title = classes.includes("custom-block-title")
       ? titleOf(children.shift()!)
       : undefined;
+    const attributes: Attribute[] = title
+      ? [{ type: "mdxJsxAttribute", name: selected.titleProp ?? "label", value: title }]
+      : [];
+    if (selected.typeProp && type) {
+      attributes.push({ type: "mdxJsxAttribute", name: selected.typeProp, value: type });
+    }
     return jsx(
       selected.component,
       children.map((child) =>
         transform(child, mappings, selected.childType, selected.childComponent),
       ),
-      title
-        ? [
-            {
-              type: "mdxJsxAttribute",
-              name: selected.titleProp ?? "label",
-              value: title,
-            },
-          ]
-        : [],
+      attributes,
     );
   }
   if (node.children)
