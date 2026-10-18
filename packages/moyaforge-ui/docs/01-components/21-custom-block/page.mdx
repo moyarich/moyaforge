@@ -22,7 +22,7 @@ myCustomComparator: (
   { createDiff, threshold = 0.1, maxDiff = 100 },
 ) => {
   // Comparison logic
-}
+};
 ```
 
 :::
@@ -57,8 +57,12 @@ The same component can wrap arbitrary React children, including existing code co
   <p className="custom-block-title">Custom React Block</p>
   <p>This example renders the installable CustomBlock component directly.</p>
   <CodeGroup label="Package managers">
-    <CodeTab label="npm"><pre>npm install example-package</pre></CodeTab>
-    <CodeTab label="pnpm"><pre>pnpm add example-package</pre></CodeTab>
+    <CodeTab label="npm">
+      <pre>npm install example-package</pre>
+    </CodeTab>
+    <CodeTab label="pnpm">
+      <pre>pnpm add example-package</pre>
+    </CodeTab>
   </CodeGroup>
 </CustomBlock>
 
