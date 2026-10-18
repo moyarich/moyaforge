@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildDocumentationGroups } from "../../dist/navigation.js";
+import { buildDocumentationGroups } from "../../dist/navigation/tree.js";
 
 const route = (source, path, order = 0, navigation = "visible") => ({
   source,
