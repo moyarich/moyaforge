@@ -90,6 +90,6 @@ const components = defineMdxComponentRegistry({
   Callout: PlaygroundCallout,
 });
 
-export function PlaygroundMdxProvider({ children }) {
-  return <MDXProvider components={components}>{children}</MDXProvider>;
+export function PlaygroundMdxProvider({ children, components: overrides = {} }) {
+  return <MDXProvider components={{ ...components, ...overrides }}>{children}</MDXProvider>;
 }
