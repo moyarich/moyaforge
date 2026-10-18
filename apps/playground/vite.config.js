@@ -29,6 +29,7 @@ export default defineConfig({
       enforce: "pre",
       ...mdx(
         createMdxOptions({
+          previewDirectives: true,
           remarkPlugins: [
             [
               remarkSourceLinks,
