@@ -44,7 +44,7 @@ export default function MonacoPreviewExample() {
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-monaco-preview-editor">
-          <MonacoCodeGroup files={files} editable height={320} />
+          <MonacoCodeGroup files={files} editable height={320} theme="vs-dark" />
         </div>
       </PreviewSource>
     </Preview>

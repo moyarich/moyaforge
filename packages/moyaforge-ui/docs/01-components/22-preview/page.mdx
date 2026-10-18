@@ -22,17 +22,27 @@ Compose an interactive preview with replaceable header, title, actions, content,
 
 <SimplePreviewExample />
 
+## Install Monaco in the playground
+
+The real Monaco editor is an optional dependency of the consuming playground, not of `Preview` itself:
+
+```bash
+npm install --workspace @moyarich/moyaforge-playground @monaco-editor/react monaco-editor
+```
+
+`MonacoCodeGroup` imports `@monaco-editor/react` and `monaco-editor` provides the editor engine.
+
 ## Optional Monaco editor
 
 <MonacoPreviewExample />
 
-The Monaco example is loaded only by the page that uses it; Preview itself has no Monaco dependency. The editable source is not executed or compiled automatically.
+This example uses the full Monaco editor, supplied by `@monaco-editor/react`, with TSX and CSS tabs. Editing source does not execute or compile it.
 
 ## Monaco file tabs: publishing commands
 
 <PublishTabsPreview />
 
-The editable Monaco tabs demonstrate both npm and GitHub Packages dry-run commands, following the Workspace Tools publishing documentation. File tabs are managed by `MonacoCodeGroup`, while `PreviewSource asChild` controls the editor panel visibility. Editing the example does not execute the commands.
+The editable Monaco file tabs demonstrate npm and GitHub Packages dry-run commands with `MonacoCodeGroup`. `PreviewSource asChild` controls the editor panel visibility. Editing the example does not execute the commands.
 
 ## Files
 
