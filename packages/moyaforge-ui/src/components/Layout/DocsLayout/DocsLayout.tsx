@@ -1,5 +1,6 @@
 import "./DocsLayout.css";
 import { useEffect, useState, type ReactNode } from "react";
+import { headingIdFromHash } from "../../DocOutline/DocOutline.js";
 
 /** Page metadata needed by the editable documentation layout. */
 export interface DocsLayoutPage {
@@ -100,7 +101,7 @@ export function DocsLayout({
   const [activeId, setActiveId] = useState("");
   useEffect(() => {
     const update = () =>
-      setActiveId(decodeURIComponent(window.location.hash.slice(1)));
+      setActiveId(headingIdFromHash(window.location.hash));
     update();
     window.addEventListener("hashchange", update);
     return () => window.removeEventListener("hashchange", update);
