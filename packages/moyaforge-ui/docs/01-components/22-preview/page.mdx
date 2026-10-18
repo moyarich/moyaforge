@@ -13,7 +13,11 @@ description: Live component previews with optional source viewing and copy actio
 
 import { Preview } from "../../../src/components/Preview/Preview.tsx";
 
-<Preview title="Interactive example" source={'<button type="button">Try it</button>'} language="tsx">
+<Preview
+  title="Interactive example"
+  source={'<button type="button">Try it</button>'}
+  language="tsx"
+>
   <button type="button">Try it</button>
 </Preview>
 
@@ -24,7 +28,7 @@ import { Preview } from "@/components/moyaforge/components/Preview";
 
 <Preview title="Button" source={'<button type="button">Click me</button>'}>
   <button type="button">Click me</button>
-</Preview>
+</Preview>;
 ```
 
 Source text is explicit; the component does not attempt to serialize React children. MDX tooling can supply precompiled source without coupling Preview to an MDX compiler.

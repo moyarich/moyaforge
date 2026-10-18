@@ -1,6 +1,12 @@
 [data-moyaforge-preview] {
-  --_preview-background: var(--mf-preview-background, var(--mf-color-surface, transparent));
-  --_preview-border: var(--mf-preview-border, var(--mf-color-border, currentColor));
+  --_preview-background: var(
+    --mf-preview-background,
+    var(--mf-color-surface, transparent)
+  );
+  --_preview-border: var(
+    --mf-preview-border,
+    var(--mf-color-border, currentColor)
+  );
   --_preview-radius: var(--mf-preview-radius, 0.75rem);
   --_preview-padding: var(--mf-preview-padding, 1.5rem);
   border: 1px solid var(--_preview-border);

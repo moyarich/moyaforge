@@ -1,9 +1,17 @@
 import "./Preview.css";
-import { useId, useState, type ComponentPropsWithoutRef, type ReactNode } from "react";
+import {
+  useId,
+  useState,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from "react";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 
 /** Source is supplied by the author or MDX compiler, never extracted from rendered React children. */
-export interface PreviewProps extends Omit<ComponentPropsWithoutRef<"section">, "title"> {
+export interface PreviewProps extends Omit<
+  ComponentPropsWithoutRef<"section">,
+  "title"
+> {
   children: ReactNode;
   /** Optional human-readable label for the example. */
   title?: string;
