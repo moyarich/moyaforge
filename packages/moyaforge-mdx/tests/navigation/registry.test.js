@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { buildPageRegistry } from "../../dist/registry.js";
+import { buildPageRegistry } from "../../dist/registry/registry.js";
 
 test("discovers root and nested landing pages with path-derived labels and ordering", () => {
   const registry = buildPageRegistry({

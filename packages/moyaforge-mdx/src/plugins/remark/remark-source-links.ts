@@ -1,6 +1,6 @@
 import { dirname, resolve } from "node:path";
-import type { ContentSourcesConfig } from "./content.js";
-import type { NormalizedPage } from "./registry.js";
+import type { ContentSourcesConfig } from "../../content/discovery.js";
+import type { NormalizedPage } from "../../registry/registry.js";
 
 export interface SourceLinkOptions {
   config: ContentSourcesConfig;

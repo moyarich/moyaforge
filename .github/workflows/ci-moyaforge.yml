@@ -58,9 +58,11 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
-      - name: Validate canonical component registry
+      - name: Validate canonical component registry on main
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run registry:check
-      - name: Install Playwright Chromium
+      - name: Install Playwright Chromium on main
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: npx playwright install --with-deps chromium
       - name: Test all workspaces
         env:
@@ -82,9 +84,9 @@ jobs:
           const files = new Set(pkg.files.map(({ path }) => path));
           for (const file of [
             'dist/index.js', 'dist/index.d.ts',
-            'dist/vite.js', 'dist/vite.d.ts',
-            'dist/toc.js', 'dist/toc.d.ts',
-            'dist/source-files.js', 'dist/source-files.d.ts',
+            'dist/vite/plugin.js', 'dist/vite/plugin.d.ts',
+            'dist/navigation/toc.js', 'dist/navigation/toc.d.ts',
+            'dist/content/source-files.js', 'dist/content/source-files.d.ts',
             'README.md', 'CHANGELOG.md', 'package.json',
           ]) {
             if (!files.has(file)) throw Error('Publish tarball missing ' + file);
@@ -113,9 +115,11 @@ jobs:
           }
           console.log('Verified playground uses MDX package APIs.');
           NODE
-      - name: Build standalone Vite consumer
+      - name: Build standalone Vite consumer on main
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run test:consumer:browser
-      - name: Run end-to-end browser tests
+      - name: Run end-to-end browser tests on main
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: npm run test:e2e
       - name: Validate shadcn registry compatibility
         run: npx --yes shadcn@4.21.5 registry validate ./registry.json

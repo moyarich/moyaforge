@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { discoverContent, type ContentSourcesConfig } from "./content.js";
+import { discoverContent, type ContentSourcesConfig } from "./discovery.js";
 import { validateInternalLinks, type LinkIssue } from "./links.js";
 
 /** Build/CI entrypoint using the exact same config, routes and TOC IDs as discovery. */

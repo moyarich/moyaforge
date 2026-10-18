@@ -1,1 +1,3 @@
+@import "./components/DocOutline/DocOutline.css";
 @import "./components/Layout/DocsLayout/DocsLayout.css";
+@import "./components/TableOfContents/TableOfContents.css";

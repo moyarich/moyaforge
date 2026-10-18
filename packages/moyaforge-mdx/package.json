@@ -15,20 +15,20 @@
       "import": "./dist/index.js"
     },
     "./vite": {
-      "types": "./dist/vite.d.ts",
-      "import": "./dist/vite.js"
+      "types": "./dist/vite/plugin.d.ts",
+      "import": "./dist/vite/plugin.js"
     },
     "./source-files": {
-      "types": "./dist/source-files.d.ts",
-      "import": "./dist/source-files.js"
+      "types": "./dist/content/source-files.d.ts",
+      "import": "./dist/content/source-files.js"
     },
     "./toc": {
-      "types": "./dist/toc.d.ts",
-      "import": "./dist/toc.js"
+      "types": "./dist/navigation/toc.d.ts",
+      "import": "./dist/navigation/toc.js"
     },
     "./navigation": {
-      "types": "./dist/navigation.d.ts",
-      "import": "./dist/navigation.js"
+      "types": "./dist/navigation/tree.d.ts",
+      "import": "./dist/navigation/tree.js"
     }
   },
   "files": [

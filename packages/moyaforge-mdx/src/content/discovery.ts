@@ -1,6 +1,6 @@
 import { extractPageHeadings } from "./headings.js";
 import { isContentPageFile } from "./source-files.js";
-import type { TocHeading } from "./toc.js";
+import type { TocHeading } from "../navigation/toc.js";
 import { readFile, stat } from "node:fs/promises";
 import { parseDocument } from "yaml";
 import { glob } from "tinyglobby";
@@ -11,7 +11,7 @@ import {
   type PageInput,
   type PageRegistry,
   type TocSetting,
-} from "./registry.js";
+} from "../registry/registry.js";
 
 export interface ContentSource {
   base: string;
