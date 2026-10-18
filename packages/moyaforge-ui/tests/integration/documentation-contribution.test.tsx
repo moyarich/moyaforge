@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocumentationSite } from "../src/components/Layout/DocumentationSite/DocumentationSite.tsx";
+import { DocumentationSite } from "../../src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 
 describe("documentation contribution link", () => {
   it("opens the current page source on GitHub", () => {

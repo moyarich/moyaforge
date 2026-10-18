@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { TableOfContents } from "../src/components/TableOfContents/TableOfContents.tsx";
-import { DocOutline } from "../src/components/DocOutline/DocOutline.tsx";
-import { headingIdFromHash } from "../src/utils/heading-fragment.ts";
+import { TableOfContents } from "../../src/components/TableOfContents/TableOfContents.tsx";
+import { DocOutline } from "../../src/components/DocOutline/DocOutline.tsx";
+import { headingIdFromHash } from "../../src/utils/heading-fragment.ts";
 
 describe("TableOfContents compiler metadata", () => {
   it("renders supplied headings without a browser DOM", () => {

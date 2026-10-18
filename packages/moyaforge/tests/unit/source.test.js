@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { createMoyaForgeSource } from "../dist/utils/content/index.js";
+import { createMoyaForgeSource } from "../../dist/utils/content/index.js";
 
 test("multiple collections resolve ordered page URLs and metadata", () => {
   const source = createMoyaForgeSource({

@@ -2,8 +2,8 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsLayout } from "../dist/components/Layout/DocsLayout/DocsLayout.js";
-import { DocOutline } from "../dist/components/DocOutline/DocOutline.js";
+import { DocsLayout } from "../../dist/components/Layout/DocsLayout/DocsLayout.js";
+import { DocOutline } from "../../dist/components/DocOutline/DocOutline.js";
 
 const headings = [
   {

@@ -3,7 +3,7 @@ import { test } from "vitest";
 import {
   parseMoyaForgePageMetadata,
   resolveMoyaForgeTocOptions,
-} from "../dist/utils/content/index.js";
+} from "../../dist/utils/content/index.js";
 
 test("frontmatter uses label or title with clear defaults", () => {
   assert.equal(

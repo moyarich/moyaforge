@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
-import { RegistryRouteView } from "../dist/components/Routing/RegistryRoutes.js";
+import { RegistryRouteView } from "../../dist/components/Routing/RegistryRoutes.js";
 
 const routes = [
   {

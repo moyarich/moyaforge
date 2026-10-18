@@ -2,8 +2,8 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsRoutes } from "../dist/components/DocsRoutes/DocsRoutes.js";
-import { createMoyaForgeSource } from "../dist/utils/content/index.js";
+import { DocsRoutes } from "../../dist/components/DocsRoutes/DocsRoutes.js";
+import { createMoyaForgeSource } from "../../dist/utils/content/index.js";
 
 const source = createMoyaForgeSource({
   docs: {
