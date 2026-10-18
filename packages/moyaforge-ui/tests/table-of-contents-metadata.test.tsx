@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { TableOfContents } from "../src/components/TableOfContents/TableOfContents.tsx";
-import { DocOutline } from "../src/components/DocOutline/DocOutline.tsx";
+import { DocOutline, headingIdFromHash } from "../src/components/DocOutline/DocOutline.tsx";
 
 describe("TableOfContents compiler metadata", () => {
   it("renders supplied headings without a browser DOM", () => {
@@ -45,5 +45,16 @@ describe("DocOutline router integration", () => {
     );
     expect(html).toContain('href="/docs/guide#install"');
     expect(html).toContain("Install");
+  });
+});
+
+
+describe("router-aware outline fragments", () => {
+  it("reads BrowserRouter and HashRouter heading ids", () => {
+    expect(headingIdFromHash("#installation")).toBe("installation");
+    expect(headingIdFromHash("#/ui/components/code-block#installation")).toBe("installation");
+    expect(headingIdFromHash("#/ui/components/code-block")).toBe("");
+    expect(headingIdFromHash("#/docs/page#some%20heading")).toBe("some heading");
+    expect(headingIdFromHash("#/docs/page#bad%ZZ")).toBe("bad%ZZ");
   });
 });
