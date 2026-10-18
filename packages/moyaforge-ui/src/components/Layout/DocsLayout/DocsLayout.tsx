@@ -116,11 +116,24 @@ export function DocsLayout({
   const headings = toc
     ? visibleHeadings(toc.headings, toc.minDepth ?? 2, toc.maxDepth ?? 3)
     : [];
-  const configuredOutline = headings.length ? (
-    <nav aria-label={toc && toc.label ? toc.label : "On this page"}>
-      <strong>{toc && toc.label ? toc.label : "On this page"}</strong>
+  const outlineLabel = toc && toc.label ? toc.label : "On this page";
+  const outlineLinks = (
+    <nav aria-label={outlineLabel}>
       <HeadingLinks headings={headings} activeId={activeId} />
     </nav>
+  );
+  const configuredOutline = headings.length ? (
+    toc && toc.collapsible ? (
+      <details data-moyaforge-docs-disclosure="" open={toc.defaultOpen ?? true}>
+        <summary>{outlineLabel}</summary>
+        {outlineLinks}
+      </details>
+    ) : (
+      <div data-moyaforge-docs-outline-content="">
+        <strong>{outlineLabel}</strong>
+        {outlineLinks}
+      </div>
+    )
   ) : null;
   const sidebarContent = (
     <nav aria-label="Documentation navigation">
