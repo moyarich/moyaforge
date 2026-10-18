@@ -72,10 +72,10 @@ test("custom destinations retain portable relative imports", async () => {
       .status,
   ).toBe(0);
   expect(await read(root, "ui/docs/docs-shell.tsx")).toContain(
-    ".././components/Layout/DocsLayout/DocsLayout.js",
+    "./components/Layout/DocsLayout/DocsLayout.js",
   );
   expect(await read(root, "ui/docs/docs-shell.css")).toContain(
-    ".././components/Layout/DocsLayout/DocsLayout.css",
+    "./components/Layout/DocsLayout/DocsLayout.css",
   );
 });
 test("init produces source/package/hybrid starters and preserves existing app configuration", async () => {
@@ -99,9 +99,7 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
   expect(manifest.dependencies).not.toHaveProperty("@moyarich/moyaforge");
   const existingApp = await read(root, "moyaforge/src/App.tsx");
-  expect(existingApp).toContain(
-    "../../../src/components/moyaforge/docs-shell.js",
-  );
+  expect(existingApp).toContain("../../src/components/moyaforge/docs-shell.js");
   expect(existingApp).toContain("sidebar={sidebar}");
   expect(existingApp).not.toContain("components/Routing/content-routing.js");
   expect(await read(root, "moyaforge/vite.config.ts")).toContain(

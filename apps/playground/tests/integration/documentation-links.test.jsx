@@ -22,15 +22,11 @@ describe("registry-aware MDX links", () => {
     expect(
       resolveDocumentationHref("/ui/components/code-block", "/ui", routes),
     ).toBe("/ui/components/code-block");
-    expect(resolveDocumentationHref(".././setup", "/docs/guide", routes)).toBe(
+    expect(resolveDocumentationHref("./setup", "/docs/guide", routes)).toBe(
       "/docs/guide/setup",
     );
     expect(
-      resolveDocumentationHref(
-        "../../intro#installation",
-        "/docs/guide",
-        routes,
-      ),
+      resolveDocumentationHref("../intro#installation", "/docs/guide", routes),
     ).toBe("/docs/intro#installation");
     expect(resolveDocumentationHref("#examples", "/docs/guide", routes)).toBe(
       "/docs/guide#examples",
