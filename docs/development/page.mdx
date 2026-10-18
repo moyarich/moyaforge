@@ -55,6 +55,22 @@ To exercise changed output, push a temporary test branch with a canonical compon
 
 The workflow uses the repository `GITHUB_TOKEN` with `contents: write`, checks out the selected branch tip, and serializes runs by Git ref without canceling an in-progress run. The final push is an ordinary non-force push; if another commit moves the branch, its push must be rejected rather than overwriting the new head. Repository branch-protection/ruleset settings must permit the intended bot update, or the workflow will fail visibly. Do not grant bypass permissions or configure a personal token just to make the job succeed. This workflow does **not** publish npm packages.
 
+## MDX package source ownership
+
+The implementation of `@moyarich/moyaforge-mdx` is grouped by responsibility instead of keeping all source modules at the root:
+
+| Directory | Responsibility |
+| --- | --- |
+| `src/content/` | Content discovery, headings, source-file rules, link analysis and validation |
+| `src/navigation/` | Navigation trees, documentation groups and table-of-contents selection |
+| `src/registry/` | Normalized page registry and route metadata |
+| `src/plugins/remark/` | Remark plugins and custom directive mapping |
+| `src/vite/` | Vite adapter and virtual module generation |
+
+The `src/index.ts` package entry point aggregates the public compiler and registry API. Other supported package subpaths (`/navigation`, `/toc`, `/source-files`, `/vite`) point directly to their implementation files through `package.json` exports. **Do not add source-level compatibility re-export files** solely to retain old directory paths. When relocating source code, update internal imports, the public export map, compiled-module test imports, and CI tarball assertions together.
+
+Release-note labels are applied by the reusable classifier on `pull_request_target` using `GITHUB_TOKEN`. If the classifier reports `Resource not accessible by integration (HTTP 403)` despite its declared `issues: write` permission, inspect repository or organization Actions token restrictions; changing the runtime compiler or test workflow will not resolve a denied API write. Classification remains advisory and must not block tests.
+
 ## Ownership and release notes
 
 - `docs/` owns the documentation, examples, and development guide; `apps/playground` only renders them.
