@@ -1,4 +1,3 @@
-import { test } from "@playwright/test";
 import {
   mkdtemp,
   mkdir,
@@ -15,7 +14,7 @@ import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
 
 const repo = resolve(import.meta.dirname, "../../../..");
-test("packed CLI consumers", async () => {
+export async function verifyPackedConsumer(fixture, index) {
   const temp = await mkdtemp(join(tmpdir(), "moyaforge-packed-consumers-"));
   async function run(cmd, args, cwd) {
     const child = spawn(cmd, args, { cwd, stdio: ["ignore", "pipe", "pipe"] });
@@ -72,12 +71,7 @@ test("packed CLI consumers", async () => {
     );
     const cli = join(unpack, "package/src/cli.js");
     browser = await chromium.launch();
-    for (const [index, fixture] of [
-      { mode: "source", template: "docs", search: false },
-      { mode: "package", template: "docs", search: true },
-      { mode: "source", template: "existing", search: false },
-      { mode: "source", template: "hybrid", search: false },
-    ].entries()) {
+    {
       const root = join(temp, `consumer-${index}`);
       await mkdir(root);
       if (fixture.template === "existing")
@@ -251,4 +245,4 @@ test("packed CLI consumers", async () => {
       await rm(temp, { recursive: true, force: true });
     else console.log(`Consumer fixtures retained at ${temp}`);
   }
-}, 300000);
+}
