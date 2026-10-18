@@ -41,14 +41,7 @@ function PlaygroundShell() {
           path: item.path,
           label: item.label ?? item.title,
           source: item.source,
-          sourcePath:
-            item.source === "docs"
-              ? `docs/${item.file}`
-              : item.source === "ui"
-                ? `packages/moyaforge-ui/docs/${item.file}`
-                : item.source === "packages"
-                  ? `packages/${item.file}`
-                  : undefined,
+          sourcePath: item.sourcePath,
         })),
     [],
   );
