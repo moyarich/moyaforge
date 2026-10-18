@@ -1,6 +1,6 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { extractPageHeadings } from "../dist/index.js";
+import { extractPageHeadings } from "../../dist/index.js";
 
 test("MDX syntax can coexist with Markdown headings without becoming TOC entries", async () => {
   const source = [

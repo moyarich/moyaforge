@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { buildPageRegistry, validateInternalLinks } from "../dist/index.js";
+import { buildPageRegistry, validateInternalLinks } from "../../dist/index.js";
 
 const registry = buildPageRegistry({
   docs: [
