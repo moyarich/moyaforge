@@ -46,19 +46,10 @@ jobs:
             echo "run-checks=true" >> "$GITHUB_OUTPUT"
           fi
 
-  package:
-    needs: deduplicate
-    if: needs.deduplicate.outputs.run-checks == 'true'
-    name: MoyaForge package
-    uses: moyarich/reusable-workflows/.github/workflows/reusable_node-ci.yml@main
-    with:
-      package-directory: packages/moyaforge
-      node-version: "24"
-
   playground:
     needs: deduplicate
     if: needs.deduplicate.outputs.run-checks == 'true'
-    name: Build private playground
+    name: Validate workspace and playground
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -69,14 +60,8 @@ jobs:
       - run: npm ci --include=optional
       - name: Validate canonical component registry
         run: npm run registry:check
-      - name: Test playground, registry, CLI, and MDX workspaces
-        run: |
-          npm test --if-present \
-            --workspace @moyarich/moyaforge-ui \
-            --workspace @moyarich/moyaforge-mdx \
-            --workspace @moyarich/moyaforge-search-sqlite \
-            --workspace @moyarich/moyaforge-cli \
-            --workspace @moyarich/moyaforge-playground
+      - name: Test all workspaces
+        run: npm test --workspaces --if-present
       - name: Validate registered content links and anchors
         run: npm run check:links
       - run: npm run build --workspaces
