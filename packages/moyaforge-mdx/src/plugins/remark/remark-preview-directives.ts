@@ -48,20 +48,28 @@ export function remarkPreviewDirectives({
         if (
           !/^\.\/[a-zA-Z0-9_./-]+\.(?:tsx|jsx|ts|js|css)$/.test(value) ||
           value.includes("\\") ||
-          value.slice(2).split("/").some((part) => part === ".." || part === "." || part === "") ||
+          value
+            .slice(2)
+            .split("/")
+            .some((part) => part === ".." || part === "." || part === "") ||
           /[?#]/.test(value)
         )
           throw new Error(
             `Invalid preview ${match[1]} reference: ${value}. Use a relative file in the current example directory.`,
           );
-        if (refs[match[1]]) throw new Error(`Duplicate preview ${match[1]} reference.`);
+        if (refs[match[1]])
+          throw new Error(`Duplicate preview ${match[1]} reference.`);
         refs[match[1]] = value;
       }
       if (!refs.example)
         throw new Error(
           "::: preview requires an example: ./Example.tsx reference.",
         );
-      if (refs.source && refs.source !== refs.example && !/\.(?:tsx|jsx|ts|js|css)$/.test(refs.source))
+      if (
+        refs.source &&
+        refs.source !== refs.example &&
+        !/\.(?:tsx|jsx|ts|js|css)$/.test(refs.source)
+      )
         throw new Error("Invalid preview source reference.");
       const attributes: Attribute[] = [
         ...(label

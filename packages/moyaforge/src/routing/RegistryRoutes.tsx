@@ -1,4 +1,11 @@
-import { Component as ReactComponent, lazy, Suspense, type ComponentType, type ErrorInfo, type ReactNode } from "react";
+import {
+  Component as ReactComponent,
+  lazy,
+  Suspense,
+  type ComponentType,
+  type ErrorInfo,
+  type ReactNode,
+} from "react";
 import { useLocation } from "react-router-dom";
 import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
 
@@ -37,14 +44,21 @@ class PageLoadBoundary extends ReactComponent<
   }
 
   componentDidCatch(error: Error, _info: ErrorInfo) {
-    console.error("Failed to load documentation page:", this.props.pagePath, error);
+    console.error(
+      "Failed to load documentation page:",
+      this.props.pagePath,
+      error,
+    );
   }
 
   render() {
     if (this.state.error) {
       return (
         <section role="alert">
-          <p>Unable to load this documentation page. A recently deployed version may have replaced its JavaScript files.</p>
+          <p>
+            Unable to load this documentation page. A recently deployed version
+            may have replaced its JavaScript files.
+          </p>
           <button type="button" onClick={() => window.location.reload()}>
             Reload documentation
           </button>
