@@ -45,11 +45,13 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { PlaygroundCallout } from "./components/index.js";
+import { RendererSwitcher } from "./components/RendererSwitcher.jsx";
 
 const components = defineMdxComponentRegistry({
   pre: CodeBlock,
   CodeBlock,
   CustomBlock,
+  RendererSwitcher,
   CodeGroup,
   CodeTab,
   CopyButton,
