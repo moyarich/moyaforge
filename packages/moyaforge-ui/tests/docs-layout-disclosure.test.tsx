@@ -13,7 +13,9 @@ function render(props: Record<string, unknown> = {}) {
       currentUrl: "/guide",
       children: createElement("h2", { id: "intro" }, "Introduction"),
       toc: { headings, collapsible: true, ...((props.toc as object) ?? {}) },
-      ...Object.fromEntries(Object.entries(props).filter(([key]) => key !== "toc")),
+      ...Object.fromEntries(
+        Object.entries(props).filter(([key]) => key !== "toc"),
+      ),
     }),
   );
 }
@@ -38,7 +40,9 @@ describe("DocsLayout TOC disclosure", () => {
     expect(plain).not.toContain("<details");
     expect(plain).toContain("<strong>On this page</strong>");
 
-    const custom = render({ outline: createElement("aside", null, "Custom outline") });
+    const custom = render({
+      outline: createElement("aside", null, "Custom outline"),
+    });
     expect(custom).toContain("Custom outline");
     expect(custom).not.toContain("<details");
   });

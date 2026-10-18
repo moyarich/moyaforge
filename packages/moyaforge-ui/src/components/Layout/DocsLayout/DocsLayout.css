@@ -110,7 +110,9 @@
   padding: 0.4rem 0;
 }
 
-[data-moyaforge-docs-layout] [data-moyaforge-docs-disclosure] > summary:focus-visible {
+[data-moyaforge-docs-layout]
+  [data-moyaforge-docs-disclosure]
+  > summary:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }
