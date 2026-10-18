@@ -19,13 +19,26 @@ import { routes, headings } from "virtual:moyaforge-mdx/metadata";
 import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
 
 function PlaygroundShell() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const page = routes.find(
     (item) =>
       item.path === (pathname.replace(/\/+$/, "") || "/") &&
       item.navigation !== "disabled",
   );
   const navigate = useNavigate();
+  useEffect(() => {
+    if (!hash) return;
+    let id;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch {
+      id = hash.slice(1);
+    }
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pathname, hash]);
   useEffect(() => {
     document.title = `${page?.title ?? "Page not found"} | MoyaForge`;
   }, [page]);
@@ -93,6 +106,14 @@ function PlaygroundShell() {
               title={toc.options.label}
               collapsible={toc.options.collapsible}
               defaultOpen={toc.options.defaultOpen}
+              renderLink={(item, active) => (
+                <a
+                  href={`#${pathname}#${encodeURIComponent(item.id)}`}
+                  aria-current={active ? "location" : undefined}
+                >
+                  {item.label}
+                </a>
+              )}
             />
           </DocOutlineShell>
         ) : null
