@@ -60,7 +60,11 @@ jobs:
       - run: npm ci --include=optional
       - name: Validate canonical component registry
         run: npm run registry:check
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
       - name: Test all workspaces
+        env:
+          MOYAFORGE_REGISTRY_REF: ${{ github.event.pull_request.head.sha || github.sha }}
         run: npm test --workspaces --if-present
       - name: Validate registered content links and anchors
         run: npm run check:links
@@ -111,17 +115,9 @@ jobs:
           NODE
       - name: Build standalone Vite consumer
         run: npm run test:consumer:browser
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
       - name: Run end-to-end browser tests
         run: npm run test:e2e
-      - name: Test packed CLI and source/package consumer apps
-        run: npm run test:cli:consumer
       - name: Validate shadcn registry compatibility
         run: npx --yes shadcn@4.21.5 registry validate ./registry.json
-      - name: Test public GitHub component installation through shadcn
-        env:
-          MOYAFORGE_REGISTRY_REF: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: npm run test:registry:consumer
       - name: Check Pages output
         run: test -s apps/playground/dist/index.html
