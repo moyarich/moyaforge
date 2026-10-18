@@ -2,97 +2,56 @@
 title: Custom Block
 label: Custom Block
 order: 21
-description: Arbitrary Markdown custom blocks with titles, nesting, and code examples.
+description: Render any Markdown admonition with consumer-controlled theme tokens and replaceable MDX components.
 ---
 
 # Custom Block
 
-Custom blocks are parsed by the shared MDX compiler. Each authored directive name becomes an independent CSS class and `data-type`; no predefined variants or icons are required.
+The shared Remark parser supports **any** `::: type Title` directive. Each type is passed to the semantic `CustomBlock` renderer; themes and renderers are controlled by the consuming application rather than hardcoded in Markdown.
 
-## Live Markdown previews
+## Live preview
 
-::: warning Handle Missing Options
+:::: experimental Experimental Feature
 
-The `options` parameter is optional. **Provide default values** when comparing screenshots.
+This feature is under development, and **nested admonitions** are supported.
+
+::: warning Compatibility
+
+This API may change. You can use Markdown and fenced code inside any block.
 
 ```ts
-myCustomComparator: (
-  reference,
-  actual,
-  { createDiff, threshold = 0.1, maxDiff = 100 },
-) => {
-  // Comparison logic
-};
+const options = { fallback: true };
 ```
 
 :::
 
-::: experimental Experimental Feature
+::::
 
-Any new type works without registering it in the parser. Its presentation comes from consumer CSS.
+## Markdown
 
-:::
-
-## Nested blocks
-
+```md
 :::: experimental Experimental Feature
 
-This feature is under development.
+This feature is under development, and **nested admonitions** are supported.
 
 ::: warning Compatibility
 This API may change.
 :::
 
-::: tip Performance
-Caching is recommended.
-:::
-
 ::::
-
-## React component preview
-
-The same component can wrap arbitrary React children, including existing code components.
-
-<CustomBlock className="custom-block demo-variant" data-type="demo-variant">
-  <p className="custom-block-title">Custom React Block</p>
-  <p>This example renders the installable CustomBlock component directly.</p>
-  <CodeGroup label="Package managers">
-    <CodeTab label="npm">
-      <pre>npm install example-package</pre>
-    </CodeTab>
-    <CodeTab label="pnpm">
-      <pre>pnpm add example-package</pre>
-    </CodeTab>
-  </CodeGroup>
-</CustomBlock>
-
-## Authoring syntax
-
-```md
-::: arbitrary Custom title
-
-Normal **Markdown** content and fenced code blocks.
-
-:::
 ```
 
-The compiler emits `class="custom-block arbitrary"` with `data-type="arbitrary"`, preserving any nested blocks and child markup.
+## Themes and renderers
 
-## Styling
-
-Override CSS custom properties in the consuming application instead of hardcoding type-specific variants in the compiler:
+The public CSS variables `--mf-custom-block-bg`, `--mf-custom-block-border`, `--mf-custom-block-radius`, and `--mf-custom-block-padding` support theme customization. Shared `--mf-color-surface` and `--mf-color-border` tokens supply fallback values.
 
 ```css
-.custom-block.demo-variant {
-  --custom-block-border-color: rebeccapurple;
-  --custom-block-background: color-mix(in srgb, rebeccapurple 8%, transparent);
+.custom-block.experimental {
+  --mf-custom-block-bg: var(--my-surface);
+  --mf-custom-block-border: var(--my-accent);
 }
 ```
 
-## Switch renderer and theme
+The playground registers `CustomBlock` with `MDXProvider`. Consumers can replace it using the provider's `components` mapping without recompiling the document. Unknown directive types continue working without additional parser registration.
 
-Change the renderer and CSS theme independently. The semantic content is the same; only the React component mapping and public CSS variables change.
-
-<RendererSwitcher />
-
-The playground's shared MDX compiler maps arbitrary unconfigured directive types to the stable `CustomBlock` component using `type` and `title` props. `code-group` and nested `tab` use stable `CodeGroup` and `CodeTab` names. Consumers override these components through `MDXProvider` without recompilation.
+For interactive code tabs, see [Code Group](/ui/components/code-group).
