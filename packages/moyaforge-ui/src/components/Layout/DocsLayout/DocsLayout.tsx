@@ -100,8 +100,7 @@ export function DocsLayout({
 }: DocsLayoutProps) {
   const [activeId, setActiveId] = useState("");
   useEffect(() => {
-    const update = () =>
-      setActiveId(headingIdFromHash(window.location.hash));
+    const update = () => setActiveId(headingIdFromHash(window.location.hash));
     update();
     window.addEventListener("hashchange", update);
     return () => window.removeEventListener("hashchange", update);
