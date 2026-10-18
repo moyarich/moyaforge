@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
 
 const repo = resolve(import.meta.dirname, "../../..");
-test.skipIf(process.env.MOYAFORGE_MAIN_ONLY_BROWSER === "true")(
+test(
   "GitHub shadcn consumer",
   async () => {
     async function run(command, args, cwd) {
