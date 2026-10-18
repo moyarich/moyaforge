@@ -1,11 +1,15 @@
 import "./Preview.css";
 import {
+  cloneElement,
   createContext,
+  isValidElement,
   useContext,
   useId,
   useState,
   type ComponentPropsWithoutRef,
   type ReactNode,
+  type ReactElement,
+  type MouseEvent,
 } from "react";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 
@@ -99,25 +103,48 @@ export function PreviewTitle(props: ComponentPropsWithoutRef<"span">) {
 export function PreviewActions(props: ComponentPropsWithoutRef<"div">) {
   return <div data-moyaforge-preview-actions="" {...props} />;
 }
-export function PreviewCodeToggle(
-  props: Omit<ComponentPropsWithoutRef<"button">, "type">,
-) {
+export interface PreviewCodeToggleProps
+  extends Omit<ComponentPropsWithoutRef<"button">, "type"> {
+  /** Merge trigger behavior onto one child button or forwardRef button component. */
+  asChild?: boolean;
+}
+
+/** The child must forward onClick and ARIA props; no extra button is rendered. */
+export function PreviewCodeToggle({
+  asChild = false,
+  children,
+  onClick,
+  ...props
+}: PreviewCodeToggleProps) {
   const { view, setView, contentId } = usePreview();
-  return (
-    <button
-      type="button"
-      aria-controls={contentId}
-      aria-expanded={view === "code"}
-      {...props}
-      onClick={(event) => {
-        props.onClick?.(event);
-        if (!event.defaultPrevented)
-          setView(view === "code" ? "preview" : "code");
-      }}
-    >
-      {props.children ?? (view === "code" ? "Preview" : "Code")}
-    </button>
-  );
+  const toggle = (event: MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (!event.defaultPrevented) setView(view === "code" ? "preview" : "code");
+  };
+  const triggerProps = {
+    ...props,
+    "aria-controls": contentId,
+    "aria-expanded": view === "code",
+    onClick: toggle,
+  };
+  if (asChild) {
+    if (!isValidElement(children) || children.type === Symbol.for("react.fragment"))
+      throw new Error("PreviewCodeToggle asChild requires exactly one non-fragment element.");
+    const child = children as ReactElement<ComponentPropsWithoutRef<"button">>;
+    if (typeof child.type === "string" && child.type !== "button")
+      throw new Error("PreviewCodeToggle asChild requires a button or button-like component.");
+    return cloneElement(child, {
+      ...triggerProps,
+      ...child.props,
+      "aria-controls": contentId,
+      "aria-expanded": view === "code",
+      onClick: (event: MouseEvent<HTMLButtonElement>) => {
+        child.props.onClick?.(event);
+        if (!event.defaultPrevented) toggle(event);
+      },
+    });
+  }
+  return <button type="button" {...triggerProps}>{children ?? (view === "code" ? "Preview" : "Code")}</button>;
 }
 export function PreviewCopyButton(
   props: Omit<
