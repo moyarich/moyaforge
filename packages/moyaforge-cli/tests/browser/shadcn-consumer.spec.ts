@@ -148,7 +148,7 @@ test("GitHub shadcn consumer", async () => {
     );
     assert.ok(code.includes("CodeCopyIcon"));
     assert.ok(
-      code.includes('import ".././CodeBlock.css"'),
+      code.includes('import "./CodeBlock.css"'),
       "component owns its CSS import",
     );
     await run("npm", ["exec", "--", "tsc", "--noEmit"], root);
