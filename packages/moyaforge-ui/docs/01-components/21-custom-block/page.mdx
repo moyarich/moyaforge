@@ -1,0 +1,86 @@
+---
+title: Custom Block
+label: Custom Block
+order: 21
+description: Arbitrary Markdown custom blocks with titles, nesting, and code examples.
+---
+
+# Custom Block
+
+Custom blocks are parsed by the shared MDX compiler. Each authored directive name becomes an independent CSS class and `data-type`; no predefined variants or icons are required.
+
+## Live Markdown previews
+
+::: warning Handle Missing Options
+
+The `options` parameter is optional. **Provide default values** when comparing screenshots.
+
+```ts
+myCustomComparator: (
+  reference,
+  actual,
+  { createDiff, threshold = 0.1, maxDiff = 100 },
+) => {
+  // Comparison logic
+}
+```
+
+:::
+
+::: experimental Experimental Feature
+
+Any new type works without registering it in the parser. Its presentation comes from consumer CSS.
+
+:::
+
+## Nested blocks
+
+:::: experimental Experimental Feature
+
+This feature is under development.
+
+::: warning Compatibility
+This API may change.
+:::
+
+::: tip Performance
+Caching is recommended.
+:::
+
+::::
+
+## React component preview
+
+The same component can wrap arbitrary React children, including existing code components.
+
+<CustomBlock className="custom-block demo-variant" data-type="demo-variant">
+  <p className="custom-block-title">Custom React Block</p>
+  <p>This example renders the installable CustomBlock component directly.</p>
+  <CodeGroup label="Package managers">
+    <CodeTab label="npm"><pre>npm install example-package</pre></CodeTab>
+    <CodeTab label="pnpm"><pre>pnpm add example-package</pre></CodeTab>
+  </CodeGroup>
+</CustomBlock>
+
+## Authoring syntax
+
+```md
+::: arbitrary Custom title
+
+Normal **Markdown** content and fenced code blocks.
+
+:::
+```
+
+The compiler emits `class="custom-block arbitrary"` with `data-type="arbitrary"`, preserving any nested blocks and child markup.
+
+## Styling
+
+Override CSS custom properties in the consuming application instead of hardcoding type-specific variants in the compiler:
+
+```css
+.custom-block.demo-variant {
+  --custom-block-border-color: rebeccapurple;
+  --custom-block-background: color-mix(in srgb, rebeccapurple 8%, transparent);
+}
+```
