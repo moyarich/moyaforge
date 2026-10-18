@@ -9,6 +9,17 @@ export interface DocHeading {
   children?: DocHeading[];
 }
 
+/** Resolve the final heading fragment from BrowserRouter or HashRouter URLs. */
+export function headingIdFromHash(hash: string): string {
+  const fragment = hash.lastIndexOf("#");
+  if (fragment < 0) return "";
+  try {
+    return decodeURIComponent(hash.slice(fragment + 1));
+  } catch {
+    return hash.slice(fragment + 1);
+  }
+}
+
 export interface DocOutlineProps {
   /** Build-time heading tree; avoids scanning the DOM for headings. */
   headings?: readonly DocHeading[];
@@ -71,13 +82,7 @@ export function DocOutline({
       setActive(current);
     };
     const onHashChange = () => {
-      const hash = window.location.hash.slice(1);
-      let id = hash;
-      try {
-        id = decodeURIComponent(hash);
-      } catch {
-        /* Keep literal hash. */
-      }
+      const id = headingIdFromHash(window.location.hash);
       if (visibleItems.some((item) => item.id === id)) setActive(id);
       else update();
     };
