@@ -182,27 +182,51 @@ type SlotProps = ComponentPropsWithoutRef<"div"> & { asChild?: boolean };
 /** Merge state and DOM attributes onto a single child that forwards DOM props. */
 function Slot({ children, asChild, ...props }: SlotProps) {
   if (!asChild) return <div {...props}>{children}</div>;
-  if (!isValidElement(children) || children.type === Symbol.for("react.fragment"))
-    throw new Error("Preview asChild requires exactly one non-fragment React element.");
+  if (
+    !isValidElement(children) ||
+    children.type === Symbol.for("react.fragment")
+  )
+    throw new Error(
+      "Preview asChild requires exactly one non-fragment React element.",
+    );
   const child = children as ReactElement<ComponentPropsWithoutRef<"div">>;
   return cloneElement(child, {
     ...child.props,
     ...props,
-    className: [child.props.className, props.className].filter(Boolean).join(" ") || undefined,
+    className:
+      [child.props.className, props.className].filter(Boolean).join(" ") ||
+      undefined,
     style: { ...child.props.style, ...props.style },
   });
 }
 
-export function PreviewContent({ asChild = false, children, ...props }: SlotProps) {
+export function PreviewContent({
+  asChild = false,
+  children,
+  ...props
+}: SlotProps) {
   const { view, contentId } = usePreview();
   return (
-    <Slot asChild={asChild} id={contentId} data-moyaforge-preview-content="" hidden={view === "code"} {...props}>
-      {asChild ? children : <div data-moyaforge-preview-stage="">{children}</div>}
+    <Slot
+      asChild={asChild}
+      id={contentId}
+      data-moyaforge-preview-content=""
+      hidden={view === "code"}
+      {...props}
+    >
+      {asChild ? (
+        children
+      ) : (
+        <div data-moyaforge-preview-stage="">{children}</div>
+      )}
     </Slot>
   );
 }
 
-export interface PreviewSourceProps extends Omit<ComponentPropsWithoutRef<"pre">, "children"> {
+export interface PreviewSourceProps extends Omit<
+  ComponentPropsWithoutRef<"pre">,
+  "children"
+> {
   /** When asChild is enabled, the sole child receives visibility and data attributes. */
   asChild?: boolean;
   children?: ReactNode;
@@ -210,13 +234,22 @@ export interface PreviewSourceProps extends Omit<ComponentPropsWithoutRef<"pre">
   language?: string;
 }
 export function PreviewSource({
-  asChild = false, children, code, language = "tsx", ...props
+  asChild = false,
+  children,
+  code,
+  language = "tsx",
+  ...props
 }: PreviewSourceProps) {
   const { view, source } = usePreview();
   const displayCode = code ?? source ?? "";
   if (asChild) {
-    if (!isValidElement(children) || children.type === Symbol.for("react.fragment"))
-      throw new Error("PreviewSource asChild requires exactly one non-fragment React element.");
+    if (
+      !isValidElement(children) ||
+      children.type === Symbol.for("react.fragment")
+    )
+      throw new Error(
+        "PreviewSource asChild requires exactly one non-fragment React element.",
+      );
     const child = children as ReactElement<ComponentPropsWithoutRef<"div">>;
     return cloneElement(child, {
       ...child.props,
@@ -227,7 +260,12 @@ export function PreviewSource({
     });
   }
   return (
-    <pre data-moyaforge-preview-source="" data-language={language} hidden={view !== "code"} {...props}>
+    <pre
+      data-moyaforge-preview-source=""
+      data-language={language}
+      hidden={view !== "code"}
+      {...props}
+    >
       <code>{displayCode}</code>
     </pre>
   );
