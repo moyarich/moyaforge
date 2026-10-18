@@ -49,9 +49,18 @@ export default function PublishTabsPreview() {
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-publish-preview-editor">
-          <Monaco files={files} renderEditor={({ file, value, onChange }) => (
-              <textarea aria-label={file.name} rows={8} value={value} onChange={(event) => onChange(event.target.value)} style={{ width: "100%" }} />
-            )} />
+          <Monaco
+            files={files}
+            renderEditor={({ file, value, onChange }) => (
+              <textarea
+                aria-label={file.name}
+                rows={8}
+                value={value}
+                onChange={(event) => onChange(event.target.value)}
+                style={{ width: "100%" }}
+              />
+            )}
+          />
         </div>
       </PreviewSource>
     </Preview>
