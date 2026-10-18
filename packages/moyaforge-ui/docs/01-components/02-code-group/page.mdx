@@ -11,14 +11,27 @@ Switch between npm and pnpm command examples. This live example uses the canonic
 
 ## Live preview
 
-<CodeGroup label="Installation commands">
-  <CodeTab label="npm">
-    <pre>npm install @moyarich/moyaforge</pre>
-  </CodeTab>
-  <CodeTab label="pnpm">
-    <pre>pnpm add @moyarich/moyaforge</pre>
-  </CodeTab>
-</CodeGroup>
+The playground maps `code-group` and nested `tab` directives to the reusable React `CodeGroup` and `CodeTab` components.
+
+:::: code-group Package managers
+
+::: tab npm
+
+```bash
+npm install example-package
+```
+
+:::
+
+::: tab pnpm
+
+```bash
+pnpm add example-package
+```
+
+:::
+
+::::
 
 ## Usage
 
@@ -39,48 +52,4 @@ Install the `code-group` component from the MoyaForge component registry. The se
 
 [Browse all UI components](/ui)
 
-## Markdown directive syntax
-
-This playground configures the generic directive mapper so `code-group` becomes a React `CodeGroup` and its nested `tab` directives become `CodeTab` components. The shared parser does not hardcode either name.
-
-:::: code-group Package managers
-
-::: tab npm
-
-```bash
-npm install example-package
-```
-
-:::
-
-::: tab pnpm
-
-```bash
-pnpm add example-package
-```
-
-:::
-
-::::
-
-The equivalent Markdown source:
-
-```md
-:::: code-group Package managers
-
-::: tab npm
-\`\`\`bash
-npm install example-package
-\`\`\`
-:::
-
-::: tab pnpm
-\`\`\`bash
-pnpm add example-package
-\`\`\`
-:::
-
-::::
-```
-
-Consumers can opt into this behavior with `createMdxOptions({ directiveComponents: { "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" } } })`. Unknown directive names remain generic custom blocks.
+The directive mapping is configured through `createMdxOptions({ directiveComponents: { "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" } } })`. Renderers can be replaced through `MDXProvider` without changing the Markdown.
