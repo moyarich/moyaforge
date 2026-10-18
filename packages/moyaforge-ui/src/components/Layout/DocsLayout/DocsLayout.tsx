@@ -1,6 +1,6 @@
 import "./DocsLayout.css";
 import { useEffect, useState, type ReactNode } from "react";
-import { headingIdFromHash } from "../../DocOutline/DocOutline.js";
+import { headingIdFromHash } from "../../../utils/heading-fragment.js";
 
 /** Page metadata needed by the editable documentation layout. */
 export interface DocsLayoutPage {
