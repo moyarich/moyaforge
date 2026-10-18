@@ -34,14 +34,17 @@ describe("repository source links", () => {
     const tree = await parse(
       "[Code Block](./01-components/01-code-block/page.mdx#usage)",
     );
-    expect(tree.children[0].children[0].url).toBe("/ui/components/code-block#usage");
+    expect(tree.children[0].children[0].url).toBe(
+      "/ui/components/code-block#usage",
+    );
   });
   it("maps literal MDX anchors", async () => {
     const tree = await parse(
       '<a href="./01-components/01-code-block/page.mdx">Code</a>',
     );
     expect(
-      tree.children[0].children[0].attributes.find((a) => a.name === "href").value,
+      tree.children[0].children[0].attributes.find((a) => a.name === "href")
+        .value,
     ).toBe("/ui/components/code-block");
   });
   it("leaves external, public-route, and unknown links intact", async () => {
