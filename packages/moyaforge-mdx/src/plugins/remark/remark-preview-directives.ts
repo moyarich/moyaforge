@@ -3,6 +3,8 @@ import type { Root } from "mdast";
 /** Resolve an example path to a trusted, host-registered component at render time. */
 export interface PreviewDirectiveConfig {
   component?: string;
+  /** Host-owned validation of a file reference. Undefined rejects the build. */
+  resolveReference?: (reference: string, authoredFile: string | undefined, kind: "example" | "source") => string | undefined;
 }
 type Node = {
   type: string;
@@ -21,8 +23,9 @@ function directiveType(node: Node): unknown {
 /** Parse a deliberately small, declarative file reference format. No dynamic execution. */
 export function remarkPreviewDirectives({
   component = "PreviewDirective",
+  resolveReference,
 }: PreviewDirectiveConfig = {}) {
-  return (tree: Root) => {
+  return (tree: Root, file: { path?: string }) => {
     const visit = (node: Node): Node => {
       if (directiveType(node) !== "preview") {
         if (node.children) node.children = node.children.map(visit);
@@ -63,7 +66,11 @@ export function remarkPreviewDirectives({
           );
         if (refs[match[1]])
           throw new Error(`Duplicate preview ${match[1]} reference.`);
-        refs[match[1]] = value;
+        const resolved = resolveReference
+          ? resolveReference(value, file.path, match[1] as "example" | "source")
+          : value;
+        if (!resolved) throw new Error("Unresolved preview " + match[1] + " reference: " + value);
+        refs[match[1]] = resolved;
       }
       if (!refs.example)
         throw new Error(

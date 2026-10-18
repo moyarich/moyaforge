@@ -83,3 +83,15 @@ test("preview directives reject malformed references and duplicate declarations"
     ),
   ).rejects.toThrow(/Duplicate preview/);
 });
+
+test("host preview resolver validates the authored Markdown path", async () => {
+  const seen = [];
+  const options = createMdxOptions({ previewDirectives: { resolveReference(reference, authoredFile, kind) {
+    seen.push([reference, authoredFile, kind]);
+    return reference === "./Registered.tsx" ? "registered-counter" : undefined;
+  } } });
+  const valid = String(await compile({ value: "::: preview Counter\n\nexample: ./Registered.tsx\n\n:::", path: "docs/demo/page.md" }, options));
+  expect(valid).toContain("registered-counter");
+  expect(seen).toEqual([["./Registered.tsx", "docs/demo/page.md", "example"]]);
+  await expect(compile({ value: "::: preview Missing\n\nexample: ./Missing.tsx\n\n:::", path: "docs/demo/page.md" }, options)).rejects.toThrow(/Unresolved preview/);
+});

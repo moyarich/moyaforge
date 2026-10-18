@@ -5,7 +5,7 @@ import {
   type DirectiveComponentMap,
 } from "./plugins/remark/remark-directive-components.js";
 import type { PluggableList } from "unified";
-import { remarkPreviewDirectives } from "./plugins/remark/remark-preview-directives.js";
+import { remarkPreviewDirectives, type PreviewDirectiveConfig } from "./plugins/remark/remark-preview-directives.js";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
@@ -19,7 +19,7 @@ export interface MdxToolingOptions {
   /** Optional mapping from ::: directives to host MDX components. */
   directiveComponents?: DirectiveComponentMap;
   /** Transform file-backed ::: preview references into host-resolved PreviewDirective components. */
-  previewDirectives?: boolean;
+  previewDirectives?: boolean | PreviewDirectiveConfig;
   rehypePlugins?: PluggableList;
   /** Opt into a compiled MDX frontmatter export for older module consumers. YAML registry metadata does not require it. */
   frontmatterExport?: boolean;
@@ -39,7 +39,9 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
       remarkFrontmatter,
       remarkGfm,
       [remarkFlexibleContainers, customBlockOptions],
-      ...(options.previewDirectives ? [remarkPreviewDirectives] : []),
+      ...(options.previewDirectives
+        ? [[remarkPreviewDirectives, options.previewDirectives === true ? {} : options.previewDirectives] as const]
+        : []),
       ...(options.directiveComponents
         ? [[remarkDirectiveComponents, options.directiveComponents] as const]
         : []),
