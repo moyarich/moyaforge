@@ -34,7 +34,7 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
     };
     const source = await readFile(
       new URL(
-        "../../../packages/moyaforge-search-sqlite/src/search/search-client.js",
+        "../../../../packages/moyaforge-search-sqlite/src/search/search-client.js",
         import.meta.url,
       ),
       "utf8",

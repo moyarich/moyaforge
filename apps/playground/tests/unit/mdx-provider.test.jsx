@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { evaluate } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
 import { useMDXComponents } from "@mdx-js/react";
-import { PlaygroundMdxProvider } from "../src/mdx-provider.jsx";
+import { PlaygroundMdxProvider } from "../../src/mdx-provider.jsx";
 
 test("MDX resolves shared components through the playground provider", async () => {
   const { default: Content } = await evaluate(

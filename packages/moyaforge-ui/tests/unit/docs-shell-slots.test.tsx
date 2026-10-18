@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsShellFocused } from "../src/components/DocsShellFocused/DocsShellFocused.js";
-import { DocsShellWide } from "../src/components/DocsShellWide/DocsShellWide.js";
+import { DocsShellFocused } from "../../src/components/DocsShellFocused/DocsShellFocused.js";
+import { DocsShellWide } from "../../src/components/DocsShellWide/DocsShellWide.js";
 
 describe("independently composable documentation shells", () => {
   it("renders focused defaults and supports replacing or omitting them", () => {

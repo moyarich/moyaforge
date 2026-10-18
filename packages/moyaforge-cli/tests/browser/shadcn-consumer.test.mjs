@@ -7,7 +7,7 @@ import { once } from "node:events";
 import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
 
-const repo = resolve(import.meta.dirname, "../../..");
+const repo = resolve(import.meta.dirname, "../../../..");
 test("GitHub shadcn consumer", async () => {
   async function run(command, args, cwd) {
     const child = spawn(command, args, {
@@ -95,7 +95,7 @@ test("GitHub shadcn consumer", async () => {
             skipLibCheck: true,
             noEmit: true,
             types: ["vite/client"],
-            paths: { "@/*": ["./src/*"] },
+            paths: { "@/*": [".././src/*"] },
           },
           include: ["src"],
         },
@@ -140,7 +140,7 @@ test("GitHub shadcn consumer", async () => {
     console.log(installed);
     await writeFile(
       join(root, "src/main.tsx"),
-      'import {createRoot} from "react-dom/client"; import {CodeBlock} from "./components/moyaforge/components/CodeBlock/CodeBlock"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
+      'import {createRoot} from "react-dom/client"; import {CodeBlock} from ".././components/moyaforge/components/CodeBlock/CodeBlock"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
     );
     const code = await readFile(
       join(root, "src/components/moyaforge/components/CodeBlock/CodeBlock.tsx"),
@@ -148,7 +148,7 @@ test("GitHub shadcn consumer", async () => {
     );
     assert.ok(code.includes("CodeCopyIcon"));
     assert.ok(
-      code.includes('import "./CodeBlock.css"'),
+      code.includes('import ".././CodeBlock.css"'),
       "component owns its CSS import",
     );
     await run("npm", ["exec", "--", "tsc", "--noEmit"], root);

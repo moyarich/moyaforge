@@ -14,7 +14,7 @@ import { once } from "node:events";
 import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
 
-const repo = resolve(import.meta.dirname, "../../..");
+const repo = resolve(import.meta.dirname, "../../../..");
 test("packed CLI consumers", async () => {
   const temp = await mkdtemp(join(tmpdir(), "moyaforge-packed-consumers-"));
   async function run(cmd, args, cwd) {

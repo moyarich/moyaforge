@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import initSqlJs from "sql.js";
-import { sqliteSearchPlugin } from "../vite-plugin/index.js";
+import { sqliteSearchPlugin } from "../../vite-plugin/index.js";
 
 test("production SQLite search indexes canonical pages and emits a hashed asset", async () => {
   const root = await mkdtemp(join(tmpdir(), "moyaforge-sqlite-vite-"));

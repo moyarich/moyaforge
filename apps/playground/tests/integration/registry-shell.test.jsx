@@ -2,8 +2,8 @@ import { test, expect } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
-import { MoyaForgeRouting } from "../../../packages/moyaforge/src/components/Routing/content-routing";
-import { DocumentationSite } from "../../../packages/moyaforge/src/components/Layout/DocsLayout/DocumentationSite";
+import { MoyaForgeRouting } from "../../../../packages/moyaforge/src/components/Routing/content-routing";
+import { DocumentationSite } from "../../../../packages/moyaforge/src/components/Layout/DocsLayout/DocumentationSite";
 
 test("shell respects configured source labels, order, and folders", () => {
   const pages = [

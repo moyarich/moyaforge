@@ -2,9 +2,9 @@ import { afterEach, expect, test } from "vitest";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, relative } from "node:path";
-import { planItems, applyPlan } from "../src/registry.js";
+import { planItems, applyPlan } from "../../src/registry.js";
 
-const repository = resolve(import.meta.dirname, "../../..");
+const repository = resolve(import.meta.dirname, "../../../..");
 const roots = [];
 afterEach(async () => {
   await Promise.all(

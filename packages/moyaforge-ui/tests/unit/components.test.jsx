@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsLayout } from "../src/components/Layout/DocsLayout/index.ts";
-import { SidebarV2 } from "../src/components/SidebarV2/index.ts";
-import { DocOutline } from "../src/components/DocOutline/index.ts";
+import { DocsLayout } from "../../src/components/Layout/DocsLayout/index.ts";
+import { SidebarV2 } from "../../src/components/SidebarV2/index.ts";
+import { DocOutline } from "../../src/components/DocOutline/index.ts";
 
 const render = (component) => renderToStaticMarkup(component);
 
