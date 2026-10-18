@@ -2,26 +2,27 @@
 title: Preview
 label: Preview
 order: 22
-description: Live component previews with optional source viewing and copy actions.
+description: Slot-based live React previews with source viewing and copy actions.
 ---
 
 import PreviewExample from "./PreviewExample.tsx";
 
 # Preview
 
-`Preview` renders an interactive React example and can show or copy its source. Write examples in standalone `.tsx` files, just like Material UI's component documentation. The example imports its own `.css` file; MDX only imports the example.
+Compose an interactive preview with replaceable header, title, actions, content, source and footer slots. Each example is a standalone TSX file; the MDX page imports it.
 
 ## Live example
 
 <PreviewExample />
 
-## File structure
+## Files
 
 ```text
 22-preview/
 ├── page.mdx
 ├── PreviewExample.tsx
-└── PreviewExample.css
+├── PreviewExample.css
+└── CounterExample.tsx
 ```
 
 ## Usage
@@ -33,24 +34,25 @@ import PreviewExample from "./PreviewExample.tsx";
 ```
 
 ```tsx
-// PreviewExample.tsx
-import "./PreviewExample.css";
-import { Preview } from "../../../src/components/Preview/Preview.js";
+import {
+  Preview, PreviewHeader, PreviewTitle, PreviewActions,
+  PreviewCodeToggle, PreviewCopyButton, PreviewContent, PreviewSource,
+} from "@/components/moyaforge/components/Preview";
+import ButtonExample from "./ButtonExample";
+import source from "./ButtonExample.tsx?raw";
 
-// Write a normal React component; the MDX page only imports it.
-export default function PreviewExample() {
-  return (
-    <Preview title="Button" source={'<button type="button">Click me</button>'}>
-      <button type="button">Click me</button>
-    </Preview>
-  );
-}
+<Preview source={source}>
+  <PreviewHeader>
+    <PreviewTitle>Button</PreviewTitle>
+    <PreviewActions><PreviewCodeToggle /><PreviewCopyButton /></PreviewActions>
+  </PreviewHeader>
+  <PreviewContent><ButtonExample /></PreviewContent>
+  <PreviewSource code={source} language="tsx" />
+</Preview>
 ```
 
-Preview does not serialize React children. The example supplies source text directly; future MDX tooling can automatically load raw `.tsx` source separately from the live component.
+The `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.
 
 ## Theme variables
 
-Set `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius` and `--mf-preview-padding` from application CSS.
-
-[Browse UI components](/ui)
+Use `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius`, and `--mf-preview-padding` in application CSS.

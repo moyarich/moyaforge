@@ -1,28 +1,26 @@
 import "./PreviewExample.css";
 import { useState } from "react";
-import { Preview } from "../../../src/components/Preview/Preview.js";
+import {
+  Preview, PreviewHeader, PreviewTitle, PreviewActions, PreviewCodeToggle,
+  PreviewCopyButton, PreviewContent, PreviewSource, PreviewFooter,
+} from "../../../src/components/Preview/index.js";
+import source from "./CounterExample.tsx?raw";
+import CounterExample from "./CounterExample.js";
 
-/** Standalone interactive documentation example, imported directly by MDX. */
+/** Slots can be omitted, replaced or reordered without modifying Preview. */
 export default function PreviewExample() {
-  const [count, setCount] = useState(0);
   return (
-    <Preview title="Counter" source={counterSource} language="tsx">
-      <button
-        className="mf-preview-example-button"
-        type="button"
-        onClick={() => setCount((n) => n + 1)}
-      >
-        Clicked {count} times
-      </button>
+    <Preview source={source}>
+      <PreviewHeader>
+        <PreviewTitle>Interactive counter</PreviewTitle>
+        <PreviewActions>
+          <PreviewCodeToggle />
+          <PreviewCopyButton />
+        </PreviewActions>
+      </PreviewHeader>
+      <PreviewContent><CounterExample /></PreviewContent>
+      <PreviewSource code={source} language="tsx" />
+      <PreviewFooter>Click the button, then inspect its source.</PreviewFooter>
     </Preview>
   );
 }
-
-const counterSource = `import { useState } from "react";
-
-export default function Counter() {
-  const [count, setCount] = useState(0);
-  return <button type="button" onClick={() => setCount((n) => n + 1)}>
-    Clicked {count} times
-  </button>;
-}`;

@@ -1,1 +1,5 @@
-export { Preview, type PreviewProps } from "./Preview.js";
+export {
+  Preview, PreviewHeader, PreviewTitle, PreviewActions, PreviewCodeToggle,
+  PreviewCopyButton, PreviewContent, PreviewSource, PreviewFooter,
+  type PreviewProps,
+} from "./Preview.js";
