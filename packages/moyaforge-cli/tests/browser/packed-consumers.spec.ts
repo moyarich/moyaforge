@@ -1,4 +1,4 @@
-import { test } from "vitest";
+import { test } from "@playwright/test";
 import {
   mkdtemp,
   mkdir,
