@@ -68,7 +68,10 @@ function fixture(fn) {
       repo,
       peer,
       execute: () =>
-        run(repo, "bash", ["-e", "-c", script], { GITHUB_REF_NAME: "main", GITHUB_OUTPUT: join(root, "outputs") }),
+        run(repo, "bash", ["-e", "-c", script], {
+          GITHUB_REF_NAME: "main",
+          GITHUB_OUTPUT: join(root, "outputs"),
+        }),
     });
   } finally {
     rmSync(root, { recursive: true, force: true });
