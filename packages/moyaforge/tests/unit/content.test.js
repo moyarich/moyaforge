@@ -15,11 +15,11 @@ test("ordered folders become readable labels", () => {
 
 test("unnumbered folders are valid and can own nested landing pages", () => {
   const pages = createPages({
-    ".././guides/page.mdx": {
+    "./guides/page.mdx": {
       default: () => null,
       frontmatter: { label: "Guides" },
     },
-    ".././guides/configuration/page.mdx": {
+    "./guides/configuration/page.mdx": {
       default: () => null,
       frontmatter: { label: "Configuration" },
     },
@@ -34,11 +34,11 @@ test("unnumbered folders are valid and can own nested landing pages", () => {
 
 test("createPages preserves numeric folder order and frontmatter", () => {
   const pages = createPages({
-    ".././02-guides/page.mdx": {
+    "./02-guides/page.mdx": {
       default: () => null,
       frontmatter: { label: "Guides" },
     },
-    ".././01-getting-started/page.mdx": {
+    "./01-getting-started/page.mdx": {
       default: () => null,
       frontmatter: { label: "Start" },
     },
@@ -52,7 +52,7 @@ test("createPages preserves numeric folder order and frontmatter", () => {
 
 test("buildNavigation creates nested ordinary data", () => {
   const pages = createPages({
-    ".././01-guides/01-config/page.mdx": {
+    "./01-guides/01-config/page.mdx": {
       default: () => null,
       frontmatter: { label: "Configuration" },
     },
@@ -66,7 +66,7 @@ test("buildNavigation creates nested ordinary data", () => {
 
 test("filterPages searches labels and navigation paths", () => {
   const pages = createPages({
-    ".././01-guides/01-config/page.mdx": {
+    "./01-guides/01-config/page.mdx": {
       default: () => null,
       frontmatter: { label: "Configuration" },
     },
@@ -78,7 +78,7 @@ test("filterPages searches labels and navigation paths", () => {
 
 test("root page.mdx resolves to the index page", () => {
   const pages = createPages({
-    ".././page.mdx": { default: () => null, frontmatter: { label: "Home" } },
+    "./page.mdx": { default: () => null, frontmatter: { label: "Home" } },
   });
 
   assert.equal(pages[0].id, "index");

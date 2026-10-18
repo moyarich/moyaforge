@@ -67,8 +67,7 @@ test("documentation shell forwards optional sidebar metadata and outline slots",
 });
 
 test("SidebarV1 children replace generated navigation while other slots remain independent", async () => {
-  const { SidebarV1 } =
-    await import("../../dist/components/SidebarV1/index.js");
+  const { SidebarV1 } = await import("../../dist/components/SidebarV1/index.js");
   const groups = [
     {
       source: "docs",

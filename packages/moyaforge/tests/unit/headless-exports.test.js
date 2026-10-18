@@ -7,8 +7,8 @@ test("published framework exports contain no legacy UI entry points", async () =
   );
   expect(Object.keys(manifest.exports).sort()).toEqual([
     ".",
-    ".././headless",
-    ".././registry-routes",
+    "./headless",
+    "./registry-routes",
   ]);
   for (const entry of Object.values(manifest.exports)) {
     expect(entry.import).toMatch(/^\.\/dist\/.*\.js$/);
