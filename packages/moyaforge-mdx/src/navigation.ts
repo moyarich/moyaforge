@@ -63,3 +63,43 @@ export function flattenNavigation(
   visit(tree);
   return pages;
 }
+
+
+/** A source-specific navigation tree with its configured sidebar label. */
+export interface DocumentationGroup {
+  source: string;
+  label: string;
+  nodes: NavigationNode[];
+}
+
+export interface DocumentationSourceNavigation {
+  navigation?: { label?: string; order?: number };
+}
+
+/**
+ * Group discovered routes by source, honoring source navigation metadata.
+ * No host-specific route lists or filesystem locations are required.
+ */
+export function buildDocumentationGroups(
+  routes: readonly NormalizedPage[],
+  sources: Readonly<Record<string, DocumentationSourceNavigation>> = {},
+): DocumentationGroup[] {
+  const sourceNames = [...new Set(routes.map((page) => page.source))].sort(
+    (a, b) =>
+      (sources[a]?.navigation?.order ?? 0) -
+        (sources[b]?.navigation?.order ?? 0) || a.localeCompare(b),
+  );
+  return sourceNames.map((source) => ({
+    source,
+    label: sources[source]?.navigation?.label ?? source,
+    nodes: buildNavigationTree(
+      routes.filter((page) => page.source === source),
+    ).flatMap((node) =>
+      node.path === `/${source}`
+        ? node.page
+          ? [node]
+          : node.children
+        : [node],
+    ),
+  }));
+}
