@@ -1,9 +1,9 @@
 import remarkFlexibleContainers from "remark-flexible-containers";
-import { customBlockOptions } from "./custom-blocks.js";
+import { customBlockOptions } from "./plugins/remark/custom-blocks.js";
 import {
   remarkDirectiveComponents,
   type DirectiveComponentMap,
-} from "./directive-components.js";
+} from "./plugins/remark/directive-components.js";
 import type { PluggableList } from "unified";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
@@ -54,18 +54,18 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
   };
 }
 
-export * from "./directive-components.js";
+export * from "./plugins/remark/directive-components.js";
 
-export * from "./registry.js";
+export * from "./registry/registry.js";
 
-export * from "./content.js";
+export * from "./content/discovery.js";
 
-export * from "./navigation.js";
+export * from "./navigation/tree.js";
 
-export * from "./toc.js";
+export * from "./navigation/toc.js";
 
-export * from "./headings.js";
+export * from "./content/headings.js";
 
-export * from "./links.js";
+export * from "./content/links.js";
 
-export * from "./check-links.js";
+export * from "./content/check-links.js";
