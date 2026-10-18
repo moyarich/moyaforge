@@ -5,33 +5,49 @@ order: 22
 description: Live component previews with optional source viewing and copy actions.
 ---
 
+import PreviewExample from "./PreviewExample.tsx";
+
 # Preview
 
-`Preview` displays a live component example and, when the author supplies source text, allows switching to the source and copying it. It is installed from the canonical MoyaForge UI registry.
+`Preview` renders an interactive React example and can show or copy its source. Write examples in standalone `.tsx` files, just like Material UI's component documentation. The example imports its own `.css` file; MDX only imports the example.
 
 ## Live example
 
-import { Preview } from "../../../src/components/Preview/Preview.tsx";
+<PreviewExample />
 
-<Preview
-  title="Interactive example"
-  source={'<button type="button">Try it</button>'}
-  language="tsx"
->
-  <button type="button">Try it</button>
-</Preview>
+## File structure
+
+```text
+22-preview/
+├── page.mdx
+├── PreviewExample.tsx
+└── PreviewExample.css
+```
 
 ## Usage
 
-```tsx
-import { Preview } from "@/components/moyaforge/components/Preview";
+```mdx
+import PreviewExample from "./PreviewExample.tsx";
 
-<Preview title="Button" source={'<button type="button">Click me</button>'}>
-  <button type="button">Click me</button>
-</Preview>;
+<PreviewExample />
 ```
 
-Source text is explicit; the component does not attempt to serialize React children. MDX tooling can supply precompiled source without coupling Preview to an MDX compiler.
+```tsx
+// PreviewExample.tsx
+import "./PreviewExample.css";
+import { Preview } from "../../../src/components/Preview/Preview.js";
+
+// Write a normal React component; the MDX page only imports it.
+export default function PreviewExample() {
+  return (
+    <Preview title="Button" source={'<button type="button">Click me</button>'}>
+      <button type="button">Click me</button>
+    </Preview>
+  );
+}
+```
+
+Preview does not serialize React children. The example supplies source text directly; future MDX tooling can automatically load raw `.tsx` source separately from the live component.
 
 ## Theme variables
 
