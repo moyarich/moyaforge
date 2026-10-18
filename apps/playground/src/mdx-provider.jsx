@@ -45,7 +45,7 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { PlaygroundCallout } from "./components/index.js";
-import { DocumentationLink } from "./components/DocumentationLink.jsx";
+import { DocumentationLink, DocumentationRoutesContext } from "./components/DocumentationLink.jsx";
 
 const components = defineMdxComponentRegistry({
   a: DocumentationLink,
@@ -95,10 +95,13 @@ const components = defineMdxComponentRegistry({
 export function PlaygroundMdxProvider({
   children,
   components: overrides = {},
+  routes = [],
 }) {
   return (
-    <MDXProvider components={{ ...components, ...overrides }}>
-      {children}
-    </MDXProvider>
+    <DocumentationRoutesContext.Provider value={routes}>
+      <MDXProvider components={{ ...components, ...overrides }}>
+        {children}
+      </MDXProvider>
+    </DocumentationRoutesContext.Provider>
   );
 }
