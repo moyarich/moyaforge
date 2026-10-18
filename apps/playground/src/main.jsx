@@ -23,8 +23,7 @@ window.addEventListener("vite:preloadError", (event) => {
   window.location.replace(url.href);
 });
 
-// Clear the retry marker only after the user has successfully loaded this entry.
-// Lazy-page failures remain handled by RegistryRouteView's recovery UI.
+// Lazy-page failures that persist after a refresh are handled by RegistryRouteView.
 const root = document.getElementById("root");
 if (!root) throw new Error("Playground root element not found");
 createRoot(root).render(
