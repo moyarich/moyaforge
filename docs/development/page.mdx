@@ -21,10 +21,11 @@ npm run dev
 
 ## Test and build
 
+Unit and regression tests use **Vitest** across the workspaces. Run the workspace test scripts through npm rather than replacing the repository's test command:
+
 ```sh
 npm run typecheck
-npm test
-npm run test:unit
+npm test --workspaces
 npm run check:links
 npm run build
 npm run test:consumer:browser
@@ -91,7 +92,7 @@ A link **inside the MDX document** can target either a source file or a public r
 
 ### Validation
 
-Run `npm run check:links` and `npm test --workspaces` after changing documentation structure. A successful build alone does not guarantee that an unregistered source-file link, invalid heading fragment, or external destination is valid. Missing-target diagnostics and coverage for cross-source source links are tracked in [issue #193](https://github.com/moyarich/moyaforge/issues/193).
+Run `npm run check:links` and `npm test --workspaces` (Vitest) after changing documentation structure. A successful build alone does not guarantee that an unregistered source-file link, invalid heading fragment, or external destination is valid. Missing-target diagnostics and coverage for cross-source source links are tracked in [issue #193](https://github.com/moyarich/moyaforge/issues/193).
 
 ## Component registry generation
 
