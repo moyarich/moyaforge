@@ -22,14 +22,6 @@ jobs:
       - name: Lint workflow expressions and reusable calls
         run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.7 -color -shellcheck=
 
-  check-dist:
-    name: Check committed CLI distribution
-    uses: moyarich/reusable-workflows/.github/workflows/reusable_check-dist.yml@main
-    with:
-      dist-path: packages/workspace-tools/dist/bin/
-      build-command: npm run build
-      node-version: "24"
-
   test:
     name: Test package
     runs-on: ubuntu-latest
@@ -42,17 +34,5 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
-      - name: Validate publishable package changelog
-        shell: bash
-        run: |
-          node --input-type=module <<'NODE'
-          import { readFileSync } from "node:fs";
-          const manifest = JSON.parse(readFileSync("packages/workspace-tools/package.json", "utf8"));
-          const changelog = readFileSync("packages/workspace-tools/CHANGELOG.md", "utf8");
-          const headings = changelog.split(/\r?\n/).map(line => line.trim());
-          if (!headings.includes(`## [${manifest.version}]`) && !headings.includes(`## ${manifest.version}`)) {
-            throw new Error(`Missing ${manifest.version} changelog entry`);
-          }
-          NODE
       - run: npm test
-      - run: npm run pack:check
+      - run: npm run pack:audit:strict

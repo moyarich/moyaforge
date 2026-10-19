@@ -80,7 +80,7 @@ jobs:
       use-workspaces: true
       include-root-package: false
       require-publish-config: true
-      workspace-tools-source: checkout:current
+      workspace-tools-source: checkout:upstream;branch:main
 
   select-packages:
     name: Select packages for drafting
