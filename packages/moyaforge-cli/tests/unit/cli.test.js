@@ -249,6 +249,9 @@ test("monaco installation reports runtime requirements and preserves its setup g
   expect(installed.stdout).toContain("Setup notes:");
   expect(installed.stdout).toContain("MonacoEditorReact setup");
   expect(
-    await read(root, "src/components/ui/components/MonacoEditorReact/README.md"),
+    await read(
+      root,
+      "src/components/ui/components/MonacoEditorReact/README.md",
+    ),
   ).toContain("loader.config({ monaco })");
 });

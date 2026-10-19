@@ -40,13 +40,11 @@ const render = (pathname, extras = {}) =>
         React.createElement(
           DocsLayout,
           {
-            pages: source
-              .getPages()
-              .map((page) => ({
-                url: page.url,
-                title: page.title,
-                navigation: page.frontmatter?.navigation,
-              })),
+            pages: source.getPages().map((page) => ({
+              url: page.url,
+              title: page.title,
+              navigation: page.frontmatter?.navigation,
+            })),
             currentUrl: page.url,
             ...extras.layout,
           },
