@@ -1,5 +1,6 @@
-name: Release Drafter . Draft package releases
-
+name: Release Drafter
+run-name: >-
+  Release draft · ${{ github.event_name == 'workflow_dispatch' && inputs.package || 'changed' }}
 on:
   push:
     branches:
@@ -9,16 +10,54 @@ on:
   workflow_dispatch:
     inputs:
       package:
-        description: Package selector (all, package name, or package directory)
+        description: Package selector (all, package name, ".", or any workspace directory)
         required: true
         default: all
         type: string
-
+      version-mode:
+        description: Version mode
+        required: true
+        default: bump
+        type: choice
+        options:
+          - bump
+          - package-json
+          - exact
+      version-bump:
+        description: Version bump
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prepatch
+          - preminor
+          - premajor
+          - prerelease
+      exact-version:
+        description: Exact version when version-mode is exact
+        required: false
+        default: ""
+        type: string
+      dry-run:
+        description: Preview without creating or modifying release drafts
+        required: true
+        default: true
+        type: boolean
 permissions:
   contents: write
   pull-requests: read
-
 jobs:
+  dispatch-input-summary:
+    name: "job: Workflow parameters"
+    permissions:
+      contents: read
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
+    with:
+      parameters-json: ${{ github.event_name == 'workflow_dispatch' && toJSON(inputs) || '{}' }}
+      heading: "release-draft · Run parameters"
   discover-packages:
     name: Discover publishable packages
     uses: moyarich/reusable-workflows/.github/workflows/reusable_discover-packages.yml@main
@@ -141,7 +180,7 @@ jobs:
             echo "| Type | Package | Version | Directory |"
             echo "| --- | --- | --- | --- |"
             jq -r '.[] | [
-              (if .directory == "packages/moyaforge" or .directory == "packages/moyaforge" then "Core" else "Addon" end),
+              (if .directory == "packages/console-core" or .directory == "packages/console" then "Core" else "Addon" end),
               ("`" + .name + "`"),
               ("`" + .version + "`"),
               ("`" + .directory + "`")
@@ -169,5 +208,4 @@ jobs:
       target-key: ${{ matrix.directory }}
       release-name: ${{ format('{0} v{1}', matrix.name, matrix.version) }}
       changelog-path: ${{ format('{0}/CHANGELOG.md', matrix.directory) }}
-      template-path: .github/release-drafter-template.yml
       dry-run: false

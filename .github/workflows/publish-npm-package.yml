@@ -55,6 +55,14 @@ on:
 permissions: {}
 
 jobs:
+  dispatch-input-summary:
+    name: "job: Workflow parameters"
+    permissions:
+      contents: read
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
+    with:
+      parameters-json: ${{ toJSON(inputs) }}
+      heading: "publish · Dispatch parameters"
   publish:
     permissions:
       contents: write

@@ -7,10 +7,13 @@ on:
   workflow_dispatch:
     inputs:
       package:
-        description: "Package selector: all, package name, or directory"
+        description: Select a publishable workspace package
         required: true
+        type: choice
         default: all
-        type: string
+        options:
+          - all
+          - packages/workspace-tools
       target-branch:
         description: Branch used to resolve the package path and changelog
         required: true
@@ -47,6 +50,14 @@ on:
 permissions: {}
 
 jobs:
+  dispatch-input-summary:
+    name: "job: Workflow parameters"
+    permissions:
+      contents: read
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
+    with:
+      parameters-json: ${{ toJSON(inputs) }}
+      heading: "restore release · Dispatch parameters"
   restore:
     permissions:
       actions: read

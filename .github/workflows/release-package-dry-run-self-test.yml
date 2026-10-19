@@ -1,0 +1,38 @@
+name: Release package dry-run self-test
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/release-package-dry-run-self-test.yml
+      - .github/workflows/release-package.yml
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  single:
+    name: Single package dry run
+    permissions:
+      actions: read
+      contents: write
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_workspace-package-release.yml@main
+    with:
+      package: packages/console-core
+      version-mode: package-json
+      update-major-tag: false
+      draft: true
+      dry-run: true
+
+  bulk:
+    name: All packages dry run
+    permissions:
+      actions: read
+      contents: write
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_workspace-package-release.yml@main
+    with:
+      package: all
+      version-mode: package-json
+      update-major-tag: false
+      draft: true
+      dry-run: true
