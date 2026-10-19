@@ -1,7 +1,10 @@
 name: Release package
 
 run-name: >-
-  Release · ${{ inputs.package }} · ${{ inputs.version-mode }}${{ inputs.version-mode == 'bump' && format(':{0}', inputs.version-bump) || inputs.version-mode == 'exact' && format(':{0}', inputs.exact-version) || '' }} · ${{ inputs.draft && 'draft' || 'published' }} · dry-run=${{ inputs.dry-run }}
+  Release · ${{ inputs.package }} · ${{ inputs.version-mode }}${{ inputs.version-mode
+  == 'bump' && format(':{0}', inputs.version-bump) || inputs.version-mode == 'exact'
+  && format(':{0}', inputs.exact-version) || '' }} · ${{ inputs.draft && 'draft' ||
+  'published' }} · dry-run=${{ inputs.dry-run }}
 
 on:
   workflow_dispatch:
@@ -13,7 +16,9 @@ on:
         default: all
         options:
           - all
-          - packages/workspace-tools
+          - packages/moyaforge
+          - packages/moyaforge-cli
+          - packages/moyaforge-search-sqlite
       version-mode:
         description: Resolve each package version
         type: choice
@@ -42,7 +47,8 @@ on:
         required: true
         default: true
       draft:
-        description: Prepare draft GitHub Releases (disable only to explicitly finalize)
+        description: Prepare draft GitHub Releases (disable only to explicitly 
+          finalize)
         type: boolean
         required: true
         default: true
@@ -65,7 +71,8 @@ jobs:
       actions: read
       contents: write
       pull-requests: read
-    uses: moyarich/reusable-workflows/.github/workflows/reusable_workspace-package-release.yml@main
+    uses: 
+      moyarich/reusable-workflows/.github/workflows/reusable_workspace-package-release.yml@main
     with:
       package: ${{ inputs.package }}
       version-mode: ${{ inputs.version-mode }}

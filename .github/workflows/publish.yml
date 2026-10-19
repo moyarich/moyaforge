@@ -1,7 +1,9 @@
 name: Publish npm package
 
 run-name: >-
-  Publish · ${{ inputs.package }} · ${{ inputs.registry }} · ${{ inputs.version-mode }}${{ inputs.version-mode == 'exact' && format(':{0}', inputs.exact-version) || '' }} · dry-run=${{ inputs.dry-run }}
+  Publish · ${{ inputs.package }} · ${{ inputs.registry }} · ${{ inputs.version-mode
+  }}${{ inputs.version-mode == 'exact' && format(':{0}', inputs.exact-version) ||
+  '' }} · dry-run=${{ inputs.dry-run }}
 
 on:
   workflow_dispatch:
@@ -13,7 +15,9 @@ on:
         default: all
         options:
           - all
-          - packages/workspace-tools
+          - packages/moyaforge
+          - packages/moyaforge-cli
+          - packages/moyaforge-search-sqlite
       registry:
         description: Publish destination
         required: true
@@ -50,7 +54,8 @@ on:
         default: true
         type: boolean
       tag:
-        description: npm distribution tag (leave empty to use the resolved default)
+        description: npm distribution tag (leave empty to use the resolved 
+          default)
         required: false
         default: ""
         type: string
@@ -62,7 +67,8 @@ jobs:
     name: "job: Workflow parameters"
     permissions:
       contents: read
-    uses: moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
+    uses: 
+      moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
     with:
       parameters-json: ${{ toJSON(inputs) }}
       heading: "publish · Dispatch parameters"
@@ -70,7 +76,8 @@ jobs:
     permissions:
       contents: write
       packages: write
-    uses: moyarich/reusable-workflows/.github/workflows/reusable_bulk-npm-publish.yml@main
+    uses: 
+      moyarich/reusable-workflows/.github/workflows/reusable_bulk-npm-publish.yml@main
     with:
       package: ${{ inputs.package }}
       workspace-tools-source: checkout:current
