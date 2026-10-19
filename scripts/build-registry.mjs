@@ -201,10 +201,13 @@ export async function buildRegistry(root, { check = false } = {}) {
     }
     await visit(spec.entry, spec.template);
     const itemSourceRoot = uiSourceRoot;
+    // The shadcn UI alias already points to components/ui; do not add another components/.
+    const installRelative = (file) =>
+      relative(itemSourceRoot, file).replace(/^components\//, "");
     const installed = [...files].sort().map((file) => ({
       path: relative(root, file),
       type: "registry:file",
-      target: `~/src/components/ui/${file === spec.entry && spec.template ? basename(file) : relative(itemSourceRoot, file)}`,
+      target: `~/src/components/ui/${file === spec.entry && spec.template ? basename(file) : installRelative(file)}`,
     }));
     installed.push({
       path: "LICENSE",
@@ -223,7 +226,7 @@ export async function buildRegistry(root, { check = false } = {}) {
       installed.push({
         path: relative(root, guidePath),
         type: "registry:file",
-        target: `~/src/components/ui/${relative(itemSourceRoot, guidePath)}`,
+        target: `~/src/components/ui/${installRelative(guidePath)}`,
       });
     }
     installed.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
