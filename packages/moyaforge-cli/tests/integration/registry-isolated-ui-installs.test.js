@@ -2,7 +2,7 @@ import { afterEach, expect, test } from "vitest";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, relative } from "node:path";
-import { planItems, applyPlan } from "../../src/registry.js";
+import { planItems, applyPlan } from "../../src/registry.ts";
 
 const repository = resolve(import.meta.dirname, "../../../..");
 const roots = [];
@@ -12,7 +12,13 @@ afterEach(async () => {
   );
 });
 
-for (const name of ["docs-layout", "documentation-site", "monaco"]) {
+for (const name of [
+  "code-preview",
+  "docs-layout",
+  "documentation-site",
+  "monaco-editor-react",
+  "monaco-editor-type-fox",
+]) {
   test(`registry installs ${name} independently with canonical source and CSS`, async () => {
     const root = await mkdtemp(resolve(tmpdir(), "moyaforge-ui-install-"));
     roots.push(root);
@@ -24,9 +30,9 @@ for (const name of ["docs-layout", "documentation-site", "monaco"]) {
     );
     expect(paths.some((path) => path.endsWith(".tsx"))).toBe(true);
     expect(paths.some((path) => path.endsWith(".css"))).toBe(true);
-    expect(
-      paths.every((path) => path.startsWith("src/components/moyaforge/")),
-    ).toBe(true);
+    expect(paths.every((path) => path.startsWith("src/components/ui/"))).toBe(
+      true,
+    );
     expect(
       plan.files.every(
         (file) => !file.content.includes("packages/moyaforge/src/"),
@@ -46,3 +52,40 @@ for (const name of ["docs-layout", "documentation-site", "monaco"]) {
     );
   });
 }
+
+test("editor registry entries keep their engine dependencies separate", async () => {
+  const registry = JSON.parse(
+    await readFile(resolve(repository, "registry.json"), "utf8"),
+  );
+  const react = registry.items.find(
+    (item) => item.name === "monaco-editor-react",
+  );
+  const typefox = registry.items.find(
+    (item) => item.name === "monaco-editor-type-fox",
+  );
+  expect(
+    react.dependencies.some((dependency) =>
+      dependency.startsWith("@monaco-editor/react@"),
+    ),
+  ).toBe(true);
+  expect(
+    react.dependencies.some(
+      (dependency) =>
+        dependency.includes("typefox") ||
+        dependency.includes("codingame") ||
+        dependency.includes("monaco-languageclient"),
+    ),
+  ).toBe(false);
+  expect(
+    typefox.dependencies.some((dependency) =>
+      dependency.startsWith("@typefox/monaco-editor-react@"),
+    ),
+  ).toBe(true);
+  expect(
+    typefox.dependencies.some(
+      (dependency) =>
+        dependency.startsWith("@monaco-editor/react@") ||
+        dependency.startsWith("monaco-editor@"),
+    ),
+  ).toBe(false);
+});

@@ -4,7 +4,12 @@ label: Table of Contents
 description: Canonical MoyaForge Table of Contents component example.
 ---
 
-import { TableOfContents } from "../../../src/components/TableOfContents/TableOfContents.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Table of Contents
 
@@ -12,10 +17,13 @@ This live example uses the canonical component source in `packages/moyaforge-ui/
 
 ## Live preview
 
-<div>
-  <h2 id="toc-example-heading">Example heading</h2>
-  <TableOfContents selector="#toc-example-heading" />
-</div>
+<CodePreview
+  title="Table of Contents"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

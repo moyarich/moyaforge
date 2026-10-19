@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 test("headless docs routing does not import installable UI", async () => {
   const source = await readFile(
     new URL(
-      "../packages/moyaforge/src/components/Routing/HeadlessDocsRoutes.tsx",
+      "../packages/moyaforge/src/routing/HeadlessDocsRoutes.tsx",
       import.meta.url,
     ),
     "utf8",
@@ -16,7 +16,7 @@ test("headless docs routing does not import installable UI", async () => {
 });
 
 test("both framework entrypoints expose headless documentation routes", async () => {
-  for (const entry of ["index.ts", "docs.ts"]) {
+  for (const entry of ["index.ts", "headless.ts"]) {
     const source = await readFile(
       new URL(`../packages/moyaforge/src/${entry}`, import.meta.url),
       "utf8",
@@ -25,18 +25,16 @@ test("both framework entrypoints expose headless documentation routes", async ()
   }
 });
 
-test("legacy DocsRoutes delegates route rendering to the headless implementation", async () => {
+test("routing remains separate from installable UI", async () => {
   const source = await readFile(
     new URL(
-      "../packages/moyaforge/src/components/DocsRoutes/DocsRoutes.tsx",
+      "../packages/moyaforge/src/routing/HeadlessDocsRoutes.tsx",
       import.meta.url,
     ),
     "utf8",
   );
-  expect(source).toContain("HeadlessDocsRoutes");
   expect(source).toContain("renderLayout");
-  expect(source).toContain("<DocsLayout");
-  expect(source).not.toContain("source.getPage(");
+  expect(source).not.toContain("<DocsLayout");
 });
 
 test("headless package subpath exports routing without legacy layout imports", async () => {
@@ -126,13 +124,8 @@ test("playground no longer imports framework's UI-heavy docs subpath", async () 
     new URL("../apps/playground/src/App.jsx", import.meta.url),
     "utf8",
   );
-  const navigation = await readFile(
-    new URL("../apps/playground/src/documentation-groups.js", import.meta.url),
-    "utf8",
-  );
   expect(app).not.toContain('from "@moyarich/moyaforge/docs"');
-  expect(app).toContain('from "./documentation-groups.js"');
-  expect(navigation).toContain('from "@moyarich/moyaforge-mdx/navigation"');
+  expect(app).toContain('from "@moyarich/moyaforge-mdx/navigation"');
 });
 
 test("headless MDX registry composer does not import legacy UI", async () => {

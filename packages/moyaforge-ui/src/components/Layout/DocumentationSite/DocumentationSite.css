@@ -1,4 +1,5 @@
 .mf-docs {
+  color-scheme: light;
   --_mf-body-font-size: var(--mf-body-font-size, 16px);
   --_mf-h3-font-size: var(--mf-h3-font-size, 21px);
   --_mf-logo-mark-font-size: var(--mf-logo-mark-font-size, 29px);
@@ -35,6 +36,7 @@
   line-height: 1.75;
 }
 .mf-docs-dark {
+  color-scheme: dark;
   --_mf-bg: var(--mf-bg, #19191e);
   --_mf-text: var(--mf-text, #e5e5ec);
   --_mf-muted: var(--mf-muted, #a4a4b1);
@@ -166,7 +168,7 @@
   top: 72px;
   height: calc(100vh - 72px);
   overflow: auto;
-  padding: 30px 26px 24px 36px;
+  padding: 30px 26px 24px 15px;
   border-right: 1px solid var(--_mf-line);
   background: var(--_mf-soft);
 }
@@ -526,4 +528,68 @@
   .mf-docs-grid[data-sidebar="none"] {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.mf-sidebar .mf-navigation-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.mf-sidebar .mf-navigation-group-title > a {
+  flex: 1;
+  font-size: inherit;
+  color: inherit;
+}
+.mf-sidebar .mf-navigation-group-title > button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+.mf-sidebar .mf-navigation-group-title > button:focus-visible {
+  outline: 2px solid var(--_mf-accent, var(--mf-accent, #646cff));
+  outline-offset: 2px;
+}
+
+.mf-navigation {
+  --_mf-navigation-icon-size: var(--mf-navigation-icon-size, 1rem);
+  --_mf-navigation-icon-gap: var(--mf-navigation-icon-gap, 0.625rem);
+}
+.mf-sidebar nav .mf-navigation-row {
+  display: grid;
+  grid-template-columns: var(--_mf-navigation-icon-size) minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: var(--_mf-navigation-icon-gap);
+  min-width: 0;
+}
+.mf-navigation-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.mf-navigation-icon {
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: var(--_mf-navigation-icon-size);
+  height: var(--_mf-navigation-icon-size);
+}
+.mf-navigation-icon > svg {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+}
+.mf-sidebar .mf-navigation-group-title > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mf-article .mf-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
 }

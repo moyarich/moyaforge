@@ -4,6 +4,7 @@ export interface SidebarNavigationNode {
   page?: {
     path: string;
     label: string;
+    icon?: string;
   };
   children: SidebarNavigationNode[];
 }

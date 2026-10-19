@@ -101,10 +101,14 @@ export function RegistryRouteView({
   }
   const content = (
     <PageLoadBoundary key={path} pagePath={path}>
-      <Suspense fallback={fallback}>
-        <Component />
-      </Suspense>
+      <Component />
     </PageLoadBoundary>
   );
-  return <>{renderPage ? renderPage(page, content) : content}</>;
+  // Keep this boundary stable across routes so transitions retain the current
+  // article and its shell until the destination module is ready.
+  return (
+    <Suspense fallback={fallback}>
+      {renderPage ? renderPage(page, content) : content}
+    </Suspense>
+  );
 }

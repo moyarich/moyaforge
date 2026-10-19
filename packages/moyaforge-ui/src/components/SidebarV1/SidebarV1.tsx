@@ -7,6 +7,9 @@ export interface SourcePage {
 }
 export interface DocumentationGroup {
   source: string;
+  page?: { path: string; label: string; icon?: string };
+  collapsible?: boolean;
+  defaultOpen?: boolean;
   label: string;
   nodes: SidebarNavigationNode[];
 }

@@ -4,7 +4,12 @@ label: Search
 description: Canonical MoyaForge Search component example.
 ---
 
-import { Search } from "../../../src/components/Search/Search.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Search
 
@@ -12,12 +17,13 @@ This live example uses the canonical component source in `packages/moyaforge-ui/
 
 ## Live preview
 
-<Search
-  inputProps={{
-    placeholder: "Search documentation",
-    "aria-label": "Search documentation",
-  }}
-/>
+<CodePreview
+  title="Search"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

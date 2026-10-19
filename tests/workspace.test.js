@@ -64,7 +64,7 @@ test("published package export targets and command entry points exist after buil
 
 test("installer ownership and optional editor peers stay outside basic UI installs", () => {
   assert.equal(manifests.moyaforge.bin, undefined);
-  assert.equal(manifests["moyaforge-cli"].bin.moyaforge, "./src/cli.js");
+  assert.equal(manifests["moyaforge-cli"].bin.moyaforge, "./dist/bin/moyaforge.js");
   assert.equal(manifests["moyaforge-cli"].dependencies, undefined);
   for (const name of [
     "@monaco-editor/react",

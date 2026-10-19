@@ -4,8 +4,11 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
+import { createServer } from "node:http";
 import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
+
+test.setTimeout(300_000);
 
 const repo = resolve(import.meta.dirname, "../../../..");
 test("GitHub shadcn consumer", async () => {
@@ -26,9 +29,39 @@ test("GitHub shadcn consumer", async () => {
     process.env.MOYAFORGE_REGISTRY_REF ??
     (await run("git", ["rev-parse", "HEAD"], repo));
   const root = await mkdtemp(join(tmpdir(), "moyaforge-shadcn-consumer-"));
+  let registryServer;
+  let registryItem = `moyarich/moyaforge/code-block#${ref}`;
   let browser;
   let server;
   try {
+    if (process.env.MOYAFORGE_REGISTRY_SOURCE === "local") {
+      const registry = JSON.parse(
+        await readFile(join(repo, "registry.json"), "utf8"),
+      );
+      const item = registry.items.find((item) => item.name === "code-block");
+      const payload = JSON.stringify({
+        ...item,
+        files: await Promise.all(
+          item.files.map(async (file) => ({
+            ...file,
+            content: await readFile(join(repo, file.path), "utf8"),
+          })),
+        ),
+      });
+      registryServer = createServer((req, res) => {
+        if (req.url !== "/code-block.json") {
+          res.writeHead(404);
+          res.end();
+          return;
+        }
+        res.writeHead(200, { "content-type": "application/json" });
+        res.end(payload);
+      });
+      await new Promise((resolve) =>
+        registryServer.listen(0, "127.0.0.1", resolve),
+      );
+      registryItem = `http://127.0.0.1:${registryServer.address().port}/code-block.json`;
+    }
     await mkdir(join(root, "src"));
     await writeFile(
       join(root, "package.json"),
@@ -130,7 +163,7 @@ test("GitHub shadcn consumer", async () => {
         "--",
         "shadcn",
         "add",
-        `moyarich/moyaforge/code-block#${ref}`,
+        registryItem,
         "--yes",
         "--cwd",
         root,
@@ -140,10 +173,10 @@ test("GitHub shadcn consumer", async () => {
     console.log(installed);
     await writeFile(
       join(root, "src/main.tsx"),
-      'import {createRoot} from "react-dom/client"; import {CodeBlock} from "./components/moyaforge/components/CodeBlock/CodeBlock"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
+      'import {createRoot} from "react-dom/client"; import {CodeBlock} from "./components/ui/components/CodeBlock/CodeBlock"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
     );
     const code = await readFile(
-      join(root, "src/components/moyaforge/components/CodeBlock/CodeBlock.tsx"),
+      join(root, "src/components/ui/components/CodeBlock/CodeBlock.tsx"),
       "utf8",
     );
     assert.ok(code.includes("CodeCopyIcon"));
@@ -177,6 +210,13 @@ test("GitHub shadcn consumer", async () => {
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto("http://127.0.0.1:4390");
     await page.locator("[data-moyaforge-code-block]").waitFor();
+    assert.equal(
+      await page
+        .locator("[data-moyaforge-code-block] pre")
+        .evaluate((element) => getComputedStyle(element).paddingTop),
+      "24px",
+      "component CSS loads without an aggregate stylesheet",
+    );
     await page.locator("[data-moyaforge-code-block]").hover();
     await page.getByRole("button", { name: "Copy code", exact: true }).click();
     assert.equal(
@@ -185,10 +225,12 @@ test("GitHub shadcn consumer", async () => {
     );
     assert.deepEqual(errors, []);
     console.log(
-      `Passed public GitHub shadcn install and browser copy check at ${ref}`,
+      `Passed shadcn install, colocated CSS and clipboard check: ${registryItem}`,
     );
   } finally {
     await browser?.close();
+    if (registryServer)
+      await new Promise((resolve) => registryServer.close(resolve));
     if (server)
       try {
         process.kill(-server.pid, "SIGTERM");
@@ -197,4 +239,4 @@ test("GitHub shadcn consumer", async () => {
       await rm(root, { recursive: true, force: true });
     else console.log(`Shadcn fixture retained at ${root}`);
   }
-}, 300000);
+});

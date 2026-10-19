@@ -171,7 +171,7 @@ test("documentation-site registry metadata matches generator conventions", () =>
     (entry) => entry.name === "documentation-site",
   );
   expect(item.description).toBe(
-    "Editable MoyaForge documentation-site source and CSS. Import the installed styles alongside the component.",
+    "Editable MoyaForge documentation-site source. Components import their own CSS.",
   );
 });
 
@@ -191,9 +191,7 @@ test("registry source files follow generator ordering", () => {
   for (const item of registry.items) {
     const sourcePaths = item.files
       .map((file) => file.path)
-      .filter(
-        (path) => path !== "LICENSE" && !path.startsWith("registry/styles/"),
-      );
+      .filter((path) => path !== "LICENSE");
     expect(sourcePaths, `stale source ordering in ${item.name}`).toEqual(
       [...sourcePaths].sort(),
     );

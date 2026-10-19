@@ -4,7 +4,12 @@ label: Empty State
 description: Live Empty State component example from canonical MoyaForge UI source.
 ---
 
-import { EmptyState } from "../../../src/components/EmptyState/EmptyState.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Empty State
 
@@ -12,10 +17,13 @@ This component is installed individually from MoyaForge's source registry and re
 
 ## Live preview
 
-<EmptyState
-  title="No results"
-  description="Try another search or adjust your filters."
-/>
+<CodePreview
+  title="Empty State"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

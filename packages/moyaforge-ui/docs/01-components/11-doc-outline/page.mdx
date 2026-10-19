@@ -4,7 +4,12 @@ label: Doc Outline
 description: Canonical MoyaForge Doc Outline component example.
 ---
 
-import { DocOutline } from "../../../src/components/DocOutline/DocOutline.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Doc Outline
 
@@ -12,15 +17,13 @@ This live example uses the canonical component source in `packages/moyaforge-ui/
 
 ## Live preview
 
-<DocOutline
-  title="On this page"
-  collapsible
-  defaultOpen
-  headings={[
-    { id: "installation", value: "Installation", depth: 2 },
-    { id: "configuration", value: "Configuration", depth: 2 },
-  ]}
-/>
+<CodePreview
+  title="Doc Outline"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

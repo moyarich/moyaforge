@@ -5,13 +5,16 @@
   "type": "module",
   "license": "MIT",
   "bin": {
-    "moyaforge": "./src/cli.js"
+    "moyaforge": "./dist/bin/moyaforge.js"
   },
   "exports": {
-    ".": "./src/registry.js"
+    ".": {
+      "types": "./dist/registry.d.ts",
+      "import": "./dist/registry.js"
+    }
   },
   "files": [
-    "src",
+    "dist",
     "templates",
     "README.md",
     "CHANGELOG.md"
@@ -29,8 +32,14 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "build": "node --check src/cli.js && node --check src/registry.js && node --check src/project.js",
-    "test": "vitest run",
-    "prepack": "npm run build"
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "test": "npm run build && vitest run",
+    "prepack": "npm run build",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
   }
 }

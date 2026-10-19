@@ -5,18 +5,20 @@
   "description": "MoyaForge components distributed",
   "type": "module",
   "scripts": {
-    "build": "node -e \"console.log('UI source workspace: no npm artifact')\"",
-    "typecheck": "node -e \"console.log('UI source workspace: source checks run through registry')\"",
     "test": "vitest run tests",
     "registry:check": "node ../../scripts/build-registry.mjs --check"
   },
   "license": "MIT",
   "registryDependencies": {
+    "lucide-react": "^1.56.0",
     "@monaco-editor/react": ">=4",
-    "@typefox/monaco-editor-react": ">=8",
-    "monaco-languageclient": ">=11",
+    "monaco-editor": "^0.52.2",
+    "@typefox/monaco-editor-react": "~8.0.2",
+    "monaco-languageclient": "~11.0.2",
     "@moyarich/moyaforge-mdx": "^0.1.0",
     "react": ">=18",
-    "react-router-dom": "^7.18.4"
+    "react-router-dom": "^7.18.4",
+    "@codingame/monaco-vscode-editor-api": "^37.6.1",
+    "shiki": "^4.5.0"
   }
 }

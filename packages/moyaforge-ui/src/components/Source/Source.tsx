@@ -1,3 +1,4 @@
+import { HighlightedCode } from "../Preview/HighlightedCode.js";
 import "./Source.css";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
@@ -7,9 +8,14 @@ export interface SourceProps extends ComponentPropsWithoutRef<"pre"> {
 }
 
 export function Source({ code, language, children, ...props }: SourceProps) {
+  const content = children ?? code;
   return (
     <pre data-moyaforge-source="" data-language={language} {...props}>
-      <code>{children ?? code}</code>
+      {typeof content === "string" ? (
+        <HighlightedCode code={content} language={language ?? "text"} />
+      ) : (
+        <code>{content}</code>
+      )}
     </pre>
   );
 }

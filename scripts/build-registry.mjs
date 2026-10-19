@@ -1,11 +1,12 @@
 import { format } from "prettier";
 import { parse } from "@babel/parser";
+import postcss from "postcss";
+import parseValue from "postcss-value-parser";
 import {
   readFile,
   writeFile,
   readdir,
   stat,
-  mkdir,
   rm,
   realpath,
 } from "node:fs/promises";
@@ -23,10 +24,34 @@ async function isFile(path) {
   }
 }
 function imports(text, file) {
-  if (file.endsWith(".css"))
-    return [...text.matchAll(/@import\s+(?:url\(\s*)?["']([^"']+)["']/g)].map(
-      (match) => match[1],
-    );
+  if (file.endsWith(".css")) {
+    const found = new Set();
+    // Parse real at-rules so examples inside comments are never copied.
+    postcss.parse(text, { from: file }).walkAtRules(/^import$/i, (rule) => {
+      const first = parseValue(rule.params).nodes.find(
+        (node) => node.type !== "space" && node.type !== "comment",
+      );
+      let path;
+      if (first?.type === "string") path = first.value;
+      else if (
+        first?.type === "function" &&
+        first.value.toLowerCase() === "url"
+      ) {
+        const value = first.nodes.filter(
+          (node) => node.type !== "space" && node.type !== "comment",
+        );
+        if (value.length === 1 && ["word", "string"].includes(value[0].type))
+          path = value[0].value;
+      }
+      if (!path)
+        throw Error(`Unresolvable CSS @import in ${file}: ${rule.params}`);
+      // Remote and site-root URLs remain owned by the host stylesheet.
+      if (/^(?:[a-z][a-z\d+.-]*:|\/|#)/i.test(path)) return;
+      // CSS imports are relative to their stylesheet, even without './'.
+      found.add(path.startsWith(".") ? path : `./${path}`);
+    });
+    return [...found];
+  }
   const ast = parse(text, {
     sourceType: "module",
     plugins: ["typescript", "jsx"],
@@ -51,8 +76,11 @@ function imports(text, file) {
         );
       found.add(node.source.value);
     }
-    if (node.type === "TSImportType" && node.argument?.type === "StringLiteral")
-      found.add(node.argument.value);
+    if (node.type === "TSImportType") {
+      // Babel 8 renamed argument to source; retain compatibility with Babel 7.
+      const source = node.source ?? node.argument;
+      if (source?.type === "StringLiteral") found.add(source.value);
+    }
     for (const value of Object.values(node)) {
       if (Array.isArray(value)) value.forEach(visit);
       else if (value && typeof value === "object") visit(value);
@@ -123,7 +151,7 @@ export async function buildRegistry(root, { check = false } = {}) {
         template: true,
       });
   async function resolveImport(base, specifier) {
-    const path = resolve(dirname(base), specifier);
+    const path = resolve(dirname(base), specifier.replace(/[?#].*$/, ""));
     for (const candidate of [
       path,
       path.replace(/\.js$/, ".ts"),
@@ -139,7 +167,6 @@ export async function buildRegistry(root, { check = false } = {}) {
     );
   }
   const items = [];
-  const styles = new Map();
   for (const [name, spec] of [...specs].sort(([a], [b]) =>
     a.localeCompare(b, "en"),
   )) {
@@ -171,40 +198,35 @@ export async function buildRegistry(root, { check = false } = {}) {
           dependencies.set(pkg, declared[pkg]);
         }
       }
-      if (!template && !file.endsWith(".css"))
-        for (const sibling of (await readdir(dirname(file))).sort())
-          if (sibling.endsWith(".css"))
-            await visit(resolve(dirname(file), sibling));
     }
     await visit(spec.entry, spec.template);
-    const itemSourceRoot = spec.entry.startsWith(uiSourceRoot + "/")
-      ? uiSourceRoot
-      : uiSourceRoot;
-    const stylesheet = await format(
-      [...files]
-        .filter((file) => file.endsWith(".css"))
-        .sort()
-        .map((file) => `@import "./${relative(itemSourceRoot, file)}";`)
-        .join("\n"),
-      { parser: "css" },
-    );
-    const stylePath = `registry/styles/${name}.css`;
-    styles.set(`${name}.css`, stylesheet);
+    const itemSourceRoot = uiSourceRoot;
     const installed = [...files].sort().map((file) => ({
       path: relative(root, file),
       type: "registry:file",
-      target: `~/src/components/moyaforge/${file === spec.entry && spec.template ? basename(file) : relative(itemSourceRoot, file)}`,
+      target: `~/src/components/ui/${file === spec.entry && spec.template ? basename(file) : relative(itemSourceRoot, file)}`,
     }));
     installed.push({
       path: "LICENSE",
       type: "registry:file",
-      target: "~/src/components/moyaforge/LICENSE",
+      target: "~/src/components/ui/LICENSE",
     });
-    installed.push({
-      path: stylePath,
-      type: "registry:file",
-      target: `~/src/components/moyaforge/${name}.css`,
-    });
+    const guidePath = resolve(dirname(spec.entry), "README.md");
+    let setupDocs;
+    if (await isFile(guidePath)) {
+      const canonical = await realpath(guidePath);
+      if (!canonical.startsWith(itemSourceRoot + "/"))
+        throw Error(
+          `Registry setup guide outside canonical source: ${guidePath}`,
+        );
+      setupDocs = await readFile(guidePath, "utf8");
+      installed.push({
+        path: relative(root, guidePath),
+        type: "registry:file",
+        target: `~/src/components/ui/${relative(itemSourceRoot, guidePath)}`,
+      });
+    }
+    installed.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
     items.push({
       name,
       type: spec.template ? "registry:block" : "registry:component",
@@ -212,7 +234,8 @@ export async function buildRegistry(root, { check = false } = {}) {
         .split("-")
         .map((part) => part[0].toUpperCase() + part.slice(1))
         .join(" "),
-      description: `Editable MoyaForge ${name} source and CSS. Import the installed styles alongside the component.`,
+      description: `Editable MoyaForge ${name} source. Components import their own CSS.`,
+      ...(setupDocs ? { docs: setupDocs } : {}),
       dependencies: [...dependencies]
         .sort(([a], [b]) => a.localeCompare(b, "en"))
         .map(([pkg, version]) => `${pkg}@${version}`),
@@ -245,22 +268,18 @@ export async function buildRegistry(root, { check = false } = {}) {
         `Registry is stale at character ${mismatch}: expected ${JSON.stringify(output.slice(mismatch, mismatch + 100))}, found ${JSON.stringify(existingRegistry.slice(mismatch, mismatch + 100))}. Run npm run registry:build.`,
       );
     }
-    const actual = (await readdir(stylesRoot))
-      .filter((name) => name.endsWith(".css"))
-      .sort();
-    if (JSON.stringify(actual) !== JSON.stringify([...styles.keys()].sort()))
-      throw Error("Registry styles are stale. Run npm run registry:build.");
-    for (const [name, contents] of styles)
-      if ((await readFile(resolve(stylesRoot, name), "utf8")) !== contents)
-        throw Error(`Stale stylesheet: ${name}`);
+    if (
+      await stat(stylesRoot).then(
+        () => true,
+        () => false,
+      )
+    )
+      throw Error(
+        "Obsolete registry/styles output exists. Run npm run registry:build.",
+      );
   } else {
-    // Compute and validate the entire graph before changing generated output.
-    await mkdir(stylesRoot, { recursive: true });
-    for (const old of await readdir(stylesRoot))
-      if (old.endsWith(".css") && !styles.has(old))
-        await rm(resolve(stylesRoot, old));
-    for (const [name, contents] of styles)
-      await writeFile(resolve(stylesRoot, name), contents);
+    // Validate the entire graph before replacing the manifest or removing legacy output.
+    await rm(stylesRoot, { recursive: true, force: true });
     await writeFile(resolve(root, "registry.json"), output);
   }
   return registry;

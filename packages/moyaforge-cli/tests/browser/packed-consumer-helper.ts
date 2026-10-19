@@ -19,12 +19,13 @@ export async function verifyPackedConsumer(fixture, index) {
   async function run(cmd, args, cwd) {
     const child = spawn(cmd, args, { cwd, stdio: ["ignore", "pipe", "pipe"] });
     let output = "";
+    let errors = "";
     child.stdout.on("data", (x) => (output += x));
-    child.stderr.on("data", (x) => (output += x));
+    child.stderr.on("data", (x) => (errors += x));
     const [code] = await once(child, "exit");
     if (code !== 0)
       throw Error(
-        `${cmd} ${args.join(" ")} failed (${code}) in ${cwd}\n${output}`,
+        `${cmd} ${args.join(" ")} failed (${code}) in ${cwd}\n${output}\n${errors}`,
       );
     return output;
   }
@@ -69,7 +70,7 @@ export async function verifyPackedConsumer(fixture, index) {
       ["-xzf", tarballs["@moyarich/moyaforge-cli"], "-C", unpack],
       repo,
     );
-    const cli = join(unpack, "package/src/cli.js");
+    const cli = join(unpack, "package/dist/bin/moyaforge.js");
     browser = await chromium.launch();
     {
       const root = join(temp, `consumer-${index}`);
@@ -127,7 +128,7 @@ export async function verifyPackedConsumer(fixture, index) {
       );
       const packedCLI = join(
         root,
-        "node_modules/@moyarich/moyaforge-cli/src/cli.js",
+        "node_modules/@moyarich/moyaforge-cli/dist/bin/moyaforge.js",
       );
       assert.match(
         await run(process.execPath, [packedCLI, "--help"], root),

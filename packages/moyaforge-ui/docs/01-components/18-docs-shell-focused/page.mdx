@@ -4,7 +4,12 @@ label: Docs Shell Focused
 description: Canonical Docs Shell Focused example in the MoyaForge component gallery.
 ---
 
-import { DocsShellFocused } from "../../../src/components/DocsShellFocused/DocsShellFocused.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Docs Shell Focused
 
@@ -12,14 +17,13 @@ Use `header={null}` or `navigation={null}` to suppress those slots. Omit a prop 
 
 ## Live preview
 
-<DocsShellFocused
-  title="Focused reading"
-  subtitle="A distraction-free documentation layout"
-  header={<strong>Focused shell preview</strong>}
-  navigation={null}
+<CodePreview
+  title="Docs Shell Focused"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
 >
-  <p>Reading content with independently replaceable slots.</p>
-</DocsShellFocused>
+  <Example />
+</CodePreview>
 
 ## Usage
 

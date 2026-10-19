@@ -4,7 +4,12 @@ label: Documentation Site
 description: Live demonstration of the canonical Documentation Site component.
 ---
 
-import { DocumentationSite } from "../../../src/components/Layout/DocumentationSite/DocumentationSite.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Documentation Site
 
@@ -12,15 +17,13 @@ This example uses the real source-owned MoyaForge UI component. It does not crea
 
 ## Live preview
 
-<DocumentationSite
-  title="Example site"
-  pages={[{ path: "/ui", label: "Overview" }]}
-  currentPath="/ui"
-  sidebar={null}
-  outline={null}
+<CodePreview
+  title="Documentation Site"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
 >
-  <p>Standalone documentation chrome with host-owned routing.</p>
-</DocumentationSite>
+  <Example />
+</CodePreview>
 
 ## Usage
 

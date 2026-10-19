@@ -41,7 +41,7 @@ export default {
 } as const;
 ```
 
-Paths use numeric prefixes for ordering; these prefixes disappear from public routes. Markdown and MDX pages use YAML frontmatter to override `title`, `label`, `description`, `order`, `navigation` and `toc`. Pages with `navigation: hidden` remain routable; `navigation: disabled` pages do not. Per-page `toc` overrides the project-wide default. Missing source directories produce an error; empty existing directories are valid.
+Paths use numeric prefixes for ordering; these prefixes disappear from public routes. Markdown and MDX pages use YAML frontmatter to override `title`, `label`, `description`, `order`, `navigation`, `sidebar` and `toc`. Pages with `navigation: hidden` remain routable; `navigation: disabled` pages do not. Per-page `toc` overrides the project-wide default. Missing source directories produce an error; empty existing directories are valid.
 
 ## Optional Vite registry discovery
 
@@ -105,6 +105,48 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 ## MDX-aware heading discovery
 
 The build-time TOC extraction parser now accepts MDX ESM imports, JSX components, and expression nodes using `remark-mdx`. The same `rehype-slug` and TOC extraction plugins continue to assign heading IDs. This enables ordinary Markdown headings around MDX components to appear in metadata without evaluating components. Headings generated _at runtime by React components_ are not visible at build time; those require runtime instrumentation if they must appear in the TOC.
+
+## Linked sidebar section headings
+
+A source-root `page.mdx` can become its sidebar section’s clickable heading instead
+of appearing as a separate Overview child. Configure its frontmatter:
+
+```yaml
+---
+title: UI Components
+label: Overview
+icon: folder-open
+sidebar:
+  group: true
+  collapsible: true
+  defaultOpen: true
+---
+```
+
+The heading opens the landing page; its adjacent disclosure button expands or
+collapses the child navigation independently. `sidebar.label` optionally overrides
+the section heading text; otherwise it uses `title`. `defaultOpen` defaults to
+`true`, and `collapsible` defaults to `false`. Without `sidebar.group: true`, the
+source configuration supplies the section heading and the landing page remains
+an ordinary navigation item. Hidden or disabled pages cannot supply a linked
+section heading. These options apply to source-root landing pages.
+
+## Sidebar menu icons
+
+Set `icon` to a Lucide kebab-case name on any page:
+
+```yaml
+---
+title: Getting started
+icon: book-open
+---
+```
+
+The sidebar displays the icon before the page label. A promoted source landing
+page uses the same icon beside its linked section heading. Icons load on demand;
+unknown names display the text label without an icon. The headless MDX package
+stores and validates the string without depending on Lucide or React. Omit `icon`
+for a text-only item. Icons are decorative; links retain their accessible labels.
 
 ## Compiled frontmatter exports
 

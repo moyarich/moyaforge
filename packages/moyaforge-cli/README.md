@@ -13,7 +13,7 @@ npx @moyarich/moyaforge-cli@latest init
 npm run dev
 ```
 
-The default installs editable source into `src/components/moyaforge`, creates a
+The default installs editable source into `src/components/ui`, creates a
 React/Vite/MDX application, and installs dependencies. It configures canonical
 MDX discovery, GitHub Pages-friendly hash routing, Shiki, clipboard controls,
 Lucide icons, and an explicit sidebar/outline composition.
@@ -50,7 +50,7 @@ Import the installed component directly; its implementation imports its own CSS:
 import {
   CodeGroup,
   CodeTab,
-} from "./components/moyaforge/components/CodeGroup/CodeGroup";
+} from "./components/ui/components/CodeGroup/CodeGroup";
 ```
 
 Relative source imports retain their canonical folder hierarchy, including when
@@ -97,7 +97,7 @@ npx shadcn@latest add moyarich/moyaforge/docs-shell
 This uses the public repository's root registry.json; no separate registry server
 is required. The shadcn path expects a consumer configured for its CLI. MoyaForge's
 native installer does not require that configuration or any Tailwind dependency.
-The installed component modules import their own CSS. Legacy generated CSS entry files remain available for integrations that need them; avoid importing both an entry file and the component stylesheet unless necessary.
+The installed component modules import their own CSS, colocated with their source. No additional stylesheet import or aggregate registry CSS entry is required.
 
 ## Publishing and migration
 
@@ -114,3 +114,18 @@ no GitHub credentials, and registry dependencies must be public npm packages.
 
 Development validation: `npm run registry:check`, `npm run checks`,
 `npm run test:cli:consumer`, and `npx shadcn@4.21.5 registry validate ./registry.json`.
+
+## Building the CLI
+
+The CLI source is TypeScript with JSDoc for its exported APIs. `src/scaffold.ts`
+plans starter files and consumer manifest changes for `moyaforge init`.
+
+```sh
+npm run build --workspace @moyarich/moyaforge-cli
+npm run typecheck --workspace @moyarich/moyaforge-cli
+npm test --workspace @moyarich/moyaforge-cli
+```
+
+Vite builds the Node command and registry API into `dist/`; TypeScript emits
+API declarations. Published packages include the compiled output and the
+`templates/` directory. `prepack` builds them automatically.

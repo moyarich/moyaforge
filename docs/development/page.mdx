@@ -104,7 +104,7 @@ Run `npm run check:links` and `npm test --workspaces` (Vitest) after changing do
 
 ## Component registry generation
 
-The source of truth for installable components is `packages/moyaforge/src/components/` and compositions in `registry/templates/`. The generated `registry.json` and `registry/styles/*.css` are **not** the playground's authored-content `registry.config.ts`.
+The source of truth for installable components is `packages/moyaforge-ui/src/components/` and compositions in `registry/templates/`. The generated `registry.json` is **not** the playground's authored-content `registry.config.ts`. Components own their CSS imports; styles stay beside their component source.
 
 To check generated registry output locally, run:
 
@@ -120,7 +120,7 @@ Registry generation and freshness enforcement run on `main`, not feature branche
 
 In **Actions → Build component registry → Run workflow**, select `main` and start the run. This invokes `workflow_dispatch` on the selected ref. For an unchanged branch, verify that regeneration, freshness checks, and shadcn validation pass and the final step reports **Registry is already current.** with no new commit.
 
-To exercise changed output, merge a canonical component-source change into `main`; the workflow rebuilds the registry and commits only `registry.json` and `registry/styles/**` when needed. A validation failure must stop before the commit step.
+To exercise changed output, merge a canonical component-source change into `main`; the workflow rebuilds the registry and commits only `registry.json` when needed. A validation failure must stop before the commit step.
 
 The workflow runs only on `main`, including manual dispatch on `main`. It uses `GITHUB_TOKEN` with `contents: write`, checks out the current `main` tip, and serializes runs by Git ref without canceling an in-progress run. The final push is an ordinary non-force push; if another commit moves the branch, its push must be rejected rather than overwriting the new head. Repository branch-protection/ruleset settings must permit the intended bot update, or the workflow will fail visibly. Do not grant bypass permissions or configure a personal token just to make the job succeed. This workflow does **not** publish npm packages.
 

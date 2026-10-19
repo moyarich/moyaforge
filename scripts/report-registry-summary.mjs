@@ -83,7 +83,7 @@ if (env.CHANGE_RESULT === "unchanged") {
 }
 lines.push(
   "",
-  "Only \`registry.json\` and \`registry/styles/\` may be staged for generated commits.",
+  "Only \`registry.json\` may be staged for generated commits.",
   "",
 );
 appendFileSync(summary, lines.join("\n") + "\n");

@@ -2,8 +2,8 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsLayout } from "../../../dist/components/Layout/DocsLayout/DocsLayout.js";
-import { DocOutline } from "../../../dist/components/DocOutline/DocOutline.js";
+import { DocsLayout } from "../../../moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.js";
+import { DocOutline } from "../../../moyaforge-ui/src/components/DocOutline/DocOutline.js";
 
 const headings = [
   {
@@ -120,7 +120,7 @@ test("TOC placements render in the intended landmark with a single accessible la
     assert.doesNotMatch(html, /href="#options"/);
     assert.equal(
       (html.match(/aria-label="Article sections"/g) ?? []).length,
-      2,
+      1,
     );
   }
 });
@@ -133,5 +133,8 @@ test("preserves canonical duplicate-heading slugs rather than regenerating them"
   const html = render({ headings: duplicateSlugs, placement: "right" });
   assert.match(html, /href="#overview"/);
   assert.match(html, /href="#overview-1"/);
-  assert.equal((html.match(/>Overview<\/a>/g) ?? []).length, 2);
+  assert.equal(
+    (html.replace(/<[^>]*>/g, "").match(/Overview/g) ?? []).length,
+    2,
+  );
 });

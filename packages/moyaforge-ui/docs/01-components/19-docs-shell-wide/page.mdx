@@ -4,7 +4,12 @@ label: Docs Shell Wide
 description: Canonical Docs Shell Wide example in the MoyaForge component gallery.
 ---
 
-import { DocsShellWide } from "../../../src/components/DocsShellWide/DocsShellWide.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Docs Shell Wide
 
@@ -12,14 +17,13 @@ Navigation, toolbar, inspector, and footer are optional independent slots.
 
 ## Live preview
 
-<DocsShellWide
-  title="Workspace layout"
-  navigationItems={[{ label: "Overview", href: "/ui" }]}
-  inspector={<p>Inspector panel</p>}
-  toolbar={<span>Workspace tools</span>}
+<CodePreview
+  title="Docs Shell Wide"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
 >
-  <p>Wide workspace content.</p>
-</DocsShellWide>
+  <Example />
+</CodePreview>
 
 ## Usage
 

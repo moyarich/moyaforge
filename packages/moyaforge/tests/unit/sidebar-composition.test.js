@@ -1,8 +1,8 @@
 import { test, expect } from "vitest";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsLayout } from "../../../dist/components/Layout/DocsLayout/DocsLayout.js";
-import { SidebarV2 } from "../../../dist/components/SidebarV2/index.js";
+import { DocsLayout } from "../../../moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.js";
+import { Sidebar as SidebarV2 } from "../../../moyaforge-ui/src/components/SidebarV2/index.js";
 
 const render = (sidebar) =>
   renderToStaticMarkup(
@@ -32,22 +32,11 @@ test("DocsLayout defaults to SidebarV1 and allows omitting the sidebar", () => {
 });
 
 test("documentation shell forwards optional sidebar metadata and outline slots", async () => {
-  const { MemoryRouter } = await import("react-router-dom");
-  const { MoyaForgeRouting } =
-    await import("../../../dist/components/Routing/content-routing.js");
   const { DocumentationSite } =
-    await import("../../../dist/components/Layout/DocsLayout/DocumentationSite.js");
+    await import("../../../moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx");
   const renderSite = (props) =>
     renderToStaticMarkup(
-      h(
-        MemoryRouter,
-        null,
-        h(
-          MoyaForgeRouting,
-          { pages: [] },
-          h(DocumentationSite, { title: "Docs", ...props }, "Content"),
-        ),
-      ),
+      h(DocumentationSite, { title: "Docs", ...props }, "Content"),
     );
   const defaults = renderSite({});
   expect(defaults).not.toContain('class="mf-version"');
@@ -68,7 +57,7 @@ test("documentation shell forwards optional sidebar metadata and outline slots",
 
 test("SidebarV1 children replace generated navigation while other slots remain independent", async () => {
   const { SidebarV1 } =
-    await import("../../../dist/components/SidebarV1/index.js");
+    await import("../../../moyaforge-ui/src/components/SidebarV1/index.js");
   const groups = [
     {
       source: "docs",
