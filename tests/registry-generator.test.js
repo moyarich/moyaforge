@@ -62,6 +62,8 @@ test("discovers unknown nested components, complete imports, styles and declared
     "new-shell",
     "unstyled",
   ]);
+  expect(registry.items[0].files).toEqual(expect.arrayContaining([expect.objectContaining({ target: "~/src/components/ui/Nested/NewBadge/NewBadge.tsx" }), expect.objectContaining({ target: "~/src/components/ui/utils/lazy.ts" })]));
+  expect(registry.items[0].files.some((file) => file.target.includes("/ui/components/"))).toBe(false);
   expect(registry.items[0].dependencies).toEqual([
     "@example/icons@^1.0.0",
     "react@>=18",
@@ -197,7 +199,7 @@ test("automatically includes component setup guides as standard registry docs an
     item.files.some(
       (file) =>
         file.target ===
-        "~/src/components/ui/components/Nested/NewBadge/README.md",
+        "~/src/components/ui/Nested/NewBadge/README.md",
     ),
   ).toBe(true);
   await buildRegistry(root, { check: true });
