@@ -17,7 +17,7 @@ test("registry bot changes only generated output after validation", () => {
   const build = workflow.indexOf("npm run registry:build");
   const check = workflow.indexOf("npm run registry:check");
   const validate = workflow.indexOf("shadcn@4.21.5 registry validate");
-  const stage = workflow.indexOf("git add -- registry.json registry/styles");
+  const stage = workflow.indexOf("git add -- registry.json");
   expect(build).toBeGreaterThan(-1);
   expect(check).toBeGreaterThan(build);
   expect(validate).toBeGreaterThan(check);

@@ -4,7 +4,12 @@ label: Sidebar V1
 description: Live demonstration of the canonical Sidebar V1 component.
 ---
 
-import { SidebarV1 } from "../../../src/components/SidebarV1/SidebarV1.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Sidebar V1
 
@@ -12,14 +17,13 @@ This example uses the real source-owned MoyaForge UI component. It does not crea
 
 ## Live preview
 
-<SidebarV1
-  label="Documentation"
-  pages={[
-    { url: "/ui", title: "Overview" },
-    { url: "/ui/components/sidebar-v1", title: "Sidebar V1" },
-  ]}
-  currentUrl="/ui/components/sidebar-v1"
-/>
+<CodePreview
+  title="Sidebar V1"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

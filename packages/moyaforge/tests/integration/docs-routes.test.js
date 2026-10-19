@@ -2,8 +2,9 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { DocsRoutes } from "../../../dist/components/DocsRoutes/DocsRoutes.js";
-import { createMoyaForgeSource } from "../../../dist/utils/content/index.js";
+import { HeadlessDocsRoutes as DocsRoutes } from "../../src/routing/HeadlessDocsRoutes.tsx";
+import { DocsLayout } from "../../../moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx";
+import { createMoyaForgeSource } from "../../src/utils/content/source.ts";
 
 const source = createMoyaForgeSource({
   docs: {
@@ -32,7 +33,25 @@ const source = createMoyaForgeSource({
 
 const render = (pathname, extras = {}) =>
   renderToStaticMarkup(
-    React.createElement(DocsRoutes, { source, pathname, ...extras }),
+    React.createElement(DocsRoutes, {
+      source,
+      pathname,
+      renderLayout: (page, content) =>
+        React.createElement(
+          DocsLayout,
+          {
+            pages: source.getPages().map((page) => ({
+              url: page.url,
+              title: page.title,
+              navigation: page.frontmatter?.navigation,
+            })),
+            currentUrl: page.url,
+            ...extras.layout,
+          },
+          content,
+        ),
+      ...extras,
+    }),
   );
 
 test("host-provided paths resolve nested routes with or without trailing slashes", () => {

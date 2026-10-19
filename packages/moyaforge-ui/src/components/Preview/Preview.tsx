@@ -1,5 +1,8 @@
+import { HighlightedCode } from "./HighlightedCode.js";
 import "./Preview.css";
+import { Check, CodeXml, Copy, Eye, CircleAlert } from "lucide-react";
 import {
+  Fragment,
   cloneElement,
   createContext,
   isValidElement,
@@ -127,13 +130,11 @@ export function PreviewCodeToggle({
     ...props,
     "aria-controls": contentId,
     "aria-expanded": view === "code",
+    "data-moyaforge-preview-toggle": "",
     onClick: toggle,
   };
   if (asChild) {
-    if (
-      !isValidElement(children) ||
-      children.type === Symbol.for("react.fragment")
-    )
+    if (!isValidElement(children) || children.type === Fragment)
       throw new Error(
         "PreviewCodeToggle asChild requires exactly one non-fragment element.",
       );
@@ -155,7 +156,16 @@ export function PreviewCodeToggle({
   }
   return (
     <button type="button" {...triggerProps}>
-      {children ?? (view === "code" ? "Preview" : "Code")}
+      {children ?? (
+        <>
+          {view === "code" ? (
+            <Eye size={15} aria-hidden="true" />
+          ) : (
+            <CodeXml size={15} aria-hidden="true" />
+          )}
+          <span>{view === "code" ? "Preview" : "Code"}</span>
+        </>
+      )}
     </button>
   );
 }
@@ -166,10 +176,23 @@ export function PreviewCopyButton(
   > & { code?: string },
 ) {
   const { source } = usePreview();
-  const { code, children = "Copy", ...rest } = props;
+  const {
+    code,
+    children = "Copy",
+    icon = (
+      <span data-moyaforge-preview-copy-icons="" aria-hidden="true">
+        <Copy size={15} data-copy-icon="idle" />
+        <Check size={15} data-copy-icon="copied" />
+        <CircleAlert size={15} data-copy-icon="error" />
+      </span>
+    ),
+    ...rest
+  } = props;
   return (
     <CopyButton
       aria-label="Copy example source"
+      data-moyaforge-preview-copy=""
+      icon={icon}
       {...rest}
       value={code ?? source ?? ""}
     >
@@ -182,10 +205,7 @@ type SlotProps = ComponentPropsWithoutRef<"div"> & { asChild?: boolean };
 /** Merge state and DOM attributes onto a single child that forwards DOM props. */
 function Slot({ children, asChild, ...props }: SlotProps) {
   if (!asChild) return <div {...props}>{children}</div>;
-  if (
-    !isValidElement(children) ||
-    children.type === Symbol.for("react.fragment")
-  )
+  if (!isValidElement(children) || children.type === Fragment)
     throw new Error(
       "Preview asChild requires exactly one non-fragment React element.",
     );
@@ -243,14 +263,16 @@ export function PreviewSource({
   const { view, source } = usePreview();
   const displayCode = code ?? source ?? "";
   if (asChild) {
-    if (
-      !isValidElement(children) ||
-      children.type === Symbol.for("react.fragment")
-    )
+    if (!isValidElement(children) || children.type === Fragment)
       throw new Error(
         "PreviewSource asChild requires exactly one non-fragment React element.",
       );
-    const child = children as ReactElement<ComponentPropsWithoutRef<"div">>;
+    const child = children as ReactElement<
+      ComponentPropsWithoutRef<"pre"> & {
+        "data-moyaforge-preview-source"?: string;
+        "data-language"?: string;
+      }
+    >;
     return cloneElement(child, {
       ...child.props,
       ...props,
@@ -266,7 +288,7 @@ export function PreviewSource({
       hidden={view !== "code"}
       {...props}
     >
-      <code>{displayCode}</code>
+      <HighlightedCode code={displayCode} language={language} />
     </pre>
   );
 }

@@ -4,7 +4,12 @@ label: Docs Shell
 description: Canonical Docs Shell example in the MoyaForge component gallery.
 ---
 
-import { DocsLayout } from "../../../src/components/Layout/DocsLayout/DocsLayout.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Docs Shell
 
@@ -12,19 +17,13 @@ The registry's Docs Shell item is an editable template wrapping DocsLayout; this
 
 ## Live preview
 
-<DocsLayout
-  title="Docs Shell preview"
-  pages={[{ url: "#/ui/components/docs-shell", title: "Docs Shell" }]}
-  currentUrl="#/ui/components/docs-shell"
-  header={<strong>Docs Shell</strong>}
-  sidebar={null}
-  outline={null}
+<CodePreview
+  title="Docs Shell"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
 >
-  <p>
-    Installable DocsShell composes this canonical DocsLayout with host-supplied
-    routes and slots.
-  </p>
-</DocsLayout>
+  <Example />
+</CodePreview>
 
 ## Usage
 

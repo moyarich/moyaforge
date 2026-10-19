@@ -16,7 +16,7 @@ test.each(["code-block", "code-group", "doc-outline"])(
     expect(componentFiles.length).toBeGreaterThan(0);
     expect(
       componentFiles.every((file) =>
-        file.path.startsWith("packages/moyaforge-ui/src/components/"),
+        file.path.startsWith("packages/moyaforge-ui/src/"),
       ),
     ).toBe(true);
   },

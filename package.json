@@ -25,7 +25,7 @@
     "test:boundaries": "vitest run tests/workspace.test.js",
     "test:consumer": "vitest run tests/consumer.test.js",
     "test:consumer:browser": "npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspaces --if-present",
     "test:unit": "vitest run --exclude packages/moyaforge/tests/docs-routes.test.js --exclude packages/moyaforge/tests/mdx.test.js --exclude packages/moyaforge/tests/sidebar-composition.test.js --exclude packages/moyaforge/tests/toc-render.test.js",
     "test:e2e": "playwright test --project=vite-consumer",
     "registry:build": "node scripts/build-registry.mjs",
@@ -38,14 +38,20 @@
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
+    "@codingame/monaco-vscode-api": "^37.6.1",
     "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.5",
     "@vitejs/plugin-react": "^6.1.2",
+    "postcss": "^8.5.31",
+    "postcss-value-parser": "^4.2.0",
     "prettier": "^3.9.10",
     "vite": "^8.3.4",
     "vitest": "^5.0.4"
   },
   "engines": {
     "node": ">=22.12.0"
+  },
+  "overrides": {
+    "@codingame/monaco-vscode-api": "$@codingame/monaco-vscode-api"
   }
 }

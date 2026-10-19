@@ -43,7 +43,7 @@ test("Preview renders separately composed slots and code by default", () => {
   );
   expect(html).toContain('data-view="code"');
   expect(html).toContain('aria-expanded="true"');
-  expect(html).toContain("const a = 1");
+  expect(html.replace(/<[^>]*>/g, "")).toContain("const a = 1");
   expect(html).toContain("Footer");
   expect(html).toContain('hidden=""');
 });

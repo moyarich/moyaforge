@@ -4,7 +4,12 @@ label: Navigation Tree
 description: Canonical MoyaForge Navigation Tree component example.
 ---
 
-import { NavigationTree } from "../../../src/components/NavigationTree/NavigationTree.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Navigation Tree
 
@@ -12,18 +17,13 @@ This live example uses the canonical component source in `packages/moyaforge-ui/
 
 ## Live preview
 
-<NavigationTree
-  items={[
-    {
-      label: "Guides",
-      children: [
-        { label: "Getting started", children: [] },
-        { label: "Configuration", children: [] },
-      ],
-    },
-    { label: "Reference", children: [] },
-  ]}
-/>
+<CodePreview
+  title="Navigation Tree"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

@@ -96,6 +96,10 @@ export function flattenNavigation(
 export interface DocumentationGroup {
   /** Unique source key from the content registry. */
   source: string;
+  /** Optional source landing page promoted to the section heading. */
+  page?: NormalizedPage;
+  collapsible?: boolean;
+  defaultOpen?: boolean;
   /** Sidebar label, falling back to the source key. */
   label: string;
   /** Source-specific navigation roots in display order. */
@@ -132,17 +136,31 @@ export function buildDocumentationGroups(
       (sources[a]?.navigation?.order ?? 0) -
         (sources[b]?.navigation?.order ?? 0) || a.localeCompare(b),
   );
-  return sourceNames.map((source) => ({
-    source,
-    label: sources[source]?.navigation?.label ?? source,
-    nodes: buildNavigationTree(
-      routes.filter((page) => page.source === source),
-    ).flatMap((node) =>
-      node.path === `/${source}`
-        ? node.page
-          ? [node]
-          : node.children
-        : [node],
-    ),
-  }));
+  return sourceNames.map((source) => {
+    const pages = routes.filter((page) => page.source === source);
+    const landing = pages.find(
+      (page) => page.path === `/${source}` && page.navigation === "visible",
+    );
+    const promoted = landing?.sidebar?.group ? landing : undefined;
+    return {
+      source,
+      label: promoted
+        ? (promoted.sidebar?.label ?? promoted.title)
+        : (sources[source]?.navigation?.label ?? source),
+      ...(promoted
+        ? {
+            page: promoted,
+            collapsible: promoted.sidebar?.collapsible ?? false,
+            defaultOpen: promoted.sidebar?.defaultOpen ?? true,
+          }
+        : {}),
+      nodes: buildNavigationTree(pages).flatMap((node) =>
+        node.path === `/${source}`
+          ? promoted || !node.page
+            ? node.children
+            : [node]
+          : [node],
+      ),
+    };
+  });
 }

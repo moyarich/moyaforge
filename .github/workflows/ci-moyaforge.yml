@@ -70,7 +70,7 @@ jobs:
         run: npm test --workspaces --if-present
       - name: Validate registered content links and anchors
         run: npm run check:links
-      - run: npm run build --workspaces
+      - run: npm run build --workspaces --if-present
       - name: Verify moyaforge-mdx publish tarball
         shell: bash
         run: |

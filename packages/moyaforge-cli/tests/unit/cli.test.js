@@ -10,10 +10,10 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
-import { planItems, resolveItems } from "../../src/registry.js";
+import { planItems, resolveItems } from "../../src/registry.ts";
 
 const repository = resolve(import.meta.dirname, "../../../..");
-const cli = resolve(import.meta.dirname, "../../src/cli.js");
+const cli = resolve(import.meta.dirname, "../../dist/bin/moyaforge.js");
 const temporary = [];
 afterEach(async () => {
   for (const path of temporary.splice(0))
@@ -40,13 +40,13 @@ test("dry-run plans registry dependencies without writing files", async () => {
   expect(result.stdout).toContain("CodeBlock/CodeBlock.tsx");
   expect(result.stdout).not.toContain("Monaco");
   await expect(
-    read(root, "src/components/moyaforge/code-group.css"),
+    read(root, "src/components/ui/components/CodeGroup/CodeGroup.css"),
   ).rejects.toThrow();
 });
 test("source installation is canonical, preserves edits, shows diffs, and explicitly overwrites", async () => {
   const root = await project();
   expect(run(root, "add", "code-group", "--no-install").status).toBe(0);
-  const path = "src/components/moyaforge/components/CodeGroup/CodeGroup.tsx";
+  const path = "src/components/ui/components/CodeGroup/CodeGroup.tsx";
   const original = await read(root, path);
   expect(original).toBe(
     await read(
@@ -74,9 +74,10 @@ test("custom destinations retain portable relative imports", async () => {
   expect(await read(root, "ui/docs/docs-shell.tsx")).toContain(
     "./components/Layout/DocsLayout/DocsLayout.js",
   );
-  expect(await read(root, "ui/docs/docs-shell.css")).toContain(
-    "./components/Layout/DocsLayout/DocsLayout.css",
-  );
+  expect(
+    await read(root, "ui/docs/components/Layout/DocsLayout/DocsLayout.tsx"),
+  ).toContain('import "./DocsLayout.css";');
+  await expect(read(root, "ui/docs/docs-shell.css")).rejects.toThrow();
 });
 test("init produces source/package/hybrid starters and preserves existing app configuration", async () => {
   const root = await project();
@@ -99,20 +100,20 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
   expect(manifest.dependencies).not.toHaveProperty("@moyarich/moyaforge");
   const existingApp = await read(root, "moyaforge/src/App.tsx");
-  expect(existingApp).toContain("../../src/components/moyaforge/docs-shell.js");
+  expect(existingApp).toContain("../../src/components/ui/docs-shell.js");
   expect(existingApp).toContain("sidebar={sidebar}");
   expect(existingApp).not.toContain("components/Routing/content-routing.js");
   expect(await read(root, "moyaforge/vite.config.ts")).toContain(
     "@moyarich/moyaforge-mdx/vite",
   );
-  expect(await read(root, "moyaforge/src/main.tsx")).toContain(
-    'import "../../src/components/moyaforge/code-group.css";',
+  expect(await read(root, "moyaforge/src/main.tsx")).not.toContain(
+    "code-group.css",
   );
   expect(
-    await read(
-      root,
-      "src/components/moyaforge/components/CodeGroup/CodeGroup.tsx",
-    ),
+    await read(root, "src/components/ui/components/CodeGroup/CodeGroup.tsx"),
+  ).toContain('import "./CodeGroup.css";');
+  expect(
+    await read(root, "src/components/ui/components/CodeGroup/CodeGroup.tsx"),
   ).toContain("CodeGroup");
   const packageRoot = await project();
   expect(
@@ -141,9 +142,9 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(await read(packageRoot, "vite.config.ts")).toContain(
     "sqliteSearchPlugin",
   );
-  expect(
-    await read(packageRoot, "src/components/moyaforge/docs-shell.tsx"),
-  ).toContain("DocsShell");
+  expect(await read(packageRoot, "src/components/ui/docs-shell.tsx")).toContain(
+    "DocsShell",
+  );
   expect(await read(packageRoot, "package.json")).not.toMatch(
     /monaco|shadcn|tailwind|radix|console/,
   );
@@ -181,7 +182,7 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
           files: [
             {
               path: "file.ts",
-              target: "~/src/components/moyaforge/../../package.json",
+              target: "~/src/components/ui/../../package.json",
               content: "bad",
             },
           ],
@@ -192,4 +193,65 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
   await expect(
     planItems({ root: outside, names: ["bad"], registry: malicious }),
   ).rejects.toThrow(/Invalid component target/);
+});
+
+test("legacy registry targets use the new default while configured destinations are preserved", async () => {
+  const root = await project();
+  const legacy = await project();
+  await writeFile(
+    join(legacy, "registry.json"),
+    JSON.stringify({
+      items: [
+        {
+          name: "legacy",
+          files: [
+            {
+              path: "file.ts",
+              target: "~/src/components/moyaforge/components/Example.tsx",
+              content: "export const Example = 1;",
+            },
+          ],
+        },
+      ],
+    }),
+  );
+  const plan = await planItems({ root, names: ["legacy"], registry: legacy });
+  expect(plan.files[0].path).toBe(
+    join(root, "src/components/ui/components/Example.tsx"),
+  );
+  await writeFile(
+    join(root, "moyaforge.components.json"),
+    JSON.stringify({ directory: "src/custom-components" }),
+  );
+  expect(run(root, "add", "code-block", "--no-install").status).toBe(0);
+  expect(
+    await read(
+      root,
+      "src/custom-components/components/CodeBlock/CodeBlock.tsx",
+    ),
+  ).toContain("CodeBlock");
+});
+
+test("monaco installation reports runtime requirements and preserves its setup guide", async () => {
+  const root = await project();
+  const dry = run(root, "add", "monaco-editor-react", "--dry-run");
+  expect(dry.status).toBe(0);
+  expect(dry.stdout).toContain("monaco-editor@^0.52.2");
+  expect(dry.stdout).toContain(
+    "npm install @monaco-editor/react monaco-editor lucide-react",
+  );
+  expect(dry.stdout).toContain("Monaco workers");
+  await expect(
+    read(root, "src/components/ui/components/MonacoEditorReact/README.md"),
+  ).rejects.toThrow();
+  const installed = run(root, "add", "monaco-editor-react", "--no-install");
+  expect(installed.status).toBe(0);
+  expect(installed.stdout).toContain("Setup notes:");
+  expect(installed.stdout).toContain("MonacoEditorReact setup");
+  expect(
+    await read(
+      root,
+      "src/components/ui/components/MonacoEditorReact/README.md",
+    ),
+  ).toContain("loader.config({ monaco })");
 });

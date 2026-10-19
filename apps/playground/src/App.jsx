@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { HashRouter, useLocation, useNavigate } from "react-router-dom";
+import {
+  HashRouter,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import {
   SidebarV1,
@@ -18,13 +23,8 @@ import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 import { routes, headings } from "virtual:moyaforge-mdx/metadata";
 import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
 
-function PlaygroundShell() {
+function PlaygroundShell({ page, children }) {
   const { pathname, hash } = useLocation();
-  const page = routes.find(
-    (item) =>
-      item.path === (pathname.replace(/\/+$/, "") || "/") &&
-      item.navigation !== "disabled",
-  );
   const navigate = useNavigate();
   useEffect(() => {
     if (!hash) return;
@@ -119,14 +119,30 @@ function PlaygroundShell() {
         ) : null
       }
     >
-      <RegistryRoutes notFound={<h1>Page not found</h1>} />
+      {children}
     </DocumentationSite>
+  );
+}
+function PlaygroundRoutes() {
+  const { pathname } = useLocation();
+  if (pathname === "/") return <Navigate to="/docs" replace />;
+  return (
+    <RegistryRoutes
+      notFound={
+        <PlaygroundShell>
+          <h1>Page not found</h1>
+        </PlaygroundShell>
+      }
+      renderPage={(page, content) => (
+        <PlaygroundShell page={page}>{content}</PlaygroundShell>
+      )}
+    />
   );
 }
 export function App() {
   return (
     <HashRouter>
-      <PlaygroundShell />
+      <PlaygroundRoutes />
     </HashRouter>
   );
 }

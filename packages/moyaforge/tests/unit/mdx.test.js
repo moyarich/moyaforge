@@ -1,22 +1,22 @@
-import assert from "node:assert/strict";
-import { test } from "vitest";
+import { expect, test } from "vitest";
+import { defineMdxComponentRegistry } from "../../src/mdx-registry.ts";
+import {
+  CodeGroup,
+  CodeTab,
+} from "../../../moyaforge-ui/src/components/CodeGroup/index.ts";
 
-import { Console, Terminal } from "@moyarich/console";
-import { moyaForgeComponents } from "../../../dist/utils/mdx/index.js";
-
-test("default MDX components include Console output surfaces", () => {
-  assert.equal(moyaForgeComponents.Console, Console);
-  assert.equal(moyaForgeComponents.Terminal, Terminal);
+test("MDX components are supplied by the host", () => {
+  const components = defineMdxComponentRegistry({ CodeGroup, CodeTab });
+  expect(components.CodeGroup).toBe(CodeGroup);
+  expect(components.CodeTab).toBe(CodeTab);
+  expect(components.Console).toBeUndefined();
 });
-
-test("MDX default registry exports documentation components", () => {
-  for (const name of [
-    "CodeGroup",
-    "CodeTab",
-    "DocOutline",
-    "EditPageLink",
-    "MonacoCodeGroup",
-  ]) {
-    assert.equal(typeof moyaForgeComponents[name], "function", name);
-  }
+test("host overrides replace only explicitly supplied components", () => {
+  const Replacement = () => null;
+  const components = defineMdxComponentRegistry(
+    { CodeGroup, CodeTab },
+    { CodeGroup: Replacement },
+  );
+  expect(components.CodeGroup).toBe(Replacement);
+  expect(components.CodeTab).toBe(CodeTab);
 });

@@ -54,9 +54,7 @@ function fixture(fn) {
     git(repo, "config", "user.email", "test@example.invalid");
     git(repo, "config", "user.name", "Registry test");
     mkdirSync(join(repo, "registry"));
-    mkdirSync(join(repo, "registry/styles"));
     writeFileSync(join(repo, "registry.json"), "{}\n");
-    writeFileSync(join(repo, "registry/styles/sample.css"), "/* baseline */\n");
     writeFileSync(join(repo, "unrelated.txt"), "baseline\n");
     git(repo, "add", ".");
     git(repo, "commit", "-m", "initial");
@@ -150,7 +148,7 @@ test("workflow has manual dispatch, per-ref serialization, and PR freshness chec
     /group: build-component-registry-\$\{\{ github\.ref \}\}/,
   );
   assert.match(workflow, /cancel-in-progress: false/);
-  assert.match(workflow, /git add -- registry\.json registry\/styles/);
+  assert.match(workflow, /git add -- registry\.json\s*\n/);
   assert.doesNotMatch(script, /--force|push\s+-f\b/);
   assert.match(workflow, /npm run registry:check/);
 });

@@ -4,7 +4,12 @@ label: Page
 description: Live Page component example from canonical MoyaForge UI source.
 ---
 
-import { Page } from "../../../src/components/Page/Page.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Page
 
@@ -12,10 +17,13 @@ This component is installed individually from MoyaForge's source registry and re
 
 ## Live preview
 
-<Page as="section" aria-label="Sample page">
-  <h2>Documentation page</h2>
-  <p>This content uses the composable Page primitive.</p>
-</Page>
+<CodePreview
+  title="Page"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

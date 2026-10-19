@@ -15,12 +15,22 @@ export interface TocOptions {
   defaultOpen?: boolean;
 }
 export type TocSetting = boolean | TocOptions;
+export interface SidebarOptions {
+  /** Use the source landing page as the linked section heading. */
+  group?: boolean;
+  collapsible?: boolean;
+  defaultOpen?: boolean;
+  label?: string;
+}
 export interface PageFrontmatter {
   title?: string;
   label?: string;
+  /** Optional Lucide icon name in kebab case, e.g. folder-open. */
+  icon?: string;
   description?: string;
   order?: number;
   navigation?: NavigationMode;
+  sidebar?: SidebarOptions;
   toc?: TocSetting;
 }
 export interface PageInput {
@@ -35,9 +45,11 @@ export interface NormalizedPage {
   path: string;
   title: string;
   label: string;
+  icon?: string;
   description?: string;
   order: number;
   navigation: NavigationMode;
+  sidebar?: SidebarOptions;
   toc: TocSetting;
   parentPath: string | null;
 }
@@ -63,10 +75,12 @@ const toLabel = (value: string) =>
 function assertFrontmatter(meta: PageFrontmatter, file: string): void {
   if (!meta || typeof meta !== "object" || Array.isArray(meta))
     throw Error(`${file}: frontmatter must be an object`);
-  for (const key of ["title", "label", "description"] as const) {
+  for (const key of ["title", "label", "description", "icon"] as const) {
     if (meta[key] !== undefined && typeof meta[key] !== "string")
       throw Error(`${file}: ${key} must be a string`);
   }
+  if (meta.icon !== undefined && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(meta.icon))
+    throw Error(`${file}: icon must be a Lucide icon name in kebab case`);
   if (meta.order !== undefined && !Number.isFinite(meta.order))
     throw Error(`${file}: order must be a finite number`);
   if (
@@ -74,6 +88,25 @@ function assertFrontmatter(meta: PageFrontmatter, file: string): void {
     !["visible", "hidden", "disabled"].includes(meta.navigation)
   )
     throw Error(`${file}: invalid navigation mode`);
+  if (meta.sidebar !== undefined) {
+    if (
+      !meta.sidebar ||
+      typeof meta.sidebar !== "object" ||
+      Array.isArray(meta.sidebar)
+    )
+      throw Error(`${file}: sidebar must be an object`);
+    for (const key of ["group", "collapsible", "defaultOpen"] as const)
+      if (
+        meta.sidebar[key] !== undefined &&
+        typeof meta.sidebar[key] !== "boolean"
+      )
+        throw Error(`${file}: sidebar ${key} must be boolean`);
+    if (
+      meta.sidebar.label !== undefined &&
+      typeof meta.sidebar.label !== "string"
+    )
+      throw Error(`${file}: sidebar label must be a string`);
+  }
   if (meta.toc !== undefined && typeof meta.toc !== "boolean") {
     if (!meta.toc || typeof meta.toc !== "object" || Array.isArray(meta.toc))
       throw Error(`${file}: invalid toc setting`);
@@ -152,8 +185,10 @@ export function buildPageRegistry(
         title: meta.title ?? toLabel(last),
         label: meta.label ?? meta.title ?? toLabel(last),
         description: meta.description,
+        ...(meta.icon ? { icon: meta.icon } : {}),
         order,
         navigation: meta.navigation ?? "visible",
+        ...(meta.sidebar ? { sidebar: meta.sidebar } : {}),
         toc: meta.toc ??
           options.toc ?? { placement: "right", minDepth: 2, maxDepth: 3 },
         parentPath,

@@ -4,7 +4,12 @@ label: Edit Page Link
 description: Live Edit Page Link component example from canonical MoyaForge UI source.
 ---
 
-import { EditPageLink } from "../../../src/components/EditPageLink/EditPageLink.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Edit Page Link
 
@@ -12,11 +17,13 @@ This component is installed individually from MoyaForge's source registry and re
 
 ## Live preview
 
-<EditPageLink
-  repository="moyarich/moyaforge"
-  path="packages/moyaforge-ui/docs/page.mdx"
-  label="Edit UI documentation"
-/>
+<CodePreview
+  title="Edit Page Link"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
 
 ## Usage
 

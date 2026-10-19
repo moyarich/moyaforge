@@ -4,7 +4,14 @@ label: Docs Layout
 description: Live demonstration of the canonical Docs Layout component.
 ---
 
-import { DocsLayout } from "../../../src/components/Layout/DocsLayout/DocsLayout.tsx";
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../src/components/CodePreview/index.js";
+import OutlineExample from "./collapsible-outline/Example.tsx";
+import outlineSource from "./collapsible-outline/Example.tsx?raw";
+import Example from "./default/Example.tsx";
+import exampleSource from "./default/Example.tsx?raw";
 
 # Docs Layout
 
@@ -12,16 +19,13 @@ This example uses the real source-owned MoyaForge UI component. It does not crea
 
 ## Live preview
 
-<DocsLayout
-  title="Example documentation"
-  pages={[{ url: "/ui", title: "Overview" }]}
-  currentUrl="/ui"
-  header={<strong>Documentation preview</strong>}
-  sidebar={null}
-  outline={null}
+<CodePreview
+  title="Docs Layout"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
 >
-  <p>Customizable layout content</p>
-</DocsLayout>
+  <Example />
+</CodePreview>
 
 ## Usage
 
@@ -45,20 +49,13 @@ Set `toc.collapsible` to enable native HTML `<details>` disclosure, and
 JavaScript click handler is required. Custom `outline` and `sidebar` slots
 continue to replace the defaults.
 
-<DocsLayout
-  title="Collapsible outline example"
-  pages={[{ url: "/guide", title: "Guide" }]}
-  currentUrl="/guide"
-  sidebar={null}
-  toc={{
-    collapsible: true,
-    defaultOpen: false,
-    headings: [{ id: "example-heading", text: "Example heading", depth: 2 }],
-  }}
+<CodePreview
+  title="Collapsible outline"
+  files={[{ label: "Example.tsx", code: outlineSource }]}
+  replacements={CODE_REPLACEMENTS}
 >
-  <h2 id="example-heading">Example heading</h2>
-  <p>Expand the outline using its summary control.</p>
-</DocsLayout>
+  <OutlineExample />
+</CodePreview>
 
 ## Installation
 

@@ -100,9 +100,9 @@ The repository's `.npmrc` routes `@moyarich` packages to the public npm registry
 ## Component registry maintenance
 
 The installable UI source of truth is `packages/moyaforge-ui/src/components/`.
-`scripts/build-registry.mjs` generates `registry.json` and
-`registry/styles/*.css` for selected component installs. These generated
-files are committed to this repository; they are not npm package publishing.
+`scripts/build-registry.mjs` generates `registry.json` for component installs.
+Components import their own CSS, which stays beside their source; there is no
+separate registry stylesheet entry. The manifest is committed to this repository.
 
 To regenerate locally before submitting a PR:
 
@@ -113,7 +113,7 @@ npm run registry:check
 npx --yes shadcn@4.21.5 registry validate ./registry.json
 ```
 
-Include changes to `registry.json` and `registry/styles/` in the same PR as
+Include changes to `registry.json` in the same PR as
 the source changes. CI checks registry freshness on pull requests.
 
 The [Build component registry](.github/workflows/build-component-registry.yml)
@@ -122,7 +122,7 @@ files change on `main`. To run it manually, open **Actions → Build component
 registry → Run workflow**, select the branch, and run it. It checks out the
 selected branch's latest tip, regenerates and validates the registry, and only
 commits if generated files changed. The bot commit stages **only**
-`registry.json` and `registry/styles/`; a clean run creates no commit.
+`registry.json`; a clean run creates no commit.
 
 The workflow uses the default `GITHUB_TOKEN` with `contents: write` and a
 normal non-force push. Repository branch protection must permit the

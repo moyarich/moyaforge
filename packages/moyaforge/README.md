@@ -289,8 +289,8 @@ wrapper.
 
 MoyaForge also provides two leaf editor components:
 
-- `TypeFoxSourceEditor` for the TypeFox/VS Code API stack and real VS Code extensions.
-- `ReactMonacoSourceEditor` for the lighter `@monaco-editor/react` stack.
+- `MonacoEditorTypeFox` for the TypeFox/VS Code API stack and real VS Code extensions.
+- `MonacoEditorReact` for the lighter `@monaco-editor/react` stack.
 
 `createMonacoVscodeConfig()` remains available for composing TypeFox extension
 configuration without coupling MoyaForge to any specific extension.
