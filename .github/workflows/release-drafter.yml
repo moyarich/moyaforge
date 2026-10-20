@@ -94,7 +94,16 @@ jobs:
         run: |
           set -euo pipefail
 
-          printf '%s' "$PACKAGES_JSON" > /tmp/packages.json
+          # Discovery returns {included, filtered, total}, not a bare package array.
+          # Keep only publishable packages for downstream selection and matrix creation.
+          jq -e -c '
+            if type == "object" and (.included | type) == "array"
+              and all(.included[]; type == "object" and (.directory | type) == "string"
+                and (.name | type) == "string" and (.version | type) == "string")
+            then .included
+            else error("Unexpected package discovery output: expected an object with an included package array")
+            end
+          ' <<< "$PACKAGES_JSON" > /tmp/packages.json
 
           if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
             if [ "$INPUT_PACKAGE" = "all" ]; then
