@@ -1,4 +1,5 @@
 name: Self-heal
+
 on:
   push:
     branches-ignore:
@@ -9,14 +10,21 @@ on:
       - "apps/**/package.json"
   workflow_dispatch:
     inputs:
-      commit:
-        description: Commit package-lock.json changes
+      repair:
+        description: Repair to run
+        type: choice
         required: true
-        default: true
+        default: all
+        options:
+          - all
+          - package-lock
+          - prettier
+      commit:
+        description: Commit repaired files
         type: boolean
+        default: true
 
 permissions:
-  actions: write
   contents: write
   packages: read
 
@@ -26,72 +34,44 @@ concurrency:
 
 jobs:
   package-lock:
-    if: ${{ github.actor != 'github-actions[bot]' }}
+    if: >-
+      ${{ github.actor != 'github-actions[bot]' &&
+          (github.event_name == 'push' || inputs.repair != 'prettier') }}
     uses: moyarich/reusable-workflows/.github/workflows/reusable_npm-package-lock.yml@main
     with:
       node-version: "24"
       commit: ${{ github.event_name == 'push' || inputs.commit }}
+
   prettier:
     needs: package-lock
-    if: ${{ github.actor != 'github-actions[bot]' }}
+    if: >-
+      ${{ always() && github.actor != 'github-actions[bot]' &&
+          (needs.package-lock.result == 'success' || needs.package-lock.result == 'skipped') &&
+          (github.event_name == 'push' || inputs.repair != 'package-lock') }}
     uses: moyarich/reusable-workflows/.github/workflows/reusable_prettier.yml@main
     with:
       mode: fix
       prettier-config: this-repository
       commit: ${{ github.event_name == 'push' || inputs.commit }}
       node-version: "24"
-  cli-dist:
-    name: Build CLI dist
-    needs: prettier
+
+  summarize:
+    name: Self-heal summary
+    needs: [package-lock, prettier]
+    if: always()
     runs-on: ubuntu-latest
-
+    permissions: {}
     steps:
-      - name: Checkout source branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.0.0
-        with:
-          node-version: "24"
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci --ignore-scripts
-
-      - name: Build CLI distribution
-        run: npm run build
-
-      - name: Commit generated dist
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if [ -z "$(git status --porcelain -- packages/workspace-tools/dist/bin/)" ]; then
-            echo "CLI dist is already current."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f packages/workspace-tools/dist/bin/
-          git commit -m "build: update CLI dist"
-          git push
-
-  validate-healed-head:
-    name: Validate healed head
-    needs: cli-dist
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Dispatch CI for healed branch
+      - name: Report results
         env:
-          GH_TOKEN: ${{ github.token }}
-          TARGET_REF: ${{ github.ref_name }}
-        shell: bash
+          LOCK_RESULT: ${{ needs.package-lock.result }}
+          FORMAT_RESULT: ${{ needs.prettier.result }}
         run: |
-          set -euo pipefail
-          gh workflow run ci.yml --repo "${{ github.repository }}" --ref "$TARGET_REF"
-          echo "Dispatched CI for healed head on $TARGET_REF."
+          echo "## Self-heal" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Repair | Result |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Package lock | $LOCK_RESULT |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Prettier | $FORMAT_RESULT |" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$LOCK_RESULT" == failure || "$FORMAT_RESULT" == failure ]]; then
+            exit 1
+          fi
