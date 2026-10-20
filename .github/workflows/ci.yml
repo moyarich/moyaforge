@@ -15,18 +15,10 @@ permissions:
 jobs:
   lint-workflows:
     name: Validate GitHub Actions workflow syntax
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-      - name: Lint workflow expressions and reusable calls
-        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.7 -color -shellcheck=
-      - name: Validate GitHub Actions Workflow Syntax Summary
-        if: always()
-        env:
-          STATUS: ${{ job.status }}
-        run: echo "## Validate GitHub Actions workflow syntax — $STATUS" >> "$GITHUB_STEP_SUMMARY"
+    permissions:
+      contents: read
+    # Merge the reusable workflow upstream before adding or renaming this caller.
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_actionlint.yml@main
 
   test:
     name: Test package
