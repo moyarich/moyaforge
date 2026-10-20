@@ -121,7 +121,7 @@ export function mdxRegistryPlugin({
       server.watcher.add(directories);
       const update = (file: string) => {
         const absolute = resolve(file);
-        if (!directories.some((dir) => absolute.startsWith(dir + sep))) return;
+        if (!directories.some((dir) => absolute === dir || absolute.startsWith(dir + sep))) return;
         discovery = undefined;
         for (const id of [resolvedId, lazyResolvedId, metadataResolvedId]) {
           const module = server.moduleGraph.getModuleById(id);
