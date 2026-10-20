@@ -106,3 +106,40 @@ test("embedded docs preserve browser history and host routing", async ({
     page.getByRole("heading", { name: "Embedded guide" }),
   ).toBeVisible();
 });
+
+test("embedded BrowserRouter preserves nested navigation, deep links, and history", async ({ page }) => {
+  await page.goto("/app/host");
+  await page.getByRole("link", { name: "Open docs" }).click();
+  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await page.getByRole("link", { name: "Open reference" }).click();
+  await expect(page).toHaveURL(/\/app\/docs\/reference$/);
+  await expect(page.getByRole("heading", { name: "Embedded reference" })).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL(/\/app\/docs\/guide$/);
+  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await page.goForward();
+  await expect(page.getByRole("heading", { name: "Embedded reference" })).toBeVisible();
+  await page.goto("/app/docs/guide#installation");
+  await expect(page.locator("#installation")).toBeVisible();
+  await expect(page).toHaveURL(/\/app\/docs\/guide#installation$/);
+});
+
+test("embedded HashRouter preserves host routes, deep links, and history", async ({ page }) => {
+  await page.goto("/app/?hash-router#/app/host");
+  await expect(page.getByRole("heading", { name: "Host dashboard" })).toBeVisible();
+  await page.getByRole("link", { name: "Open docs" }).click();
+  await expect(page).toHaveURL(/#\/app\/docs\/guide$/);
+  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await page.getByRole("link", { name: "Open reference" }).click();
+  await expect(page).toHaveURL(/#\/app\/docs\/reference$/);
+  await expect(page.getByRole("heading", { name: "Embedded reference" })).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL(/#\/app\/docs\/guide$/);
+  await expect(page.getByRole("heading", { name: "Embedded guide" })).toBeVisible();
+  await page.goForward();
+  await expect(page.getByRole("heading", { name: "Embedded reference" })).toBeVisible();
+  await page.goto("/app/?hash-router#/app/docs/guide#installation");
+  await expect(page.locator("#installation")).toBeVisible();
+  await page.getByRole("link", { name: "Return to host" }).click();
+  await expect(page.getByRole("heading", { name: "Host dashboard" })).toBeVisible();
+});
