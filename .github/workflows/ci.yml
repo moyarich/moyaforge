@@ -37,4 +37,11 @@ jobs:
       - run: npm test
       - run: npm run pack:audit:strict
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test --project=vite-consumer
+      - run: npm run test:e2e
+      - name: Upload Playwright traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-traces
+          path: test-results/
+          if-no-files-found: ignore
