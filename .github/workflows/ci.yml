@@ -81,6 +81,8 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
+      - name: Build workspace packages for browser consumers
+        run: npm run build:package
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test
       - name: Upload Playwright traces on failure
