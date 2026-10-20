@@ -22,6 +22,11 @@ jobs:
           persist-credentials: false
       - name: Lint workflow expressions and reusable calls
         run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.7 -color -shellcheck=
+      - name: Validate GitHub Actions Workflow Syntax Summary
+        if: always()
+        env:
+          STATUS: ${{ job.status }}
+        run: echo "## Validate GitHub Actions workflow syntax — $STATUS" >> "$GITHUB_STEP_SUMMARY"
 
   test:
     name: Test package
@@ -92,3 +97,8 @@ jobs:
           name: playwright-traces
           path: test-results/
           if-no-files-found: ignore
+      - name: Playwright Browser Tests Summary
+        if: always()
+        env:
+          STATUS: ${{ job.status }}
+        run: echo "## Playwright Browser Tests Summary — $STATUS" >> "$GITHUB_STEP_SUMMARY"
