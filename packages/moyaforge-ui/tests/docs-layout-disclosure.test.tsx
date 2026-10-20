@@ -47,3 +47,11 @@ describe("DocsLayout TOC disclosure", () => {
     expect(custom).not.toContain("<details");
   });
 });
+
+describe("DocsLayout header slot semantics", () => {
+  it("uses the default only for undefined and allows null to suppress it", () => {
+    expect(render()).toContain("Documentation</a>");
+    expect(render({ header: null })).not.toContain("Documentation</a>");
+    expect(render({ header: createElement("strong", null, "Custom header") })).toContain("Custom header");
+  });
+});
