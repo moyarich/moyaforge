@@ -16,6 +16,7 @@ on:
           - all
           - packages/moyaforge
           - packages/moyaforge-cli
+          - packages/moyaforge-mdx
           - packages/moyaforge-search-sqlite
       target-branch:
         description: Branch used to resolve the package path and changelog

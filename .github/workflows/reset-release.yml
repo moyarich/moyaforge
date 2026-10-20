@@ -15,6 +15,7 @@ on:
           - all
           - packages/moyaforge
           - packages/moyaforge-cli
+          - packages/moyaforge-mdx
           - packages/moyaforge-search-sqlite
       target-branch:
         description: Release target branch

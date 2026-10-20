@@ -26,6 +26,7 @@ on:
           - all
           - packages/moyaforge
           - packages/moyaforge-cli
+          - packages/moyaforge-mdx
           - packages/moyaforge-search-sqlite
       version-mode:
         description: Version mode
