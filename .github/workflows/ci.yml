@@ -36,3 +36,5 @@ jobs:
       - run: npm ci --include=optional
       - run: npm test
       - run: npm run pack:audit:strict
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=vite-consumer
