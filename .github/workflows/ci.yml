@@ -44,7 +44,7 @@ jobs:
     outputs:
       run-playwright: ${{ steps.decision.outputs.run-playwright }}
     steps:
-      - name: Find affected browser tests and fixtures
+      - name: Find changed Playwright specs or configuration
         if: github.event_name == 'pull_request'
         id: filter
         uses: dorny/paths-filter@v3
@@ -53,9 +53,7 @@ jobs:
             playwright:
               - '**/*.spec.*'
               - '**/*.specs.*'
-              - 'playwright.config.ts'
-              - 'tests/vite-consumer-build/**'
-              - 'packages/moyaforge-cli/tests/browser/**'
+              - '**/playwright.config.*'
               - '.github/workflows/ci.yml'
       - name: Decide whether browser tests are required
         id: decision
@@ -84,7 +82,7 @@ jobs:
           cache: npm
       - run: npm ci --include=optional
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - run: npx playwright test
       - name: Upload Playwright traces on failure
         if: failure()
         uses: actions/upload-artifact@v6
