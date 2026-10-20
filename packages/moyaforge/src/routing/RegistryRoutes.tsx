@@ -89,8 +89,10 @@ export function RegistryRouteView({
 }: RegistryRouteViewProps) {
   const { pathname } = useLocation();
   const path = pathname.replace(/\/+$/, "") || "/";
+  // Consumer route metadata may retain a trailing slash; match either form.
+  const normalizeRoute = (value: string) => value.replace(/\/+$/, "") || "/";
   const page = routes.find(
-    (route) => route.path === path && route.navigation !== "disabled",
+    (route) => normalizeRoute(route.path) === path && route.navigation !== "disabled",
   );
   const loader = page && sources[page.source]?.lazyPages?.[page.file];
   if (!page || !loader) return <>{notFound}</>;

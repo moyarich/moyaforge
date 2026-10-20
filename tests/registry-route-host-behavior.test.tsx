@@ -32,7 +32,7 @@ const sources = {
   },
 };
 
-function render(path: string, basename?: string) {
+function render(path: string, basename?: string, pageRoutes = routes) {
   return renderToStaticMarkup(
     <MemoryRouter initialEntries={[path]} basename={basename}>
       <Routes>
@@ -41,7 +41,7 @@ function render(path: string, basename?: string) {
           path="/docs/*"
           element={
             <RegistryRouteView
-              routes={routes as any}
+              routes={pageRoutes as any}
               sources={sources}
               notFound={<p>Missing documentation</p>}
               fallback={<p>Loading documentation</p>}
@@ -75,4 +75,10 @@ test("React Router basename and trailing slash use the same route metadata", () 
   expect(render("/app/docs/disabled", "/app")).toContain(
     "Missing documentation",
   );
+});
+
+test("canonical route metadata with a trailing slash resolves in host router", () => {
+  const trailing = routes.map((route) => ({ ...route, path: `${route.path}/` }));
+  expect(render("/docs/hidden", undefined, trailing)).not.toContain("Missing documentation");
+  expect(render("/docs/disabled", undefined, trailing)).toContain("Missing documentation");
 });
