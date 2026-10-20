@@ -92,3 +92,13 @@ test("ordinary configured Markdown files have distinct routes", () => {
   );
   assert.equal(registry.byPath.get("/docs")?.file, "page.mdx");
 });
+
+test("duplicate route reports both source-relative content paths", () => {
+  assert.throws(
+    () => buildPageRegistry({ docs: [
+      { file: "01-api/page.md" },
+      { file: "02-api/page.mdx" },
+    ] }),
+    /Duplicate route \/docs\/api: docs\/01-api\/page\.md and docs\/02-api\/page\.mdx/,
+  );
+});

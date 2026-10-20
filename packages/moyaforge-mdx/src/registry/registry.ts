@@ -164,8 +164,8 @@ export function buildPageRegistry(
           .join("/");
       const previous = seen.get(path);
       if (previous)
-        throw Error(`Duplicate route ${path}: ${previous} and ${input.file}`);
-      seen.set(path, input.file);
+        throw Error(`Duplicate route ${path}: ${previous} and ${source}/${input.file}`);
+      seen.set(path, `${source}/${input.file}`);
       const last = dirs.at(-1) ?? source;
       const order =
         meta.order ??
