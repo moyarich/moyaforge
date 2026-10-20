@@ -82,3 +82,13 @@ test("canonical route metadata with a trailing slash resolves in host router", (
   expect(render("/docs/hidden", undefined, trailing)).not.toContain("Missing documentation");
   expect(render("/docs/disabled", undefined, trailing)).toContain("Missing documentation");
 });
+
+test("docs prefix does not capture similarly named host routes", () => {
+  const html = render("/docs-other");
+  expect(html).not.toContain("Loading documentation");
+  expect(html).not.toContain("Missing documentation");
+});
+
+test("unknown nested docs paths render the docs-specific missing page", () => {
+  expect(render("/docs/unknown/nested")).toContain("Missing documentation");
+});
