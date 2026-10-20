@@ -5,6 +5,7 @@ import { HeadlessDocsRoutes } from "@moyarich/moyaforge/headless";
 import { DocsLayout } from "../../packages/moyaforge-ui/src/components/Layout/DocsLayout/index.ts";
 import {
   BrowserRouter,
+  HashRouter,
   Routes,
   Route,
   Link,
@@ -22,10 +23,17 @@ const hostSource = createMoyaForgeSource({
     dir: "docs",
     baseUrl: "/docs",
     modules: {
+      "reference/page.mdx": {
+        default: () => <article><h1>Embedded reference</h1><Link to="/docs/guide">Back to guide</Link></article>,
+        frontmatter: { title: "Embedded reference" },
+      },
       "guide/page.mdx": {
         default: () => (
           <article>
             <h1>Embedded guide</h1>
+            <h2 id="installation">Installation</h2>
+            <Link to="/docs/reference">Open reference</Link>
+            <Link to="/host">Return to host</Link>
           </article>
         ),
         frontmatter: { title: "Embedded guide" },
@@ -45,8 +53,12 @@ function HostDocs() {
   );
 }
 
+const ConsumerRouter = new URLSearchParams(window.location.search).has("hash-router")
+  ? HashRouter
+  : BrowserRouter;
+
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter basename="/app">
+  <ConsumerRouter basename="/app">
     <Routes>
       <Route
         path="/host"
@@ -75,5 +87,5 @@ createRoot(document.getElementById("root")).render(
         }
       />
     </Routes>
-  </BrowserRouter>,
+  </ConsumerRouter>,
 );
