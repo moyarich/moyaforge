@@ -42,6 +42,8 @@ export interface DocsLayoutProps {
         defaultOpen?: boolean;
         minDepth?: number;
         maxDepth?: number;
+        /** Override heading hrefs for host routers such as HashRouter. */
+        headingHref?: (id: string) => string;
       };
   editLink?: { repository: string; branch?: string };
 }
@@ -62,22 +64,24 @@ function visibleHeadings(
 function HeadingLinks({
   headings,
   activeId,
+  headingHref,
 }: {
   headings: readonly DocsLayoutHeading[];
   activeId: string;
+  headingHref?: (id: string) => string;
 }) {
   return (
     <ul>
       {headings.map((heading) => (
         <li key={heading.id}>
           <a
-            href={`#${heading.id}`}
+            href={headingHref?.(heading.id) ?? `#${heading.id}`}
             aria-current={activeId === heading.id ? "location" : undefined}
           >
             {heading.text ?? heading.title ?? heading.id}
           </a>
           {heading.children?.length ? (
-            <HeadingLinks headings={heading.children} activeId={activeId} />
+            <HeadingLinks headings={heading.children} activeId={activeId} headingHref={headingHref} />
           ) : null}
         </li>
       ))}
@@ -119,7 +123,7 @@ export function DocsLayout({
   const outlineLabel = toc && toc.label ? toc.label : "On this page";
   const outlineLinks = (
     <nav aria-label={outlineLabel}>
-      <HeadingLinks headings={headings} activeId={activeId} />
+      <HeadingLinks headings={headings} activeId={activeId} headingHref={toc && toc.headingHref} />
     </nav>
   );
   const configuredOutline = headings.length ? (
