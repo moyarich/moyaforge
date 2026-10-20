@@ -10,6 +10,7 @@ on:
 permissions:
   contents: read
   packages: read
+  pull-requests: read
 
 jobs:
   lint-workflows:
@@ -36,8 +37,54 @@ jobs:
       - run: npm ci --include=optional
       - run: npm test
       - run: npm run pack:audit:strict
+
+  playwright-changes:
+    name: Detect Playwright changes
+    runs-on: ubuntu-latest
+    outputs:
+      run-playwright: ${{ steps.decision.outputs.run-playwright }}
+    steps:
+      - name: Find changed Playwright specs or configuration
+        if: github.event_name == 'pull_request'
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            playwright:
+              - '**/*.spec.*'
+              - '**/*.specs.*'
+              - '**/playwright.config.*'
+              - '.github/workflows/ci.yml'
+      - name: Decide whether browser tests are required
+        id: decision
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PLAYWRIGHT_CHANGED: ${{ steps.filter.outputs.playwright }}
+        run: |
+          if [[ "$EVENT_NAME" != "pull_request" || "$PLAYWRIGHT_CHANGED" == "true" ]]; then
+            echo "run-playwright=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run-playwright=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  playwright:
+    name: Playwright browser tests
+    needs: playwright-changes
+    if: needs.playwright-changes.outputs.run-playwright == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci --include=optional
+      - name: Build workspace packages for browser consumers
+        run: npm run build:package
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - run: npx playwright test
       - name: Upload Playwright traces on failure
         if: failure()
         uses: actions/upload-artifact@v6
