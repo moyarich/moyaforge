@@ -159,7 +159,7 @@ export function DocsLayout({
   return (
     <div data-moyaforge-docs-layout="">
       <header data-moyaforge-docs-header="">
-        {header ?? <a href={visiblePages[0]?.url ?? "/"}>{title}</a>}
+        {header !== undefined ? header : <a href={visiblePages[0]?.url ?? "/"}>{title}</a>}
       </header>
       <div data-moyaforge-docs-columns="">
         {sidebar !== undefined ? (
