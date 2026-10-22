@@ -13,7 +13,7 @@ Your application also needs `react` and `react-dom`. With TypeScript, install
 Import the real editor directly from the installed source:
 
 ```tsx
-import { MonacoEditorReact } from "@/components/ui/components/MonacoEditorReact/MonacoEditorReact";
+import { MonacoEditorReact } from "@/components/ui/MonacoEditorReact/MonacoEditorReact";
 ```
 
 Adjust the import for your component destination and path aliases. Component CSS

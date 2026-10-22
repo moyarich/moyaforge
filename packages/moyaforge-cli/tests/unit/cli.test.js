@@ -195,44 +195,31 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
   ).rejects.toThrow(/Invalid component target/);
 });
 
-test("legacy registry targets use the new default while configured destinations are preserved", async () => {
+test("registry targets install directly under the configured component directory", async () => {
   const root = await project();
-  const legacy = await project();
-  await writeFile(
-    join(legacy, "registry.json"),
-    JSON.stringify({
-      items: [
-        {
-          name: "legacy",
-          files: [
-            {
-              path: "file.ts",
-              target: "~/src/components/moyaforge/components/Example.tsx",
-              content: "export const Example = 1;",
-            },
-          ],
-        },
-      ],
-    }),
-  );
-  const plan = await planItems({ root, names: ["legacy"], registry: legacy });
-  expect(plan.files[0].path).toBe(
-    join(root, "src/components/ui/Example.tsx"),
-  );
+  const plan = await planItems({
+    root,
+    names: ["code-block"],
+    registry: repository,
+  });
+  expect(
+    plan.files.some((file) =>
+      file.path === join(root, "src/components/ui/CodeBlock/CodeBlock.tsx"),
+    ),
+  ).toBe(true);
+  expect(plan.files.every((file) => !file.path.includes("/ui/components/"))).toBe(true);
+
   await writeFile(
     join(root, "moyaforge.components.json"),
     JSON.stringify({ directory: "src/custom-components" }),
   );
   expect(run(root, "add", "code-block", "--no-install").status).toBe(0);
   expect(
-    await read(
-      root,
-      "src/custom-components/CodeBlock/CodeBlock.tsx",
-    ),
+    await read(root, "src/custom-components/CodeBlock/CodeBlock.tsx"),
   ).toContain("CodeBlock");
 });
 
-test("monaco installation reports runtime requirements and preserves its setup guide", async () => {
+test("monaco installation reports setup notes without copying README files", async () => {
   const root = await project();
   const dry = run(root, "add", "monaco-editor-react", "--dry-run");
   expect(dry.status).toBe(0);
@@ -248,12 +235,9 @@ test("monaco installation reports runtime requirements and preserves its setup g
   expect(installed.status).toBe(0);
   expect(installed.stdout).toContain("Setup notes:");
   expect(installed.stdout).toContain("MonacoEditorReact setup");
-  expect(
-    await read(
-      root,
-      "src/components/ui/MonacoEditorReact/README.md",
-    ),
-  ).toContain("loader.config({ monaco })");
+  await expect(
+    read(root, "src/components/ui/MonacoEditorReact/README.md"),
+  ).rejects.toThrow();
 });
 
 test("shared registry utilities remain siblings of UI files, including custom destinations", async () => {

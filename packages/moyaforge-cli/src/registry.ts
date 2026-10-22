@@ -151,15 +151,11 @@ export async function planItems({
       if (typeof file.path !== "string" || typeof targetPath !== "string")
         throw Error(`Unsupported registry file target: ${targetPath}`);
       const uiPrefix = `~/${defaultDirectory}/`;
-      const legacyPrefix = "~/src/components/moyaforge/";
       const sharedPrefix = "~/src/components/utils/";
       let destination: string;
       let suffix: string;
       if (targetPath.startsWith(uiPrefix)) {
         suffix = targetPath.slice(uiPrefix.length);
-        destination = resolve(root, directory, suffix);
-      } else if (targetPath.startsWith(legacyPrefix)) {
-        suffix = targetPath.slice(legacyPrefix.length);
         destination = resolve(root, directory, suffix);
       } else if (targetPath.startsWith(sharedPrefix)) {
         suffix = targetPath.slice(sharedPrefix.length);
