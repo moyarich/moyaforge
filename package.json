@@ -15,7 +15,7 @@
     "dev": "npm run dev --workspace @moyarich/moyaforge-playground",
     "build:package": "npm run build --workspace @moyarich/moyaforge",
     "build:playground": "npm run build --workspace @moyarich/moyaforge-playground",
-    "test": "npm test --workspaces --if-present",
+    "test": "npm test --workspaces --if-present && vitest run tests",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -34,8 +34,7 @@
     "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
     "imports:audit": "node scripts/audit-framework-imports.mjs",
     "imports:audit:strict": "node scripts/audit-framework-imports.mjs --strict",
-    "test:cli:browser": "playwright test --project=cli-consumer",
-    "test:registry": "vitest run tests/registry"
+    "test:cli:browser": "playwright test --project=cli-consumer"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
