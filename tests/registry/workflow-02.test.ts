@@ -2,7 +2,10 @@ import { expect, test } from "vitest";
 import { readFile } from "node:fs/promises";
 
 const workflow = await readFile(
-  new URL("../../.github/workflows/build-component-registry.yml", import.meta.url),
+  new URL(
+    "../../.github/workflows/build-component-registry.yml",
+    import.meta.url,
+  ),
   "utf8",
 );
 
@@ -19,4 +22,3 @@ test("registry bot changes only generated output after validation", () => {
   expect(workflow).toContain('git push origin "HEAD:${GITHUB_REF_NAME}"');
   expect(workflow).not.toMatch(/git push[^\n]*--force/);
 });
-

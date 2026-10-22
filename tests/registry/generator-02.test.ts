@@ -25,4 +25,3 @@ test("rejects naming collisions, missing imports, undeclared packages and bounda
   );
   await expect(readFile(resolve(root, "registry.json"))).rejects.toThrow();
 });
-

@@ -33,4 +33,3 @@ test("failed regeneration preserves the registry and component-owned styles", as
     ),
   ).toBe(styles);
 });
-

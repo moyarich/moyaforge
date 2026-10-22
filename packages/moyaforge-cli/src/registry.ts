@@ -163,7 +163,12 @@ export async function planItems({
       } else {
         throw Error(`Unsupported registry file target: ${targetPath}`);
       }
-      if (!suffix || suffix.split(/[\\/]/).includes("..") || isAbsolute(suffix) || suffix.includes("\\"))
+      if (
+        !suffix ||
+        suffix.split(/[\\/]/).includes("..") ||
+        isAbsolute(suffix) ||
+        suffix.includes("\\")
+      )
         throw Error(`Invalid component target: ${suffix}`);
       const target = await safeDestination(root, destination);
       const content =

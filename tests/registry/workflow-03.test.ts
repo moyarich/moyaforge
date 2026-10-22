@@ -2,7 +2,10 @@ import { expect, test } from "vitest";
 import { readFile } from "node:fs/promises";
 
 const workflow = await readFile(
-  new URL("../../.github/workflows/build-component-registry.yml", import.meta.url),
+  new URL(
+    "../../.github/workflows/build-component-registry.yml",
+    import.meta.url,
+  ),
   "utf8",
 );
 

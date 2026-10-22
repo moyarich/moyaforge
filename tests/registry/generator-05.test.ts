@@ -14,4 +14,3 @@ test("ignores framework-source UI and discovers only the canonical UI workspace"
   expect(registry.items.some((item) => item.name === "forbidden")).toBe(false);
   expect(registry.items.some((item) => item.name === "new-badge")).toBe(true);
 });
-

@@ -26,4 +26,3 @@ test("styles follow component imports without collecting unused siblings or aggr
     readFile(resolve(root, "registry/styles/new-badge.css")),
   ).rejects.toThrow();
 });
-

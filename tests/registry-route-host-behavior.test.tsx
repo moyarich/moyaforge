@@ -78,9 +78,16 @@ test("React Router basename and trailing slash use the same route metadata", () 
 });
 
 test("canonical route metadata with a trailing slash resolves in host router", () => {
-  const trailing = routes.map((route) => ({ ...route, path: `${route.path}/` }));
-  expect(render("/docs/hidden", undefined, trailing)).not.toContain("Missing documentation");
-  expect(render("/docs/disabled", undefined, trailing)).toContain("Missing documentation");
+  const trailing = routes.map((route) => ({
+    ...route,
+    path: `${route.path}/`,
+  }));
+  expect(render("/docs/hidden", undefined, trailing)).not.toContain(
+    "Missing documentation",
+  );
+  expect(render("/docs/disabled", undefined, trailing)).toContain(
+    "Missing documentation",
+  );
 });
 
 test("docs prefix does not capture similarly named host routes", () => {

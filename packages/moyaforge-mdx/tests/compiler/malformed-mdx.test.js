@@ -6,7 +6,10 @@ test("malformed MDX reports the source file and position", async () => {
   const source = "## Heading\n\n<Missing\n";
   let failure;
   try {
-    await compile({ value: source, path: "docs/broken/page.mdx" }, createMdxOptions());
+    await compile(
+      { value: source, path: "docs/broken/page.mdx" },
+      createMdxOptions(),
+    );
   } catch (error) {
     failure = error;
   }

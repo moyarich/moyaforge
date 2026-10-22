@@ -29,4 +29,3 @@ test("follows inline TypeScript import types for local files and npm dependencie
     "Unresolved registry import",
   );
 });
-

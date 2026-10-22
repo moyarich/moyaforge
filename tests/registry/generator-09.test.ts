@@ -38,5 +38,3 @@ test("locates local CSS imports relative to each stylesheet using real at-rules"
   );
   expect(await readFile(resolve(root, "registry.json"), "utf8")).toBe(previous);
 });
-
-

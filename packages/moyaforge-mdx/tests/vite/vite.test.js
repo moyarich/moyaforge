@@ -168,15 +168,39 @@ test("source-directory watcher events invalidate cached metadata", async () => {
     const directory = join(root, "docs");
     await mkdir(directory);
     await writeFile(join(directory, "page.mdx"), "# First");
-    const plugin = mdxRegistryPlugin({ root, registry: { sources: { docs: { base: "docs", include: ["**/page.mdx"] } } } });
+    const plugin = mdxRegistryPlugin({
+      root,
+      registry: {
+        sources: { docs: { base: "docs", include: ["**/page.mdx"] } },
+      },
+    });
     const id = plugin.resolveId("virtual:moyaforge-mdx/metadata");
     assert.match(await plugin.load(id), /First/);
     let onChange;
     let reloads = 0;
-    plugin.configureServer({ watcher: { add() {}, on(event, listener) { if (event === "change") onChange = listener; } }, moduleGraph: { getModuleById() { return null; } }, ws: { send() { reloads++; } } });
+    plugin.configureServer({
+      watcher: {
+        add() {},
+        on(event, listener) {
+          if (event === "change") onChange = listener;
+        },
+      },
+      moduleGraph: {
+        getModuleById() {
+          return null;
+        },
+      },
+      ws: {
+        send() {
+          reloads++;
+        },
+      },
+    });
     await writeFile(join(directory, "page.mdx"), "# Second");
     onChange(directory);
     assert.match(await plugin.load(id), /Second/);
     assert.equal(reloads, 1);
-  } finally { await rm(root, { recursive: true, force: true }); }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });

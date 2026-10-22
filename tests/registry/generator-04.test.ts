@@ -21,4 +21,3 @@ test("a no-change build preserves the registry and component CSS byte-for-byte",
   expect(await readFile(manifestPath, "utf8")).toBe(before[0]);
   expect(await readFile(cssPath, "utf8")).toBe(before[1]);
 });
-

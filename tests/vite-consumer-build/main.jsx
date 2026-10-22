@@ -24,7 +24,12 @@ const hostSource = createMoyaForgeSource({
     baseUrl: "/docs",
     modules: {
       "reference/page.mdx": {
-        default: () => <article><h1>Embedded reference</h1><Link to="/docs/guide">Back to guide</Link></article>,
+        default: () => (
+          <article>
+            <h1>Embedded reference</h1>
+            <Link to="/docs/guide">Back to guide</Link>
+          </article>
+        ),
         frontmatter: { title: "Embedded reference" },
       },
       "guide/page.mdx": {
@@ -53,7 +58,9 @@ function HostDocs() {
   );
 }
 
-const ConsumerRouter = new URLSearchParams(window.location.search).has("hash-router")
+const ConsumerRouter = new URLSearchParams(window.location.search).has(
+  "hash-router",
+)
   ? HashRouter
   : BrowserRouter;
 
