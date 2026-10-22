@@ -20,11 +20,8 @@ const componentCssForNodeTests = {
 export default defineConfig({
   plugins: [componentCssForNodeTests],
   test: {
-    include: [
-      "tests/**/*.test.{js,jsx,mjs,ts,tsx}",
-      "packages/*/tests/**/*.test.{js,jsx,mjs,ts,tsx}",
-      "apps/*/tests/**/*.test.{js,jsx,mjs,ts,tsx}",
-    ],
+    // Workspace tests run through their own npm test scripts and Vitest configs.
+    include: ["tests/**/*.test.{js,jsx,mjs,ts,tsx}"],
     environment: "node",
   },
 });
