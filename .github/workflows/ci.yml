@@ -33,6 +33,7 @@ jobs:
           cache: npm
       - run: npm ci --include=optional
       - run: npm test
+      - run: npm run test:registry
       - run: npm run pack:audit:strict
 
   playwright-changes:
