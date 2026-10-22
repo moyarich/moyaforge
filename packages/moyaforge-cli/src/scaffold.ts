@@ -60,7 +60,7 @@ export async function planProject({
     __UI__: ui,
     __DOCS_IMPORT__: `${ui}/components/Routing/content-routing.js`,
     __SHELL_IMPORT__: `${ui}/docs-shell.js`,
-    __CODE_IMPORT__: `${ui}/components/CodeBlock/CodeBlock.js`,
+    __CODE_IMPORT__: `${ui}/CodeBlock/CodeBlock.js`,
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
   };
   const files: PlannedFile[] = [];
@@ -95,7 +95,7 @@ export async function planProject({
       );
       content = content.replace(
         "/* __CODE_IMPORTS__ */",
-        `import { CodeBlock } from "${ui}/components/CodeBlock/CodeBlock.js";\nimport { CodeGroup, CodeTab } from "${ui}/components/CodeGroup/CodeGroup.js";`,
+        `import { CodeBlock } from "${ui}/CodeBlock/CodeBlock.js";\nimport { CodeGroup, CodeTab } from "${ui}/CodeGroup/CodeGroup.js";`,
       );
       content = content
         .replace(
