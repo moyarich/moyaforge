@@ -182,12 +182,12 @@ test("ignores framework-source UI and discovers only the canonical UI workspace"
   expect(registry.items.some((item) => item.name === "new-badge")).toBe(true);
 });
 
-test("includes setup guides as registry docs without installing them", async () => {
+test("includes registry setup guides as metadata without installing them", async () => {
   const { root, put } = await fixture();
   const guide =
     "## Setup\n\nInstall the host dependencies and configure workers.\n";
   await put(
-    "packages/moyaforge-ui/src/components/Nested/NewBadge/README.md",
+    "registry/docs/new-badge.md",
     guide,
   );
   const generated = await buildRegistry(root);
@@ -197,7 +197,7 @@ test("includes setup guides as registry docs without installing them", async () 
   expect(item.files.some((file) => file.path === "LICENSE")).toBe(false);
   await buildRegistry(root, { check: true });
   await put(
-    "packages/moyaforge-ui/src/components/Nested/NewBadge/README.md",
+    "registry/docs/new-badge.md",
     "Changed setup requirements.\n",
   );
   await expect(buildRegistry(root, { check: true })).rejects.toThrow(
