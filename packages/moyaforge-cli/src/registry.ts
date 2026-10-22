@@ -145,22 +145,31 @@ export async function planItems({
       dependencies.add(dep);
     }
     for (const file of item.files ?? []) {
-      // Older registry snapshots still install into the selected destination.
-      const prefix =
-        typeof file.target === "string"
-          ? [`~/${defaultDirectory}/`, "~/src/components/moyaforge/"].find(
-              (value) => file.target!.startsWith(value),
-            )
-          : undefined;
-      if (typeof file.path !== "string" || !prefix)
-        throw Error(`Unsupported registry file target: ${file.target}`);
-      const suffix = file.target!.slice(prefix.length);
-      if (suffix.split(/[\\/]/).includes("..") || isAbsolute(suffix))
+      // Component files follow the configured UI directory; sibling shared
+      // utilities remain siblings so relative imports continue to resolve.
+      const targetPath = file.target;
+      if (typeof file.path !== "string" || typeof targetPath !== "string")
+        throw Error(`Unsupported registry file target: ${targetPath}`);
+      const uiPrefix = `~/${defaultDirectory}/`;
+      const legacyPrefix = "~/src/components/moyaforge/";
+      const sharedPrefix = "~/src/components/utils/";
+      let destination: string;
+      let suffix: string;
+      if (targetPath.startsWith(uiPrefix)) {
+        suffix = targetPath.slice(uiPrefix.length);
+        destination = resolve(root, directory, suffix);
+      } else if (targetPath.startsWith(legacyPrefix)) {
+        suffix = targetPath.slice(legacyPrefix.length);
+        destination = resolve(root, directory, suffix);
+      } else if (targetPath.startsWith(sharedPrefix)) {
+        suffix = targetPath.slice(sharedPrefix.length);
+        destination = resolve(root, directory, "..", "utils", suffix);
+      } else {
+        throw Error(`Unsupported registry file target: ${targetPath}`);
+      }
+      if (!suffix || suffix.split(/[\\/]/).includes("..") || isAbsolute(suffix) || suffix.includes("\\"))
         throw Error(`Invalid component target: ${suffix}`);
-      const target = await safeDestination(
-        root,
-        within(root, `${directory}/${suffix}`),
-      );
+      const target = await safeDestination(root, destination);
       const content =
         typeof file.content === "string"
           ? file.content
