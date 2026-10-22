@@ -7,6 +7,7 @@ on:
       - "packages/**"
       - "package.json"
       - "package-lock.json"
+      - "scripts/audit-framework-pack.mjs"
       - ".github/workflows/ci_npm-package-lint.yml"
   pull_request:
     paths:
@@ -66,3 +67,5 @@ jobs:
             npx --yes validate-package-exports "$location/package.json" --check --verbose --info
             echo "::endgroup::"
           done
+      - name: Audit MoyaForge-specific tarball boundaries
+        run: npm run pack:audit:strict
