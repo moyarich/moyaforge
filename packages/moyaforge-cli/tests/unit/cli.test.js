@@ -195,7 +195,7 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
   ).rejects.toThrow(/Invalid component target/);
 });
 
-test("legacy registry targets use the new default while configured destinations are preserved", async () => {
+test("rejects obsolete registry targets while preserving configured destinations", async () => {
   const root = await project();
   const legacy = await project();
   await writeFile(
@@ -215,10 +215,9 @@ test("legacy registry targets use the new default while configured destinations 
       ],
     }),
   );
-  const plan = await planItems({ root, names: ["legacy"], registry: legacy });
-  expect(plan.files[0].path).toBe(
-    join(root, "src/components/ui/Example.tsx"),
-  );
+  await expect(
+    planItems({ root, names: ["legacy"], registry: legacy }),
+  ).rejects.toThrow(/Unsupported registry file target/);
   await writeFile(
     join(root, "moyaforge.components.json"),
     JSON.stringify({ directory: "src/custom-components" }),
