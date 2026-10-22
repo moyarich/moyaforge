@@ -197,7 +197,7 @@ test("automatically includes component setup guides as standard registry docs an
     item.files.some(
       (file) =>
         file.target ===
-        "~/src/components/ui/components/Nested/NewBadge/README.md",
+        "~/src/components/ui/Nested/NewBadge/README.md",
     ),
   ).toBe(true);
   await buildRegistry(root, { check: true });
@@ -292,4 +292,18 @@ test("locates local CSS imports relative to each stylesheet using real at-rules"
     "Unresolved registry import",
   );
   expect(await readFile(resolve(root, "registry.json"), "utf8")).toBe(previous);
+});
+
+
+test("installs components directly under ui while preserving external relative imports", async () => {
+  const { root } = await fixture();
+  const registry = await buildRegistry(root);
+  const badge = registry.items.find((item) => item.name === "new-badge");
+  const installed = badge.files;
+  expect(installed.find((file) => file.path.endsWith("NewBadge/index.ts")).target)
+    .toBe("~/src/components/ui/Nested/NewBadge/index.ts");
+  expect(installed.find((file) => file.path.endsWith("utils/lazy.ts")).target)
+    .toBe("~/src/components/utils/lazy.ts");
+  expect(installed.every((file) => !file.target.includes("/ui/components/"))).toBe(true);
+  await buildRegistry(root, { check: true });
 });
