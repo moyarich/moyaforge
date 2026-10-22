@@ -58,8 +58,8 @@ function visit(filename, found) {
   walk(ast);
 }
 function auditEntrypoints() {
-const result = {};
-for (const entry of entrypoints) {
+  const result = {};
+  for (const entry of entrypoints) {
   const files = new Set();
   visit(resolve(src, entry), files);
   const paths = [...files].map((file) =>
@@ -75,7 +75,7 @@ for (const entry of entrypoints) {
   };
 }
 
-return result;
+  return result;
 }
 
 test("framework public entrypoints have no extracted UI dependencies", () => {
