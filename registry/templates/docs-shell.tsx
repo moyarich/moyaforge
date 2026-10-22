@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import {
   DocsLayout,
   type DocsLayoutProps,
-} from "./components/Layout/DocsLayout/DocsLayout.js";
+} from "./Layout/DocsLayout/DocsLayout.js";
 
 /** Editable documentation shell using the canonical UI layout.
  * Host applications own routing, content discovery and page metadata.
