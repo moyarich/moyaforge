@@ -173,10 +173,7 @@ export async function buildRegistry(root, { check = false } = {}) {
     const dependencies = new Map();
     async function visit(file, template = false) {
       const canonical = await realpath(file);
-      if (
-        !template &&
-        !canonical.startsWith(uiSourceRoot + "/")
-      )
+      if (!template && !canonical.startsWith(uiSourceRoot + "/"))
         throw Error(`Registry file outside canonical UI source: ${file}`);
       if (files.has(file)) return;
       files.add(file);

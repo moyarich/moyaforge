@@ -5,14 +5,23 @@ import { resolve, dirname } from "node:path";
 import { test } from "vitest";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const manifests = Object.fromEntries(
+type Manifest = {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+  optionalDependencies?: Record<string, string>;
+  exports?: Record<string, string | Record<string, string>>;
+  bin?: string | Record<string, string>;
+};
+
+const manifests: Record<string, Manifest> = Object.fromEntries(
   await Promise.all(
     [
       "moyaforge",
       "moyaforge-mdx",
       "moyaforge-search-sqlite",
       "moyaforge-cli",
-    ].map(async (name) => [
+    ].map(async (name): Promise<[string, Manifest]> => [
       name,
       JSON.parse(
         await readFile(resolve(root, "packages", name, "package.json"), "utf8"),
@@ -21,7 +30,7 @@ const manifests = Object.fromEntries(
   ),
 );
 
-const allDeps = (manifest) => ({
+const allDeps = (manifest: Manifest): Record<string, string> => ({
   ...manifest.dependencies,
   ...manifest.devDependencies,
   ...manifest.peerDependencies,
@@ -65,7 +74,7 @@ test("published package export targets and command entry points exist after buil
 test("installer ownership and optional editor peers stay outside basic UI installs", () => {
   assert.equal(manifests.moyaforge.bin, undefined);
   assert.equal(
-    manifests["moyaforge-cli"].bin.moyaforge,
+    (manifests["moyaforge-cli"].bin as Record<string, string>).moyaforge,
     "./dist/bin/moyaforge.js",
   );
   assert.equal(manifests["moyaforge-cli"].dependencies, undefined);

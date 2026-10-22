@@ -14,7 +14,7 @@ const groups = [
   "Layout/DocsLayout",
   "Layout/DocumentationSite",
 ];
-function resolveLocal(from, specifier) {
+function resolveLocal(from: string, specifier: string): string | null {
   if (!specifier.startsWith(".")) return null;
   const base = resolve(dirname(from), specifier);
   const candidates = [
@@ -29,7 +29,7 @@ function resolveLocal(from, specifier) {
   ];
   return candidates.find((candidate) => existsSync(candidate)) ?? null;
 }
-function visit(filename, found) {
+function visit(filename: string, found: Set<string>): void {
   if (found.has(filename) || !existsSync(filename)) return;
   found.add(filename);
   const code = readFileSync(filename, "utf8");
@@ -37,20 +37,24 @@ function visit(filename, found) {
     sourceType: "module",
     plugins: ["typescript", "jsx"],
   });
-  function walk(node) {
+  function walk(node: unknown): void {
+    if (!node || typeof node !== "object") return;
+    const value = node as Record<string, unknown>;
+    const source = value.source as
+      { type?: string; value?: string } | undefined;
     if (
       [
         "ImportDeclaration",
         "ExportNamedDeclaration",
         "ExportAllDeclaration",
-      ].includes(node?.type) &&
-      node.source?.type === "StringLiteral"
+      ].includes(String(value.type)) &&
+      source?.type === "StringLiteral"
     ) {
-      const target = resolveLocal(filename, node.source.value);
+      const target = resolveLocal(filename, source.value ?? "");
       if (target) visit(target, found);
     }
     if (!node || typeof node !== "object") return;
-    for (const child of Object.values(node)) {
+    for (const child of Object.values(value)) {
       if (Array.isArray(child)) child.forEach(walk);
       else if (child && typeof child === "object") walk(child);
     }
@@ -58,29 +62,40 @@ function visit(filename, found) {
   walk(ast);
 }
 function auditEntrypoints() {
-  const result = {};
+  const result: Record<
+    string,
+    {
+      sourceFiles: number;
+      extractedUiFiles: number;
+      extractedUiImports: string[];
+    }
+  > = {};
   for (const entry of entrypoints) {
-  const files = new Set();
-  visit(resolve(src, entry), files);
-  const paths = [...files].map((file) =>
-    relative(src, file).replaceAll("\\", "/"),
-  );
-  const ui = paths.filter((path) =>
-    groups.some((group) => path.startsWith(`components/${group}/`)),
-  );
-  result[entry] = {
-    sourceFiles: paths.length,
-    extractedUiFiles: ui.length,
-    extractedUiImports: ui.sort(),
-  };
-}
+    const files = new Set();
+    visit(resolve(src, entry), files);
+    const paths = [...files].map((file) =>
+      relative(src, file).replaceAll("\\", "/"),
+    );
+    const ui = paths.filter((path) =>
+      groups.some((group) => path.startsWith(`components/${group}/`)),
+    );
+    result[entry] = {
+      sourceFiles: paths.length,
+      extractedUiFiles: ui.length,
+      extractedUiImports: ui.sort(),
+    };
+  }
 
   return result;
 }
 
 test("framework public entrypoints have no extracted UI dependencies", () => {
   const report = auditEntrypoints();
-  expect(Object.keys(report).sort()).toEqual(["headless.ts", "index.ts", "registry-routes.tsx"]);
+  expect(Object.keys(report).sort()).toEqual([
+    "headless.ts",
+    "index.ts",
+    "registry-routes.tsx",
+  ]);
   for (const [entrypoint, result] of Object.entries(report)) {
     expect(result.sourceFiles, entrypoint).toBeGreaterThan(1);
     expect(result.extractedUiFiles, entrypoint).toBe(0);
