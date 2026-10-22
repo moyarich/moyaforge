@@ -185,7 +185,9 @@ export async function buildRegistry(root, { check = false } = {}) {
       for (const specifier of imports(text, file)) {
         if (specifier.startsWith(".")) {
           // Templates retain their installed location alongside the copied source tree.
-          const base = template ? resolve(uiComponentRoot, basename(file)) : file;
+          const base = template
+            ? resolve(uiComponentRoot, basename(file))
+            : file;
           await visit(await resolveImport(base, specifier));
         } else {
           const pkg = specifier.startsWith("@")

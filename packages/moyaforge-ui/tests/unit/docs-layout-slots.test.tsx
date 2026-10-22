@@ -3,17 +3,25 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { DocsLayout } from "../../src/components/Layout/DocsLayout/DocsLayout.tsx";
 
-const pages = [{ url: "/docs", title: "Docs" }, { url: "/docs/guide", title: "Guide" }];
+const pages = [
+  { url: "/docs", title: "Docs" },
+  { url: "/docs/guide", title: "Guide" },
+];
 const render = (props: Record<string, unknown> = {}) =>
   renderToStaticMarkup(
-    createElement(DocsLayout, { pages, currentUrl: "/docs/guide", children: "Article", ...props }),
+    createElement(DocsLayout, {
+      pages,
+      currentUrl: "/docs/guide",
+      children: "Article",
+      ...props,
+    }),
   );
 
 describe("DocsLayout slots", () => {
   it("renders defaults when optional slots are omitted", () => {
     const html = render();
-    expect(html).toContain('data-moyaforge-docs-header');
-    expect(html).toContain('data-moyaforge-docs-sidebar');
+    expect(html).toContain("data-moyaforge-docs-header");
+    expect(html).toContain("data-moyaforge-docs-sidebar");
     expect(html).toContain('aria-label="Documentation navigation"');
     expect(html).toContain("Article");
   });
@@ -21,7 +29,11 @@ describe("DocsLayout slots", () => {
   it("replaces slots with custom content", () => {
     const html = render({
       header: createElement("strong", null, "Custom header"),
-      sidebar: createElement("nav", { "aria-label": "Custom sidebar" }, "Custom links"),
+      sidebar: createElement(
+        "nav",
+        { "aria-label": "Custom sidebar" },
+        "Custom links",
+      ),
       outline: createElement("aside", null, "Custom outline"),
       footer: createElement("small", null, "Custom footer"),
     });
@@ -33,9 +45,14 @@ describe("DocsLayout slots", () => {
   });
 
   it("explicit null removes slots without removing article content", () => {
-    const html = render({ header: null, sidebar: null, outline: null, footer: null });
+    const html = render({
+      header: null,
+      sidebar: null,
+      outline: null,
+      footer: null,
+    });
     expect(html).not.toContain('aria-label="Documentation navigation"');
-    expect(html).not.toContain('data-moyaforge-docs-sidebar');
+    expect(html).not.toContain("data-moyaforge-docs-sidebar");
     expect(html).toContain("Article");
   });
 });

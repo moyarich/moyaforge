@@ -203,11 +203,14 @@ test("registry targets install directly under the configured component directory
     registry: repository,
   });
   expect(
-    plan.files.some((file) =>
-      file.path === join(root, "src/components/ui/CodeBlock/CodeBlock.tsx"),
+    plan.files.some(
+      (file) =>
+        file.path === join(root, "src/components/ui/CodeBlock/CodeBlock.tsx"),
     ),
   ).toBe(true);
-  expect(plan.files.every((file) => !file.path.includes("/ui/components/"))).toBe(true);
+  expect(
+    plan.files.every((file) => !file.path.includes("/ui/components/")),
+  ).toBe(true);
 
   await writeFile(
     join(root, "moyaforge.components.json"),
@@ -242,11 +245,28 @@ test("monaco installation reports setup notes without copying README files", asy
 
 test("shared registry utilities remain siblings of UI files, including custom destinations", async () => {
   const root = await project();
-  const plan = await planItems({ root, names: ["docs-layout"], registry: repository });
-  expect(plan.files.some((file) => file.path.includes("src/components/utils/"))).toBe(true);
-  const custom = await planItems({
-    root, names: ["docs-layout"], registry: repository, directory: "src/custom-components/ui",
+  const plan = await planItems({
+    root,
+    names: ["docs-layout"],
+    registry: repository,
   });
-  expect(custom.files.some((file) => file.path.includes("src/custom-components/utils/"))).toBe(true);
-  expect(custom.files.some((file) => file.path.includes("src/custom-components/ui/"))).toBe(true);
+  expect(
+    plan.files.some((file) => file.path.includes("src/components/utils/")),
+  ).toBe(true);
+  const custom = await planItems({
+    root,
+    names: ["docs-layout"],
+    registry: repository,
+    directory: "src/custom-components/ui",
+  });
+  expect(
+    custom.files.some((file) =>
+      file.path.includes("src/custom-components/utils/"),
+    ),
+  ).toBe(true);
+  expect(
+    custom.files.some((file) =>
+      file.path.includes("src/custom-components/ui/"),
+    ),
+  ).toBe(true);
 });
