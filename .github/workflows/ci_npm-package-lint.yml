@@ -14,6 +14,7 @@ on:
       - "packages/**"
       - "package.json"
       - "package-lock.json"
+      - "scripts/audit-framework-pack.mjs"
       - ".github/workflows/ci_npm-package-lint.yml"
   workflow_dispatch:
 
@@ -66,6 +67,9 @@ jobs:
             echo "::group::Validate public exports: $package"
             npx --yes validate-package-exports "$location/package.json" --check --verbose --info
             echo "::endgroup::"
+            if [[ "$package" == "@moyarich/moyaforge" ]]; then
+              echo "::group::Audit framework-specific tarball boundaries"
+              npm run pack:audit:strict -- "$RUNNER_TEMP/$tarball"
+              echo "::endgroup::"
+            fi
           done
-      - name: Audit MoyaForge-specific tarball boundaries
-        run: npm run pack:audit:strict
