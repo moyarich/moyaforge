@@ -19,7 +19,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run framework:audit:strict && npm run test:unit && npm run test:consumer:browser",
+    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit:strict && npm run test:unit && npm run test:consumer:browser",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:all": "npm run test",
     "test:boundaries": "vitest run tests/workspace.test.js",
@@ -31,8 +31,8 @@
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check",
     "test:cli:browser": "playwright test --project=cli-consumer",
-    "framework:audit": "node scripts/audit-framework.mjs",
-    "framework:audit:strict": "node scripts/audit-framework.mjs --strict"
+    "pack:audit": "node scripts/audit-framework-pack.mjs",
+    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
