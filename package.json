@@ -34,7 +34,8 @@
     "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
     "imports:audit": "node scripts/audit-framework-imports.mjs",
     "imports:audit:strict": "node scripts/audit-framework-imports.mjs --strict",
-    "test:cli:browser": "playwright test --project=cli-consumer"
+    "test:cli:browser": "playwright test --project=cli-consumer",
+    "test:registry": "vitest run tests/registry"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
