@@ -8,42 +8,39 @@
       "type": "registry:component",
       "title": "Code Block",
       "description": "Editable MoyaForge code-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeBlock.css"
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeBlock.tsx"
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeCopyIcon.tsx"
+          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/index.ts"
+          "target": "~/src/components/ui/CodeBlock/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         }
       ]
     },
@@ -52,52 +49,49 @@
       "type": "registry:component",
       "title": "Code Group",
       "description": "Editable MoyaForge code-group source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeBlock.css"
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeBlock.tsx"
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeCopyIcon.tsx"
+          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeGroup/CodeGroup.css"
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeGroup/CodeGroup.tsx"
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeGroup/index.ts"
+          "target": "~/src/components/ui/CodeGroup/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         }
       ]
     },
@@ -106,82 +100,81 @@
       "type": "registry:component",
       "title": "Code Preview",
       "description": "Editable MoyaForge code-preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeBlock.css"
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeBlock.tsx"
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeBlock/CodeCopyIcon.tsx"
+          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeGroup/CodeGroup.css"
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeGroup/CodeGroup.tsx"
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodeGroup/index.ts"
+          "target": "~/src/components/ui/CodeGroup/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodePreview/CodePreview.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodePreview/CodePreview.tsx"
+          "target": "~/src/components/ui/CodePreview/CodePreview.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodePreview/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CodePreview/index.ts"
+          "target": "~/src/components/ui/CodePreview/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/HighlightedCode.css"
+          "target": "~/src/components/ui/Preview/HighlightedCode.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/HighlightedCode.tsx"
+          "target": "~/src/components/ui/Preview/HighlightedCode.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/Preview.css"
+          "target": "~/src/components/ui/Preview/Preview.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/Preview.tsx"
+          "target": "~/src/components/ui/Preview/Preview.tsx"
         }
       ]
     },
@@ -190,27 +183,24 @@
       "type": "registry:component",
       "title": "Copy Button",
       "description": "Editable MoyaForge copy-button source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/index.ts"
+          "target": "~/src/components/ui/CopyButton/index.ts"
         }
       ]
     },
@@ -219,27 +209,24 @@
       "type": "registry:component",
       "title": "Custom Block",
       "description": "Editable MoyaForge custom-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CustomBlock/CustomBlock.css"
+          "target": "~/src/components/ui/CustomBlock/CustomBlock.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CustomBlock/CustomBlock.tsx"
+          "target": "~/src/components/ui/CustomBlock/CustomBlock.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CustomBlock/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CustomBlock/index.ts"
+          "target": "~/src/components/ui/CustomBlock/index.ts"
         }
       ]
     },
@@ -248,27 +235,24 @@
       "type": "registry:component",
       "title": "Demo",
       "description": "Editable MoyaForge demo source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Demo/Demo.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Demo/Demo.css"
+          "target": "~/src/components/ui/Demo/Demo.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Demo/Demo.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Demo/Demo.tsx"
+          "target": "~/src/components/ui/Demo/Demo.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Demo/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Demo/index.ts"
+          "target": "~/src/components/ui/Demo/index.ts"
         }
       ]
     },
@@ -277,47 +261,44 @@
       "type": "registry:component",
       "title": "Doc Outline",
       "description": "Editable MoyaForge doc-outline source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocOutline/DocOutline.css"
+          "target": "~/src/components/ui/DocOutline/DocOutline.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocOutline/DocOutline.tsx"
+          "target": "~/src/components/ui/DocOutline/DocOutline.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutlineShell.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocOutline/DocOutlineShell.tsx"
+          "target": "~/src/components/ui/DocOutline/DocOutlineShell.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocOutline/index.ts"
+          "target": "~/src/components/ui/DocOutline/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/TableOfContents/TableOfContents.css"
+          "target": "~/src/components/ui/TableOfContents/TableOfContents.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/TableOfContents/TableOfContents.tsx"
+          "target": "~/src/components/ui/TableOfContents/TableOfContents.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/utils/heading-fragment.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/utils/heading-fragment.ts"
+          "target": "~/src/components/utils/heading-fragment.ts"
         }
       ]
     },
@@ -326,32 +307,29 @@
       "type": "registry:component",
       "title": "Docs Layout",
       "description": "Editable MoyaForge docs-layout source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocsLayout/DocsLayout.css"
+          "target": "~/src/components/ui/Layout/DocsLayout/DocsLayout.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocsLayout/DocsLayout.tsx"
+          "target": "~/src/components/ui/Layout/DocsLayout/DocsLayout.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocsLayout/index.ts"
+          "target": "~/src/components/ui/Layout/DocsLayout/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/utils/heading-fragment.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/utils/heading-fragment.ts"
+          "target": "~/src/components/utils/heading-fragment.ts"
         }
       ]
     },
@@ -360,27 +338,24 @@
       "type": "registry:block",
       "title": "Docs Shell",
       "description": "Editable MoyaForge docs-shell source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocsLayout/DocsLayout.css"
+          "target": "~/src/components/ui/Layout/DocsLayout/DocsLayout.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocsLayout/DocsLayout.tsx"
+          "target": "~/src/components/ui/Layout/DocsLayout/DocsLayout.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/utils/heading-fragment.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/utils/heading-fragment.ts"
+          "target": "~/src/components/utils/heading-fragment.ts"
         },
         {
           "path": "registry/templates/docs-shell.tsx",
@@ -394,27 +369,24 @@
       "type": "registry:component",
       "title": "Docs Shell Focused",
       "description": "Editable MoyaForge docs-shell-focused source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellFocused/DocsShellFocused.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocsShellFocused/DocsShellFocused.css"
+          "target": "~/src/components/ui/DocsShellFocused/DocsShellFocused.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellFocused/DocsShellFocused.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocsShellFocused/DocsShellFocused.tsx"
+          "target": "~/src/components/ui/DocsShellFocused/DocsShellFocused.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellFocused/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocsShellFocused/index.ts"
+          "target": "~/src/components/ui/DocsShellFocused/index.ts"
         }
       ]
     },
@@ -423,27 +395,24 @@
       "type": "registry:component",
       "title": "Docs Shell Wide",
       "description": "Editable MoyaForge docs-shell-wide source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellWide/DocsShellWide.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocsShellWide/DocsShellWide.css"
+          "target": "~/src/components/ui/DocsShellWide/DocsShellWide.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellWide/DocsShellWide.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocsShellWide/DocsShellWide.tsx"
+          "target": "~/src/components/ui/DocsShellWide/DocsShellWide.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellWide/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/DocsShellWide/index.ts"
+          "target": "~/src/components/ui/DocsShellWide/index.ts"
         }
       ]
     },
@@ -452,27 +421,24 @@
       "type": "registry:component",
       "title": "Documentation Site",
       "description": "Editable MoyaForge documentation-site source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocumentationSite/DocumentationSite.css"
+          "target": "~/src/components/ui/Layout/DocumentationSite/DocumentationSite.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocumentationSite/DocumentationSite.tsx"
+          "target": "~/src/components/ui/Layout/DocumentationSite/DocumentationSite.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Layout/DocumentationSite/index.ts"
+          "target": "~/src/components/ui/Layout/DocumentationSite/index.ts"
         }
       ]
     },
@@ -481,27 +447,24 @@
       "type": "registry:component",
       "title": "Edit Page Link",
       "description": "Editable MoyaForge edit-page-link source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/EditPageLink/EditPageLink.css"
+          "target": "~/src/components/ui/EditPageLink/EditPageLink.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/EditPageLink/EditPageLink.tsx"
+          "target": "~/src/components/ui/EditPageLink/EditPageLink.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/EditPageLink/index.ts"
+          "target": "~/src/components/ui/EditPageLink/index.ts"
         }
       ]
     },
@@ -510,22 +473,19 @@
       "type": "registry:component",
       "title": "Empty State",
       "description": "Editable MoyaForge empty-state source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/EmptyState/EmptyState.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/EmptyState/EmptyState.tsx"
+          "target": "~/src/components/ui/EmptyState/EmptyState.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/EmptyState/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/EmptyState/index.ts"
+          "target": "~/src/components/ui/EmptyState/index.ts"
         }
       ]
     },
@@ -543,69 +503,59 @@
       ],
       "files": [
         {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoCodeGroup.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorReact/MonacoCodeGroup.tsx"
+          "target": "~/src/components/ui/MonacoEditorReact/MonacoCodeGroup.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorReact/MonacoEditorReact.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/README.md",
-          "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorReact/README.md"
+          "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx"
+          "target": "~/src/components/ui/MonacoEditorReact/ReactMonacoSourceEditor.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorReact/index.ts"
+          "target": "~/src/components/ui/MonacoEditorReact/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/Monaco.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/Monaco.css"
+          "target": "~/src/components/ui/MonacoEditorShared/Monaco.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/Monaco.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/Monaco.tsx"
+          "target": "~/src/components/ui/MonacoEditorShared/Monaco.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/drafts.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/drafts.ts"
+          "target": "~/src/components/ui/MonacoEditorShared/drafts.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/languages.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/languages.ts"
+          "target": "~/src/components/ui/MonacoEditorShared/languages.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/useEditorTheme.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/useEditorTheme.ts"
+          "target": "~/src/components/ui/MonacoEditorShared/useEditorTheme.ts"
         }
       ]
     },
@@ -624,59 +574,49 @@
       ],
       "files": [
         {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/Monaco.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/Monaco.css"
+          "target": "~/src/components/ui/MonacoEditorShared/Monaco.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/Monaco.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/Monaco.tsx"
+          "target": "~/src/components/ui/MonacoEditorShared/Monaco.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/drafts.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/drafts.ts"
+          "target": "~/src/components/ui/MonacoEditorShared/drafts.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/languages.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/languages.ts"
+          "target": "~/src/components/ui/MonacoEditorShared/languages.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorShared/useEditorTheme.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorShared/useEditorTheme.ts"
+          "target": "~/src/components/ui/MonacoEditorShared/useEditorTheme.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorTypeFox/README.md",
-          "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorTypeFox/README.md"
+          "target": "~/src/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorTypeFox/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/MonacoEditorTypeFox/index.ts"
+          "target": "~/src/components/ui/MonacoEditorTypeFox/index.ts"
         }
       ]
     },
@@ -685,27 +625,24 @@
       "type": "registry:component",
       "title": "Navigation Tree",
       "description": "Editable MoyaForge navigation-tree source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/NavigationTree/NavigationTree.css"
+          "target": "~/src/components/ui/NavigationTree/NavigationTree.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/NavigationTree/NavigationTree.tsx"
+          "target": "~/src/components/ui/NavigationTree/NavigationTree.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/NavigationTree/index.ts"
+          "target": "~/src/components/ui/NavigationTree/index.ts"
         }
       ]
     },
@@ -714,27 +651,24 @@
       "type": "registry:component",
       "title": "Page",
       "description": "Editable MoyaForge page source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Page/Page.css"
+          "target": "~/src/components/ui/Page/Page.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Page/Page.tsx"
+          "target": "~/src/components/ui/Page/Page.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Page/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Page/index.ts"
+          "target": "~/src/components/ui/Page/index.ts"
         }
       ]
     },
@@ -743,47 +677,46 @@
       "type": "registry:component",
       "title": "Preview",
       "description": "Editable MoyaForge preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/HighlightedCode.css"
+          "target": "~/src/components/ui/Preview/HighlightedCode.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/HighlightedCode.tsx"
+          "target": "~/src/components/ui/Preview/HighlightedCode.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/Preview.css"
+          "target": "~/src/components/ui/Preview/Preview.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/Preview.tsx"
+          "target": "~/src/components/ui/Preview/Preview.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/index.ts"
+          "target": "~/src/components/ui/Preview/index.ts"
         }
       ]
     },
@@ -792,27 +725,24 @@
       "type": "registry:component",
       "title": "Search",
       "description": "Editable MoyaForge search source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Search/Search.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Search/Search.css"
+          "target": "~/src/components/ui/Search/Search.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Search/Search.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Search/Search.tsx"
+          "target": "~/src/components/ui/Search/Search.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Search/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Search/index.ts"
+          "target": "~/src/components/ui/Search/index.ts"
         }
       ]
     },
@@ -828,29 +758,24 @@
       ],
       "files": [
         {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV1/Navigation.tsx"
+          "target": "~/src/components/ui/SidebarV1/Navigation.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/SidebarV1.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV1/SidebarV1.tsx"
+          "target": "~/src/components/ui/SidebarV1/SidebarV1.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV1/index.ts"
+          "target": "~/src/components/ui/SidebarV1/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/types.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV1/types.ts"
+          "target": "~/src/components/ui/SidebarV1/types.ts"
         }
       ]
     },
@@ -859,77 +784,74 @@
       "type": "registry:component",
       "title": "Sidebar V2",
       "description": "Editable MoyaForge sidebar-v2 source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Page/Page.css"
+          "target": "~/src/components/ui/Page/Page.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Page/Page.tsx"
+          "target": "~/src/components/ui/Page/Page.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Page/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Page/index.ts"
+          "target": "~/src/components/ui/Page/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/Sidebar.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/Sidebar.css"
+          "target": "~/src/components/ui/SidebarV2/Sidebar.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/Sidebar.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/Sidebar.tsx"
+          "target": "~/src/components/ui/SidebarV2/Sidebar.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarContent.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/SidebarContent.tsx"
+          "target": "~/src/components/ui/SidebarV2/SidebarContent.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarFooter.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/SidebarFooter.tsx"
+          "target": "~/src/components/ui/SidebarV2/SidebarFooter.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarGroup.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/SidebarGroup.tsx"
+          "target": "~/src/components/ui/SidebarV2/SidebarGroup.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarHeader.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/SidebarHeader.tsx"
+          "target": "~/src/components/ui/SidebarV2/SidebarHeader.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarItem.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/SidebarItem.tsx"
+          "target": "~/src/components/ui/SidebarV2/SidebarItem.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarOutline.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/SidebarOutline.tsx"
+          "target": "~/src/components/ui/SidebarV2/SidebarOutline.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/SidebarSection.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/SidebarSection.tsx"
+          "target": "~/src/components/ui/SidebarV2/SidebarSection.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/SidebarV2/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/SidebarV2/index.ts"
+          "target": "~/src/components/ui/SidebarV2/index.ts"
         }
       ]
     },
@@ -938,37 +860,35 @@
       "type": "registry:component",
       "title": "Source",
       "description": "Editable MoyaForge source source. Components import their own CSS.",
-      "dependencies": ["react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/HighlightedCode.css"
+          "target": "~/src/components/ui/Preview/HighlightedCode.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Preview/HighlightedCode.tsx"
+          "target": "~/src/components/ui/Preview/HighlightedCode.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Source/Source.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Source/Source.css"
+          "target": "~/src/components/ui/Source/Source.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Source/Source.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Source/Source.tsx"
+          "target": "~/src/components/ui/Source/Source.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Source/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/Source/index.ts"
+          "target": "~/src/components/ui/Source/index.ts"
         }
       ]
     },
@@ -977,27 +897,24 @@
       "type": "registry:component",
       "title": "Table Of Contents",
       "description": "Editable MoyaForge table-of-contents source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/TableOfContents/TableOfContents.css"
+          "target": "~/src/components/ui/TableOfContents/TableOfContents.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/TableOfContents/TableOfContents.tsx"
+          "target": "~/src/components/ui/TableOfContents/TableOfContents.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/components/TableOfContents/index.ts"
+          "target": "~/src/components/ui/TableOfContents/index.ts"
         }
       ]
     }

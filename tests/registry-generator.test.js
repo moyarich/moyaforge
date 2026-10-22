@@ -182,27 +182,22 @@ test("ignores framework-source UI and discovers only the canonical UI workspace"
   expect(registry.items.some((item) => item.name === "new-badge")).toBe(true);
 });
 
-test("automatically includes component setup guides as standard registry docs and copied files", async () => {
+test("includes registry setup guides as metadata without installing them", async () => {
   const { root, put } = await fixture();
   const guide =
     "## Setup\n\nInstall the host dependencies and configure workers.\n";
   await put(
-    "packages/moyaforge-ui/src/components/Nested/NewBadge/README.md",
+    "registry/docs/new-badge.md",
     guide,
   );
   const generated = await buildRegistry(root);
   const item = generated.items.find((item) => item.name === "new-badge");
   expect(item.docs).toBe(guide);
-  expect(
-    item.files.some(
-      (file) =>
-        file.target ===
-        "~/src/components/ui/components/Nested/NewBadge/README.md",
-    ),
-  ).toBe(true);
+  expect(item.files.some((file) => file.path.endsWith("README.md"))).toBe(false);
+  expect(item.files.some((file) => file.path === "LICENSE")).toBe(false);
   await buildRegistry(root, { check: true });
   await put(
-    "packages/moyaforge-ui/src/components/Nested/NewBadge/README.md",
+    "registry/docs/new-badge.md",
     "Changed setup requirements.\n",
   );
   await expect(buildRegistry(root, { check: true })).rejects.toThrow(
@@ -292,4 +287,19 @@ test("locates local CSS imports relative to each stylesheet using real at-rules"
     "Unresolved registry import",
   );
   expect(await readFile(resolve(root, "registry.json"), "utf8")).toBe(previous);
+});
+
+
+test("installs components directly under ui while preserving external relative imports", async () => {
+  const { root } = await fixture();
+  const registry = await buildRegistry(root);
+  const badge = registry.items.find((item) => item.name === "new-badge");
+  const installed = badge.files;
+  expect(installed.some((file) => file.path === "LICENSE" || file.path.endsWith("README.md"))).toBe(false);
+  expect(installed.find((file) => file.path.endsWith("NewBadge/index.ts")).target)
+    .toBe("~/src/components/ui/Nested/NewBadge/index.ts");
+  expect(installed.find((file) => file.path.endsWith("utils/lazy.ts")).target)
+    .toBe("~/src/components/utils/lazy.ts");
+  expect(installed.every((file) => !file.target.includes("/ui/components/"))).toBe(true);
+  await buildRegistry(root, { check: true });
 });

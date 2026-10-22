@@ -201,31 +201,25 @@ export async function buildRegistry(root, { check = false } = {}) {
     }
     await visit(spec.entry, spec.template);
     const itemSourceRoot = uiSourceRoot;
+    // Install public components directly under ui/, not ui/components/.
+    // Files outside src/components must retain their relative import positions.
+    const installTarget = (file) => {
+      if (file === spec.entry && spec.template)
+        return `~/src/components/ui/${basename(file)}`;
+      if (file.startsWith(uiComponentRoot + "/"))
+        return `~/src/components/ui/${relative(uiComponentRoot, file)}`;
+      return `~/src/components/${relative(uiSourceRoot, file)}`;
+    };
     const installed = [...files].sort().map((file) => ({
       path: relative(root, file),
       type: "registry:file",
-      target: `~/src/components/ui/${file === spec.entry && spec.template ? basename(file) : relative(itemSourceRoot, file)}`,
+      target: installTarget(file),
     }));
-    installed.push({
-      path: "LICENSE",
-      type: "registry:file",
-      target: "~/src/components/ui/LICENSE",
-    });
-    const guidePath = resolve(dirname(spec.entry), "README.md");
-    let setupDocs;
-    if (await isFile(guidePath)) {
-      const canonical = await realpath(guidePath);
-      if (!canonical.startsWith(itemSourceRoot + "/"))
-        throw Error(
-          `Registry setup guide outside canonical source: ${guidePath}`,
-        );
-      setupDocs = await readFile(guidePath, "utf8");
-      installed.push({
-        path: relative(root, guidePath),
-        type: "registry:file",
-        target: `~/src/components/ui/${relative(itemSourceRoot, guidePath)}`,
-      });
-    }
+    // Documentation belongs to the registry, never to component source folders.
+    const guidePath = resolve(root, "registry/docs", `${name}.md`);
+    const setupDocs = (await isFile(guidePath))
+      ? await readFile(guidePath, "utf8")
+      : undefined;
     installed.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
     items.push({
       name,

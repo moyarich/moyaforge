@@ -30,9 +30,7 @@ for (const name of [
     );
     expect(paths.some((path) => path.endsWith(".tsx"))).toBe(true);
     expect(paths.some((path) => path.endsWith(".css"))).toBe(true);
-    expect(paths.every((path) => path.startsWith("src/components/ui/"))).toBe(
-      true,
-    );
+    expect(paths.every((path) => path.startsWith("src/components/ui/") || path.startsWith("src/components/utils/"))).toBe(true);
     expect(
       plan.files.every(
         (file) => !file.content.includes("packages/moyaforge/src/"),
