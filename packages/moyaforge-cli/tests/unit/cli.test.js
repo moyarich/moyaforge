@@ -195,39 +195,27 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
   ).rejects.toThrow(/Invalid component target/);
 });
 
-test("rejects obsolete registry targets while preserving configured destinations", async () => {
+test("registry targets install directly under the configured component directory", async () => {
   const root = await project();
-  const legacy = await project();
-  await writeFile(
-    join(legacy, "registry.json"),
-    JSON.stringify({
-      items: [
-        {
-          name: "legacy",
-          files: [
-            {
-              path: "file.ts",
-              target: "~/src/components/moyaforge/components/Example.tsx",
-              content: "export const Example = 1;",
-            },
-          ],
-        },
-      ],
-    }),
-  );
-  await expect(
-    planItems({ root, names: ["legacy"], registry: legacy }),
-  ).rejects.toThrow(/Unsupported registry file target/);
+  const plan = await planItems({
+    root,
+    names: ["code-block"],
+    registry: repository,
+  });
+  expect(
+    plan.files.some((file) =>
+      file.path === join(root, "src/components/ui/CodeBlock/CodeBlock.tsx"),
+    ),
+  ).toBe(true);
+  expect(plan.files.every((file) => !file.path.includes("/ui/components/"))).toBe(true);
+
   await writeFile(
     join(root, "moyaforge.components.json"),
     JSON.stringify({ directory: "src/custom-components" }),
   );
   expect(run(root, "add", "code-block", "--no-install").status).toBe(0);
   expect(
-    await read(
-      root,
-      "src/custom-components/CodeBlock/CodeBlock.tsx",
-    ),
+    await read(root, "src/custom-components/CodeBlock/CodeBlock.tsx"),
   ).toContain("CodeBlock");
 });
 
