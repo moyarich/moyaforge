@@ -43,11 +43,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          npm query '.workspace' --json > "$RUNNER_TEMP/workspaces.json"
           mapfile -t packages < <(node --input-type=module <<'NODE'
-          import { globSync, readFileSync } from 'node:fs';
-          for (const path of globSync('packages/*/package.json').sort()) {
-            const pkg = JSON.parse(readFileSync(path, 'utf8'));
-            if (pkg.private !== true && pkg.name) console.log(pkg.name);
+          import { readFileSync } from 'node:fs';
+          const workspaces = JSON.parse(readFileSync(process.env.RUNNER_TEMP + '/workspaces.json', 'utf8'));
+          for (const pkg of workspaces.filter(p => p.private !== true && p.name && p.location).sort((a, b) => a.name.localeCompare(b.name))) {
+            console.log(`${pkg.name}\t${pkg.location}`);
           }
           NODE
           )
@@ -55,9 +56,14 @@ jobs:
             echo "No publishable packages found"
             exit 0
           fi
-          for package in "${packages[@]}"; do
+          for entry in "${packages[@]}"; do
+            IFS=
+\t' read -r package location <<< "$entry"
             echo "::group::Package lint: $package"
             tarball="$(npm pack --workspace "$package" --ignore-scripts --pack-destination "$RUNNER_TEMP" --silent)"
             npx --yes --package=npm-pkg-lint@5.4.0 npm-pkg-lint --tarball "$RUNNER_TEMP/$tarball"
+            echo "::endgroup::"
+            echo "::group::Validate public exports: $package"
+            npx --yes validate-package-exports "$location/package.json" --check --verbose --info
             echo "::endgroup::"
           done
