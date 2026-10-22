@@ -215,16 +215,11 @@ export async function buildRegistry(root, { check = false } = {}) {
       type: "registry:file",
       target: installTarget(file),
     }));
-    const guidePath = resolve(dirname(spec.entry), "README.md");
-    let setupDocs;
-    if (await isFile(guidePath)) {
-      const canonical = await realpath(guidePath);
-      if (!canonical.startsWith(itemSourceRoot + "/"))
-        throw Error(
-          `Registry setup guide outside canonical source: ${guidePath}`,
-        );
-      setupDocs = await readFile(guidePath, "utf8");
-    }
+    // Documentation belongs to the registry, never to component source folders.
+    const guidePath = resolve(root, "registry/docs", `${name}.md`);
+    const setupDocs = (await isFile(guidePath))
+      ? await readFile(guidePath, "utf8")
+      : undefined;
     installed.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
     items.push({
       name,
