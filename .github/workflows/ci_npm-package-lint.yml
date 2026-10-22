@@ -57,7 +57,7 @@ jobs:
             exit 0
           fi
           for entry in "${packages[@]}"; do
-            IFS=
+            IFS="$(printf '\\t')" read -r package location <<< "$entry"
             echo "::group::Package lint: $package"
             tarball="$(npm pack --workspace "$package" --ignore-scripts --pack-destination "$RUNNER_TEMP" --silent)"
             npx --yes --package=npm-pkg-lint@5.4.0 npm-pkg-lint --tarball "$RUNNER_TEMP/$tarball"
