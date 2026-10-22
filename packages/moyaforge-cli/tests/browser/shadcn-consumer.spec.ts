@@ -173,10 +173,10 @@ test("GitHub shadcn consumer", async () => {
     console.log(installed);
     await writeFile(
       join(root, "src/main.tsx"),
-      'import {createRoot} from "react-dom/client"; import {CodeBlock} from "./components/ui/components/CodeBlock/CodeBlock"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
+      'import {createRoot} from "react-dom/client"; import {CodeBlock} from "./components/ui/CodeBlock/CodeBlock"; createRoot(document.getElementById("root")!).render(<CodeBlock language="tsx"><code>const message = "Hello";</code></CodeBlock>);',
     );
     const code = await readFile(
-      join(root, "src/components/ui/components/CodeBlock/CodeBlock.tsx"),
+      join(root, "src/components/ui/CodeBlock/CodeBlock.tsx"),
       "utf8",
     );
     assert.ok(code.includes("CodeCopyIcon"));
