@@ -34,7 +34,7 @@ jobs:
       - run: npm ci --include=optional
       - run: npm run build --workspaces --if-present
       - run: npm test --workspaces --if-present --include-workspace-root
-      - run: npm run framework:audit:strict
+      - run: npm run pack:audit:strict
 
   playwright-changes:
     name: Detect Playwright changes
