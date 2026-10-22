@@ -40,7 +40,8 @@ function visit(filename: string, found: Set<string>): void {
   function walk(node: unknown): void {
     if (!node || typeof node !== "object") return;
     const value = node as Record<string, unknown>;
-    const source = value.source as { type?: string; value?: string } | undefined;
+    const source = value.source as
+      { type?: string; value?: string } | undefined;
     if (
       [
         "ImportDeclaration",
@@ -61,29 +62,40 @@ function visit(filename: string, found: Set<string>): void {
   walk(ast);
 }
 function auditEntrypoints() {
-  const result: Record<string, { sourceFiles: number; extractedUiFiles: number; extractedUiImports: string[] }> = {};
+  const result: Record<
+    string,
+    {
+      sourceFiles: number;
+      extractedUiFiles: number;
+      extractedUiImports: string[];
+    }
+  > = {};
   for (const entry of entrypoints) {
-  const files = new Set();
-  visit(resolve(src, entry), files);
-  const paths = [...files].map((file) =>
-    relative(src, file).replaceAll("\\", "/"),
-  );
-  const ui = paths.filter((path) =>
-    groups.some((group) => path.startsWith(`components/${group}/`)),
-  );
-  result[entry] = {
-    sourceFiles: paths.length,
-    extractedUiFiles: ui.length,
-    extractedUiImports: ui.sort(),
-  };
-}
+    const files = new Set();
+    visit(resolve(src, entry), files);
+    const paths = [...files].map((file) =>
+      relative(src, file).replaceAll("\\", "/"),
+    );
+    const ui = paths.filter((path) =>
+      groups.some((group) => path.startsWith(`components/${group}/`)),
+    );
+    result[entry] = {
+      sourceFiles: paths.length,
+      extractedUiFiles: ui.length,
+      extractedUiImports: ui.sort(),
+    };
+  }
 
   return result;
 }
 
 test("framework public entrypoints have no extracted UI dependencies", () => {
   const report = auditEntrypoints();
-  expect(Object.keys(report).sort()).toEqual(["headless.ts", "index.ts", "registry-routes.tsx"]);
+  expect(Object.keys(report).sort()).toEqual([
+    "headless.ts",
+    "index.ts",
+    "registry-routes.tsx",
+  ]);
   for (const [entrypoint, result] of Object.entries(report)) {
     expect(result.sourceFiles, entrypoint).toBeGreaterThan(1);
     expect(result.extractedUiFiles, entrypoint).toBe(0);

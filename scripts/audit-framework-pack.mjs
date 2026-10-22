@@ -4,14 +4,23 @@ import { tmpdir } from "node:os";
 import { join, posix, resolve } from "node:path";
 
 const packageRoot = resolve(import.meta.dirname, "../packages/moyaforge");
-const temporary = process.argv[2] ? null : mkdtempSync(join(tmpdir(), "moyaforge-pack-"));
+const temporary = process.argv[2]
+  ? null
+  : mkdtempSync(join(tmpdir(), "moyaforge-pack-"));
 let tarball = process.argv[2];
 try {
   if (!tarball) {
-    const filename = execFileSync("npm", ["pack", "--ignore-scripts", "--silent", "--pack-destination", temporary], {
-      cwd: packageRoot,
-      encoding: "utf8",
-    }).trim().split("\n").at(-1);
+    const filename = execFileSync(
+      "npm",
+      ["pack", "--ignore-scripts", "--silent", "--pack-destination", temporary],
+      {
+        cwd: packageRoot,
+        encoding: "utf8",
+      },
+    )
+      .trim()
+      .split("\n")
+      .at(-1);
     tarball = join(temporary, filename);
   }
   // CI passes the tarball it has already packed and linted; do not pack twice.
@@ -20,21 +29,33 @@ try {
     .filter(Boolean)
     .map((path) => path.replace(/^package\//, ""));
   const entrySet = new Set(entries);
-  const extractedUi = entries.filter((path) =>
-    (path.startsWith("dist/components/") || path.startsWith("src/components/")) &&
-    !path.startsWith("dist/components/Routing/") &&
-    !path.startsWith("src/components/Routing/")
+  const extractedUi = entries.filter(
+    (path) =>
+      (path.startsWith("dist/components/") ||
+        path.startsWith("src/components/")) &&
+      !path.startsWith("dist/components/Routing/") &&
+      !path.startsWith("src/components/Routing/"),
   );
   const stylesheets = entries.filter((path) => path.endsWith(".css"));
-  const sourceMaps = entries.filter((path) => /\.(?:js|d\.ts)\.map$/.test(path));
+  const sourceMaps = entries.filter((path) =>
+    /\.(?:js|d\.ts)\.map$/.test(path),
+  );
   const privateUi = entries.filter((path) => path.includes("moyaforge-ui"));
   const brokenCssImports = [];
   for (const stylesheet of stylesheets) {
-    const css = execFileSync("tar", ["-xOzf", tarball, `package/${stylesheet}`], { encoding: "utf8" });
-    for (const match of css.matchAll(/@import\s+(?:url\()?\s*["']([^"']+)["']/g)) {
+    const css = execFileSync(
+      "tar",
+      ["-xOzf", tarball, `package/${stylesheet}`],
+      { encoding: "utf8" },
+    );
+    for (const match of css.matchAll(
+      /@import\s+(?:url\()?\s*["']([^"']+)["']/g,
+    )) {
       const specifier = match[1];
       if (!specifier.startsWith(".")) continue;
-      const target = posix.normalize(posix.join(posix.dirname(stylesheet), specifier));
+      const target = posix.normalize(
+        posix.join(posix.dirname(stylesheet), specifier),
+      );
       if (!entrySet.has(target)) brokenCssImports.push({ stylesheet, target });
     }
   }
@@ -49,8 +70,16 @@ try {
   };
   console.log(JSON.stringify(report, null, 2));
   // Public exports are checked by validate-package-exports; do not duplicate that validation here.
-  if (extractedUi.length || stylesheets.length || sourceMaps.length || privateUi.length || brokenCssImports.length) {
-    console.error("MoyaForge framework tarball contains forbidden files or broken CSS imports.");
+  if (
+    extractedUi.length ||
+    stylesheets.length ||
+    sourceMaps.length ||
+    privateUi.length ||
+    brokenCssImports.length
+  ) {
+    console.error(
+      "MoyaForge framework tarball contains forbidden files or broken CSS imports.",
+    );
     process.exitCode = 1;
   }
 } finally {
