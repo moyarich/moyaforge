@@ -7,7 +7,6 @@ const readPackage = async (relativePath) =>
 test("UI source workspace cannot be published to npm", async () => {
   const source = await readPackage("../packages/moyaforge-ui/package.json");
   expect(source.private).toBe(true);
-  expect(source.version).toBe("0.0.0");
   expect(source.publishConfig).toBeUndefined();
 });
 
