@@ -8,13 +8,10 @@
       "type": "registry:component",
       "title": "Code Block",
       "description": "Editable MoyaForge code-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
@@ -52,13 +49,10 @@
       "type": "registry:component",
       "title": "Code Group",
       "description": "Editable MoyaForge code-group source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
@@ -106,13 +100,12 @@
       "type": "registry:component",
       "title": "Code Preview",
       "description": "Editable MoyaForge code-preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
           "type": "registry:file",
@@ -190,13 +183,10 @@
       "type": "registry:component",
       "title": "Copy Button",
       "description": "Editable MoyaForge copy-button source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
@@ -219,13 +209,10 @@
       "type": "registry:component",
       "title": "Custom Block",
       "description": "Editable MoyaForge custom-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.css",
           "type": "registry:file",
@@ -248,13 +235,10 @@
       "type": "registry:component",
       "title": "Demo",
       "description": "Editable MoyaForge demo source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Demo/Demo.css",
           "type": "registry:file",
@@ -277,13 +261,10 @@
       "type": "registry:component",
       "title": "Doc Outline",
       "description": "Editable MoyaForge doc-outline source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
           "type": "registry:file",
@@ -326,13 +307,10 @@
       "type": "registry:component",
       "title": "Docs Layout",
       "description": "Editable MoyaForge docs-layout source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
           "type": "registry:file",
@@ -360,13 +338,10 @@
       "type": "registry:block",
       "title": "Docs Shell",
       "description": "Editable MoyaForge docs-shell source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
           "type": "registry:file",
@@ -394,13 +369,10 @@
       "type": "registry:component",
       "title": "Docs Shell Focused",
       "description": "Editable MoyaForge docs-shell-focused source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellFocused/DocsShellFocused.css",
           "type": "registry:file",
@@ -423,13 +395,10 @@
       "type": "registry:component",
       "title": "Docs Shell Wide",
       "description": "Editable MoyaForge docs-shell-wide source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellWide/DocsShellWide.css",
           "type": "registry:file",
@@ -452,13 +421,10 @@
       "type": "registry:component",
       "title": "Documentation Site",
       "description": "Editable MoyaForge documentation-site source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.css",
           "type": "registry:file",
@@ -481,13 +447,10 @@
       "type": "registry:component",
       "title": "Edit Page Link",
       "description": "Editable MoyaForge edit-page-link source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
           "type": "registry:file",
@@ -510,13 +473,10 @@
       "type": "registry:component",
       "title": "Empty State",
       "description": "Editable MoyaForge empty-state source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/EmptyState/EmptyState.tsx",
           "type": "registry:file",
@@ -543,11 +503,6 @@
       ],
       "files": [
         {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
           "target": "~/src/components/ui/CopyButton/CopyButton.css"
@@ -566,11 +521,6 @@
           "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/README.md",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/README.md"
         },
         {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx",
@@ -624,11 +574,6 @@
       ],
       "files": [
         {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
           "target": "~/src/components/ui/CopyButton/CopyButton.css"
@@ -669,11 +614,6 @@
           "target": "~/src/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorTypeFox/README.md",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorTypeFox/README.md"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorTypeFox/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorTypeFox/index.ts"
@@ -685,13 +625,10 @@
       "type": "registry:component",
       "title": "Navigation Tree",
       "description": "Editable MoyaForge navigation-tree source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.css",
           "type": "registry:file",
@@ -714,13 +651,10 @@
       "type": "registry:component",
       "title": "Page",
       "description": "Editable MoyaForge page source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
           "type": "registry:file",
@@ -743,13 +677,12 @@
       "type": "registry:component",
       "title": "Preview",
       "description": "Editable MoyaForge preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
           "type": "registry:file",
@@ -792,13 +725,10 @@
       "type": "registry:component",
       "title": "Search",
       "description": "Editable MoyaForge search source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Search/Search.css",
           "type": "registry:file",
@@ -828,11 +758,6 @@
       ],
       "files": [
         {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/SidebarV1/Navigation.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/SidebarV1/Navigation.tsx"
@@ -859,13 +784,10 @@
       "type": "registry:component",
       "title": "Sidebar V2",
       "description": "Editable MoyaForge sidebar-v2 source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
           "type": "registry:file",
@@ -938,13 +860,11 @@
       "type": "registry:component",
       "title": "Source",
       "description": "Editable MoyaForge source source. Components import their own CSS.",
-      "dependencies": ["react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.css",
           "type": "registry:file",
@@ -977,13 +897,10 @@
       "type": "registry:component",
       "title": "Table Of Contents",
       "description": "Editable MoyaForge table-of-contents source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
-        {
-          "path": "LICENSE",
-          "type": "registry:file",
-          "target": "~/src/components/ui/LICENSE"
-        },
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
           "type": "registry:file",
