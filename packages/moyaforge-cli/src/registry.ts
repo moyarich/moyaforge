@@ -159,7 +159,7 @@ export async function planItems({
         suffix = targetPath.slice(uiPrefix.length);
         destination = resolve(root, directory, suffix);
       } else if (targetPath.startsWith(legacyPrefix)) {
-        suffix = targetPath.slice(legacyPrefix.length);
+        suffix = targetPath.slice(legacyPrefix.length).replace(/^components\//, "");
         destination = resolve(root, directory, suffix);
       } else if (targetPath.startsWith(sharedPrefix)) {
         suffix = targetPath.slice(sharedPrefix.length);
