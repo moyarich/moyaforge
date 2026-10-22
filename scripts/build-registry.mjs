@@ -215,11 +215,6 @@ export async function buildRegistry(root, { check = false } = {}) {
       type: "registry:file",
       target: installTarget(file),
     }));
-    installed.push({
-      path: "LICENSE",
-      type: "registry:file",
-      target: "~/src/components/ui/LICENSE",
-    });
     const guidePath = resolve(dirname(spec.entry), "README.md");
     let setupDocs;
     if (await isFile(guidePath)) {
@@ -229,11 +224,6 @@ export async function buildRegistry(root, { check = false } = {}) {
           `Registry setup guide outside canonical source: ${guidePath}`,
         );
       setupDocs = await readFile(guidePath, "utf8");
-      installed.push({
-        path: relative(root, guidePath),
-        type: "registry:file",
-        target: `~/src/components/ui/${relative(uiComponentRoot, guidePath)}`,
-      });
     }
     installed.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
     items.push({
