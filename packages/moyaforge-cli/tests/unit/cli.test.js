@@ -232,7 +232,7 @@ test("legacy registry targets use the new default while configured destinations 
   ).toContain("CodeBlock");
 });
 
-test("monaco installation reports runtime requirements and preserves its setup guide", async () => {
+test("monaco installation reports setup notes without copying README files", async () => {
   const root = await project();
   const dry = run(root, "add", "monaco-editor-react", "--dry-run");
   expect(dry.status).toBe(0);
@@ -248,12 +248,9 @@ test("monaco installation reports runtime requirements and preserves its setup g
   expect(installed.status).toBe(0);
   expect(installed.stdout).toContain("Setup notes:");
   expect(installed.stdout).toContain("MonacoEditorReact setup");
-  expect(
-    await read(
-      root,
-      "src/components/ui/MonacoEditorReact/README.md",
-    ),
-  ).toContain("loader.config({ monaco })");
+  await expect(
+    read(root, "src/components/ui/MonacoEditorReact/README.md"),
+  ).rejects.toThrow();
 });
 
 test("shared registry utilities remain siblings of UI files, including custom destinations", async () => {
