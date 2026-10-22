@@ -60,27 +60,31 @@ function visit(filename, found) {
 function auditEntrypoints() {
   const result = {};
   for (const entry of entrypoints) {
-  const files = new Set();
-  visit(resolve(src, entry), files);
-  const paths = [...files].map((file) =>
-    relative(src, file).replaceAll("\\", "/"),
-  );
-  const ui = paths.filter((path) =>
-    groups.some((group) => path.startsWith(`components/${group}/`)),
-  );
-  result[entry] = {
-    sourceFiles: paths.length,
-    extractedUiFiles: ui.length,
-    extractedUiImports: ui.sort(),
-  };
-}
+    const files = new Set();
+    visit(resolve(src, entry), files);
+    const paths = [...files].map((file) =>
+      relative(src, file).replaceAll("\\", "/"),
+    );
+    const ui = paths.filter((path) =>
+      groups.some((group) => path.startsWith(`components/${group}/`)),
+    );
+    result[entry] = {
+      sourceFiles: paths.length,
+      extractedUiFiles: ui.length,
+      extractedUiImports: ui.sort(),
+    };
+  }
 
   return result;
 }
 
 test("framework public entrypoints have no extracted UI dependencies", () => {
   const report = auditEntrypoints();
-  expect(Object.keys(report).sort()).toEqual(["headless.ts", "index.ts", "registry-routes.tsx"]);
+  expect(Object.keys(report).sort()).toEqual([
+    "headless.ts",
+    "index.ts",
+    "registry-routes.tsx",
+  ]);
   for (const [entrypoint, result] of Object.entries(report)) {
     expect(result.sourceFiles, entrypoint).toBeGreaterThan(1);
     expect(result.extractedUiFiles, entrypoint).toBe(0);
