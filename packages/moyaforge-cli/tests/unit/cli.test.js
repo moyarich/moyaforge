@@ -40,13 +40,13 @@ test("dry-run plans registry dependencies without writing files", async () => {
   expect(result.stdout).toContain("CodeBlock/CodeBlock.tsx");
   expect(result.stdout).not.toContain("Monaco");
   await expect(
-    read(root, "src/components/ui/components/CodeGroup/CodeGroup.css"),
+    read(root, "src/components/ui/CodeGroup/CodeGroup.css"),
   ).rejects.toThrow();
 });
 test("source installation is canonical, preserves edits, shows diffs, and explicitly overwrites", async () => {
   const root = await project();
   expect(run(root, "add", "code-group", "--no-install").status).toBe(0);
-  const path = "src/components/ui/components/CodeGroup/CodeGroup.tsx";
+  const path = "src/components/ui/CodeGroup/CodeGroup.tsx";
   const original = await read(root, path);
   expect(original).toBe(
     await read(
@@ -72,10 +72,10 @@ test("custom destinations retain portable relative imports", async () => {
       .status,
   ).toBe(0);
   expect(await read(root, "ui/docs/docs-shell.tsx")).toContain(
-    "./components/Layout/DocsLayout/DocsLayout.js",
+    "./Layout/DocsLayout/DocsLayout.js",
   );
   expect(
-    await read(root, "ui/docs/components/Layout/DocsLayout/DocsLayout.tsx"),
+    await read(root, "ui/docs/Layout/DocsLayout/DocsLayout.tsx"),
   ).toContain('import "./DocsLayout.css";');
   await expect(read(root, "ui/docs/docs-shell.css")).rejects.toThrow();
 });
@@ -110,10 +110,10 @@ test("init produces source/package/hybrid starters and preserves existing app co
     "code-group.css",
   );
   expect(
-    await read(root, "src/components/ui/components/CodeGroup/CodeGroup.tsx"),
+    await read(root, "src/components/ui/CodeGroup/CodeGroup.tsx"),
   ).toContain('import "./CodeGroup.css";');
   expect(
-    await read(root, "src/components/ui/components/CodeGroup/CodeGroup.tsx"),
+    await read(root, "src/components/ui/CodeGroup/CodeGroup.tsx"),
   ).toContain("CodeGroup");
   const packageRoot = await project();
   expect(
@@ -217,7 +217,7 @@ test("legacy registry targets use the new default while configured destinations 
   );
   const plan = await planItems({ root, names: ["legacy"], registry: legacy });
   expect(plan.files[0].path).toBe(
-    join(root, "src/components/ui/components/Example.tsx"),
+    join(root, "src/components/ui/Example.tsx"),
   );
   await writeFile(
     join(root, "moyaforge.components.json"),
@@ -227,7 +227,7 @@ test("legacy registry targets use the new default while configured destinations 
   expect(
     await read(
       root,
-      "src/custom-components/components/CodeBlock/CodeBlock.tsx",
+      "src/custom-components/CodeBlock/CodeBlock.tsx",
     ),
   ).toContain("CodeBlock");
 });
@@ -242,7 +242,7 @@ test("monaco installation reports runtime requirements and preserves its setup g
   );
   expect(dry.stdout).toContain("Monaco workers");
   await expect(
-    read(root, "src/components/ui/components/MonacoEditorReact/README.md"),
+    read(root, "src/components/ui/MonacoEditorReact/README.md"),
   ).rejects.toThrow();
   const installed = run(root, "add", "monaco-editor-react", "--no-install");
   expect(installed.status).toBe(0);
@@ -251,7 +251,18 @@ test("monaco installation reports runtime requirements and preserves its setup g
   expect(
     await read(
       root,
-      "src/components/ui/components/MonacoEditorReact/README.md",
+      "src/components/ui/MonacoEditorReact/README.md",
     ),
   ).toContain("loader.config({ monaco })");
+});
+
+test("shared registry utilities remain siblings of UI files, including custom destinations", async () => {
+  const root = await project();
+  const plan = await planItems({ root, names: ["docs-layout"], registry: repository });
+  expect(plan.files.some((file) => file.path.includes("src/components/utils/"))).toBe(true);
+  const custom = await planItems({
+    root, names: ["docs-layout"], registry: repository, directory: "src/custom-components/ui",
+  });
+  expect(custom.files.some((file) => file.path.includes("src/custom-components/utils/"))).toBe(true);
+  expect(custom.files.some((file) => file.path.includes("src/custom-components/ui/"))).toBe(true);
 });
