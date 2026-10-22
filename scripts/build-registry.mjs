@@ -94,7 +94,6 @@ export async function buildRegistry(root, { check = false } = {}) {
   root = await realpath(root);
   const uiSourceRoot = resolve(root, "packages/moyaforge-ui/src");
   const uiComponentRoot = resolve(uiSourceRoot, "components");
-  const sourceRoots = [uiSourceRoot];
   const templateRoot = resolve(root, "registry/templates");
   const manifest = JSON.parse(
     await readFile(resolve(root, "packages/moyaforge/package.json"), "utf8"),
@@ -176,7 +175,7 @@ export async function buildRegistry(root, { check = false } = {}) {
       const canonical = await realpath(file);
       if (
         !template &&
-        !sourceRoots.some((source) => canonical.startsWith(source + "/"))
+        !canonical.startsWith(uiSourceRoot + "/")
       )
         throw Error(`Registry file outside canonical UI source: ${file}`);
       if (files.has(file)) return;
@@ -202,7 +201,6 @@ export async function buildRegistry(root, { check = false } = {}) {
       }
     }
     await visit(spec.entry, spec.template);
-    const itemSourceRoot = uiSourceRoot;
     // Install public components directly under ui/, not ui/components/.
     // Files outside src/components must retain their relative import positions.
     const installTarget = (file) => {

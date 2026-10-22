@@ -1,0 +1,75 @@
+name: CI / npm package lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/**"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/audit-framework-pack.mjs"
+      - ".github/workflows/ci_npm-package-lint.yml"
+  pull_request:
+    paths:
+      - "packages/**"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/audit-framework-pack.mjs"
+      - ".github/workflows/ci_npm-package-lint.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-package-lint-${{ github.repository }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  npm-package-lint:
+    name: Validate publishable npm tarballs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --include=optional
+      - name: Build workspace packages
+        run: npm run build --workspaces --if-present
+      - name: Lint packed publishable workspaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm query '.workspace' --json > "$RUNNER_TEMP/workspaces.json"
+          mapfile -t packages < <(node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const workspaces = JSON.parse(readFileSync(process.env.RUNNER_TEMP + '/workspaces.json', 'utf8'));
+          for (const pkg of workspaces.filter(p => p.private !== true && p.name && p.location).sort((a, b) => a.name.localeCompare(b.name))) {
+            console.log(`${pkg.name}\t${pkg.location}`);
+          }
+          NODE
+          )
+          if (( ${#packages[@]} == 0 )); then
+            echo "No publishable packages found"
+            exit 0
+          fi
+          for entry in "${packages[@]}"; do
+            IFS="$(printf '\t')" read -r package location <<< "$entry"
+            echo "::group::Package lint: $package"
+            tarball="$(npm pack --workspace "$package" --ignore-scripts --pack-destination "$RUNNER_TEMP" --silent)"
+            npx --yes --package=npm-pkg-lint@5.4.0 npm-pkg-lint --tarball "$RUNNER_TEMP/$tarball"
+            echo "::endgroup::"
+            echo "::group::Validate public exports: $package"
+            npx --yes validate-package-exports "$location/package.json" --check --verbose --info
+            echo "::endgroup::"
+            if [[ "$package" == "@moyarich/moyaforge" ]]; then
+              echo "::group::Audit framework-specific tarball boundaries"
+              npm run pack:audit:strict -- "$RUNNER_TEMP/$tarball"
+              echo "::endgroup::"
+            fi
+          done
