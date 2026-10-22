@@ -30,11 +30,9 @@
     "test:e2e": "playwright test --project=vite-consumer",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check",
+    "test:cli:browser": "playwright test --project=cli-consumer",
     "pack:audit": "node scripts/audit-framework-pack.mjs",
-    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
-    "imports:audit": "node scripts/audit-framework-imports.mjs",
-    "imports:audit:strict": "node scripts/audit-framework-imports.mjs --strict",
-    "test:cli:browser": "playwright test --project=cli-consumer"
+    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
