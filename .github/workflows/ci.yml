@@ -32,6 +32,7 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --include=optional
+      - run: npm run build --workspaces --if-present
       - run: npm test --workspaces --if-present --include-workspace-root
       - run: npm run pack:audit:strict
 
