@@ -61,5 +61,12 @@
     "docs",
     "mdx",
     "ui"
-  ]
+  ],
+  "homepage": "https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge#readme",
+  "bugs": {
+    "url": "https://github.com/moyarich/moyaforge/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
 }
