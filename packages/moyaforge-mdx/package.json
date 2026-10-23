@@ -83,5 +83,12 @@
     "documentation",
     "vite",
     "content"
-  ]
+  ],
+  "homepage": "https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-mdx#readme",
+  "bugs": {
+    "url": "https://github.com/moyarich/moyaforge/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
 }
