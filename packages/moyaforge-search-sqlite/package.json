@@ -67,5 +67,12 @@
     "full-text-search",
     "indexing",
     "vite"
-  ]
+  ],
+  "homepage": "https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-search-sqlite#readme",
+  "bugs": {
+    "url": "https://github.com/moyarich/moyaforge/issues"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
 }
