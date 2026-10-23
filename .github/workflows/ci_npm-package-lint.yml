@@ -62,7 +62,8 @@ jobs:
             IFS="$(printf '\t')" read -r package location <<< "$entry"
             echo "::group::Package lint: $package"
             tarball="$(npm pack --workspace "$package" --ignore-scripts --pack-destination "$RUNNER_TEMP" --silent)"
-            npx --yes --package=npm-pkg-lint@5.4.0 npm-pkg-lint --tarball "$RUNNER_TEMP/$tarball"
+            # Lint the package artifact without scanning unrelated workspace lockfile dependencies.
+            (cd "$RUNNER_TEMP" && npx --yes --package=npm-pkg-lint@5.4.0 npm-pkg-lint --tarball "$RUNNER_TEMP/$tarball")
             echo "::endgroup::"
             echo "::group::Validate public exports: $package"
             npx --yes validate-package-exports "$location/package.json" --check --verbose --info
