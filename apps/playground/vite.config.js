@@ -56,15 +56,7 @@ export default defineConfig({
             rehypeShiki,
             {
               themes: { light: "github-light", dark: "github-dark" },
-              fallbackLanguage: "text",
-              transformers: [
-                {
-                  name: "moyaforge-code-language",
-                  pre(node) {
-                    node.properties["data-language"] = this.options.lang;
-                  },
-                },
-              ],
+              fallbackLanguage: "text"
             },
           ],
         }),
