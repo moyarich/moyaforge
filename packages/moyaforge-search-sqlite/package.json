@@ -32,7 +32,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p vite-plugin/tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p vite-plugin/tsconfig.json --noEmit",
     "test": "npm run build && vitest run",
     "prepack": "npm run build"
   },
