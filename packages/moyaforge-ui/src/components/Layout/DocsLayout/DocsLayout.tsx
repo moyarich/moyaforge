@@ -103,8 +103,35 @@ export function DocsLayout({
     const update = () => setActiveId(headingIdFromHash(window.location.hash));
     update();
     window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
+    window.addEventListener("popstate", update);
+    return () => {
+      window.removeEventListener("hashchange", update);
+      window.removeEventListener("popstate", update);
+    };
   }, []);
+  useEffect(() => {
+    if (!toc || toc.placement === "none") return;
+    const ids = (nodes: readonly DocsLayoutHeading[]): string[] =>
+      nodes.flatMap((node) => [node.id, ...ids(node.children ?? [])]);
+    const visible = visibleHeadings(
+      toc.headings,
+      toc.minDepth ?? 2,
+      toc.maxDepth ?? 3,
+    );
+    const headingIds = ids(visible);
+    const onScroll = () => {
+      let current = "";
+      for (const id of headingIds) {
+        const heading = document.getElementById(id);
+        if (heading && heading.getBoundingClientRect().top <= 130) {
+          current = id;
+        }
+      }
+      if (current) setActiveId(current);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [toc]);
   const current = pages.find((page) => page.url === currentUrl);
   const visiblePages = pages.filter(
     (page) =>
