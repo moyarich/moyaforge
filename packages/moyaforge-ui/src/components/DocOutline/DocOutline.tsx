@@ -79,9 +79,11 @@ export function DocOutline({
     onHashChange();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("popstate", onHashChange);
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("popstate", onHashChange);
     };
   }, [headings, items]);
   if (!visibleItems.length) return null;

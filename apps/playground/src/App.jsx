@@ -35,7 +35,12 @@ function PlaygroundShell({ page, children }) {
       id = hash.slice(1);
     }
     const frame = requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView();
+      const heading = document.getElementById(id);
+      if (!heading) return;
+      heading.scrollIntoView();
+      if (!heading.hasAttribute("tabindex"))
+        heading.setAttribute("tabindex", "-1");
+      heading.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
   }, [pathname, hash]);
