@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import initSqlJs from "sql.js";
-import { sqliteSearchPlugin } from "../../vite-plugin/index.js";
+import { sqliteSearchPlugin } from "../../dist/vite-plugin/index.js";
 
 async function index(registry, root) {
   const plugin = sqliteSearchPlugin({ registry, root });
