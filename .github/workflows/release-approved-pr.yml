@@ -23,5 +23,3 @@ jobs:
       expected-base: main
       required-workflows: .github/workflows/ci.yml
       dry-run: true
-    secrets:
-      npm-token: ${{ secrets._NPM_TOKEN }}
