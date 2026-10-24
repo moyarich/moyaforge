@@ -24,7 +24,9 @@ function clean(content) {
     .trim();
 }
 async function docsFor(registry, root, discovery) {
-  const discovered = await (discovery ? discovery.get() : discoverContent(registry, root));
+  const discovered = await (discovery
+    ? discovery.get()
+    : discoverContent(registry, root));
   const manifest = createContentManifest(discovered);
   return Promise.all(
     manifest.map(async (page) => {
