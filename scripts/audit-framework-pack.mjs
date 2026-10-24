@@ -6,8 +6,11 @@ import { join, posix, resolve } from "node:path";
 const packageRoot = resolve(import.meta.dirname, "../packages/moyaforge");
 // --strict selects the existing failing audit policy; it is not a tarball path.
 const args = process.argv.slice(2);
-const unknownFlags = args.filter((arg) => arg.startsWith("-") && arg !== "--strict");
-if (unknownFlags.length) throw new Error(`Unknown option: ${unknownFlags.join(", ")}`);
+const unknownFlags = args.filter(
+  (arg) => arg.startsWith("-") && arg !== "--strict",
+);
+if (unknownFlags.length)
+  throw new Error(`Unknown option: ${unknownFlags.join(", ")}`);
 const paths = args.filter((arg) => arg !== "--strict");
 if (paths.length > 1) throw new Error("Expected at most one tarball path");
 let tarball = paths[0];
