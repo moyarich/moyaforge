@@ -5,7 +5,7 @@
   );
   --_preview-border: var(
     --mf-preview-border,
-    var(--mf-color-border, color-mix(in srgb, currentColor 14%, transparent))
+    var(var(--_mf-line, color-mix(in srgb, currentColor 22%, transparent)))
   );
   --_preview-margin: var(--mf-preview-margin, 1.25rem 0 2rem);
   --_preview-radius: var(--mf-preview-radius, 0.75rem);
