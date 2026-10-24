@@ -79,11 +79,13 @@ export function DocOutline({
     onHashChange();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("popstate", onHashChange);
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("popstate", onHashChange);
     };
-  }, [headings, items]);
+  }, [headings, items, visibleItems.map((item) => item.id).join("\\u0000")]);
   if (!visibleItems.length) return null;
   return (
     <aside
