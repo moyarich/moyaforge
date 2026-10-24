@@ -57,6 +57,15 @@ export default defineConfig({
             {
               themes: { light: "github-light", dark: "github-dark" },
               fallbackLanguage: "text",
+              // Shiki rebuilds <pre>; preserve compiler language metadata there.
+              transformers: [
+                {
+                  name: "moyaforge-code-language",
+                  pre(node) {
+                    node.properties["data-language"] = this.options.lang;
+                  },
+                },
+              ],
             },
           ],
         }),
