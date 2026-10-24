@@ -13,6 +13,7 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import rehypeSlug from "rehype-slug";
+import { rehypeCodeMetadata } from "./plugins/rehype/rehype-code-metadata.js";
 import rehypeExtractToc from "@stefanprobst/rehype-extract-toc";
 import rehypeExportToc from "@stefanprobst/rehype-extract-toc/mdx";
 
@@ -62,6 +63,7 @@ export function createMdxOptions(options: MdxToolingOptions = {}) {
     ] as PluggableList,
     rehypePlugins: [
       rehypeSlug,
+      rehypeCodeMetadata,
       rehypeExtractToc,
       rehypeExportToc,
       ...(options.shiki ? [options.shiki] : []),
@@ -92,3 +94,4 @@ export * from "./plugins/remark/remark-source-links.js";
 export * from "./content/manifest.js";
 
 export * from "./content/static-metadata.js";
+\nexport * from "./plugins/rehype/rehype-code-metadata.js";
