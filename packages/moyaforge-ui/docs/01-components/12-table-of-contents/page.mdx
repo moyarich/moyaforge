@@ -15,7 +15,21 @@ import exampleSource from "./default/Example.tsx?raw";
 
 This live example uses the canonical component source in `packages/moyaforge-ui/src/components/`.
 
-## Live preview
+## Installation
+
+Install the `table-of-contents` registry item through the MoyaForge CLI to copy editable component source and styles.
+
+[UI Components](/ui)
+
+## Usage
+
+```tsx
+<TableOfContents selector="h2[id], h3[id]" />
+```
+
+## Examples
+
+### Default
 
 <CodePreview
   title="Table of Contents"
@@ -25,14 +39,6 @@ This live example uses the canonical component source in `packages/moyaforge-ui/
   <Example />
 </CodePreview>
 
-## Usage
+## Styling
 
-```tsx
-<TableOfContents selector="h2[id], h3[id]" />
-```
-
-## Installation
-
-Install the `table-of-contents` registry item through the MoyaForge CLI to copy editable component source and styles.
-
-[UI Components](/ui)
+The installed component includes its source-owned CSS. Customize its styles in your application using scoped CSS selectors or the component's documented CSS variables. The example preview frame can be customized separately with `--mf-preview-border` and `--mf-preview-radius`.

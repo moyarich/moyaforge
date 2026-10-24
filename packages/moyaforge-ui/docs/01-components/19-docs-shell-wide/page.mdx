@@ -15,15 +15,11 @@ import exampleSource from "./default/Example.tsx?raw";
 
 Navigation, toolbar, inspector, and footer are optional independent slots.
 
-## Live preview
+## Installation
 
-<CodePreview
-  title="Docs Shell Wide"
-  files={[{ label: "Example.tsx", code: exampleSource }]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+Install `docs-shell-wide` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+
+[All UI components](/ui)
 
 ## Usage
 
@@ -38,8 +34,18 @@ Navigation, toolbar, inspector, and footer are optional independent slots.
 </DocsShellWide>
 ```
 
-## Installation
+## Examples
 
-Install `docs-shell-wide` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+### Default
 
-[All UI components](/ui)
+<CodePreview
+  title="Docs Shell Wide"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+## Styling
+
+Style the installed component using its source-owned CSS and public theme variables. The live example frame has separate `--mf-preview-border` and `--mf-preview-radius` overrides.

@@ -17,15 +17,11 @@ import exampleSource from "./default/Example.tsx?raw";
 
 This example uses the real source-owned MoyaForge UI component. It does not create a second component implementation or application router.
 
-## Live preview
+## Installation
 
-<CodePreview
-  title="Docs Layout"
-  files={[{ label: "Example.tsx", code: exampleSource }]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+Install `docs-layout` from the MoyaForge registry to copy the selected component source and CSS into your application.
+
+[All UI components](/ui)
 
 ## Usage
 
@@ -42,7 +38,19 @@ This example uses the real source-owned MoyaForge UI component. It does not crea
 </DocsLayout>
 ```
 
-## CSS-only outline expand/collapse
+## Examples
+
+### Default
+
+<CodePreview
+  title="Docs Layout"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+### Collapsible outline
 
 Set `toc.collapsible` to enable native HTML `<details>` disclosure, and
 `toc.defaultOpen` to control its initial state. No React disclosure state or
@@ -57,8 +65,6 @@ continue to replace the defaults.
   <OutlineExample />
 </CodePreview>
 
-## Installation
+## Styling
 
-Install `docs-layout` from the MoyaForge registry to copy the selected component source and CSS into your application.
-
-[All UI components](/ui)
+Use the documented `DocsLayout` styles and `toc` settings to customize layout and outline presentation.

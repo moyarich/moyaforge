@@ -15,7 +15,21 @@ import exampleSource from "./default/Example.tsx?raw";
 
 This component is installed individually from MoyaForge's source registry and rendered here directly using the canonical UI component.
 
-## Live preview
+## Installation
+
+Install the `edit-page-link` registry item using the MoyaForge CLI. The selected source and required styles are copied into your application.
+
+[UI Components](/ui)
+
+## Usage
+
+```tsx
+<EditPageLink repository="moyarich/moyaforge" path="docs/page.mdx" />
+```
+
+## Examples
+
+### Default
 
 <CodePreview
   title="Edit Page Link"
@@ -25,14 +39,6 @@ This component is installed individually from MoyaForge's source registry and re
   <Example />
 </CodePreview>
 
-## Usage
+## Styling
 
-```tsx
-<EditPageLink repository="moyarich/moyaforge" path="docs/page.mdx" />
-```
-
-## Installation
-
-Install the `edit-page-link` registry item using the MoyaForge CLI. The selected source and required styles are copied into your application.
-
-[UI Components](/ui)
+The installed component includes its source-owned CSS. Customize its styles in your application using scoped CSS selectors or the component's documented CSS variables. The example preview frame can be customized separately with `--mf-preview-border` and `--mf-preview-radius`.

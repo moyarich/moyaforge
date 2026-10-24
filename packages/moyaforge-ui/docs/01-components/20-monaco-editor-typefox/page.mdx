@@ -18,17 +18,6 @@ import setupSource from "./setup.ts?raw";
 
 A multi-file code editor with read-only mode and copy support.
 
-<CodePreview
-  title="Editable workspace"
-  files={[
-    { label: "Example.tsx", code: editorSource },
-    { label: "setup.ts", code: setupSource },
-  ]}
-  replacements={CODE_REPLACEMENTS}
->
-  <MultiFileEditor />
-</CodePreview>
-
 ## Installation
 
 <CodeGroup label="Install Monaco Editor TypeFox">
@@ -75,6 +64,10 @@ Use `onSave` to handle Save or Ctrl/Cmd+S and persist changes. Use `onFileChange
 
 ## Examples
 
+### Editable workspace
+
+[Open the full editable workspace example](/ui/components/monaco-editor-typefox/editable-workspace).
+
 ### Read-only
 
 Set `readOnly` on the editor to lock all files, or on an individual file to lock only that file. Copying remains available.
@@ -102,3 +95,7 @@ Set `readOnly` on the editor to lock all files, or on an individual file to lock
 The installed `components/MonacoEditorTypeFox/README.md` includes additional dependency and setup guidance.
 
 </details>
+
+## Styling
+
+Customize the editor using `className` and the public `--monaco-*` CSS variables described in Advanced options.

@@ -9,7 +9,19 @@ description: Render any Markdown admonition with consumer-controlled theme token
 
 The shared Remark parser supports **any** `::: type Title` directive. Each type is passed to the semantic `CustomBlock` renderer; themes and renderers are controlled by the consuming application rather than hardcoded in Markdown.
 
-## Live preview
+## Installation
+
+```sh
+npx @moyarich/moyaforge-cli@latest add custom-block
+```
+
+## Usage
+
+Use the `::: type Title` Markdown directive. The Remark parser maps the directive to the semantic `CustomBlock` renderer.
+
+## Examples
+
+### Nested admonitions
 
 :::: experimental Experimental Feature
 
@@ -27,7 +39,7 @@ const options = { fallback: true };
 
 ::::
 
-## Markdown
+### Markdown source
 
 ```md
 :::: experimental Experimental Feature
@@ -41,7 +53,7 @@ This API may change.
 ::::
 ```
 
-## Themes and renderers
+## Styling
 
 The public CSS variables `--mf-custom-block-bg`, `--mf-custom-block-border`, `--mf-custom-block-radius`, and `--mf-custom-block-padding` support theme customization. Shared `--mf-color-surface` and `--mf-color-border` tokens supply fallback values.
 

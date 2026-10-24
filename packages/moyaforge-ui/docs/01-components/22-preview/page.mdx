@@ -7,8 +7,6 @@ description: Slot-based live React previews with source viewing and copy actions
 
 import PreviewExample from "./live-preview/PreviewExample.tsx";
 import SimplePreviewExample from "./simple-preview/SimplePreviewExample.tsx";
-import MonacoPreviewExample from "./monaco-preview/MonacoPreviewExample.tsx";
-import PublishTabsPreview from "./publish-tabs/PublishTabsPreview.tsx";
 
 # Preview
 
@@ -36,61 +34,6 @@ npx shadcn@latest add moyarich/moyaforge/preview
 The `preview` registry item includes the Preview slots, CopyButton, and their styles. The installers add the required npm dependencies:
 React, `lucide-react`, and Shiki. These preview dependencies belong to the documentation
 frame; the component being demonstrated may have its own dependencies.
-
-## Live example
-
-<PreviewExample />
-
-## Custom trigger and raw TSX source
-
-<SimplePreviewExample />
-
-## Install Monaco in the playground
-
-The real Monaco editor is an optional dependency of the consuming playground, not of `Preview` itself:
-
-```bash
-npm install --workspace @moyarich/moyaforge-playground @monaco-editor/react monaco-editor
-```
-
-`MonacoCodeGroup` imports `@monaco-editor/react` and `monaco-editor` provides the editor engine.
-
-## Optional Monaco editor
-
-<MonacoPreviewExample />
-
-This example uses the full Monaco editor, supplied by `@monaco-editor/react`, with TSX and CSS tabs. Editing source does not execute or compile it.
-
-## Monaco file tabs: publishing commands
-
-<PublishTabsPreview />
-
-The editable Monaco file tabs demonstrate npm and GitHub Packages dry-run commands with `MonacoCodeGroup`. `PreviewSource asChild` controls the editor panel visibility. Editing the example does not execute the commands.
-
-## Files
-
-```text
-22-preview/
-├── page.mdx
-├── live-preview/
-│   └── PreviewExample.tsx
-├── simple-preview/
-│   └── SimplePreviewExample.tsx
-├── monaco-preview/
-│   ├── MonacoPreviewExample.tsx
-│   └── MonacoPreviewExample.css
-├── publish-tabs/
-│   ├── PublishTabsPreview.tsx
-│   └── PublishTabsPreview.css
-├── counter/
-│   ├── CounterExample.tsx
-│   └── PreviewExample.css
-└── markdown/
-    ├── README.md
-    ├── page.md
-    ├── CounterExample.tsx
-    └── CounterExample.css
-```
 
 ## Usage
 
@@ -133,7 +76,22 @@ Use `PreviewContent asChild` and `PreviewSource asChild` to compose one DOM-forw
 
 The `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.
 
-## Custom trigger with `asChild`
+## Examples
+
+### Live example
+
+<PreviewExample />
+
+### Custom trigger and raw TSX source
+
+<SimplePreviewExample />
+
+### Advanced examples
+
+- [Monaco editor](/ui/components/preview/monaco-editor)
+- [Publishing tabs](/ui/components/preview/publishing-tabs)
+
+### Custom trigger with `asChild`
 
 Use `asChild` on the code toggle to apply its behavior to a custom button without nesting interactive elements.
 
@@ -147,7 +105,7 @@ Use `asChild` on the code toggle to apply its behavior to a custom button withou
 
 The child must be a single native button or a button-like React component that forwards click handlers and ARIA attributes. For non-button elements, provide your own appropriate accessible semantics and handlers instead of using this trigger.
 
-## CodePreview
+### CodePreview
 
 Use `CodePreview` for a live demo with one or more named source files. It composes
 the standard Preview slots and uses CodeGroup for multiple files. Installing
@@ -200,7 +158,7 @@ The optional `replacements` prop applies string or RegExp replacement tuples to
 all files. Repository docs can explicitly use `CODE_REPLACEMENTS` to make source
 imports portable; consuming applications can supply their own rules.
 
-## Show example styles with source tabs
+### Show example styles with source tabs
 
 Keep component-specific layout and styling in the example folder. Display those
 styles alongside the TSX using `PreviewSource asChild` with a `CodeGroup`:
@@ -260,7 +218,7 @@ use the same stylesheet. Preview supplies its own border, spacing, toolbar,
 buttons, and source-slot layout. Install `code-group` alongside `preview` when
 using this optional composition; Preview does not require CodeGroup itself.
 
-## Theme variables
+## Styling
 
 Use `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius`,
 `--mf-preview-padding`, and `--mf-preview-margin` in application CSS.
