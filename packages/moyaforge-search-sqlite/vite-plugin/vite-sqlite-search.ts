@@ -13,13 +13,13 @@ import type {
   ContentSourcesConfig,
   createContentDiscovery,
 } from "@moyarich/moyaforge-mdx";
-import { buildSearchDatabase } from "../dist/index.js";
+import { buildSearchDatabase } from "../src/index.js";
 
 const virtualId = "virtual:moyaforge-search/database";
 const resolvedId = "\0" + virtualId;
 const endpoint = "/__moyaforge_search.sqlite";
 
-function clean(content) {
+function clean(content: string) {
   return content
     .replace(/^---\s*\n[\s\S]*?\n---\s*/, " ")
     .replace(/\x60{3}[\s\S]*?\x60{3}/g, " ")

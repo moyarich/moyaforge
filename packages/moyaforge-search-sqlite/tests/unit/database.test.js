@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
 import initSqlJs from "sql.js";
-import { buildSearchDatabase, querySearchDatabase } from "../../dist/index.js";
+import {
+  buildSearchDatabase,
+  querySearchDatabase,
+} from "../../dist/src/index.js";
 
 test("indexes documents and ranks title matches", async () => {
   const SQL = await initSqlJs();
