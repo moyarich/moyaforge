@@ -15,8 +15,8 @@
       "import": "./dist/index.js"
     },
     "./vite": {
-      "types": "./vite-plugin/index.d.ts",
-      "import": "./vite-plugin/index.js"
+      "types": "./dist/vite-plugin/index.d.ts",
+      "import": "./dist/vite-plugin/index.js"
     },
     "./client": {
       "types": "./src/search/search-client.d.ts",
@@ -31,7 +31,7 @@
     "src/search"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p vite-plugin/tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && vitest run",
     "prepack": "npm run build"
