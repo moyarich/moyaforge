@@ -38,7 +38,8 @@ function PlaygroundShell({ page, children }) {
       const heading = document.getElementById(id);
       if (!heading) return;
       heading.scrollIntoView();
-      if (!heading.hasAttribute("tabindex")) heading.setAttribute("tabindex", "-1");
+      if (!heading.hasAttribute("tabindex"))
+        heading.setAttribute("tabindex", "-1");
       heading.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
