@@ -88,3 +88,5 @@ export * from "./content/links.js";
 export * from "./content/check-links.js";
 
 export * from "./plugins/remark/remark-source-links.js";
+
+export * from "./content/manifest.js";
