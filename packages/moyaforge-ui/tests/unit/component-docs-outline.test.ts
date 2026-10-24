@@ -8,7 +8,7 @@ test("component documentation pages use the standard section outline", () => {
     new URL("../../docs/01-components/", import.meta.url),
   );
   const pages = readdirSync(docs, { recursive: true })
-    .filter((name) => String(name).endsWith("page.mdx"))
+    .filter((name) => String(name).endsWith("/page.mdx"))
     .map((name) => join(docs, String(name)));
 
   expect(pages.length).toBeGreaterThan(20);
