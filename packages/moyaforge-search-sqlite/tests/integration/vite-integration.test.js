@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import initSqlJs from "sql.js";
-import { sqliteSearchPlugin } from "../../vite-plugin/index.js";
+import { sqliteSearchPlugin } from "../../dist/vite-plugin/index.js";
 
 test("production SQLite search indexes canonical pages and emits a hashed asset", async () => {
   const root = await mkdtemp(join(tmpdir(), "moyaforge-sqlite-vite-"));
@@ -175,10 +175,10 @@ test("configured search sources distinguish missing paths, files and empty direc
     const load = () => plugin.load.call({ emitFile() {} }, id);
     await assert.rejects(
       load,
-      /Search source "docs": directory does not exist:/,
+      /Content source "docs": directory does not exist:/,
     );
     await writeFile(join(root, "docs"), "not a directory");
-    await assert.rejects(load, /Search source "docs": expected directory:/);
+    await assert.rejects(load, /Content source "docs": expected directory:/);
     await rm(join(root, "docs"));
     await mkdir(join(root, "docs"));
     await assert.doesNotReject(load);

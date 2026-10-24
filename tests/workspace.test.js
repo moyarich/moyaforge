@@ -28,7 +28,7 @@ const allDeps = (manifest) => ({
   ...manifest.optionalDependencies,
 });
 
-test("headless MDX and SQLite search packages do not depend on MoyaForge UI or each other", () => {
+test("headless packages remain UI independent and search consumes MDX metadata one-way", () => {
   for (const name of ["moyaforge-mdx", "moyaforge-search-sqlite"]) {
     const dependencies = allDeps(manifests[name]);
     assert.equal(dependencies["@moyarich/moyaforge"], undefined, name);
@@ -37,6 +37,10 @@ test("headless MDX and SQLite search packages do not depend on MoyaForge UI or e
   }
   assert.equal(
     allDeps(manifests["moyaforge-search-sqlite"])["@moyarich/moyaforge-mdx"],
+    manifests["moyaforge-mdx"].version,
+  );
+  assert.equal(
+    allDeps(manifests["moyaforge-mdx"])["@moyarich/moyaforge-search-sqlite"],
     undefined,
   );
 });

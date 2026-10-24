@@ -5,7 +5,7 @@ import mdx from "@mdx-js/rollup";
 import rehypeShiki from "@shikijs/rehype";
 import {
   createMdxOptions,
-  discoverContent,
+  createContentDiscovery,
   remarkSourceLinks,
 } from "@moyarich/moyaforge-mdx";
 import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
@@ -13,15 +13,18 @@ import registry from "./registry.config.ts";
 import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
 
 const contentRoot = fileURLToPath(new URL(".", import.meta.url));
-const { registry: discovered } = await discoverContent(registry, contentRoot);
+const discovery = createContentDiscovery(registry, contentRoot);
+const { registry: discovered } = await discovery.get();
 
 export default defineConfig({
   plugins: [
     mdxRegistryPlugin({
+      discovery,
       registry,
       root: fileURLToPath(new URL(".", import.meta.url)),
     }),
     sqliteSearchPlugin({
+      discovery,
       registry,
       root: fileURLToPath(new URL(".", import.meta.url)),
     }),

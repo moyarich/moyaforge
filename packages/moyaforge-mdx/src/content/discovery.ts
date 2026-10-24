@@ -135,3 +135,22 @@ export async function discoverContent(
     registry: buildPageRegistry(inputs, { toc: config.toc }),
   };
 }
+
+/** Share one build-time discovery across registry, routing and search consumers. */
+export function createContentDiscovery(
+  config: ContentSourcesConfig,
+  root: string,
+) {
+  let pending: Promise<DiscoveredContent> | undefined;
+  return {
+    get() {
+      return (pending ??= discoverContent(config, root).catch((error) => {
+        pending = undefined;
+        throw error;
+      }));
+    },
+    invalidate() {
+      pending = undefined;
+    },
+  };
+}
