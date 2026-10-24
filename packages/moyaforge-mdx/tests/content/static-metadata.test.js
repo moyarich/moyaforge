@@ -8,7 +8,10 @@ test("static metadata is sorted, portable and respects visibility", () => {
   const registry = buildPageRegistry({
     docs: [
       { file: "02-private/page.mdx", frontmatter: { navigation: "disabled" } },
-      { file: "01-guide/page.mdx", frontmatter: { navigation: "hidden", description: "Guide description" } },
+      {
+        file: "01-guide/page.mdx",
+        frontmatter: { navigation: "hidden", description: "Guide description" },
+      },
       { file: "page.mdx", frontmatter: { title: "Overview" } },
     ],
   });
@@ -16,20 +19,29 @@ test("static metadata is sorted, portable and respects visibility", () => {
     registry,
     headings: {
       "docs/01-guide/page.mdx": [
-        { id: "intro", value: "Introduction", depth: 2, children: [
-          { id: "detail", value: "Details", depth: 3 },
-        ] },
+        {
+          id: "intro",
+          value: "Introduction",
+          depth: 2,
+          children: [{ id: "detail", value: "Details", depth: 3 }],
+        },
       ],
     },
   });
   assert.deepEqual(createStaticPageMetadata(manifest), [
     {
-      path: "/docs", title: "Overview", source: "docs",
-      sourceFile: "page.mdx", headings: [],
+      path: "/docs",
+      title: "Overview",
+      source: "docs",
+      sourceFile: "page.mdx",
+      headings: [],
     },
     {
-      path: "/docs/guide", title: "Guide", description: "Guide description",
-      source: "docs", sourceFile: "01-guide/page.mdx",
+      path: "/docs/guide",
+      title: "Guide",
+      description: "Guide description",
+      source: "docs",
+      sourceFile: "01-guide/page.mdx",
       headings: [
         { id: "intro", label: "Introduction", depth: 2 },
         { id: "detail", label: "Details", depth: 3 },
