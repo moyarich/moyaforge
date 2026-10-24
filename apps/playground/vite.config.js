@@ -73,6 +73,6 @@ export default defineConfig({
     react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
   ],
   worker: { format: "es" },
-  base: process.env.VITE_BASE_PATH || "/",
+  base: process.env.VITE_BASE_PATH || process.env.PAGES_BASE_PATH || "/",
   build: { outDir: "dist", emptyOutDir: true },
 });
