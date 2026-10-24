@@ -21,10 +21,6 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: npm-package-lint-${{ github.repository }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   npm-package-lint:
     name: Validate publishable npm tarballs
