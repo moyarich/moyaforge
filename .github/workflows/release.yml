@@ -9,6 +9,16 @@ run-name: >-
 on:
   workflow_dispatch:
     inputs:
+      workspace-tools-source:
+        description: Workspace Tools CLI source for package discovery
+        type: choice
+        required: true
+        default: auto
+        options:
+          - auto
+          - checkout:current
+          - checkout:upstream;branch:main
+          - registry:npm:latest
       package:
         description: Select a publishable workspace package
         required: true
@@ -42,6 +52,11 @@ on:
         type: string
         required: false
         default: ""
+      commit-version-changes:
+        description: Commit prepared versions and lockfile before release
+        type: boolean
+        required: true
+        default: false
       update-major-tag:
         description: Update package-scoped major compatibility alias
         type: boolean
@@ -75,11 +90,13 @@ jobs:
     uses: 
       moyarich/reusable-workflows/.github/workflows/reusable_workspace-package-release.yml@main
     with:
+      workspace-tools-source: ${{ inputs.workspace-tools-source }}
       package: ${{ inputs.package }}
       version-mode: ${{ inputs.version-mode }}
       initial-version: ${{ inputs.initial-version }}
       version-bump: ${{ inputs.version-bump }}
       exact-version: ${{ inputs.exact-version }}
+      commit-version-changes: ${{ inputs.commit-version-changes }}
       update-major-tag: ${{ inputs.update-major-tag }}
       draft: ${{ inputs.draft }}
       dry-run: ${{ inputs.dry-run }}
