@@ -1,3 +1,4 @@
+import { createContentManifest } from "../content/manifest.js";
 import {
   discoverContent,
   type ContentSourcesConfig,
@@ -114,7 +115,7 @@ export function mdxRegistryPlugin({
           headings,
           metadata,
         } = await getDiscovery();
-        return `export const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages.map(withSourcePath))};\nexport const routes = ${JSON.stringify(pages.routes.map(withSourcePath))};\nexport const navigation = ${JSON.stringify(pages.navigation.map(withSourcePath))};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
+        return `export const manifest = ${JSON.stringify(createContentManifest({ registry: pages, headings }).map(withSourcePath))};\nexport const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages.map(withSourcePath))};\nexport const routes = ${JSON.stringify(pages.routes.map(withSourcePath))};\nexport const navigation = ${JSON.stringify(pages.navigation.map(withSourcePath))};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
       }
     },
     configureServer(server) {
