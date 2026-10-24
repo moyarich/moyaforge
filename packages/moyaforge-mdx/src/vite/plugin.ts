@@ -74,7 +74,10 @@ export function mdxRegistryPlugin({
   // Share one metadata discovery across all virtual modules in a build.
   // Re-reading every MDX file for each module duplicates transient allocations.
   let discovery: ReturnType<typeof discoverContent> | undefined;
-  const getDiscovery = () => sharedDiscovery ? sharedDiscovery.get() : (discovery ??= discoverContent(registry, appRoot));
+  const getDiscovery = () =>
+    sharedDiscovery
+      ? sharedDiscovery.get()
+      : (discovery ??= discoverContent(registry, appRoot));
   const discover = async (lazyOnly: boolean) => {
     const imports: string[] = [];
     const sources: string[] = [];

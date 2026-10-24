@@ -137,7 +137,10 @@ export async function discoverContent(
 }
 
 /** Share one build-time discovery across registry, routing and search consumers. */
-export function createContentDiscovery(config: ContentSourcesConfig, root: string) {
+export function createContentDiscovery(
+  config: ContentSourcesConfig,
+  root: string,
+) {
   let pending: Promise<DiscoveredContent> | undefined;
   return {
     get() {
