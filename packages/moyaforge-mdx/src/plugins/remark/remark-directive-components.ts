@@ -1,4 +1,5 @@
 import type { Root } from "mdast";
+import { normalizeDirectiveType } from "./custom-blocks.js";
 
 /** Map authored directive types to host-registered MDX components. */
 export interface DirectiveComponent {
@@ -61,7 +62,7 @@ function transform(
     const classes = Array.isArray(cls)
       ? cls
       : typeof cls === "string"
-        ? cls.split(/\\s+/)
+        ? cls.split(/\s+/)
         : [];
     const title = classes.includes("custom-block-title")
       ? titleOf(children.shift()!)
@@ -79,7 +80,7 @@ function transform(
       attributes.push({
         type: "mdxJsxAttribute",
         name: selected.typeProp,
-        value: type,
+        value: normalizeDirectiveType(type),
       });
     }
     return jsx(

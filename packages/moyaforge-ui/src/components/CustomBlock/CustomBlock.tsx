@@ -16,21 +16,17 @@ export function CustomBlock({
   children,
   ...props
 }: CustomBlockProps) {
-  const normalized = type?.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
-  const safeType = normalized
-    ? /^[a-z_]/.test(normalized)
-      ? normalized
-      : `type-${normalized}`
-    : undefined;
+  // The MDX compiler supplies a canonical directive type.
+  // Standalone consumers may also pass a pre-normalized type.
   const classes = new Set([
     "custom-block",
-    ...(safeType ? [safeType] : []),
+    ...(type ? [type] : []),
     ...(className ?? "").split(/\s+/).filter(Boolean),
   ]);
   return (
     <div
       {...props}
-      data-type={props["data-type"] ?? safeType}
+      data-type={props["data-type"] ?? type}
       className={[...classes].join(" ")}
     >
       {title != null && title !== "" && (

@@ -7,16 +7,16 @@ export const customBlockOptions = {
   containerTagName: "div",
   containerClassName: (type?: string) => [
     "custom-block",
-    ...(type ? [normalizeType(type)] : []),
+    ...(type ? [normalizeDirectiveType(type)] : []),
   ],
   containerProperties: (type?: string) =>
-    type ? { "data-type": normalizeType(type) } : {},
+    type ? { "data-type": normalizeDirectiveType(type) } : {},
   titleTagName: "p",
   titleClassName: "custom-block-title",
 };
 
 /** Prevent user-provided type names from escaping a single CSS class token. */
-function normalizeType(type: string): string {
+export function normalizeDirectiveType(type: string): string {
   const normalized = type.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
   return /^[a-z_]/.test(normalized) ? normalized : `type-${normalized}`;
 }
