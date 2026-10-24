@@ -38,12 +38,20 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
-    "@types/node": "^26.6.5",
     "typescript": "^7.0.2",
     "vite": "^8.3.4"
   },
   "homepage": "https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-cli#readme",
   "bugs": {
     "url": "https://github.com/moyarich/moyaforge/issues"
-  }
+  },
+  "author": "Moya Richards",
+  "keywords": [
+    "moyaforge",
+    "cli",
+    "scaffolding",
+    "documentation",
+    "react",
+    "mdx"
+  ]
 }
