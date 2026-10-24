@@ -18,6 +18,12 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], baseURL: "http://127.0.0.1:4179" },
     },
     {
+      name: "toc-integration",
+      testDir: "./tests/integration",
+      fullyParallel: true,
+      use: { ...devices["Desktop Chrome"], baseURL: "http://127.0.0.1:4179" },
+    },
+    {
       name: "cli-consumer",
       testDir: "./packages/moyaforge-cli/tests/browser",
       fullyParallel: false,
