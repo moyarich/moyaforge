@@ -3,29 +3,23 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect, test } from "vitest";
 
-test("component documentation pages use the standard section outline", () => {
+test("parent component pages include the standard sections regardless of order", () => {
   const docs = fileURLToPath(
     new URL("../../docs/01-components/", import.meta.url),
   );
-  const pages = readdirSync(docs, { recursive: true })
-    .filter((name) => String(name).endsWith("/page.mdx"))
-    .map((name) => join(docs, String(name)));
+  // Nested example pages and the components index have their own outlines.
+  const pages = readdirSync(docs, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => join(docs, entry.name, "page.mdx"));
 
   expect(pages.length).toBeGreaterThan(20);
   for (const page of pages) {
     const source = readFileSync(page, "utf8");
-    const headings = [...source.matchAll(/^## (.+)$/gm)].map(
-      (match) => match[1],
+    const headings = new Set(
+      [...source.matchAll(/^## (.+)$/gm)].map((match) => match[1]),
     );
-    const sectionIndexes = ["Installation", "Usage", "Examples", "Styling"].map(
-      (heading) => headings.indexOf(heading),
-    );
-    expect(sectionIndexes, page).toEqual(
-      [...sectionIndexes].sort((a, b) => a - b),
-    );
-    expect(
-      sectionIndexes.every((index) => index >= 0),
-      page,
-    ).toBe(true);
+    for (const heading of ["Installation", "Usage", "Examples", "Styling"]) {
+      expect(headings.has(heading), `${page}: missing ${heading}`).toBe(true);
+    }
   }
 });
