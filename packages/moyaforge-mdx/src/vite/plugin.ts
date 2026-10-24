@@ -1,6 +1,7 @@
 import { createContentManifest } from "../content/manifest.js";
 import {
   discoverContent,
+  type createContentDiscovery,
   type ContentSourcesConfig,
 } from "../content/discovery.js";
 import { dirname, join, relative, resolve, sep } from "node:path";
@@ -24,6 +25,8 @@ export interface RegistryPluginOptions {
   root: string;
   /** Repository root for generated GitHub edit paths; discovered from .git when omitted. */
   repositoryRoot?: string;
+  /** Optional discovery cache shared with other build-time consumers. */
+  discovery?: ReturnType<typeof createContentDiscovery>;
 }
 
 const publicId = "virtual:moyaforge-mdx/registry";
@@ -38,6 +41,7 @@ export function mdxRegistryPlugin({
   registry,
   root,
   repositoryRoot,
+  discovery: sharedDiscovery,
 }: RegistryPluginOptions): Plugin {
   const appRoot = resolve(root);
   const findRepositoryRoot = () => {
@@ -70,7 +74,7 @@ export function mdxRegistryPlugin({
   // Share one metadata discovery across all virtual modules in a build.
   // Re-reading every MDX file for each module duplicates transient allocations.
   let discovery: ReturnType<typeof discoverContent> | undefined;
-  const getDiscovery = () => (discovery ??= discoverContent(registry, appRoot));
+  const getDiscovery = () => sharedDiscovery ? sharedDiscovery.get() : (discovery ??= discoverContent(registry, appRoot));
   const discover = async (lazyOnly: boolean) => {
     const imports: string[] = [];
     const sources: string[] = [];
@@ -129,6 +133,7 @@ export function mdxRegistryPlugin({
         )
           return;
         discovery = undefined;
+        sharedDiscovery?.invalidate();
         for (const id of [resolvedId, lazyResolvedId, metadataResolvedId]) {
           const module = server.moduleGraph.getModuleById(id);
           if (module) server.moduleGraph.invalidateModule(module);
