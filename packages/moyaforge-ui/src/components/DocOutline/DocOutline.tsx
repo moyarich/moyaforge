@@ -85,7 +85,7 @@ export function DocOutline({
       window.removeEventListener("hashchange", onHashChange);
       window.removeEventListener("popstate", onHashChange);
     };
-  }, [headings, items, visibleItems.map((item) => item.id).join("\\u0000")]);
+  }, [headings, items]);
   if (!visibleItems.length) return null;
   return (
     <aside
