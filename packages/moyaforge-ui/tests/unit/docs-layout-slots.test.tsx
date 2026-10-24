@@ -72,5 +72,4 @@ describe("DocsLayout slots", () => {
       'href="#installation"',
     );
   });
-
 });
