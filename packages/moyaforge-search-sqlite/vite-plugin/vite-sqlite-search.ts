@@ -9,7 +9,10 @@ import {
 } from "@moyarich/moyaforge-mdx";
 import initSqlJs from "sql.js";
 import type { Plugin } from "vite";
-import type { ContentSourcesConfig, createContentDiscovery } from "@moyarich/moyaforge-mdx";
+import type {
+  ContentSourcesConfig,
+  createContentDiscovery,
+} from "@moyarich/moyaforge-mdx";
 import { buildSearchDatabase } from "../dist/index.js";
 
 const virtualId = "virtual:moyaforge-search/database";
@@ -31,7 +34,11 @@ export interface SqliteSearchPluginOptions {
   discovery?: ReturnType<typeof createContentDiscovery>;
 }
 
-async function docsFor(registry: ContentSourcesConfig, root: string, discovery?: ReturnType<typeof createContentDiscovery>) {
+async function docsFor(
+  registry: ContentSourcesConfig,
+  root: string,
+  discovery?: ReturnType<typeof createContentDiscovery>,
+) {
   const discovered = await (discovery
     ? discovery.get()
     : discoverContent(registry, root));
@@ -50,7 +57,11 @@ async function docsFor(registry: ContentSourcesConfig, root: string, discovery?:
   );
 }
 
-export function sqliteSearchPlugin({ registry, root, discovery }: SqliteSearchPluginOptions): Plugin {
+export function sqliteSearchPlugin({
+  registry,
+  root,
+  discovery,
+}: SqliteSearchPluginOptions): Plugin {
   const roots = Object.values(registry.sources).map((source) =>
     resolve(root, source.base),
   );
@@ -91,10 +102,7 @@ export function sqliteSearchPlugin({ registry, root, discovery }: SqliteSearchPl
       if (mode === "serve")
         return `export const databaseUrl = import.meta.env.BASE_URL + "${endpoint.slice(1)}";`;
       const data = await build();
-      const hash = createHash("sha256")
-        .update(data)
-        .digest("hex")
-        .slice(0, 10);
+      const hash = createHash("sha256").update(data).digest("hex").slice(0, 10);
       const outputUrl = "assets/search-" + hash + ".sqlite";
       this.emitFile({ type: "asset", fileName: outputUrl, source: data });
       return `export const databaseUrl = import.meta.env.BASE_URL + "${outputUrl}";`;
