@@ -15,15 +15,13 @@ import exampleSource from "./default/Example.tsx?raw";
 
 The registry's Docs Shell item is an editable template wrapping DocsLayout; this preview renders its canonical layout dependency.
 
-## Live preview
 
-<CodePreview
-  title="Docs Shell"
-  files={[{ label: "Example.tsx", code: exampleSource }]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+
+## Installation
+
+Install `docs-shell` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+
+[Preview component](/ui/components/preview)
 
 ## Usage
 
@@ -43,8 +41,18 @@ The registry's Docs Shell item is an editable template wrapping DocsLayout; this
 </DocsLayout>
 ```
 
-## Installation
+## Examples
 
-Install `docs-shell` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+### Default
 
-[Preview component](/ui/components/preview)
+<CodePreview
+  title="Docs Shell"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+## Styling
+
+Style the installed component using its source-owned CSS and public theme variables. The live example frame has separate `--mf-preview-border` and `--mf-preview-radius` overrides.
