@@ -103,7 +103,11 @@ export function DocsLayout({
     const update = () => setActiveId(headingIdFromHash(window.location.hash));
     update();
     window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
+    window.addEventListener("popstate", update);
+    return () => {
+      window.removeEventListener("hashchange", update);
+      window.removeEventListener("popstate", update);
+    };
   }, []);
   const current = pages.find((page) => page.url === currentUrl);
   const visiblePages = pages.filter(
