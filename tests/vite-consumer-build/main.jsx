@@ -1,4 +1,5 @@
 import React from "react";
+import { TocRouterFixture } from "../fixtures/toc-router.jsx";
 import { createRoot } from "react-dom/client";
 import { createMoyaForgeSource } from "@moyarich/moyaforge";
 import { HeadlessDocsRoutes } from "@moyarich/moyaforge/headless";
@@ -77,6 +78,7 @@ createRoot(document.getElementById("root")).render(
         }
       />
       <Route path="/docs/*" element={<HostDocs />} />
+      <Route path="/toc-router" element={<TocRouterFixture />} />
       <Route
         path="*"
         element={
