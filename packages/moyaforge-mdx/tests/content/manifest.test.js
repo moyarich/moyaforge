@@ -47,18 +47,22 @@ test("manifest entries use registry paths and preserve visibility across collect
     new Set(manifest.map((entry) => entry.path)),
     new Set(["/docs", "/docs/guide", "/api"]),
   );
-  assert.equal(manifest.find((entry) => entry.path === "/docs/guide")?.navigation, "hidden");
-  assert.deepEqual(manifest.find((entry) => entry.path === "/api")?.headings, []);
+  assert.equal(
+    manifest.find((entry) => entry.path === "/docs/guide")?.navigation,
+    "hidden",
+  );
+  assert.deepEqual(
+    manifest.find((entry) => entry.path === "/api")?.headings,
+    [],
+  );
 });
 
 test("duplicate normalized slugs include both source file names", () => {
   assert.throws(
-    () => buildPageRegistry({
-      docs: [
-        { file: "01-guide/page.mdx" },
-        { file: "02-guide/page.mdx" },
-      ],
-    }),
+    () =>
+      buildPageRegistry({
+        docs: [{ file: "01-guide/page.mdx" }, { file: "02-guide/page.mdx" }],
+      }),
     /Duplicate route \/docs\/guide: docs\/01-guide\/page\.mdx and docs\/02-guide\/page\.mdx/,
   );
 });
