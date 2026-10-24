@@ -3,7 +3,10 @@ import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
-import { discoverContent, createContentManifest } from "@moyarich/moyaforge-mdx";
+import {
+  discoverContent,
+  createContentManifest,
+} from "@moyarich/moyaforge-mdx";
 import initSqlJs from "sql.js";
 import { buildSearchDatabase } from "../dist/index.js";
 
