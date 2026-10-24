@@ -10,12 +10,19 @@ const metadata = getTableOfContents([
 /** Exercise the real layout with canonical heading metadata in a host router. */
 export function TocRouterFixture() {
   return (
-    <DocsLayout pages={[]} toc={{ ...metadata.options, headings: metadata.headings }}>
+    <DocsLayout
+      pages={[]}
+      toc={{ ...metadata.options, headings: metadata.headings }}
+    >
       <article>
         <h1>TOC router integration fixture</h1>
-        <h2 id="first-section" tabIndex={-1}>First section</h2>
+        <h2 id="first-section" tabIndex={-1}>
+          First section
+        </h2>
         <p>First heading content</p>
-        <h2 id="second-section" tabIndex={-1}>Second section</h2>
+        <h2 id="second-section" tabIndex={-1}>
+          Second section
+        </h2>
         <p>Second heading content</p>
       </article>
     </DocsLayout>

@@ -1,8 +1,12 @@
 import { expect, test } from "@playwright/test";
 
-test("host BrowserRouter keeps TOC deep links, active state and history synchronized", async ({ page }) => {
+test("host BrowserRouter keeps TOC deep links, active state and history synchronized", async ({
+  page,
+}) => {
   await page.goto("/app/toc-router");
-  await expect(page.getByRole("heading", { name: "TOC router integration fixture" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "TOC router integration fixture" }),
+  ).toBeVisible();
 
   const outline = page.locator("[data-moyaforge-doc-outline]");
   await expect(outline).toHaveCount(1);
