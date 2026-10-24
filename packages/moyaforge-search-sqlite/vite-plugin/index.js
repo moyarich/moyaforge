@@ -23,8 +23,8 @@ function clean(content) {
     .replace(/\s+/g, " ")
     .trim();
 }
-async function docsFor(registry, root) {
-  const discovered = await discoverContent(registry, root);
+async function docsFor(registry, root, discovery) {
+  const discovered = await (discovery ? discovery.get() : discoverContent(registry, root));
   const manifest = createContentManifest(discovered);
   return Promise.all(
     manifest.map(async (page) => {
@@ -40,7 +40,7 @@ async function docsFor(registry, root) {
   );
 }
 
-export function sqliteSearchPlugin({ registry, root }) {
+export function sqliteSearchPlugin({ registry, root, discovery }) {
   const roots = Object.values(registry.sources).map((source) =>
     resolve(root, source.base),
   );
@@ -56,7 +56,7 @@ export function sqliteSearchPlugin({ registry, root }) {
         locateFile: (file) => require.resolve("sql.js/dist/" + file),
       });
     if (!dirty && bytes) return bytes;
-    bytes = buildSearchDatabase(SQL, await docsFor(registry, root));
+    bytes = buildSearchDatabase(SQL, await docsFor(registry, root, discovery));
     dirty = false;
     return bytes;
   };
@@ -65,6 +65,7 @@ export function sqliteSearchPlugin({ registry, root }) {
     if (!roots.some((root) => absolute.startsWith(root + sep))) return;
     if (!/\.(md|mdx)$/.test(absolute)) return;
     dirty = true;
+    discovery?.invalidate();
     server.ws.send({ type: "custom", event: "moyaforge-search:updated" });
   };
   return {
