@@ -1,10 +1,9 @@
-import { resolve, relative, sep } from "node:path";
-import { readFile, stat } from "node:fs/promises";
+import { resolve, sep } from "node:path";
+import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
-import { glob } from "tinyglobby";
-import { parseDocument } from "yaml";
+import { discoverContent, createContentManifest } from "@moyarich/moyaforge-mdx";
 import initSqlJs from "sql.js";
 import { buildSearchDatabase } from "../dist/index.js";
 
@@ -21,82 +20,21 @@ function clean(content) {
     .replace(/\s+/g, " ")
     .trim();
 }
-function frontmatter(text, filename) {
-  const normalized = text.replace(/^\uFEFF/, "");
-  if (!normalized.startsWith("---\n") && !normalized.startsWith("---\r\n"))
-    return {};
-  const match = /^---\r?\n([\s\S]*?)\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.exec(
-    normalized,
-  );
-  if (!match) throw new Error(`${filename}: unterminated YAML frontmatter`);
-  const document = parseDocument(match[1], { uniqueKeys: true, strict: true });
-  if (document.errors.length)
-    throw new Error(
-      `${filename}: invalid YAML frontmatter: ${document.errors.map((error) => error.message).join("; ")}`,
-    );
-  const value = document.toJS();
-  if (value == null) return {};
-  if (typeof value !== "object" || Array.isArray(value))
-    throw new Error(`${filename}: YAML frontmatter must be an object`);
-  return value;
-}
-function docsFor(registry, root) {
+async function docsFor(registry, root) {
+  const discovered = await discoverContent(registry, root);
+  const manifest = createContentManifest(discovered);
   return Promise.all(
-    Object.entries(registry.sources).map(async ([sourceName, source]) => {
-      const base = resolve(root, source.base);
-      let info;
-      try {
-        info = await stat(base);
-      } catch (error) {
-        if (error.code === "ENOENT")
-          throw new Error(
-            `Search source "${sourceName}": directory does not exist: ${base}`,
-            { cause: error },
-          );
-        throw error;
-      }
-      if (!info.isDirectory())
-        throw new Error(
-          `Search source "${sourceName}": expected directory: ${base}`,
-        );
-      const entries = await glob([...source.include], {
-        cwd: base,
-        absolute: true,
-        onlyFiles: true,
-        ignore: source.exclude ? [...source.exclude] : [],
-      });
-      return Promise.all(
-        entries
-          .sort()
-          .filter((file) =>
-            (source.pageFiles === "all" ? /\.mdx?$/ : /^page\.mdx?$/).test(
-              file.replaceAll("\\", "/").split("/").at(-1) ?? "",
-            ),
-          )
-          .map(async (file) => {
-            const raw = await readFile(file, "utf8");
-            const meta = frontmatter(raw, file);
-            // Disabled pages have no route and must not appear in search.
-            if (meta.navigation === "disabled") return null;
-            const name = relative(base, file).split(sep).join("/");
-            const segments = name.split("/");
-            const folder = segments.at(-2) ?? sourceName;
-            const title =
-              meta.title ??
-              folder
-                .replace(/^\d+[-_ ]/, "")
-                .replace(/[-_]+/g, " ")
-                .replace(/\b\w/g, (letter) => letter.toUpperCase());
-            return {
-              key: sourceName + "/" + name,
-              title,
-              description: meta.description ?? "",
-              body: clean(raw),
-            };
-          }),
-      );
+    manifest.map(async (page) => {
+      const source = registry.sources[page.source];
+      const raw = await readFile(resolve(root, source.base, page.file), "utf8");
+      return {
+        key: page.source + "/" + page.file,
+        title: page.title,
+        description: page.description ?? "",
+        body: clean(raw),
+      };
     }),
-  ).then((groups) => groups.flat().filter((document) => document !== null));
+  );
 }
 
 export function sqliteSearchPlugin({ registry, root }) {
