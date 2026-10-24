@@ -13,7 +13,7 @@ import type {
   ContentSourcesConfig,
   createContentDiscovery,
 } from "@moyarich/moyaforge-mdx";
-import { buildSearchDatabase } from "../dist/index.js";
+import { buildSearchDatabase } from "../../src/index.js";
 
 const virtualId = "virtual:moyaforge-search/database";
 const resolvedId = "\0" + virtualId;
