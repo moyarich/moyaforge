@@ -1,4 +1,5 @@
 import type { Plugin } from "vite";
+import type { createContentDiscovery } from "@moyarich/moyaforge-mdx";
 
 export interface SearchRegistrySource {
   base: string;
@@ -8,6 +9,7 @@ export interface SearchRegistrySource {
 }
 export interface SqliteSearchPluginOptions {
   root: string;
+  discovery?: ReturnType<typeof createContentDiscovery>;
   registry: { sources: Record<string, SearchRegistrySource> };
 }
 /** Optional Vite adapter; the core indexing/query API remains framework-independent. */
