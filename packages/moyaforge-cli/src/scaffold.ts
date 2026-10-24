@@ -83,7 +83,10 @@ export async function planProject({
     "src/styles.css",
   ]) {
     let content = await readFile(
-      new URL(`../templates/${name}`, import.meta.url),
+      new URL(
+        `../templates/${name === "tsconfig.json" ? "tsconfig.template.json" : name}`,
+        import.meta.url,
+      ),
       "utf8",
     );
     for (const [key, value] of Object.entries(replacements))
