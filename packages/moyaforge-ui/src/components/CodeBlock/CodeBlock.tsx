@@ -1,8 +1,6 @@
 import "./CodeBlock.css";
 import { CodeCopyIcon } from "../CodeBlock/CodeCopyIcon.js";
 import {
-  Children,
-  isValidElement,
   createContext,
   useContext,
   useRef,
@@ -21,16 +19,7 @@ export function CodeBlock({
 }) {
   const pre = useRef<HTMLPreElement>(null);
   const grouped = useContext(CodeGroupContext);
-  const code = Children.toArray(props.children).find((child) =>
-    isValidElement(child),
-  );
-  const codeClass = isValidElement<{ className?: string }>(code)
-    ? code.props.className
-    : "";
-  const label =
-    language ??
-    props["data-language"] ??
-    codeClass?.match(/language-([\w+-]+)/)?.[1];
+  const label = language ?? props["data-language"];
   if (grouped) return <pre {...props} />;
   return (
     <div data-moyaforge-code-block="">
