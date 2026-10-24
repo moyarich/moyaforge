@@ -16,7 +16,21 @@ import exampleSource from "./default/Example.tsx?raw";
 
 Render code as a source snippet without an interactive editor. This live example uses the canonical MoyaForge UI source and is rendered by the playground's MDX provider.
 
-## Live preview
+## Installation
+
+Install the `source` component from the MoyaForge component registry. The selected source and CSS are copied into your application; they are not included in the framework package.
+
+[Browse all UI components](/ui)
+
+## Usage
+
+```tsx
+<Source language="tsx" code={"const ready = true;"} />
+```
+
+## Examples
+
+### Default
 
 <CodePreview
   title="Source"
@@ -26,14 +40,8 @@ Render code as a source snippet without an interactive editor. This live example
   <Example />
 </CodePreview>
 
-## Usage
 
-```tsx
-<Source language="tsx" code={"const ready = true;"} />
-```
 
-## Installation
+## Styling
 
-Install the `source` component from the MoyaForge component registry. The selected source and CSS are copied into your application; they are not included in the framework package.
-
-[Browse all UI components](/ui)
+The installed component includes its source-owned CSS. Customize its styles in your application using scoped CSS selectors or the component's documented CSS variables. The example preview frame can be customized separately with `--mf-preview-border` and `--mf-preview-radius`.
