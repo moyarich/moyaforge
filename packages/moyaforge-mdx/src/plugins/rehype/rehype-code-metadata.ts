@@ -6,7 +6,11 @@ type Element = {
 };
 
 function languageFromClass(value: unknown): string | undefined {
-  const classes = Array.isArray(value) ? value : typeof value === "string" ? value.split(/\s+/) : [];
+  const classes = Array.isArray(value)
+    ? value
+    : typeof value === "string"
+      ? value.split(/\s+/)
+      : [];
   for (const cls of classes) {
     if (typeof cls !== "string") continue;
     const match = /^language-(.+)$/.exec(cls);
@@ -24,7 +28,9 @@ export function rehypeCodeMetadata() {
   return (tree: Element) => {
     const visit = (node: Element) => {
       if (node.type === "element" && node.tagName === "pre") {
-        const code = node.children?.find((child) => child.type === "element" && child.tagName === "code");
+        const code = node.children?.find(
+          (child) => child.type === "element" && child.tagName === "code",
+        );
         const language = languageFromClass(code?.properties?.className);
         if (language && !node.properties?.["data-language"]) {
           node.properties = { ...node.properties, "data-language": language };

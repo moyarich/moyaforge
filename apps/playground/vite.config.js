@@ -56,7 +56,7 @@ export default defineConfig({
             rehypeShiki,
             {
               themes: { light: "github-light", dark: "github-dark" },
-              fallbackLanguage: "text"
+              fallbackLanguage: "text",
             },
           ],
         }),

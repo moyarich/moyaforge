@@ -16,7 +16,9 @@ const options = createMdxOptions({
 
 test("compiler supplies canonical arbitrary admonition metadata", async () => {
   const source = "::: WARNING Compatibility\nUse **caution**.\n:::";
-  const output = String(await compile({ value: source, path: "page.mdx" }, options));
+  const output = String(
+    await compile({ value: source, path: "page.mdx" }, options),
+  );
   assert.match(output, /CustomBlock/);
   assert.match(output, /type: "warning"/);
   assert.match(output, /title: "Compatibility"/);
@@ -41,7 +43,9 @@ test("compiler supplies tab labels for interactive code groups", async () => {
     "",
     "::::",
   ].join("\n");
-  const output = String(await compile({ value: source, path: "page.mdx" }, options));
+  const output = String(
+    await compile({ value: source, path: "page.mdx" }, options),
+  );
   assert.match(output, /CodeGroup/);
   assert.match(output, /CodeTab/);
   assert.match(output, /label: "JavaScript"/);
