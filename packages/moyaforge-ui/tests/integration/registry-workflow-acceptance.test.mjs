@@ -49,7 +49,7 @@ function fixture(fn) {
     peer = join(root, "peer");
   try {
     mkdirSync(repo);
-    git(root, "init", "--bare", "--initial-branch=main", remote);
+    git(root, "init", "--bare", remote);
     git(repo, "init", "-b", "main");
     git(repo, "config", "user.email", "test@example.invalid");
     git(repo, "config", "user.name", "Registry test");
