@@ -8,10 +8,7 @@ const headings = [
 /** Exercise the real layout with canonical heading metadata in a host router. */
 export function TocRouterFixture() {
   return (
-    <DocsLayout
-      pages={[]}
-      toc={{ placement: "right", headings }}
-    >
+    <DocsLayout pages={[]} toc={{ placement: "right", headings }}>
       <article>
         <h1>TOC router integration fixture</h1>
         <h2 id="first-section" tabIndex={-1}>
