@@ -16,15 +16,11 @@ import exampleSource from "./default/Example.tsx?raw";
 
 Preview canonical UI components inside a simple demo container. This live example uses the canonical MoyaForge UI source and is rendered by the playground's MDX provider.
 
-## Live preview
+## Installation
 
-<CodePreview
-  title="Demo"
-  files={[{ label: "Example.tsx", code: exampleSource }]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+Install the `demo` component from the MoyaForge component registry. The selected source and CSS are copied into your application; they are not included in the framework package.
+
+[Browse all UI components](/ui)
 
 ## Usage
 
@@ -34,8 +30,20 @@ Preview canonical UI components inside a simple demo container. This live exampl
 </Demo>
 ```
 
-## Installation
+## Examples
 
-Install the `demo` component from the MoyaForge component registry. The selected source and CSS are copied into your application; they are not included in the framework package.
+### Default
 
-[Browse all UI components](/ui)
+<CodePreview
+  title="Demo"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+
+
+## Styling
+
+The installed component includes its source-owned CSS. Customize its styles in your application using scoped CSS selectors or the component's documented CSS variables. The example preview frame can be customized separately with `--mf-preview-border` and `--mf-preview-radius`.
