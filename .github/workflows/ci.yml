@@ -1,96 +1,56 @@
 name: CI
-
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
+    paths:
+      - "src/**"
+      - "packages/**"
+      - "apps/**"
+      - "actions/**"
+      - "tests/**"
+      - "**/.storybook/**"
+      - "**/*.{story,stories,spec,specs}.*"
+      - "**/playwright.config.*"
+      - "vitest.config.*"
+      - "package.json"
+      - "package-lock.json"
+      - "eslint.config.*"
+      - ".prettierignore"
+      - "tsconfig*.json"
+      - ".github/workflows/**"
+      - ".github/actionlint.yaml"
+      - ".github/check-dist-config.yml"
   workflow_dispatch:
-
+    inputs:
+      checkout-sha:
+        description: Exact commit SHA to validate (e.g. after self-heal)
+        type: string
+        required: false
+        default: ""
 permissions:
   contents: read
   packages: read
   pull-requests: read
-
+concurrency:
+  group: ci-${{ github.repository }}-${{ github.workflow }}-${{ github.event.pull_request.number || inputs.checkout-sha || github.ref }}
+  cancel-in-progress: false
 jobs:
-  lint-workflows:
-    name: Validate GitHub Actions workflow syntax
-    permissions:
-      contents: read
-    # Merge the reusable workflow upstream before adding or renaming this caller.
+  actionlint:
+    name: Workflows / actionlint
     uses: moyarich/reusable-workflows/.github/workflows/reusable_actionlint.yml@main
-
-  test:
-    name: Test package
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v7
-        with:
-          node-version: "24"
-          cache: npm
-      - run: npm ci --include=optional
-      - run: npm run build --workspaces --if-present
-      - run: npm test --workspaces --if-present --include-workspace-root
-
-  playwright-changes:
-    name: Detect Playwright changes
-    runs-on: ubuntu-latest
-    outputs:
-      run-playwright: ${{ steps.decision.outputs.run-playwright }}
-    steps:
-      - name: Find changed Playwright specs or configuration
-        if: github.event_name == 'pull_request'
-        id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            playwright:
-              - '**/*.spec.*'
-              - '**/*.specs.*'
-              - '**/playwright.config.*'
-              - '.github/workflows/ci.yml'
-      - name: Decide whether browser tests are required
-        id: decision
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          PLAYWRIGHT_CHANGED: ${{ steps.filter.outputs.playwright }}
-        run: |
-          if [[ "$EVENT_NAME" != "pull_request" || "$PLAYWRIGHT_CHANGED" == "true" ]]; then
-            echo "run-playwright=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run-playwright=false" >> "$GITHUB_OUTPUT"
-          fi
-
+  cli:
+    name: Node / build, lint, typecheck, Vitest, pack
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_ci_cli.yml@main
+    with:
+      checkout-sha: ${{ inputs.checkout-sha || '' }}
+  storybook:
+    name: Storybook / component tests
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_ci_storybook.yml@main
+    with:
+      checkout-sha: ${{ inputs.checkout-sha || '' }}
   playwright:
-    name: Playwright browser tests
-    needs: playwright-changes
-    if: needs.playwright-changes.outputs.run-playwright == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v7
-        with:
-          node-version: "24"
-          cache: npm
-      - run: npm ci --include=optional
-      - name: Build workspace packages for browser consumers
-        run: npm run build --workspaces --if-present
-      - run: npx playwright install --with-deps chromium
-      - run: npx playwright test
-      - name: Upload Playwright traces on failure
-        if: failure()
-        uses: actions/upload-artifact@v6
-        with:
-          name: playwright-traces
-          path: test-results/
-          if-no-files-found: ignore
-      - name: Playwright Browser Tests Summary
-        if: always()
-        env:
-          STATUS: ${{ job.status }}
-        run: echo "## Playwright Browser Tests Summary — $STATUS" >> "$GITHUB_STEP_SUMMARY"
+    name: Playwright / browser tests
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_ci_playwright.yml@main
+    with:
+      checkout-sha: ${{ inputs.checkout-sha || '' }}
