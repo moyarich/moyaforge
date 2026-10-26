@@ -138,19 +138,24 @@ export function mdxRegistryPlugin({
         publication,
       );
       const published = new Set(output.metadata.map((page) => page.path));
+      const textByPath = new Map<string, string>();
       for (const page of pages.routes) {
         if (!published.has(page.path)) continue;
         const source = registry.sources[page.source];
         const raw = await readFile(resolve(appRoot, source.base, page.file), "utf8");
         // Retain MDX syntax with its proper extension; omit YAML frontmatter.
         const markdown = raw.replace(/^\uFEFF?---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)(?:\r?\n|$)/, "");
+        textByPath.set(page.path, markdown);
         const suffix = page.file.endsWith(".mdx") ? ".mdx" : ".md";
         const outputName = "markdown/" + page.path.replace(/^\/+/, "") + suffix;
         this.emitFile({ type: "asset", fileName: outputName, source: markdown });
       }
       for (const [fileName, source] of [
         ["llms.txt", output.llmsTxt],
-        ["search-index.json", JSON.stringify(output.searchIndex, null, 2) + "\n"],
+        ["search-index.json", JSON.stringify(output.searchIndex.map((entry) => ({
+          ...entry,
+          content: textByPath.get(new URL(entry.url).pathname.slice(new URL(publication.origin).pathname.replace(/\/$/, "").length)) ?? "",
+        })), null, 2) + "\n"],
         ["content-metadata.json", JSON.stringify(output.metadata, null, 2) + "\n"],
       ] as const) {
         this.emitFile({ type: "asset", fileName, source });
