@@ -32,9 +32,9 @@ export default defineConfig({
   ],
   webServer: {
     command:
-      "npm exec --workspace @moyarich/moyaforge-playground -- vite --config ../../tests/vite-consumer-build/vite.config.js --host 127.0.0.1 --port 4179 --strictPort",
+      "npm run build:package && npm exec --workspace @moyarich/moyaforge-playground -- vite --config ../../tests/vite-consumer-build/vite.config.js --host 127.0.0.1 --port 4179 --strictPort",
     url: "http://127.0.0.1:4179",
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 180_000,
   },
 });
