@@ -80,6 +80,11 @@ function HeadingLinks({
         <li key={heading.id}>
           <a
             href={headingHref(heading.id)}
+            onClick={() => {
+              // Native anchors update history and scroll; move keyboard focus
+              // to the destination without suppressing their default behavior.
+              document.getElementById(heading.id)?.focus({ preventScroll: true });
+            }}
             aria-current={activeId === heading.id ? "location" : undefined}
           >
             {heading.text ?? heading.title ?? heading.id}
