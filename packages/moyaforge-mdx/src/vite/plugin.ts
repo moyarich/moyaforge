@@ -138,8 +138,8 @@ export function mdxRegistryPlugin({
       );
       for (const [fileName, source] of [
         ["llms.txt", output.llmsTxt],
-        ["search-index.json", JSON.stringify(output.searchIndex, null, 2) + "\\n"],
-        ["content-metadata.json", JSON.stringify(output.metadata, null, 2) + "\\n"],
+        ["search-index.json", JSON.stringify(output.searchIndex, null, 2) + "\n"],
+        ["content-metadata.json", JSON.stringify(output.metadata, null, 2) + "\n"],
       ] as const) {
         this.emitFile({ type: "asset", fileName, source });
       }
