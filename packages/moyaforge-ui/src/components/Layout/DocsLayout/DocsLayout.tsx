@@ -66,12 +66,17 @@ function HeadingLinks({
   headings: readonly DocsLayoutHeading[];
   activeId: string;
 }) {
+  // Preserve the host route when its URL is encoded in the fragment.
+  const hash = typeof window === "undefined" ? "" : window.location.hash;
+  const routeHash = hash.startsWith("#/") ? hash.split("#", 2)[0] : "";
+  const headingHref = (id: string) =>
+    routeHash ? `${routeHash}#${id}` : `#${id}`;
   return (
     <ul>
       {headings.map((heading) => (
         <li key={heading.id}>
           <a
-            href={`#${heading.id}`}
+            href={headingHref(heading.id)}
             aria-current={activeId === heading.id ? "location" : undefined}
           >
             {heading.text ?? heading.title ?? heading.id}
