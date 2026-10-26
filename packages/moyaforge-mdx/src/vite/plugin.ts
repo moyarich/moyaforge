@@ -142,10 +142,10 @@ export function mdxRegistryPlugin({
         if (!published.has(page.path)) continue;
         const source = registry.sources[page.source];
         const raw = await readFile(resolve(appRoot, source.base, page.file), "utf8");
-        // A portable source copy: retain authored Markdown/MDX syntax but omit
-        // repository-only YAML frontmatter already represented in metadata.
-        const markdown = raw.replace(/^\\uFEFF?---\\r?\\n[\\s\\S]*?\\r?\\n(?:---|\\.\\.\\.)(?:\\r?\\n|$)/, "");
-        const outputName = `markdown/${page.path.replace(/^\\/+/, "")}.md`;
+        // Retain MDX syntax with its proper extension; omit YAML frontmatter.
+        const markdown = raw.replace(/^\uFEFF?---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)(?:\r?\n|$)/, "");
+        const suffix = page.file.endsWith(".mdx") ? ".mdx" : ".md";
+        const outputName = "markdown/" + page.path.replace(/^\/+/, "") + suffix;
         this.emitFile({ type: "asset", fileName: outputName, source: markdown });
       }
       for (const [fileName, source] of [
