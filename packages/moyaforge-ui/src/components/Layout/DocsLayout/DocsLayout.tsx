@@ -68,7 +68,10 @@ function HeadingLinks({
 }) {
   // Preserve the host route when its URL is encoded in the fragment.
   const hash = typeof window === "undefined" ? "" : window.location.hash;
-  const routeHash = hash.startsWith("#/") ? hash.split("#", 2)[0] : "";
+  const nestedHash = hash.indexOf("#", 1);
+  const routeHash = hash.startsWith("#/")
+    ? nestedHash < 0 ? hash : hash.slice(0, nestedHash)
+    : "";
   const headingHref = (id: string) =>
     routeHash ? `${routeHash}#${id}` : `#${id}`;
   return (
