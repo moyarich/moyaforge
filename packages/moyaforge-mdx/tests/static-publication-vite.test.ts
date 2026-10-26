@@ -48,7 +48,7 @@ test("Vite emits deterministic publication assets from canonical registry", asyn
 
     expect(llms).toBe("# Docs\n\n- [Home](https://example.com/project/docs)\n");
     expect(search).toMatchObject([
-      { title: "Home", headings: [{ id: "start", label: "Start" }] },
+      { title: "Home", content: "# Home\nBody text.\n", headings: [{ id: "start", label: "Start" }] },
     ]);
     expect(metadata.map((page: { path: string }) => page.path)).toEqual(["/docs"]);
   } finally {
