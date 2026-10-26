@@ -98,7 +98,9 @@ export function DocsLayout({
   toc,
   editLink,
 }: DocsLayoutProps) {
-  const [activeId, setActiveId] = useState("");
+  const [activeId, setActiveId] = useState(() =>
+    typeof window === "undefined" ? "" : headingIdFromHash(window.location.hash),
+  );
   useEffect(() => {
     const update = () => setActiveId(headingIdFromHash(window.location.hash));
     update();
@@ -125,6 +127,16 @@ export function DocsLayout({
         const heading = document.getElementById(id);
         if (heading && heading.getBoundingClientRect().top <= 130) {
           current = id;
+        }
+      }
+      // Preserve the canonical URL fragment while it identifies a visible heading.
+      // Reload/scroll restoration can otherwise mark an earlier heading active.
+      const hashId = headingIdFromHash(window.location.hash);
+      if (hashId && headingIds.includes(hashId)) {
+        const target = document.getElementById(hashId);
+        if (target && target.getBoundingClientRect().top <= window.innerHeight) {
+          setActiveId(hashId);
+          return;
         }
       }
       if (current) setActiveId(current);
