@@ -66,12 +66,20 @@ function HeadingLinks({
   headings: readonly DocsLayoutHeading[];
   activeId: string;
 }) {
+  // Preserve the host route when its URL is encoded in the fragment.
+  const hash = typeof window === "undefined" ? "" : window.location.hash;
+  const nestedHash = hash.indexOf("#", 1);
+  const routeHash = hash.startsWith("#/")
+    ? nestedHash < 0 ? hash : hash.slice(0, nestedHash)
+    : "";
+  const headingHref = (id: string) =>
+    routeHash ? `${routeHash}#${id}` : `#${id}`;
   return (
     <ul>
       {headings.map((heading) => (
         <li key={heading.id}>
           <a
-            href={`#${heading.id}`}
+            href={headingHref(heading.id)}
             aria-current={activeId === heading.id ? "location" : undefined}
           >
             {heading.text ?? heading.title ?? heading.id}
@@ -98,7 +106,9 @@ export function DocsLayout({
   toc,
   editLink,
 }: DocsLayoutProps) {
-  const [activeId, setActiveId] = useState("");
+  const [activeId, setActiveId] = useState(() =>
+    typeof window === "undefined" ? "" : headingIdFromHash(window.location.hash),
+  );
   useEffect(() => {
     const update = () => setActiveId(headingIdFromHash(window.location.hash));
     update();
@@ -125,6 +135,16 @@ export function DocsLayout({
         const heading = document.getElementById(id);
         if (heading && heading.getBoundingClientRect().top <= 130) {
           current = id;
+        }
+      }
+      // Preserve the canonical URL fragment while it identifies a visible heading.
+      // Reload/scroll restoration can otherwise mark an earlier heading active.
+      const hashId = headingIdFromHash(window.location.hash);
+      if (hashId && headingIds.includes(hashId)) {
+        const target = document.getElementById(hashId);
+        if (target && target.getBoundingClientRect().top <= window.innerHeight) {
+          setActiveId(hashId);
+          return;
         }
       }
       if (current) setActiveId(current);
