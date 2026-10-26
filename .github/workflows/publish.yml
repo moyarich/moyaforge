@@ -8,6 +8,16 @@ run-name: >-
 on:
   workflow_dispatch:
     inputs:
+      workspace-tools-source:
+        description: Workspace Tools CLI source for package discovery
+        type: choice
+        required: true
+        default: auto
+        options:
+          - auto
+          - checkout:current
+          - checkout:upstream;branch:main
+          - registry:npm:latest
       package:
         description: Select a publishable workspace package
         required: true
@@ -15,10 +25,7 @@ on:
         default: all
         options:
           - all
-          - packages/moyaforge
-          - packages/moyaforge-cli
-          - packages/moyaforge-mdx
-          - packages/moyaforge-search-sqlite
+          - "packages/example"
       registry:
         description: Publish destination
         required: true
@@ -55,7 +62,7 @@ on:
         default: true
         type: boolean
       tag:
-        description: npm distribution tag (leave empty to use the resolved 
+        description: npm distribution tag (leave empty to use the resolved
           default)
         required: false
         default: ""
@@ -68,8 +75,7 @@ jobs:
     name: "job: Workflow parameters"
     permissions:
       contents: read
-    uses: 
-      moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
     with:
       parameters-json: ${{ toJSON(inputs) }}
       heading: "publish · Dispatch parameters"
@@ -77,11 +83,10 @@ jobs:
     permissions:
       contents: write
       packages: write
-    uses: 
-      moyarich/reusable-workflows/.github/workflows/reusable_bulk-npm-publish.yml@main
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_bulk-npm-publish.yml@main
     with:
+      workspace-tools-source: ${{ inputs.workspace-tools-source }}
       package: ${{ inputs.package }}
-      workspace-tools-source: checkout:current
       registry: ${{ inputs.registry }}
       version-mode: ${{ inputs.version-mode }}
       exact-version: ${{ inputs.exact-version }}
