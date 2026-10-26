@@ -7,6 +7,7 @@ import {
 } from "../content/discovery.js";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import type { Plugin } from "vite";
 
 export interface RegistrySource {
@@ -136,6 +137,17 @@ export function mdxRegistryPlugin({
         createContentManifest({ registry: pages, headings }),
         publication,
       );
+      const published = new Set(output.metadata.map((page) => page.path));
+      for (const page of pages.routes) {
+        if (!published.has(page.path)) continue;
+        const source = registry.sources[page.source];
+        const raw = await readFile(resolve(appRoot, source.base, page.file), "utf8");
+        // A portable source copy: retain authored Markdown/MDX syntax but omit
+        // repository-only YAML frontmatter already represented in metadata.
+        const markdown = raw.replace(/^\\uFEFF?---\\r?\\n[\\s\\S]*?\\r?\\n(?:---|\\.\\.\\.)(?:\\r?\\n|$)/, "");
+        const outputName = `markdown/${page.path.replace(/^\\/+/, "")}.md`;
+        this.emitFile({ type: "asset", fileName: outputName, source: markdown });
+      }
       for (const [fileName, source] of [
         ["llms.txt", output.llmsTxt],
         ["search-index.json", JSON.stringify(output.searchIndex, null, 2) + "\n"],
