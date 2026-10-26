@@ -80,6 +80,16 @@ function HeadingLinks({
         <li key={heading.id}>
           <a
             href={headingHref(heading.id)}
+            onClick={() => {
+              // Native anchors update history and scroll; move keyboard focus
+              // to the destination without suppressing their default behavior.
+              const target = document.getElementById(heading.id);
+              if (target) {
+                // Authored Markdown headings may not declare tabIndex.
+                if (!target.hasAttribute("tabindex")) target.tabIndex = -1;
+                target.focus({ preventScroll: true });
+              }
+            }}
             aria-current={activeId === heading.id ? "location" : undefined}
           >
             {heading.text ?? heading.title ?? heading.id}
