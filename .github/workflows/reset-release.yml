@@ -13,7 +13,10 @@ on:
         default: all
         options:
           - all
-          - packages/example
+          - packages/moyaforge
+          - packages/moyaforge-cli
+          - packages/moyaforge-mdx
+          - packages/moyaforge-search-sqlite
       target-branch:
         description: Release target branch
         required: true
