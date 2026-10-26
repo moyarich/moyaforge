@@ -150,11 +150,12 @@ export function mdxRegistryPlugin({
         const outputName = "markdown/" + page.path.replace(/^\/+/, "") + suffix;
         this.emitFile({ type: "asset", fileName: outputName, source: markdown });
       }
+      const bodyByUrl = new Map(output.metadata.map((page) => [page.url, textByPath.get(page.path) ?? ""]));
       for (const [fileName, source] of [
         ["llms.txt", output.llmsTxt],
         ["search-index.json", JSON.stringify(output.searchIndex.map((entry) => ({
           ...entry,
-          content: textByPath.get(new URL(entry.url).pathname.slice(new URL(publication.origin).pathname.replace(/\/$/, "").length)) ?? "",
+          content: bodyByUrl.get(entry.url) ?? "",
         })), null, 2) + "\n"],
         ["content-metadata.json", JSON.stringify(output.metadata, null, 2) + "\n"],
       ] as const) {
