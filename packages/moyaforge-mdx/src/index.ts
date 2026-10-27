@@ -94,5 +94,6 @@ export * from "./plugins/remark/remark-source-links.js";
 export * from "./content/manifest.js";
 
 export * from "./content/static-metadata.js";
+export * from "./content/static-publication.js";
 
 export * from "./plugins/rehype/rehype-code-metadata.js";

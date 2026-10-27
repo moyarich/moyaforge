@@ -1,3 +1,4 @@
+import { createStaticPublication, type StaticPublicationOptions } from "../content/static-publication.js";
 import { createContentManifest } from "../content/manifest.js";
 import {
   discoverContent,
@@ -6,6 +7,7 @@ import {
 } from "../content/discovery.js";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import type { Plugin } from "vite";
 
 export interface RegistrySource {
@@ -27,6 +29,8 @@ export interface RegistryPluginOptions {
   repositoryRoot?: string;
   /** Optional discovery cache shared with other build-time consumers. */
   discovery?: ReturnType<typeof createContentDiscovery>;
+  /** Opt-in deterministic publication assets emitted by Vite at build time. */
+  publication?: StaticPublicationOptions;
 }
 
 const publicId = "virtual:moyaforge-mdx/registry";
@@ -42,6 +46,7 @@ export function mdxRegistryPlugin({
   root,
   repositoryRoot,
   discovery: sharedDiscovery,
+  publication,
 }: RegistryPluginOptions): Plugin {
   const appRoot = resolve(root);
   const findRepositoryRoot = () => {
@@ -123,6 +128,38 @@ export function mdxRegistryPlugin({
           metadata,
         } = await getDiscovery();
         return `export const manifest = ${JSON.stringify(createContentManifest({ registry: pages, headings }).map(withSourcePath))};\nexport const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages.map(withSourcePath))};\nexport const routes = ${JSON.stringify(pages.routes.map(withSourcePath))};\nexport const navigation = ${JSON.stringify(pages.navigation.map(withSourcePath))};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
+      }
+    },
+    async generateBundle() {
+      if (!publication) return;
+      const { registry: pages, headings } = await getDiscovery();
+      const output = createStaticPublication(
+        createContentManifest({ registry: pages, headings }),
+        publication,
+      );
+      const published = new Set(output.metadata.map((page) => page.path));
+      const textByPath = new Map<string, string>();
+      for (const page of pages.routes) {
+        if (!published.has(page.path)) continue;
+        const source = registry.sources[page.source];
+        const raw = await readFile(resolve(appRoot, source.base, page.file), "utf8");
+        // Retain MDX syntax with its proper extension; omit YAML frontmatter.
+        const markdown = raw.replace(/^\uFEFF?---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)(?:\r?\n|$)/, "");
+        textByPath.set(page.path, markdown);
+        const suffix = page.file.endsWith(".mdx") ? ".mdx" : ".md";
+        const outputName = "markdown/" + page.path.replace(/^\/+/, "") + suffix;
+        this.emitFile({ type: "asset", fileName: outputName, source: markdown });
+      }
+      const bodyByUrl = new Map(output.metadata.map((page) => [page.url, textByPath.get(page.path) ?? ""]));
+      for (const [fileName, source] of [
+        ["llms.txt", output.llmsTxt],
+        ["search-index.json", JSON.stringify(output.searchIndex.map((entry) => ({
+          ...entry,
+          content: bodyByUrl.get(entry.url) ?? "",
+        })), null, 2) + "\n"],
+        ["content-metadata.json", JSON.stringify(output.metadata, null, 2) + "\n"],
+      ] as const) {
+        this.emitFile({ type: "asset", fileName, source });
       }
     },
     configureServer(server) {
