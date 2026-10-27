@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "vitest run tests",
-    "registry:check": "node ../../scripts/build-registry.mjs --check"
+    "registry:check": "node ../../scripts/build-registry.mjs --check",
+    "storybook": "storybook dev -p 6006 -c .storybook",
+    "test:storybook": "storybook build -c .storybook -o ../../.storybook-static"
   },
   "license": "MIT",
   "registryDependencies": {
@@ -20,5 +22,14 @@
     "react-router-dom": "^7.18.4",
     "@codingame/monaco-vscode-editor-api": "^37.6.1",
     "shiki": "^4.5.0"
+  },
+  "devDependencies": {
+    "@storybook/react-vite": "^10.0.0",
+    "storybook": "^10.0.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.4",
+    "typescript": "^7.0.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }
