@@ -1,8 +1,8 @@
 name: Restore Release
 
 run-name: >-
-  Restore release · ${{ inputs.package }} · ${{ inputs.restore-source }} ·
-  dry-run=${{ inputs.dry-run }}
+  Restore release · ${{ inputs.package }} · ${{ inputs.restore-source }} · dry-run=${{
+  inputs.dry-run }}
 
 on:
   workflow_dispatch:
@@ -14,18 +14,16 @@ on:
         default: all
         options:
           - all
-          - packages/moyaforge
-          - packages/moyaforge-cli
-          - packages/moyaforge-mdx
-          - packages/moyaforge-search-sqlite
+          - packages/example
       target-branch:
         description: Branch used to resolve the package path and changelog
         required: true
         default: main
         type: string
       restore-source:
-        description: "Historical source: commit:<sha>, tag:<tag>, run:<id>,
-          artifact:<id>, or github-url:<supported GitHub URL>"
+        description:
+          "Historical source: commit:<sha>, tag:<tag>, run:<id>, artifact:<id>,
+          or github-url:<supported GitHub URL>"
         required: true
         type: string
       match-mode:
@@ -42,7 +40,8 @@ on:
         default: ""
         type: string
       skip-finalized:
-        description: Skip finalized releases without modifying them (for bulk live recovery)
+        description: Skip finalized releases without modifying them (for bulk
+          live recovery)
         required: true
         default: false
         type: boolean
