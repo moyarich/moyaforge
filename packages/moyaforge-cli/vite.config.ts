@@ -34,7 +34,7 @@ export default defineConfig({
         "commands/usage": fileURLToPath(
           new URL("./src/commands/usage.ts", import.meta.url),
         ),
-        cli: fileURLToPath(new URL("./src/cli.ts", import.meta.url)),
+        cli: fileURLToPath(new URL("./src/cli/cli.ts", import.meta.url)),
         registry: fileURLToPath(new URL("./src/registry.ts", import.meta.url)),
         scaffold: fileURLToPath(new URL("./src/scaffold.ts", import.meta.url)),
       },

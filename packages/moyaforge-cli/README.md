@@ -121,7 +121,7 @@ Development validation: `npm run registry:check`, `npm run checks`,
 
 ## Building the CLI
 
-The CLI source is TypeScript with JSDoc for its exported APIs. `src/scaffold.ts`
+The CLI source is TypeScript with JSDoc for its exported APIs. `src/cli/cli.ts` registers Commander commands, with `src/add/` and `src/list/` handling registry operations. `src/scaffold.ts`
 plans starter files and consumer manifest changes for `moyaforge create`. The separate `dependencies.ts` handles manifest merging.
 
 ```sh
