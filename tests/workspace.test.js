@@ -72,7 +72,7 @@ test("installer ownership and optional editor peers stay outside basic UI instal
     manifests["moyaforge-cli"].bin.moyaforge,
     "./dist/bin/moyaforge.js",
   );
-  assert.equal(manifests["moyaforge-cli"].dependencies, undefined);
+  assert.deepEqual(Object.keys(manifests["moyaforge-cli"].dependencies ?? {}), ["commander"]);
   for (const name of [
     "@monaco-editor/react",
     "@typefox/monaco-editor-react",
