@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { readOptional } from "../registry.js";
+import { readFile } from "node:fs/promises";
 import { addComponentCommand } from "../add/add-cli.js";
 import { listComponentsCommand } from "../list/list-cli.js";
 import { createCommand } from "../create/create-cli.js";
@@ -24,7 +24,7 @@ export function createRootCliCommand(): Command {
 }
 
 export async function main(argv: string[] = process.argv): Promise<void> {
-  const metadata = JSON.parse((await readOptional(new URL("../package.json", import.meta.url)))!);
+  const metadata = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
   const program = createRootCliCommand().version(metadata.version, "-v, --version");
   if (argv.length <= 2) {
     program.outputHelp();
