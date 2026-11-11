@@ -10,7 +10,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
-import { planItems, resolveItems } from "../../src/registry.ts";
+import { planComponentInstallation, resolveItems } from "../../src/registry.ts";
 
 const repository = resolve(import.meta.dirname, "../../../..");
 const cli = resolve(import.meta.dirname, "../../dist/bin/moyaforge.js");
@@ -173,7 +173,7 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
   await mkdir(join(root, "src"));
   await symlink(outside, join(root, "src/components"), "dir");
   await expect(
-    planItems({ root, names: ["code-block"], registry: repository }),
+    planComponentInstallation({ root, names: ["code-block"], registry: repository }),
   ).rejects.toThrow(/symlink/);
   const malicious = await project();
   await writeFile(
@@ -194,13 +194,13 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
     }),
   );
   await expect(
-    planItems({ root: outside, names: ["bad"], registry: malicious }),
+    planComponentInstallation({ root: outside, names: ["bad"], registry: malicious }),
   ).rejects.toThrow(/Invalid component target/);
 });
 
 test("registry targets install directly under the configured component directory", async () => {
   const root = await project();
-  const plan = await planItems({
+  const plan = await planComponentInstallation({
     root,
     names: ["code-block"],
     registry: repository,
@@ -248,7 +248,7 @@ test("monaco installation reports setup notes without copying README files", asy
 
 test("shared registry utilities remain siblings of UI files, including custom destinations", async () => {
   const root = await project();
-  const plan = await planItems({
+  const plan = await planComponentInstallation({
     root,
     names: ["docs-layout"],
     registry: repository,
@@ -256,7 +256,7 @@ test("shared registry utilities remain siblings of UI files, including custom de
   expect(
     plan.files.some((file) => file.path.includes("src/components/utils/")),
   ).toBe(true);
-  const custom = await planItems({
+  const custom = await planComponentInstallation({
     root,
     names: ["docs-layout"],
     registry: repository,

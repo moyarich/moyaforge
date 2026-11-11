@@ -73,7 +73,7 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     const api = await import(
       pathToFileURL(join(consumer, "node_modules/@moyarich/moyaforge-cli/dist/registry.js")).href
     );
-    expect(typeof api.planItems).toBe("function");
+    expect(typeof api.planComponentInstallation).toBe("function");
   } finally {
     await rm(temporary, { recursive: true, force: true });
   }
