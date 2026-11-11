@@ -5,8 +5,8 @@ type Mode = "source" | "package";
 type Deps = Record<string, string>;
 
 const MOYAFORGE_DEPENDENCIES = {
-  "@moyarich/moyaforge": "^0.1.0",
-  "@moyarich/moyaforge-search-sqlite": "^0.1.0",
+  package: { "@moyarich/moyaforge": "^0.1.0" },
+  search: { "@moyarich/moyaforge-search-sqlite": "^0.1.0" },
 } as const;
 
 const SCRIPT_ACTIONS = ["dev", "build", "preview"] as const;
@@ -67,8 +67,8 @@ export function mergeDependencies(
 
   const runtime: Deps = {
     ...base.dependencies,
-    ...(mode === "package" && { "@moyarich/moyaforge": MOYAFORGE_DEPENDENCIES["@moyarich/moyaforge"] }),
-    ...(search && { "@moyarich/moyaforge-search-sqlite": MOYAFORGE_DEPENDENCIES["@moyarich/moyaforge-search-sqlite"] }),
+    ...(mode === "package" && MOYAFORGE_DEPENDENCIES.package),
+    ...(search && MOYAFORGE_DEPENDENCIES.search),
   };
   const development: Deps = { ...base.devDependencies };
 
