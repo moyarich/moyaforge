@@ -152,9 +152,23 @@ The GitHub Pages site is built from the private `apps/playground` workspace; pac
 
 ## Content discovery vs. component installation
 
-`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](registry/README.md) and [component examples](docs/examples/components/page.mdx).
+`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge-ui/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](registry/README.md) and [component examples](docs/examples/components/page.mdx).
 
 ## CLI and editable components
+
+Create a documentation application in your project directory:
+
+```sh
+npx @moyarich/moyaforge-cli@latest create
+npm run dev
+```
+
+Use `create --search` to enable SQLite search and install the existing
+registry-owned `Search` component; use `create --template hybrid` for an
+additional playground route. The default uses source-installed UI components,
+while `--mode package` adds the published MoyaForge framework dependency.
+`init` configures only the component registry, and `add search` installs the
+reusable search input independently of the search adapter.
 
 The separate `@moyarich/moyaforge-cli` package initializes consumer applications
 and installs editable components from this repository. The React framework stays
