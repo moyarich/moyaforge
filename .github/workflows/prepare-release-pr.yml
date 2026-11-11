@@ -3,6 +3,10 @@ name: Prepare Release PR
 on:
   workflow_dispatch:
     inputs:
+      show-input-summary:
+        description: Show workflow input parameters
+        type: boolean
+        default: true
       package:
         description: Publishable workspace package or all
         type: string
@@ -28,6 +32,11 @@ on:
         description: Exact version for exact mode
         type: string
         default: ""
+      target-branch:
+        description: Branch to receive the release preparation PR
+        type: string
+        required: true
+        default: main
       dry-run:
         description: Preview without opening a PR
         type: boolean
@@ -38,18 +47,29 @@ permissions:
   contents: read
 
 jobs:
+  workflow-call-input-summary:
+    name: "job: Reusable workflow parameters"
+    if: ${{ inputs.show-input-summary && github.event_name == 'workflow_dispatch' }}
+    permissions:
+      contents: read
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_dispatch-input-summary.yml@main
+    with:
+      parameters-json: ${{ toJSON(inputs) }}
+      exclude-inputs: '["show-input-summary"]'
+      heading: "Workflow inputs"
+
   prepare:
     permissions:
       contents: write
       pull-requests: write
-    uses: moyarich/reusable-workflows/.github/workflows/reusable_prepare-release-pr.yml@main
+    uses: moyarich/reusable-workflows/.github/workflows/reusable_release-prepare-pr.yml@main
     with:
       package: ${{ inputs.package }}
       version-mode: ${{ inputs.version-mode }}
       initial-version: ${{ inputs.initial-version }}
       version-bump: ${{ inputs.version-bump }}
       exact-version: ${{ inputs.exact-version }}
-      target-branch: main
+      target-branch: ${{ inputs.target-branch }}
       dry-run: ${{ inputs.dry-run }}
     secrets:
       workflow-token: ${{ secrets._WORKFLOW_TOKEN }}
