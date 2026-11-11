@@ -20,7 +20,8 @@ Lucide icons, and an explicit sidebar/outline composition.
 
 Use `--mode package` to consume the published framework through focused `/docs`
 and `/code` exports instead. `--search` adds the independent SQLite Vite plugin
-and browser client. `--template hybrid` includes a separate interactive React
+and browser client. It installs the registry-owned `Search` UI component rather than
+copying another search input implementation. `--template hybrid` includes a separate interactive React
 route alongside documentation.
 
 ## Existing React app
@@ -32,9 +33,8 @@ npm run docs:dev
 
 This writes an isolated entry under `moyaforge/` and adds `docs:*` scripts. It
 preserves the host's app entry, Vite config, existing scripts, and declared
-dependency versions. Content lives in the host's `docs/` directory. Consumers
-can subsequently embed the generated composition inside their existing router
-using `MoyaForgeRouting` instead of creating a second router.
+dependency versions. Content lives in the host's `docs/` directory. The generated documentation entry uses its own hash router; adapt its `App.tsx`
+when embedding it in a host that already has a router.
 
 ## Configure an existing project
 
@@ -45,6 +45,7 @@ Run `npx @moyarich/moyaforge-cli@latest init` to create only the registry config
 ```sh
 npx @moyarich/moyaforge-cli@latest list
 npx @moyarich/moyaforge-cli@latest add code-block code-group
+npx @moyarich/moyaforge-cli@latest add search
 npx @moyarich/moyaforge-cli@latest add sidebar-v1 sidebar-v2 doc-outline docs-shell
 ```
 
@@ -54,7 +55,7 @@ Import the installed component directly; its implementation imports its own CSS:
 import {
   CodeGroup,
   CodeTab,
-} from "./components/ui/components/CodeGroup/CodeGroup";
+} from "./src/components/ui/CodeGroup/CodeGroup";
 ```
 
 Relative source imports retain their canonical folder hierarchy, including when
@@ -116,13 +117,15 @@ push the root registry/source files before advertising the commands above.
 Merging source does not itself publish packages to npm. Public installs require
 no GitHub credentials, and registry dependencies must be public npm packages.
 
-Development validation: `npm run registry:check`, `npm run checks`,
+Development validation: `npm run registry:check`, `npm test --workspaces`,
 `npm run test:cli:consumer`, and `npx shadcn@4.21.5 registry validate ./registry.json`.
 
 ## Building the CLI
 
 The CLI source is TypeScript with JSDoc for its exported APIs. `src/bin/cli.ts` composes independent Commander command factories. Shared project resolution and plan execution live in `src/utils/install-plan.ts`, while dev, build and preview each have their own handler. Each command lives in its own `src/<command>/*-cli.ts` and binds a separate handler using `.action(handler)`; there is no shared Commander options builder. `src/scaffold.ts`
-plans starter files and consumer manifest changes for `moyaforge create`. The separate `dependencies.ts` handles manifest merging.
+plans starter files and consumer manifest changes for `moyaforge create`.
+`src/registry.ts` exposes `planComponentInstallation()` for planning registry
+component source writes without mutating a consumer project. The separate `dependencies.ts` handles manifest merging.
 
 ```sh
 npm run build --workspace @moyarich/moyaforge-cli
@@ -141,3 +144,8 @@ merges missing values without overwriting a consumer's existing manifest.
 Starter files are discovered recursively from `templates/base/`. Enabling `--search`
 overlays matching files from `templates/search/`; documentation pages come from
 `templates/docs/`. No source-file list needs maintaining in TypeScript.
+
+For npm packaging, the bundled `templates/base/tsconfig.json.template` is
+written as `tsconfig.json` in generated projects. Files from the installed
+`templates/` directory are read directly; existing consumer files are inspected
+before any changes are applied.
