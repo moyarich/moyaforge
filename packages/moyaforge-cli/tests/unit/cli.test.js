@@ -280,3 +280,14 @@ test("init configures only; create generates the app", async () => {
   expect(run(root, "create", "--no-install").status).toBe(0);
   expect(await read(root, "src/App.tsx")).toContain("<HashRouter>");
 });
+
+test("commander exposes subcommand help and validates template choices", async () => {
+  const root = await project();
+  const help = run(root, "create", "--help");
+  expect(help.status).toBe(0);
+  expect(help.stdout).toContain("--template");
+  expect(help.stdout).toContain("--dry-run");
+  const invalid = run(root, "create", "--template", "invalid", "--no-install");
+  expect(invalid.status).not.toBe(0);
+  expect(invalid.stderr).toContain("allowed choices");
+});
