@@ -29,6 +29,8 @@ test("host HashRouter preserves TOC fragment navigation and history", async ({
   await expect(second).toHaveAttribute("aria-current", "location");
 
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Second section" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Second section" }),
+  ).toBeVisible();
   await expect(second).toHaveAttribute("aria-current", "location");
 });

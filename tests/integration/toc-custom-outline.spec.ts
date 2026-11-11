@@ -11,6 +11,8 @@ test("consumer outline slot replaces the default outline without breaking anchor
 
   const link = custom.getByRole("link", { name: "Custom second section" });
   await link.click();
-  await expect(page).toHaveURL(/\/app\/toc-router\?custom-outline#second-section$/);
+  await expect(page).toHaveURL(
+    /\/app\/toc-router\?custom-outline#second-section$/,
+  );
   await expect(page.locator("#second-section")).toBeVisible();
 });

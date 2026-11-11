@@ -7,18 +7,22 @@ const headings = [
 
 /** Exercise the real layout with canonical heading metadata in a host router. */
 export function TocRouterFixture() {
-  const customOutline = new URLSearchParams(window.location.search).has("custom-outline");
+  const customOutline = new URLSearchParams(window.location.search).has(
+    "custom-outline",
+  );
   return (
     <DocsLayout
       pages={[]}
       toc={{ placement: "right", headings }}
-      outline={customOutline ? (
-        <aside data-custom-outline="">
-          <nav aria-label="Consumer outline">
-            <a href="#second-section">Custom second section</a>
-          </nav>
-        </aside>
-      ) : undefined}
+      outline={
+        customOutline ? (
+          <aside data-custom-outline="">
+            <nav aria-label="Consumer outline">
+              <a href="#second-section">Custom second section</a>
+            </nav>
+          </aside>
+        ) : undefined
+      }
     >
       <article>
         <h1>TOC router integration fixture</h1>
