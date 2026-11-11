@@ -29,7 +29,10 @@ try {
         temp,
       ],
       { cwd: root, encoding: "utf8" },
-    ).trim().split("\n").at(-1);
+    )
+      .trim()
+      .split("\n")
+      .at(-1);
     const tarball = join(temp, tarballName);
     const files = new Set(
       execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
@@ -64,7 +67,9 @@ try {
         `${manifest.name} tarball is missing declared files: ${missing.join(", ")}`,
       );
     }
-    console.log(`${manifest.name}: verified ${files.size} packaged files and public exports`);
+    console.log(
+      `${manifest.name}: verified ${files.size} packaged files and public exports`,
+    );
   }
 } finally {
   rmSync(temp, { recursive: true, force: true });
