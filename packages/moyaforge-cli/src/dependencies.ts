@@ -1,5 +1,52 @@
 import type { PackageManifest } from "./types.js";
 
+type Template = "docs" | "hybrid" | "existing";
+type Mode = "source" | "package";
+type Deps = Record<string, string>;
+
+const SCRIPT_ACTIONS = ["dev", "build", "preview"] as const;
+
+/** react and react-dom must stay on the same version line. */
+const PEER_PAIRS: Record<string, string> = {
+  react: "react-dom",
+  "react-dom": "react",
+};
+
+const EXISTING_SCRIPT_PREFIX = "docs:";
+const EXISTING_VITE_CONFIG = "--config moyaforge/vite.config.ts";
+const EXISTING_TSC_COMMAND = "tsc --noEmit -p moyaforge/tsconfig.json";
+const DEFAULT_TSC_COMMAND = "tsc --noEmit -p tsconfig.json";
+
+function viteCommand(action: string, config?: string): string {
+  // `vite` is the dev command; build/preview are subcommands.
+  const subcommand = action === "dev" ? "" : action;
+  return ["vite", subcommand, config].filter(Boolean).join(" ");
+}
+
+function addMissingScripts(
+  manifest: PackageManifest,
+  base: PackageManifest,
+  template: Template,
+): void {
+  const isExisting = template === "existing";
+  const prefix = isExisting ? EXISTING_SCRIPT_PREFIX : "";
+  const scripts = (manifest.scripts ??= {});
+
+  for (const action of SCRIPT_ACTIONS) {
+    scripts[`${prefix}${action}`] ??= isExisting
+      ? viteCommand(action, EXISTING_VITE_CONFIG)
+      : base.scripts?.[action] ?? viteCommand(action);
+  }
+
+  scripts[`${prefix}typecheck`] ??= isExisting
+    ? EXISTING_TSC_COMMAND
+    : base.scripts?.typecheck ?? DEFAULT_TSC_COMMAND;
+}
+
+function toSpecs(entries: Deps): string[] {
+  return Object.entries(entries).map(([name, version]) => `${name}@${version}`);
+}
+
 /**
  * Merge a template's required dependencies into a consumer package.
  * Existing versions, scripts and package metadata always take precedence.
@@ -7,47 +54,35 @@ import type { PackageManifest } from "./types.js";
 export function mergeDependencies(
   manifest: PackageManifest,
   base: PackageManifest,
-  template: "docs" | "hybrid" | "existing",
-  mode: "source" | "package",
+  template: Template,
+  mode: Mode,
   search: boolean,
 ) {
-  const prefix = template === "existing" ? "docs:" : "";
-  const config = template === "existing" ? " --config moyaforge/vite.config.ts" : "";
-  manifest.scripts ??= {};
-  for (const action of ["dev", "build", "preview"])
-    manifest.scripts[`${prefix}${action}`] ??=
-      template === "existing"
-        ? `vite ${action === "dev" ? "" : action}${config}`.trim()
-        : base.scripts?.[action] ?? `vite ${action === "dev" ? "" : action}`.trim();
-  manifest.scripts[`${prefix}typecheck`] ??=
-    template === "existing"
-      ? "tsc --noEmit -p moyaforge/tsconfig.json"
-      : base.scripts?.typecheck ?? "tsc --noEmit -p tsconfig.json";
+  addMissingScripts(manifest, base, template);
 
-  const runtime = {
+  const runtime: Deps = {
     ...base.dependencies,
-    ...(mode === "package" ? { "@moyarich/moyaforge": "^0.1.0" } : {}),
-    ...(search ? { "@moyarich/moyaforge-search-sqlite": "^0.1.0" } : {}),
+    ...(mode === "package" && { "@moyarich/moyaforge": "^0.1.0" }),
+    ...(search && { "@moyarich/moyaforge-search-sqlite": "^0.1.0" }),
   };
-  const development = { ...base.devDependencies };
-  manifest.dependencies ??= {};
-  manifest.devDependencies ??= {};
+  const development: Deps = { ...base.devDependencies };
 
-  for (const [entries, key] of [
-    [runtime, "dependencies"],
-    [development, "devDependencies"],
-  ] as const) {
+  const dependencies = (manifest.dependencies ??= {});
+  const devDependencies = (manifest.devDependencies ??= {});
+
+  const installed = (name: string): string | undefined =>
+    dependencies[name] ?? devDependencies[name];
+
+  const addMissing = (target: Deps, entries: Deps) => {
     for (const [name, version] of Object.entries(entries)) {
-      if (manifest.dependencies[name] || manifest.devDependencies[name]) continue;
-      const counterpart = name === "react-dom" ? "react"
-        : name === "react" ? "react-dom" : null;
-      manifest[key]![name] = counterpart
-        ? manifest.dependencies[counterpart] ?? manifest.devDependencies[counterpart] ?? version
-        : version;
+      if (installed(name)) continue;
+      const peer = PEER_PAIRS[name];
+      target[name] = (peer && installed(peer)) || version;
     }
-  }
+  };
 
-  const specs = (entries: Record<string, string> | undefined) =>
-    Object.entries(entries ?? {}).map(([name, version]) => `${name}@${version}`);
-  return { manifest, dependencies: [...specs(runtime), ...specs(development)] };
+  addMissing(dependencies, runtime);
+  addMissing(devDependencies, development);
+
+  return { manifest, dependencies: [...toSpecs(runtime), ...toSpecs(development)] };
 }
