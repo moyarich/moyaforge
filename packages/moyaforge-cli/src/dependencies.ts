@@ -4,6 +4,11 @@ type Template = "docs" | "hybrid" | "existing";
 type Mode = "source" | "package";
 type Deps = Record<string, string>;
 
+const MOYAFORGE_DEPENDENCIES = {
+  "@moyarich/moyaforge": "^0.1.0",
+  "@moyarich/moyaforge-search-sqlite": "^0.1.0",
+} as const;
+
 const SCRIPT_ACTIONS = ["dev", "build", "preview"] as const;
 
 /** react and react-dom must stay on the same version line. */
@@ -62,8 +67,8 @@ export function mergeDependencies(
 
   const runtime: Deps = {
     ...base.dependencies,
-    ...(mode === "package" && { "@moyarich/moyaforge": "^0.1.0" }),
-    ...(search && { "@moyarich/moyaforge-search-sqlite": "^0.1.0" }),
+    ...(mode === "package" && { "@moyarich/moyaforge": MOYAFORGE_DEPENDENCIES["@moyarich/moyaforge"] }),
+    ...(search && { "@moyarich/moyaforge-search-sqlite": MOYAFORGE_DEPENDENCIES["@moyarich/moyaforge-search-sqlite"] }),
   };
   const development: Deps = { ...base.devDependencies };
 
