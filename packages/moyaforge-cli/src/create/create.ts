@@ -7,7 +7,7 @@ export async function createProject(options: InstallOptions): Promise<void> {
   const project = await planProject({
     root, registry, directory, mode: options.mode, template: options.template, search: options.search,
   });
-  const components = await planItems({ root, registry, directory, names: ["docs-shell", "code-group"] });
+  const components = await planItems({ root, registry, directory, names: ["docs-shell", "code-group", ...(options.search ? ["search"] : [])] });
   await executePlan({
     files: [...components.files, ...project.files],
     dependencies: project.dependencies,
