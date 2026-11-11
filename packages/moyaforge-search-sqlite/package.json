@@ -74,7 +74,7 @@
     "url": "https://github.com/moyarich/moyaforge/issues"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=26.0.0"
   },
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts"
