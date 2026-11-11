@@ -34,6 +34,30 @@ npm run test:e2e
 
 Playwright browser tests require Chromium to be installed, for example `npx playwright install chromium`.
 
+## CLI starter templates
+
+The CLI discovers files recursively under
+`packages/moyaforge-cli/templates/base/`; `templates/search/` overlays
+matching paths when `create --search` is selected. Pages under
+`templates/docs/` are generated into the consumer's `docs/` folder.
+
+Do not maintain a file inventory in `scaffold.ts`. Add starter files directly
+to the appropriate template directory. `base/package.json` provides the
+default scripts and dependencies; `base/tsconfig.json.template` is emitted as
+`tsconfig.json` to keep the packaged CLI compliant with npm package lint.
+
+The registry-installed UI components are not duplicated in the templates.
+`create` uses `planComponentInstallation()` to install `docs-shell` and
+`code-group`, plus `search` when search is enabled. `SearchPanel.tsx` is
+the app-specific connection to SQLite and MDX routes, not another search input.
+Inspect consumer files before changing them; bundled starter files are required
+and read directly.
+
+```sh
+npm run build --workspace @moyarich/moyaforge-cli
+npm test --workspace @moyarich/moyaforge-cli
+```
+
 ## Authoring documentation links
 
 The playground reads the authored-content registry from `apps/playground/registry.config.ts`. This is separate from the installable component registry described above. The MDX link transform runs at **build time**, using the registry's source directories and discovered public routes; the browser router determines the final URL format.
