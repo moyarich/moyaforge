@@ -9,7 +9,7 @@ import { runVite } from "./vite.js";
 /** Configure CLI commands without coupling argument parsing to installation. */
 export async function main(argv: string[] = process.argv) {
   const metadata = JSON.parse(
-    (await readOptional(new URL("../../package.json", import.meta.url)))!,
+    (await readOptional(new URL("../package.json", import.meta.url)))!,
   );
   const program = new Command()
     .name("moyaforge")
