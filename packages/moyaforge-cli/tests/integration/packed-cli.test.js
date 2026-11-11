@@ -34,6 +34,8 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     expect(
       packed.files.some((file) => file.path === "dist/registry.d.ts"),
     ).toBe(true);
+    expect(packed.files.some(file => file.path === "templates/base/package.json")).toBe(true);
+    expect(packed.files.some(file => file.path === "templates/search/vite.config.ts")).toBe(true);
     run("tar", ["-xzf", join(temporary, packed.filename), "-C", temporary]);
     expect(
       packed.files.some((file) => file.path === "dist/cli.js"),
