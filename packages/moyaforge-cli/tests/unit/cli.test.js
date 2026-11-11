@@ -304,7 +304,7 @@ test("Commander root assembles fresh, independently defined commands", async () 
 });
 
 test("create uses the packaged manifest template and enables only selected features", async () => {
-  const base = JSON.parse(await readFile(resolve(repository, "packages/moyaforge-cli/templates/package.json"), "utf8"));
+  const base = JSON.parse(await readFile(resolve(repository, "packages/moyaforge-cli/templates/base/package.json"), "utf8"));
   const root = await project();
   expect(run(root, "create", "--no-install").status).toBe(0);
   const standard = JSON.parse(await read(root, "package.json"));
