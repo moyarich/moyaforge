@@ -7,33 +7,51 @@ description: Build a documentation site with MoyaForge.
 
 # Getting started
 
-MoyaForge brings your content, navigation, and React components together. Write in Markdown or MDX, add the packages you need, and build a documentation site that feels like your own.
+MoyaForge creates React/Vite/MDX documentation sites with editable UI components. Your documentation and generated application files belong to your own repository.
 
-## Install the packages
+## Create a documentation site
 
-Start with a React and Vite application. Install the framework and MDX compiler; add SQLite search when your site needs it.
+In the directory where you want the application:
 
 ```sh
-npm install @moyarich/moyaforge @moyarich/moyaforge-mdx
-npm install react-router-dom @mdx-js/react
-npm install -D @mdx-js/rollup
-# Optional full-text search
-npm install @moyarich/moyaforge-search-sqlite
+npx @moyarich/moyaforge-cli@latest create
+npm run dev
 ```
 
-## Choose your building blocks
+The CLI generates an application, starter pages under `docs/`, and a `package.json`. It installs the `docs-shell` and `code-group` components from the MoyaForge registry into `src/components/ui/`, along with their required source files.
 
-| Package                             | What it provides                                                    |
-| ----------------------------------- | ------------------------------------------------------------------- |
-| `@moyarich/moyaforge`               | React documentation layouts, routing, navigation, and components    |
-| `@moyarich/moyaforge-mdx`           | MDX compiler conventions, content discovery, metadata, and headings |
-| `@moyarich/moyaforge-search-sqlite` | Standalone SQLite indexing, queries, and a Vite adapter             |
+To choose an alternative starter:
 
-The MDX and search packages work independently. MoyaForge connects them into a documentation experience.
+```sh
+# Documentation with an interactive playground route
+npx @moyarich/moyaforge-cli@latest create --template hybrid
+
+# Use the published MoyaForge package where applicable
+npx @moyarich/moyaforge-cli@latest create --mode package
+
+# Add SQLite-backed documentation search
+npx @moyarich/moyaforge-cli@latest create --search
+```
+
+Use `--template existing` to generate an isolated `moyaforge/` application within an existing React project, with `docs:*` scripts rather than replacing the host's scripts.
+
+Use `--no-install` to skip npm installation, `--dry-run` to preview changes, and `--overwrite` only when you intend to replace existing generated files.
+
+## Add a component
+
+You can install additional editable components in an existing project:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init
+npx @moyarich/moyaforge-cli@latest list
+npx @moyarich/moyaforge-cli@latest add code-block
+```
+
+`init` creates only the component registry configuration. `create` generates the documentation application. Installed components import their own CSS.
 
 ## Create your first page
 
-Create `docs/page.mdx`. Frontmatter controls the title, navigation label, and order. Headings become anchors and appear in the page outline.
+Edit `docs/page.mdx`. Frontmatter controls page metadata, while headings provide anchors for navigation.
 
 ```md
 ---
@@ -48,33 +66,13 @@ Your documentation starts here.
 
 ## Your first guide
 
-Write Markdown, or use React components in MDX.
+Write Markdown or use React components in MDX.
 ```
 
-## Connect your application
+## How the generated app works
 
-This playground uses the same public components available to your app. It supplies the generated page inventory and renders content inside the shared documentation shell.
+The starter uses React Router's `HashRouter` for static hosting, the `virtual:moyaforge-mdx/metadata` and `virtual:moyaforge-mdx/lazy-registry` modules for page discovery and loading, and the registry-installed `DocsShell` for layout.
 
-```jsx
-import { MoyaForgeRouter, DocumentationSite } from "@moyarich/moyaforge";
-import "@moyarich/moyaforge/components.css";
-import { routes } from "virtual:moyaforge-mdx/metadata";
+The `--search` option additionally installs the existing `Search` UI component and configures the independent `@moyarich/moyaforge-search-sqlite` adapter. The starter's `SearchPanel` connects the search client to documentation routes; it does not duplicate the search input UI.
 
-export function App() {
-  return (
-    <MoyaForgeRouter pages={routes} mode="hash">
-      <DocumentationSite title="My documentation">
-        <ContentPage />
-      </DocumentationSite>
-    </MoyaForgeRouter>
-  );
-}
-```
-
-`ContentPage` is your content renderer. The [routing guide](./routing) shows how to connect the lazy MDX registry.
-
-> You are looking at a working example: the navigation, search results, and page outline are powered by these packages.
-
-## Keep exploring
-
-Learn about [routing](./routing), [MDX setup](./mdx), and [SQLite search](./search). Visit the [component examples](./examples) to see MDX and React working together.
+For generated-file details, see the [CLI guide](../packages/moyaforge-cli/README.md). Continue with [routing](./routing/page.mdx), [MDX](./mdx/page.mdx), [search](./search/page.mdx), and [examples](./examples/page.mdx).
