@@ -293,7 +293,7 @@ test("commander exposes subcommand help and validates template choices", async (
 });
 
 test("Commander root assembles fresh, independently defined commands", async () => {
-  const { createRootCliCommand } = await import("../../src/cli/cli.ts");
+  const { createRootCliCommand } = await import("../../src/bin/cli.ts");
   const one = createRootCliCommand();
   const two = createRootCliCommand();
   expect(one).not.toBe(two);

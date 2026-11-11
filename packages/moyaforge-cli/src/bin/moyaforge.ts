@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { main } from "../cli/cli.js";
+import { main } from "./cli.js";
 
 /** Run the CLI and report failures using the command's standard exit code. */
 main().catch((error: unknown) => {
