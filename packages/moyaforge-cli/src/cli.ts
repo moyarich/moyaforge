@@ -20,7 +20,7 @@ interface InstallOptions {
   dryRun?: boolean;
   diff?: boolean;
   overwrite?: boolean;
-  noInstall?: boolean;
+  install?: boolean;
 }
 
 async function runVite(command: "dev" | "build" | "preview", args: string[]) {
@@ -113,7 +113,7 @@ async function runInstall(command: "init" | "create" | "add" | "list", values: I
   if (
     !existsSync(resolve(root, "package.json")) &&
     !["init", "create"].includes(command) &&
-    !values.noInstall
+    !values.install === false
   )
     throw Error(
       "No package.json found. Run init first, or use --no-install to copy source only.",
