@@ -1,0 +1,20 @@
+---
+title: MoyaForge CLI
+label: CLI
+description: Create documentation applications and install editable MoyaForge UI components.
+---
+
+# MoyaForge CLI
+
+`@moyarich/moyaforge-cli` provides the `moyaforge` executable for generating documentation projects and installing UI component source. It requires Node.js 22.12+ and npm.
+
+```sh
+npx @moyarich/moyaforge-cli@latest create
+npm run dev
+```
+
+Use **create** to scaffold an application, **init** to configure only the registry, **add** to install components, and **list** to inspect registry entries. The **dev**, **build**, and **preview** commands invoke the consumer project's Vite installation.
+
+The starter uses React, Vite, MDX, and a hash router suitable for static hosting. UI components are copied into the consumer repository and can be edited locally. The CLI does not require the framework UI package to install component source.
+
+Continue with [project creation](./01-create/page.mdx), [components and registry options](./02-components/page.mdx), or [development and packaging](./03-development/page.mdx).
