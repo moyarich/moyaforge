@@ -23,7 +23,7 @@ export default defineConfig({
   ],
   build: {
     ssr: true,
-    target: "node22",
+    target: "node26",
     minify: false,
     copyPublicDir: false,
     lib: {
