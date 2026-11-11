@@ -30,7 +30,8 @@
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "src/search"
+    "src/search/search-client.js",
+    "src/search/search-client.d.ts"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
