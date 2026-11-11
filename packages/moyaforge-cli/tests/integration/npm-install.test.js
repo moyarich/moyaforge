@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { mkdtemp, mkdir, readFile, writeFile, rm, stat } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, rm, lstat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -44,7 +44,7 @@ test("npm installs the packed CLI and add copy-button installs registry source",
     expect(pack[0].files.some(file => file.path === "dist/registry.js")).toBe(true);
 
     run("npm", [
-      "install", "--no-save", "--ignore-scripts", "--offline",
+      "install", "--no-save", "--ignore-scripts",
       "--no-audit", "--no-fund", "--package-lock=false", archive,
     ], consumer);
 
@@ -54,7 +54,8 @@ test("npm installs the packed CLI and add copy-button installs registry source",
     expect(installed.name).toBe("@moyarich/moyaforge-cli");
     expect(installed.bin.moyaforge).toBe("./dist/bin/moyaforge.js");
     const binary = join(consumer, "node_modules/.bin", process.platform === "win32" ? "moyaforge.cmd" : "moyaforge");
-    expect((await stat(binary)).isFile() || (await stat(binary)).isSymbolicLink()).toBe(true);
+    const binaryInfo = await lstat(binary);
+    expect(binaryInfo.isFile() || binaryInfo.isSymbolicLink()).toBe(true);
 
     // Invoke the package's actual npm-installed executable, not the source tree.
     run("npm", [
