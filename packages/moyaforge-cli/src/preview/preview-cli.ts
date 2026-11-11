@@ -8,7 +8,7 @@ export function previewCommand(): Command {
     .argument("[args...]", "Vite arguments")
     .option("--cwd <path>", "Consumer project directory");
   return cmd.action(async () => {
-    const argv = cmd.parent?.rawArgs ?? process.argv;
+    const argv = process.argv;
     const at = argv.indexOf("preview", 2);
     await preview(argv.slice(at + 1));
   });
