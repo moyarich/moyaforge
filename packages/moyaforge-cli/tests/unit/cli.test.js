@@ -291,3 +291,14 @@ test("commander exposes subcommand help and validates template choices", async (
   expect(invalid.status).not.toBe(0);
   expect(invalid.stderr).toContain("allowed choices");
 });
+
+test("Commander root assembles fresh, independently defined commands", async () => {
+  const { createRootCliCommand } = await import("../../src/cli/cli.ts");
+  const one = createRootCliCommand();
+  const two = createRootCliCommand();
+  expect(one).not.toBe(two);
+  expect(one.commands.map(command => command.name())).toEqual([
+    "init", "create", "add", "list", "dev", "build", "preview",
+  ]);
+  expect(one.commands[2]).not.toBe(two.commands[2]);
+});

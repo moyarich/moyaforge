@@ -36,7 +36,7 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     ).toBe(true);
     run("tar", ["-xzf", join(temporary, packed.filename), "-C", temporary]);
     expect(
-      packed.files.some((file) => file.path === "dist/commands/usage.js"),
+      packed.files.some((file) => file.path === "dist/cli.js"),
     ).toBe(true);
     const cli = join(temporary, "package/dist/bin/moyaforge.js");
     const manifest = JSON.parse(

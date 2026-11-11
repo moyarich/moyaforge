@@ -31,9 +31,6 @@ export default defineConfig({
         "bin/moyaforge": fileURLToPath(
           new URL("./src/bin/moyaforge.ts", import.meta.url),
         ),
-        "commands/usage": fileURLToPath(
-          new URL("./src/commands/usage.ts", import.meta.url),
-        ),
         cli: fileURLToPath(new URL("./src/cli/cli.ts", import.meta.url)),
         registry: fileURLToPath(new URL("./src/registry.ts", import.meta.url)),
         scaffold: fileURLToPath(new URL("./src/scaffold.ts", import.meta.url)),
