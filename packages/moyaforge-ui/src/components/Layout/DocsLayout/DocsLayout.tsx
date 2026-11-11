@@ -70,7 +70,9 @@ function HeadingLinks({
   const hash = typeof window === "undefined" ? "" : window.location.hash;
   const nestedHash = hash.indexOf("#", 1);
   const routeHash = hash.startsWith("#/")
-    ? nestedHash < 0 ? hash : hash.slice(0, nestedHash)
+    ? nestedHash < 0
+      ? hash
+      : hash.slice(0, nestedHash)
     : "";
   const headingHref = (id: string) =>
     routeHash ? `${routeHash}#${id}` : `#${id}`;
@@ -117,7 +119,9 @@ export function DocsLayout({
   editLink,
 }: DocsLayoutProps) {
   const [activeId, setActiveId] = useState(() =>
-    typeof window === "undefined" ? "" : headingIdFromHash(window.location.hash),
+    typeof window === "undefined"
+      ? ""
+      : headingIdFromHash(window.location.hash),
   );
   useEffect(() => {
     const update = () => setActiveId(headingIdFromHash(window.location.hash));
@@ -152,7 +156,10 @@ export function DocsLayout({
       const hashId = headingIdFromHash(window.location.hash);
       if (hashId && headingIds.includes(hashId)) {
         const target = document.getElementById(hashId);
-        if (target && target.getBoundingClientRect().top <= window.innerHeight) {
+        if (
+          target &&
+          target.getBoundingClientRect().top <= window.innerHeight
+        ) {
           setActiveId(hashId);
           return;
         }

@@ -5,15 +5,18 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./registry-routes": {
       "types": "./dist/registry-routes.d.ts",
-      "import": "./dist/registry-routes.js"
+      "import": "./dist/registry-routes.js",
+      "default": "./dist/registry-routes.js"
     },
     "./headless": {
       "types": "./dist/headless.d.ts",
-      "import": "./dist/headless.js"
+      "import": "./dist/headless.js",
+      "default": "./dist/headless.js"
     }
   },
   "files": [
@@ -33,7 +36,7 @@
     "react-router-dom": "^7.18.4"
   },
   "scripts": {
-    "build": "npm run build --workspace @moyarich/moyaforge-mdx && node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
+    "build": "npm run build --workspace @moyarich/moyaforge-mdx && node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
     "typecheck": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json --noEmit",
     "test": "npm run build && vitest run --exclude tests/integration/docs-routes.test.js --exclude tests/unit/mdx.test.js --exclude tests/unit/sidebar-composition.test.js --exclude tests/unit/toc-render.test.js",
     "prepack": "npm run build"
@@ -67,5 +70,7 @@
   },
   "engines": {
     "node": ">=22.12.0"
-  }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts"
 }

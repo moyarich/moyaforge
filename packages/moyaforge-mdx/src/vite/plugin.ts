@@ -1,4 +1,7 @@
-import { createStaticPublication, type StaticPublicationOptions } from "../content/static-publication.js";
+import {
+  createStaticPublication,
+  type StaticPublicationOptions,
+} from "../content/static-publication.js";
 import { createContentManifest } from "../content/manifest.js";
 import {
   discoverContent,
@@ -142,22 +145,47 @@ export function mdxRegistryPlugin({
       for (const page of pages.routes) {
         if (!published.has(page.path)) continue;
         const source = registry.sources[page.source];
-        const raw = await readFile(resolve(appRoot, source.base, page.file), "utf8");
+        const raw = await readFile(
+          resolve(appRoot, source.base, page.file),
+          "utf8",
+        );
         // Retain MDX syntax with its proper extension; omit YAML frontmatter.
-        const markdown = raw.replace(/^\uFEFF?---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)(?:\r?\n|$)/, "");
+        const markdown = raw.replace(
+          /^\uFEFF?---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)(?:\r?\n|$)/,
+          "",
+        );
         textByPath.set(page.path, markdown);
         const suffix = page.file.endsWith(".mdx") ? ".mdx" : ".md";
         const outputName = "markdown/" + page.path.replace(/^\/+/, "") + suffix;
-        this.emitFile({ type: "asset", fileName: outputName, source: markdown });
+        this.emitFile({
+          type: "asset",
+          fileName: outputName,
+          source: markdown,
+        });
       }
-      const bodyByUrl = new Map(output.metadata.map((page) => [page.url, textByPath.get(page.path) ?? ""]));
+      const bodyByUrl = new Map(
+        output.metadata.map((page) => [
+          page.url,
+          textByPath.get(page.path) ?? "",
+        ]),
+      );
       for (const [fileName, source] of [
         ["llms.txt", output.llmsTxt],
-        ["search-index.json", JSON.stringify(output.searchIndex.map((entry) => ({
-          ...entry,
-          content: bodyByUrl.get(entry.url) ?? "",
-        })), null, 2) + "\n"],
-        ["content-metadata.json", JSON.stringify(output.metadata, null, 2) + "\n"],
+        [
+          "search-index.json",
+          JSON.stringify(
+            output.searchIndex.map((entry) => ({
+              ...entry,
+              content: bodyByUrl.get(entry.url) ?? "",
+            })),
+            null,
+            2,
+          ) + "\n",
+        ],
+        [
+          "content-metadata.json",
+          JSON.stringify(output.metadata, null, 2) + "\n",
+        ],
       ] as const) {
         this.emitFile({ type: "asset", fileName, source });
       }

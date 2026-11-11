@@ -12,23 +12,28 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./vite": {
       "types": "./dist/vite/plugin.d.ts",
-      "import": "./dist/vite/plugin.js"
+      "import": "./dist/vite/plugin.js",
+      "default": "./dist/vite/plugin.js"
     },
     "./source-files": {
       "types": "./dist/content/source-files.d.ts",
-      "import": "./dist/content/source-files.js"
+      "import": "./dist/content/source-files.js",
+      "default": "./dist/content/source-files.js"
     },
     "./toc": {
       "types": "./dist/navigation/toc.d.ts",
-      "import": "./dist/navigation/toc.js"
+      "import": "./dist/navigation/toc.js",
+      "default": "./dist/navigation/toc.js"
     },
     "./navigation": {
       "types": "./dist/navigation/tree.d.ts",
-      "import": "./dist/navigation/tree.js"
+      "import": "./dist/navigation/tree.js",
+      "default": "./dist/navigation/tree.js"
     }
   },
   "files": [
@@ -90,5 +95,7 @@
   },
   "engines": {
     "node": ">=22.12.0"
-  }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts"
 }

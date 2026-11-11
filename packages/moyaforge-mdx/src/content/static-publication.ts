@@ -18,7 +18,9 @@ export function createStaticPublication(
   if (!["https:", "http:"].includes(origin.protocol))
     throw new Error("Static publication origin must be an HTTP(S) URL");
   if (origin.search || origin.hash)
-    throw new Error("Static publication origin must not include a query or fragment");
+    throw new Error(
+      "Static publication origin must not include a query or fragment",
+    );
   const base = origin.href.replace(/\/$/, "");
   const selected = manifest.filter(
     (page) =>
@@ -28,7 +30,14 @@ export function createStaticPublication(
   const metadata = createStaticPageMetadata(selected);
   const pages = metadata.map((page) => ({
     ...page,
-    url: base + "/" + page.path.replace(/^\/+/, "").split("/").map(encodeURIComponent).join("/"),
+    url:
+      base +
+      "/" +
+      page.path
+        .replace(/^\/+/, "")
+        .split("/")
+        .map(encodeURIComponent)
+        .join("/"),
   }));
   const searchIndex = pages.map((page) => ({
     url: page.url,
@@ -36,14 +45,25 @@ export function createStaticPublication(
     description: page.description ?? "",
     headings: page.headings,
   }));
-  const title = (options.title ?? "Documentation").replace(/[\r\n]+/g, " ").trim();
+  const title = (options.title ?? "Documentation")
+    .replace(/[\r\n]+/g, " ")
+    .trim();
   const llmsTxt = [
     "# " + title,
     "",
     ...pages.map((page) => {
       const label = page.title.replace(/[\r\n]+/g, " ").replace(/[\[\]]/g, "");
-      const description = (page.description ?? "").replace(/[\r\n]+/g, " ").trim();
-      return "- [" + label + "](" + page.url + ")" + (description ? ": " + description : "");
+      const description = (page.description ?? "")
+        .replace(/[\r\n]+/g, " ")
+        .trim();
+      return (
+        "- [" +
+        label +
+        "](" +
+        page.url +
+        ")" +
+        (description ? ": " + description : "")
+      );
     }),
     "",
   ].join("\n");

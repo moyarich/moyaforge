@@ -13,7 +13,9 @@ test("TOC links support keyboard navigation and keep the destination accessible"
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/app\/toc-router#second-section$/);
   await expect(second).toHaveAttribute("aria-current", "location");
-  await expect(page.getByRole("heading", { name: "Second section" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Second section" }),
+  ).toBeVisible();
 
   await page.reload();
   await expect(page).toHaveURL(/\/app\/toc-router#second-section$/);
