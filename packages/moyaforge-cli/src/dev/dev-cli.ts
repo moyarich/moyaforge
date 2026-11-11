@@ -8,7 +8,7 @@ export function devCommand(): Command {
     .argument("[args...]", "Vite arguments")
     .option("--cwd <path>", "Consumer project directory");
   return cmd.action(async () => {
-    const argv = cmd.parent?.rawArgs ?? process.argv;
+    const argv = process.argv;
     const at = argv.indexOf("dev", 2);
     await dev(argv.slice(at + 1));
   });
