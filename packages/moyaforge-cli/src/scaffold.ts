@@ -1,6 +1,7 @@
 import type { InstallPlan, PlannedFile, PackageManifest } from "./types.js";
-import { readFile } from "node:fs/promises";
-import { resolve, relative } from "node:path";
+import { readdir, readFile } from "node:fs/promises";
+import { resolve, relative, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { defaultDirectory, defaultRegistry, readOptional, safeDestination, within } from "./registry.js";
 import { mergeDependencies } from "./dependencies.js";
 
@@ -13,16 +14,16 @@ export interface ScaffoldOptions {
   registry?: string;
 }
 
-const STARTER_FILES = [
-  "index.html", "registry.config.ts", "tsconfig.json", "src/main.tsx",
-  "src/App.tsx", "src/mdx.d.ts", "src/styles.css",
-  "src/SearchPanel.tsx", "src/Playground.tsx", "vite.config.ts",
-] as const;
-const DOC_PAGES = ["docs/page.mdx", "docs/guide/page.mdx"] as const;
-
+const templates = fileURLToPath(new URL("../templates/", import.meta.url));
 const json = (value: unknown) => JSON.stringify(value, null, 2) + "\n";
-const readTemplate = (name: string) =>
-  readFile(new URL(`../templates/${name}`, import.meta.url), "utf8");
+
+async function* filesIn(directory: string): AsyncGenerator<string> {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) yield* filesIn(path);
+    else if (entry.isFile()) yield path;
+  }
+}
 
 /** Plan changes without writing; existing consumer files are kept unless merged. */
 export async function planProject({
@@ -41,30 +42,35 @@ export async function planProject({
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
     __PLAYGROUND_ENABLED__: String(template === "hybrid"),
   };
+
   const files: PlannedFile[] = [];
   const add = async (path: string, content: string, merge = false) => {
     const destination = await safeDestination(root, path);
-    files.push({
-      path: destination, content, merge,
-      previous: await readOptional(destination),
-    });
+    files.push({ path: destination, content, merge, previous: await readOptional(destination) });
   };
 
-  for (const name of STARTER_FILES) {
-    const source = name === "tsconfig.json" ? "tsconfig.template.json"
-      : search && name === "vite.config.ts" ? "vite.search.config.ts"
-      : search && name === "src/SearchPanel.tsx" ? "src/SearchPanel.search.tsx"
-      : name;
-    let content = await readTemplate(source);
+  // Optional template directories overlay files at the same relative path.
+  const selected = new Map<string, string>();
+  for (const layer of ["base", ...(search ? ["search"] : [])]) {
+    const folder = join(templates, layer);
+    for await (const file of filesIn(folder)) {
+      const name = relative(folder, file);
+      if (name !== "package.json") selected.set(name, await readFile(file, "utf8"));
+    }
+  }
+  for (const [name, source] of selected) {
+    let content = source;
     for (const [token, value] of Object.entries(tokens))
       content = content.replaceAll(token, value);
     await add(resolve(appRoot, name), content);
   }
-  for (const name of DOC_PAGES)
-    await add(resolve(root, name), await readTemplate(name));
+
+  const docsFolder = join(templates, "docs");
+  for await (const file of filesIn(docsFolder))
+    await add(resolve(root, "docs", relative(docsFolder, file)), await readFile(file, "utf8"));
 
   const manifestPath = resolve(root, "package.json");
-  const base: PackageManifest = JSON.parse(await readTemplate("package.json"));
+  const base: PackageManifest = JSON.parse(await readFile(join(templates, "base/package.json"), "utf8"));
   const previous = await readOptional(manifestPath);
   const manifest: PackageManifest = previous ? JSON.parse(previous)
     : template === "existing"
@@ -83,10 +89,7 @@ export async function planConfiguration({
 }: Pick<ScaffoldOptions, "root" | "registry" | "directory">): Promise<InstallPlan> {
   const path = await safeDestination(root, resolve(root, "moyaforge.components.json"));
   return {
-    files: [{
-      path, content: json({ registry, directory }),
-      previous: await readOptional(path),
-    }],
+    files: [{ path, content: json({ registry, directory }), previous: await readOptional(path) }],
     dependencies: [],
   };
 }
