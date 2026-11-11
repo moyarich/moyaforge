@@ -34,11 +34,17 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     expect(
       packed.files.some((file) => file.path === "dist/registry.d.ts"),
     ).toBe(true);
+    expect(packed.files.some(file => file.path === "templates/base/package.json")).toBe(true);
+    expect(packed.files.some(file => file.path === "templates/search/vite.config.ts")).toBe(true);
     run("tar", ["-xzf", join(temporary, packed.filename), "-C", temporary]);
     expect(
-      packed.files.some((file) => file.path === "dist/commands/usage.js"),
+      packed.files.some((file) => file.path === "dist/cli.js"),
     ).toBe(true);
-    const cli = join(temporary, "package/dist/bin/moyaforge.js");
+    const consumer = join(temporary, "consumer");
+    await mkdir(consumer);
+    run("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund",
+      "--package-lock=false", join(temporary, packed.filename)], consumer);
+    const cli = join(consumer, "node_modules/@moyarich/moyaforge-cli/dist/bin/moyaforge.js");
     const manifest = JSON.parse(
       await readFile(join(packageRoot, "package.json"), "utf8"),
     );
@@ -48,11 +54,9 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     expect(run(process.execPath, [cli, "--version"]).trim()).toBe(
       manifest.version,
     );
-    const consumer = join(temporary, "consumer");
-    await mkdir(consumer);
     run(process.execPath, [
       cli,
-      "init",
+      "create",
       "--cwd",
       consumer,
       "--registry",
@@ -67,9 +71,9 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     );
     expect((await stat(cli)).mode & 0o111).not.toBe(0);
     const api = await import(
-      pathToFileURL(join(temporary, "package/dist/registry.js")).href
+      pathToFileURL(join(consumer, "node_modules/@moyarich/moyaforge-cli/dist/registry.js")).href
     );
-    expect(typeof api.planItems).toBe("function");
+    expect(typeof api.planComponentInstallation).toBe("function");
   } finally {
     await rm(temporary, { recursive: true, force: true });
   }

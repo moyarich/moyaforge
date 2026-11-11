@@ -10,7 +10,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
-import { planItems, resolveItems } from "../../src/registry.ts";
+import { planComponentInstallation, resolveItems } from "../../src/registry.ts";
 
 const repository = resolve(import.meta.dirname, "../../../..");
 const cli = resolve(import.meta.dirname, "../../dist/bin/moyaforge.js");
@@ -129,8 +129,11 @@ test("init produces source/package/hybrid starters and preserves existing app co
     ).status,
   ).toBe(0);
   const app = await read(packageRoot, "src/App.tsx");
+  const searchPanel = await read(packageRoot, "src/SearchPanel.tsx");
   expect(app).toContain('path="/playground"');
-  expect(app).toContain("searchPages(event.currentTarget.value)");
+  expect(searchPanel).toContain('import { Search } from "./components/ui/Search/Search.js"');
+  expect(await read(packageRoot, "src/components/ui/Search/Search.tsx")).toContain("data-moyaforge-search");
+  expect(searchPanel).toContain("searchPages(event.currentTarget.value)");
   expect(app).toContain("<SearchPanel />");
   expect(app).toContain("<HashRouter>");
   expect(app).toContain("pages={pages}");
@@ -170,7 +173,7 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
   await mkdir(join(root, "src"));
   await symlink(outside, join(root, "src/components"), "dir");
   await expect(
-    planItems({ root, names: ["code-block"], registry: repository }),
+    planComponentInstallation({ root, names: ["code-block"], registry: repository }),
   ).rejects.toThrow(/symlink/);
   const malicious = await project();
   await writeFile(
@@ -191,13 +194,13 @@ test("registry targets cannot traverse directories or follow consumer symlinks",
     }),
   );
   await expect(
-    planItems({ root: outside, names: ["bad"], registry: malicious }),
+    planComponentInstallation({ root: outside, names: ["bad"], registry: malicious }),
   ).rejects.toThrow(/Invalid component target/);
 });
 
 test("registry targets install directly under the configured component directory", async () => {
   const root = await project();
-  const plan = await planItems({
+  const plan = await planComponentInstallation({
     root,
     names: ["code-block"],
     registry: repository,
@@ -245,7 +248,7 @@ test("monaco installation reports setup notes without copying README files", asy
 
 test("shared registry utilities remain siblings of UI files, including custom destinations", async () => {
   const root = await project();
-  const plan = await planItems({
+  const plan = await planComponentInstallation({
     root,
     names: ["docs-layout"],
     registry: repository,
@@ -253,7 +256,7 @@ test("shared registry utilities remain siblings of UI files, including custom de
   expect(
     plan.files.some((file) => file.path.includes("src/components/utils/")),
   ).toBe(true);
-  const custom = await planItems({
+  const custom = await planComponentInstallation({
     root,
     names: ["docs-layout"],
     registry: repository,
@@ -269,4 +272,61 @@ test("shared registry utilities remain siblings of UI files, including custom de
       file.path.includes("src/custom-components/ui/"),
     ),
   ).toBe(true);
+});
+
+test("init configures only; create generates the app", async () => {
+  const root = await project();
+  expect(run(root, "init", "--no-install").status).toBe(0);
+  expect(JSON.parse(await read(root, "moyaforge.components.json")).directory).toBe("src/components/ui");
+  await expect(read(root, "src/App.tsx")).rejects.toThrow();
+  expect(run(root, "create", "--no-install").status).toBe(0);
+  expect(await read(root, "src/App.tsx")).toContain("<HashRouter>");
+});
+
+test("commander exposes subcommand help and validates template choices", async () => {
+  const root = await project();
+  const help = run(root, "create", "--help");
+  expect(help.status).toBe(0);
+  expect(help.stdout).toContain("--template");
+  expect(help.stdout).toContain("--dry-run");
+  const invalid = run(root, "create", "--template", "invalid", "--no-install");
+  expect(invalid.status).not.toBe(0);
+  expect(invalid.stderr).toMatch(/allowed choices/i);
+});
+
+test("Commander root assembles fresh, independently defined commands", async () => {
+  const { createRootCliCommand } = await import("../../src/bin/cli.ts");
+  const one = createRootCliCommand();
+  const two = createRootCliCommand();
+  expect(one).not.toBe(two);
+  expect(one.commands.map(command => command.name())).toEqual([
+    "init", "create", "add", "list", "dev", "build", "preview",
+  ]);
+  expect(one.commands[2]).not.toBe(two.commands[2]);
+});
+
+test("create uses the packaged manifest template and enables only selected features", async () => {
+  const base = JSON.parse(await readFile(resolve(repository, "packages/moyaforge-cli/templates/base/package.json"), "utf8"));
+  const root = await project();
+  expect(run(root, "create", "--no-install").status).toBe(0);
+  const standard = JSON.parse(await read(root, "package.json"));
+  expect(standard.scripts).toEqual(base.scripts);
+  expect(standard.dependencies).toEqual(base.dependencies);
+  expect(standard.devDependencies).toEqual(base.devDependencies);
+  expect(standard.dependencies).not.toHaveProperty("@moyarich/moyaforge-search-sqlite");
+
+  const custom = await project();
+  await writeFile(join(custom, "package.json"), JSON.stringify({
+    name: "consumer-app", version: "1.2.3", scripts: { dev: "custom-server" },
+    dependencies: { react: "^18.3.1" },
+  }));
+  expect(run(custom, "create", "--template", "hybrid", "--mode", "package",
+    "--search", "--no-install").status).toBe(0);
+  const manifest = JSON.parse(await read(custom, "package.json"));
+  expect(manifest.name).toBe("consumer-app");
+  expect(manifest.scripts.dev).toBe("custom-server");
+  expect(manifest.dependencies.react).toBe("^18.3.1");
+  expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
+  expect(manifest.dependencies["@moyarich/moyaforge"]).toBe("^0.1.0");
+  expect(manifest.dependencies["@moyarich/moyaforge-search-sqlite"]).toBe("^0.1.0");
 });

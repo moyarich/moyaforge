@@ -117,7 +117,7 @@ export function resolveItems(
   return result;
 }
 /** Plan component installation without changing the consumer project. */
-export async function planItems({
+export async function planComponentInstallation({
   root,
   names,
   registry,

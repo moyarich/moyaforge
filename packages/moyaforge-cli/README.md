@@ -9,7 +9,7 @@ Tailwind, Radix, Monaco, or the MoyaForge UI package.
 Create a directory, enter it, then run:
 
 ```sh
-npx @moyarich/moyaforge-cli@latest init
+npx @moyarich/moyaforge-cli@latest create
 npm run dev
 ```
 
@@ -26,7 +26,7 @@ route alongside documentation.
 ## Existing React app
 
 ```sh
-npx @moyarich/moyaforge-cli@latest init --template existing
+npx @moyarich/moyaforge-cli@latest create --template existing
 npm run docs:dev
 ```
 
@@ -35,6 +35,10 @@ preserves the host's app entry, Vite config, existing scripts, and declared
 dependency versions. Content lives in the host's `docs/` directory. Consumers
 can subsequently embed the generated composition inside their existing router
 using `MoyaForgeRouting` instead of creating a second router.
+
+## Configure an existing project
+
+Run `npx @moyarich/moyaforge-cli@latest init` to create only the registry configuration; use `add` to install components. The host app and its scripts are not changed. Existing `init --template` calls remain supported; use `create` for new starter sites.
 
 ## Install individual components
 
@@ -117,8 +121,8 @@ Development validation: `npm run registry:check`, `npm run checks`,
 
 ## Building the CLI
 
-The CLI source is TypeScript with JSDoc for its exported APIs. `src/scaffold.ts`
-plans starter files and consumer manifest changes for `moyaforge init`.
+The CLI source is TypeScript with JSDoc for its exported APIs. `src/bin/cli.ts` composes independent Commander command factories. Shared project resolution and plan execution live in `src/utils/install-plan.ts`, while dev, build and preview each have their own handler. Each command lives in its own `src/<command>/*-cli.ts` and binds a separate handler using `.action(handler)`; there is no shared Commander options builder. `src/scaffold.ts`
+plans starter files and consumer manifest changes for `moyaforge create`. The separate `dependencies.ts` handles manifest merging.
 
 ```sh
 npm run build --workspace @moyarich/moyaforge-cli
@@ -129,3 +133,11 @@ npm test --workspace @moyarich/moyaforge-cli
 Vite builds the Node command and registry API into `dist/`; TypeScript emits
 API declarations. Published packages include the compiled output and the
 `templates/` directory. `prepack` builds them automatically.
+
+The default generated `package.json` is sourced from `templates/base/package.json`.
+The create command selectively adds package-mode and search dependencies, and
+merges missing values without overwriting a consumer's existing manifest.
+
+Starter files are discovered recursively from `templates/base/`. Enabling `--search`
+overlays matching files from `templates/search/`; documentation pages come from
+`templates/docs/`. No source-file list needs maintaining in TypeScript.

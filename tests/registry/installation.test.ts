@@ -3,7 +3,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, relative } from "node:path";
 import {
-  planItems,
+  planComponentInstallation,
   applyPlan,
 } from "../../packages/moyaforge-cli/src/registry.ts";
 
@@ -15,7 +15,7 @@ test("each registry item installs independently at its declared targets", async 
   const root = await mkdtemp(resolve(tmpdir(), "moyaforge-registry-contract-"));
   try {
     for (const item of registry.items) {
-      const plan = await planItems({
+      const plan = await planComponentInstallation({
         root,
         names: [item.name],
         registry: repository,
