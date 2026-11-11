@@ -142,7 +142,7 @@ Release-note labels are applied by the reusable classifier on `pull_request_targ
 
 ## Ownership and release notes
 
-- `docs/` owns the documentation, examples, and development guide; `apps/playground` only renders them.
+- `docs/` owns the general documentation and development guide; component examples live alongside their UI component documentation under `packages/moyaforge-ui/docs/`. `apps/playground` only renders these sources.
 - `packages/*/CHANGELOG.md` and package release drafts describe **user-visible capabilities and fixes** of the respective publishable packages.
 - CI mechanics, lockfile regeneration, release automation, contributor setup, private playground maintenance, and development-only tests belong here or in contributor documentation, **not in public changelogs**.
 - Update a public changelog only when a released package's behavior or public API changes.

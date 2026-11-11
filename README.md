@@ -29,7 +29,7 @@ register a component under the same MDX name to replace the built-in component.
 apps/
   playground/
     src/          # host app only; renders repository-owned docs
-docs/             # repository-owned documentation, examples and development guides
+docs/             # repository-owned documentation and development guides
 api/              # optional repository-owned API documentation
 ```
 
@@ -144,7 +144,7 @@ This npm-workspace repository follows the Console release model and consumes wor
 - **Pages:** deploy `apps/playground/dist` to GitHub Pages via the shared reusable Pages workflow.
 - **Self-heal:** fix formatting and synchronize the npm lockfile on non-`main` branches.
 
-Local setup and testing instructions live in [Development](docs/development/page.mdx). The private playground renders [Docs](docs/page.mdx) and [Examples](docs/examples/page.mdx) from the repository rather than owning a separate example catalog. Public package changelogs and release drafts are reserved for user-facing package behavior; workflow and test maintenance is documented under Development.
+Local setup and testing instructions live in [Development](docs/04-development/page.mdx). The private playground renders repository-owned [Docs](docs/page.mdx) and the [UI component gallery](packages/moyaforge-ui/docs/page.mdx); component examples stay with their component documentation. Public package changelogs and release drafts are reserved for user-facing package behavior; workflow and test maintenance is documented under Development.
 
 The committed root `package-lock.json` is maintained by the shared lockfile self-heal workflow. Publishable packages live under `packages/`. `apps/playground` remains private and must not be selected for releases.
 
@@ -152,7 +152,7 @@ The GitHub Pages site is built from the private `apps/playground` workspace; pac
 
 ## Content discovery vs. component installation
 
-`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](registry/README.md) and [component examples](docs/examples/components/page.mdx).
+`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge-ui/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](registry/README.md) and [UI component examples](packages/moyaforge-ui/docs/page.mdx).
 
 ## CLI and editable components
 
