@@ -51,6 +51,7 @@ test("headless package subpath exports routing without legacy layout imports", a
   expect(pkg.exports["./headless"]).toEqual({
     types: "./dist/headless.d.ts",
     import: "./dist/headless.js",
+    default: "./dist/headless.js",
   });
   expect(source).toContain("HeadlessDocsRoutes");
   expect(source).toContain("RegistryRouteView");
