@@ -1,6 +1,5 @@
 import { planItems } from "../registry.js";
-import { executePlan } from "../utils/install-plan.js";
-import { resolveConsumer, type InstallOptions } from "../utils/consumer.js";
+import { executePlan, resolveConsumer, type InstallOptions } from "../utils/install-plan.js";
 import { listComponents } from "../list/list.js";
 
 export async function addComponent(names: string[], options: InstallOptions): Promise<void> {

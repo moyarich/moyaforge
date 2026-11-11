@@ -1,6 +1,5 @@
 import { planConfiguration } from "../scaffold.js";
-import { executePlan } from "../utils/install-plan.js";
-import { resolveConsumer, type InstallOptions } from "../utils/consumer.js";
+import { executePlan, resolveConsumer, type InstallOptions } from "../utils/install-plan.js";
 import { createProject } from "../create/create.js";
 
 export async function initializeProject(options: InstallOptions): Promise<void> {

@@ -1,7 +1,6 @@
 import { planItems } from "../registry.js";
 import { planProject } from "../scaffold.js";
-import { executePlan } from "../utils/install-plan.js";
-import { resolveConsumer, type InstallOptions } from "../utils/consumer.js";
+import { executePlan, resolveConsumer, type InstallOptions } from "../utils/install-plan.js";
 
 export async function createProject(options: InstallOptions): Promise<void> {
   const { root, registry, directory } = await resolveConsumer(options);
