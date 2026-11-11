@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { runVite } from "../cli/vite.js";
+import { dev } from "./dev.js";
 
 export function devCommand(): Command {
   const cmd = new Command("dev")
@@ -10,6 +10,6 @@ export function devCommand(): Command {
   return cmd.action(async () => {
     const argv = cmd.parent?.rawArgs ?? process.argv;
     const at = argv.indexOf("dev", 2);
-    await runVite("dev", argv.slice(at + 1));
+    await dev(argv.slice(at + 1));
   });
 }

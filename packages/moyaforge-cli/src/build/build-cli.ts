@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { runVite } from "../cli/vite.js";
+import { build } from "./build.js";
 
 export function buildCommand(): Command {
   const cmd = new Command("build")
@@ -10,6 +10,6 @@ export function buildCommand(): Command {
   return cmd.action(async () => {
     const argv = cmd.parent?.rawArgs ?? process.argv;
     const at = argv.indexOf("build", 2);
-    await runVite("build", argv.slice(at + 1));
+    await build(argv.slice(at + 1));
   });
 }
