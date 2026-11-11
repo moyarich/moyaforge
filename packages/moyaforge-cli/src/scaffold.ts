@@ -54,7 +54,7 @@ export async function planProject({
   for (const layer of ["base", ...(search ? ["search"] : [])]) {
     const folder = join(templates, layer);
     for await (const file of filesIn(folder)) {
-      const name = relative(folder, file);
+      const name = relative(folder, file).replace(/\.template$/, "");
       if (name !== "package.json") selected.set(name, await readFile(file, "utf8"));
     }
   }

@@ -3,7 +3,7 @@ import { mkdtemp, readFile, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import {
-  planItems,
+  planComponentInstallation,
   applyPlan,
 } from "../../packages/moyaforge-cli/src/registry.ts";
 
@@ -11,7 +11,7 @@ test("reinstalling a registry item preserves user modifications by default", asy
   const repository = resolve(import.meta.dirname, "../..");
   const root = await mkdtemp(resolve(tmpdir(), "moyaforge-registry-repeat-"));
   try {
-    const initial = await planItems({
+    const initial = await planComponentInstallation({
       root,
       names: ["code-block"],
       registry: repository,
@@ -22,7 +22,7 @@ test("reinstalling a registry item preserves user modifications by default", asy
     );
     expect(first).toBeDefined();
     await writeFile(first!.path, "// customized by the consumer\n");
-    const repeated = await planItems({
+    const repeated = await planComponentInstallation({
       root,
       names: ["code-block"],
       registry: repository,
