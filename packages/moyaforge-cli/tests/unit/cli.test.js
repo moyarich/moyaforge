@@ -131,6 +131,8 @@ test("init produces source/package/hybrid starters and preserves existing app co
   const app = await read(packageRoot, "src/App.tsx");
   const searchPanel = await read(packageRoot, "src/SearchPanel.tsx");
   expect(app).toContain('path="/playground"');
+  expect(searchPanel).toContain('import { Search } from "../components/ui/Search/Search.js"');
+  expect(await read(packageRoot, "src/components/ui/Search/Search.tsx")).toContain("data-moyaforge-search");
   expect(searchPanel).toContain("searchPages(event.currentTarget.value)");
   expect(app).toContain("<SearchPanel />");
   expect(app).toContain("<HashRouter>");
