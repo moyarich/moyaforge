@@ -1,6 +1,6 @@
 # Markdown and MDX conventions
 
-MoyaForge documents use `page.mdx` as the route entry point and optional numbered directory prefixes for navigation order. Keep repository-owned documentation and example content in `docs/`. The private `apps/playground` application renders the registered content instead of owning a separate documentation or example catalog.
+MoyaForge documents use `page.mdx` as the route entry point and optional numbered directory prefixes for navigation order. Keep repository-owned documentation in `docs/`; component examples live with UI component docs. The private `apps/playground` application renders the registered content. Numeric folder prefixes determine sibling order without requiring frontmatter `order` fields.
 
 ```text
 docs/
