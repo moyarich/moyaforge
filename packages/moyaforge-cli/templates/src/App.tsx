@@ -1,10 +1,12 @@
-import { lazy, Suspense, useState, type ComponentType, type LazyExoticComponent } from "react";
+import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from "react";
 import { HashRouter, Link, Route, Routes, useLocation } from "react-router-dom";
 import { MDXProvider } from "@mdx-js/react";
 import { BookOpen, Camera, Check } from "lucide-react";
-/* __SHELL_IMPORTS__ */
-/* __CODE_IMPORTS__ */
-/* __SEARCH_IMPORT__ */
+import { DocsShell } from "__UI__/docs-shell.js";
+import { CodeBlock } from "__UI__/CodeBlock/CodeBlock.js";
+import { CodeGroup, CodeTab } from "__UI__/CodeGroup/CodeGroup.js";
+import { SearchPanel } from "./SearchPanel.js";
+import { Playground } from "./Playground.js";
 import { routes } from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 const components = { pre: CodeBlock, CodeGroup, CodeTab, BookOpen, Camera, Check };
@@ -24,19 +26,18 @@ function ContentPage() {
   const Page = loaded.get(page.path)!;
   return <Suspense fallback={<p role="status">Loading page…</p>}><Page /></Suspense>;
 }
-/* __SEARCH_COMPONENT__ */
+
 function Site() {
-  const [count, setCount] = useState(0);
   const { pathname } = useLocation();
   const sidebar = <aside className="mf-sidebar">
-    {/* __SEARCH_UI__ */}<nav aria-label="Documentation navigation">
+    <SearchPanel /><nav aria-label="Documentation navigation">
     
     <ul>{pages.map(page => <li key={page.url}><Link className={page.url === "/docs/guide" ? "mf-guide-link" : undefined} to={page.url}>{page.title}</Link></li>)}</ul>
   </nav></aside>;
   return <Routes>
-    {/* __HYBRID_ROUTE__ */}
+    {__PLAYGROUND_ENABLED__ && <Route path="/playground" element={<Playground />} />}
     <Route path="*" element={<DocsShell title="My documentation" pages={pages} currentUrl={pathname} sidebar={sidebar}>
-      {/* __HYBRID_NAV__ */}
+      {__PLAYGROUND_ENABLED__ && <Link to="/playground">Interactive playground</Link>}
       <ContentPage />
     </DocsShell>} />
   </Routes>;

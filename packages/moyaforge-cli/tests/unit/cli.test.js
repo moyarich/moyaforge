@@ -129,8 +129,9 @@ test("init produces source/package/hybrid starters and preserves existing app co
     ).status,
   ).toBe(0);
   const app = await read(packageRoot, "src/App.tsx");
+  const searchPanel = await read(packageRoot, "src/SearchPanel.tsx");
   expect(app).toContain('path="/playground"');
-  expect(app).toContain("searchPages(event.currentTarget.value)");
+  expect(searchPanel).toContain("searchPages(event.currentTarget.value)");
   expect(app).toContain("<SearchPanel />");
   expect(app).toContain("<HashRouter>");
   expect(app).toContain("pages={pages}");
@@ -269,4 +270,13 @@ test("shared registry utilities remain siblings of UI files, including custom de
       file.path.includes("src/custom-components/ui/"),
     ),
   ).toBe(true);
+});
+
+test("init configures only; create generates the app", async () => {
+  const root = await project();
+  expect(run(root, "init", "--no-install").status).toBe(0);
+  expect(JSON.parse(await read(root, "moyaforge.components.json")).directory).toBe("src/components/ui");
+  await expect(read(root, "src/App.tsx")).rejects.toThrow();
+  expect(run(root, "create", "--no-install").status).toBe(0);
+  expect(await read(root, "src/App.tsx")).toContain("<HashRouter>");
 });

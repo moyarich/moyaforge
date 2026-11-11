@@ -15,7 +15,7 @@ import {
   readOptional,
   reportPlan,
 } from "./registry.js";
-import { planProject } from "./scaffold.js";
+import { planConfiguration, planProject } from "./scaffold.js";
 
 /** Dispatch CLI commands, preserving host files unless replacement is explicit. */
 export async function main() {
@@ -62,7 +62,7 @@ export async function main() {
     process.exitCode = result.status ?? 1;
     return;
   }
-  if (!["init", "add", "list"].includes(command))
+  if (!["init", "create", "add", "list"].includes(command))
     throw Error(`Unknown command: ${command}`);
   const { values, positionals } = parseArgs({
     args,
@@ -109,7 +109,8 @@ export async function main() {
   }
   const options = { root, names: positionals, registry, directory };
   let plan: InstallPlan;
-  if (command === "init") {
+  const createsProject = command === "create" || (command === "init" && (values.template !== undefined || values.mode !== undefined || values.search));
+  if (createsProject) {
     const mode = values.mode ?? "source";
     const project = await planProject({
       ...options,
@@ -126,7 +127,8 @@ export async function main() {
       dependencies: project.dependencies,
       instructions: components.instructions,
     };
-  } else plan = await planItems(options);
+  } else if (command === "init") plan = await planConfiguration(options);
+  else plan = await planItems(options);
   reportPlan(plan, { root, diff: values.diff, overwrite: values.overwrite });
   const printSetupNotes = () => {
     if (plan.instructions?.length)
@@ -139,7 +141,7 @@ export async function main() {
   }
   if (
     !existsSync(resolve(root, "package.json")) &&
-    command !== "init" &&
+    !["init", "create"].includes(command) &&
     !values["no-install"]
   )
     throw Error(
@@ -147,7 +149,7 @@ export async function main() {
     );
   await applyPlan(plan, { root, overwrite: values.overwrite });
   if (!values["no-install"]) {
-    if (command === "init") installDependencies(root, [], false, true);
+    if (createsProject) installDependencies(root, [], false, true);
     else {
       const manifest = JSON.parse(
         (await readOptional(resolve(root, "package.json"))) ?? "{}",
@@ -164,9 +166,9 @@ export async function main() {
     }
   }
   console.log(
-    command === "init"
+    createsProject
       ? "MoyaForge app created. Run npm install if skipped, then npm run dev (or npm run docs:dev for an existing app)."
-      : "Components installed. Import the component source; styles are loaded automatically.",
+      : command === "init" ? "MoyaForge configured. Use moyaforge add to install components." : "Components installed. Import the component source; styles are loaded automatically.",
   );
   printSetupNotes();
 }

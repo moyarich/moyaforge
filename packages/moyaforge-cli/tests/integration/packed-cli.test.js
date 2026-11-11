@@ -52,7 +52,7 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     await mkdir(consumer);
     run(process.execPath, [
       cli,
-      "init",
+      "create",
       "--cwd",
       consumer,
       "--registry",
