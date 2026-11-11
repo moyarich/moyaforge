@@ -1,9 +1,9 @@
 name: Publish npm package
 
 run-name: >-
-  Publish · ${{ inputs.package }} · ${{ inputs.registry }} · ${{ inputs.version-mode
-  }}${{ inputs.version-mode == 'exact' && format(':{0}', inputs.exact-version) ||
-  '' }} · dry-run=${{ inputs.dry-run }}
+  Publish · ${{ inputs.package }} · ${{ inputs.registry }} · ${{
+  inputs.version-mode }}${{ inputs.version-mode == 'exact' && format(':{0}',
+  inputs.exact-version) || '' }} · dry-run=${{ inputs.dry-run }}
 
 on:
   workflow_dispatch:
@@ -29,7 +29,10 @@ on:
         default: all
         options:
           - all
-          - "packages/example"
+          - packages/moyaforge
+          - packages/moyaforge-cli
+          - packages/moyaforge-mdx
+          - packages/moyaforge-search-sqlite
       registry:
         description: Registry alias (npm, github, all, or a configured registry)
         required: true
@@ -50,7 +53,7 @@ on:
         required: true
         default: package-json
         type: choice
-        options: [package-json, exact]
+        options: [ package-json, exact ]
       exact-version:
         description: Version when using exact mode
         required: false
@@ -72,8 +75,7 @@ on:
         default: true
         type: boolean
       tag:
-        description: npm distribution tag (leave empty to use the resolved
-          default)
+        description: npm distribution tag (leave empty to use the resolved default)
         required: false
         default: ""
         type: string
