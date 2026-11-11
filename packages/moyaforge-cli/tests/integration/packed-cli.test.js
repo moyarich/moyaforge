@@ -38,7 +38,11 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     expect(
       packed.files.some((file) => file.path === "dist/cli.js"),
     ).toBe(true);
-    const cli = join(temporary, "package/dist/bin/moyaforge.js");
+    const consumer = join(temporary, "consumer");
+    await mkdir(consumer);
+    run("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund",
+      "--package-lock=false", join(temporary, packed.filename)], consumer);
+    const cli = join(consumer, "node_modules/@moyarich/moyaforge-cli/dist/bin/moyaforge.js");
     const manifest = JSON.parse(
       await readFile(join(packageRoot, "package.json"), "utf8"),
     );
@@ -48,8 +52,6 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     expect(run(process.execPath, [cli, "--version"]).trim()).toBe(
       manifest.version,
     );
-    const consumer = join(temporary, "consumer");
-    await mkdir(consumer);
     run(process.execPath, [
       cli,
       "create",
@@ -67,7 +69,7 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     );
     expect((await stat(cli)).mode & 0o111).not.toBe(0);
     const api = await import(
-      pathToFileURL(join(temporary, "package/dist/registry.js")).href
+      pathToFileURL(join(consumer, "node_modules/@moyarich/moyaforge-cli/dist/registry.js")).href
     );
     expect(typeof api.planItems).toBe("function");
   } finally {
