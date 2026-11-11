@@ -289,7 +289,7 @@ test("commander exposes subcommand help and validates template choices", async (
   expect(help.stdout).toContain("--dry-run");
   const invalid = run(root, "create", "--template", "invalid", "--no-install");
   expect(invalid.status).not.toBe(0);
-  expect(invalid.stderr).toContain("allowed choices");
+  expect(invalid.stderr).toMatch(/allowed choices/i);
 });
 
 test("Commander root assembles fresh, independently defined commands", async () => {
