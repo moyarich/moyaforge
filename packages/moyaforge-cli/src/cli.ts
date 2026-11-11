@@ -195,5 +195,9 @@ export async function main(argv: string[] = process.argv) {
         await runVite(action, args.slice(commandAt + 1));
       });
   }
+  if (argv.length <= 2) {
+    program.outputHelp();
+    return;
+  }
   await program.parseAsync(argv);
 }
