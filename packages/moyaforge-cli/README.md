@@ -133,3 +133,7 @@ npm test --workspace @moyarich/moyaforge-cli
 Vite builds the Node command and registry API into `dist/`; TypeScript emits
 API declarations. Published packages include the compiled output and the
 `templates/` directory. `prepack` builds them automatically.
+
+The default generated `package.json` is sourced from `templates/package.json`.
+The create command selectively adds package-mode and search dependencies, and
+merges missing values without overwriting a consumer's existing manifest.

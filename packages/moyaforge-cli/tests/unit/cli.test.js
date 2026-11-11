@@ -302,3 +302,29 @@ test("Commander root assembles fresh, independently defined commands", async () 
   ]);
   expect(one.commands[2]).not.toBe(two.commands[2]);
 });
+
+test("create uses the packaged manifest template and enables only selected features", async () => {
+  const base = JSON.parse(await readFile(resolve(repository, "packages/moyaforge-cli/templates/package.json"), "utf8"));
+  const root = await project();
+  expect(run(root, "create", "--no-install").status).toBe(0);
+  const standard = JSON.parse(await read(root, "package.json"));
+  expect(standard.scripts).toEqual(base.scripts);
+  expect(standard.dependencies).toEqual(base.dependencies);
+  expect(standard.devDependencies).toEqual(base.devDependencies);
+  expect(standard.dependencies).not.toHaveProperty("@moyarich/moyaforge-search-sqlite");
+
+  const custom = await project();
+  await writeFile(join(custom, "package.json"), JSON.stringify({
+    name: "consumer-app", version: "1.2.3", scripts: { dev: "custom-server" },
+    dependencies: { react: "^18.3.1" },
+  }));
+  expect(run(custom, "create", "--template", "hybrid", "--mode", "package",
+    "--search", "--no-install").status).toBe(0);
+  const manifest = JSON.parse(await read(custom, "package.json"));
+  expect(manifest.name).toBe("consumer-app");
+  expect(manifest.scripts.dev).toBe("custom-server");
+  expect(manifest.dependencies.react).toBe("^18.3.1");
+  expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
+  expect(manifest.dependencies["@moyarich/moyaforge"]).toBe("^0.1.0");
+  expect(manifest.dependencies["@moyarich/moyaforge-search-sqlite"]).toBe("^0.1.0");
+});

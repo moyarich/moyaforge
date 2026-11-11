@@ -53,9 +53,12 @@ export async function planProject({
     await add(resolve(root, name), await templateFile(name));
   const manifestPath = resolve(root, "package.json");
   const previous = await readOptional(manifestPath);
+  const base: PackageManifest = JSON.parse(await templateFile("package.json"));
   const initial: PackageManifest = previous ? JSON.parse(previous) :
-    { name: "moyaforge-site", version: "0.0.0", private: true, type: "module" };
-  const { manifest, dependencies } = mergeDependencies(initial, template, mode, search);
+    template === "existing"
+      ? { name: base.name, version: base.version, private: base.private, type: base.type }
+      : structuredClone(base);
+  const { manifest, dependencies } = mergeDependencies(initial, base, template, mode, search);
   await add(manifestPath, JSON.stringify(manifest, null, 2) + "\n", true);
   await add(resolve(root, "moyaforge.components.json"), JSON.stringify({ registry, directory }, null, 2) + "\n");
   return { files, dependencies, manifestPath };
