@@ -113,13 +113,13 @@ async function runInstall(command: "init" | "create" | "add" | "list", values: I
   if (
     !existsSync(resolve(root, "package.json")) &&
     !["init", "create"].includes(command) &&
-    !values.install === false
+    values.install !== false
   )
     throw Error(
       "No package.json found. Run init first, or use --no-install to copy source only.",
     );
   await applyPlan(plan, { root, overwrite: values.overwrite });
-  if (!values.noInstall) {
+  if (values.install !== false) {
     if (createsProject) installDependencies(root, [], false, true);
     else {
       const manifest = JSON.parse(
