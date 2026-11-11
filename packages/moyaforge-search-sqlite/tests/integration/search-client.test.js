@@ -2,6 +2,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "vitest";
 
+const source = await readFile(
+  new URL("../../src/search/search-client.js", import.meta.url),
+  "utf8",
+);
+
 test("search refresh invalidates a database whose initial fetch was in flight", async () => {
   const originalFetch = globalThis.fetch;
   const originalSQL = globalThis.__testSQL;
@@ -32,13 +37,7 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
       }
       return { ok: true, arrayBuffer: async () => Uint8Array.of(2).buffer };
     };
-    const source = await readFile(
-      new URL(
-        "../../../../packages/moyaforge-search-sqlite/src/search/search-client.js",
-        import.meta.url,
-      ),
-      "utf8",
-    );
+
     const standalone = source
       .replace(/^import .*;\n/gm, "")
       .replace("let SQL;", "let SQL = globalThis.__testSQL;")

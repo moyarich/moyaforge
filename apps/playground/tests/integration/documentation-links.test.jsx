@@ -54,7 +54,7 @@ describe("registry-aware MDX links", () => {
     const html = renderToStaticMarkup(
       createElement(
         MemoryRouter,
-        { initialEntries: ["/ui"] },
+        { basename: "/playground", initialEntries: ["/playground/ui"] },
         createElement(
           DocumentationRoutesContext.Provider,
           { value: routes },
@@ -75,7 +75,7 @@ describe("registry-aware MDX links", () => {
         ),
       ),
     );
-    expect(html).toContain('href="/ui/components/code-block"');
+    expect(html).toContain('href="/playground/ui/components/code-block"');
     expect(html).toContain('href="https://example.com"');
   });
 });
