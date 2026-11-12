@@ -3,48 +3,26 @@ title: Source files in tabs
 label: Source files in tabs
 ---
 
-# Code Block · TypeScript
-
-import {
-  CodePreview,
-  CODE_REPLACEMENTS,
-} from "../../../../src/components/CodePreview/index.js";
-import Example from "./Example.tsx";
-import exampleSource from "./Example.tsx?raw";
-
-# Docs Layout · Custom header and content
-
-<CodePreview
-  title="Docs Layout"
-  files={[{ label: "Example.tsx", code: exampleSource }]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+import SourceTabsExample from "./SourceTabsExample.tsx";
 
 # Source files in tabs
 
-Open **Code** to switch between the counter’s React source and stylesheet. Use this pattern when you want to arrange the source panel yourself and let readers copy individual files.
+Open **Code** to see the preview composition, the counter component, and its stylesheet.
 
-Install `preview` and `code-group`. Place the `CodeGroup` inside `PreviewSource asChild` so the preview toggle controls the whole tab panel.
+<SourceTabsExample />
 
-```tsx
-<PreviewSource asChild>
-  <div>
-    <CodeGroup label="Counter source files">
-      <CodeTab label="CounterExample.tsx">
-        <pre>
-          <code>{source}</code>
-        </pre>
-      </CodeTab>
-      <CodeTab label="counterExample.css">
-        <pre>
-          <code>{styles}</code>
-        </pre>
-      </CodeTab>
-    </CodeGroup>
-  </div>
-</PreviewSource>
+## Installation
+
+Install Preview for the frame, Code button, and source panel:
+
+```sh
+npx @moyarich/moyaforge-cli@latest add preview
+```
+
+Install Code Group for the file tabs inside that panel:
+
+```sh
+npx @moyarich/moyaforge-cli@latest add code-group
 ```
 
 [Component documentation](/ui/components/preview)

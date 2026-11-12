@@ -1,4 +1,4 @@
-import { HighlightedCode } from "../Preview/HighlightedCode.js";
+import { HighlightedCode } from "../HighlightedCode/HighlightedCode.js";
 import "./Source.css";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 

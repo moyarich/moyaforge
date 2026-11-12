@@ -149,14 +149,14 @@
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.css",
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/Preview/HighlightedCode.css"
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.tsx",
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/Preview/HighlightedCode.tsx"
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
@@ -167,6 +167,51 @@
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/Preview.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.tsx"
         }
       ]
     },
@@ -460,6 +505,30 @@
       ]
     },
     {
+      "name": "highlighted-code",
+      "type": "registry:component",
+      "title": "Highlighted Code",
+      "description": "Editable MoyaForge highlighted-code source. Components import their own CSS.",
+      "dependencies": ["react@>=18", "shiki@^4.5.0"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/index.ts"
+        }
+      ]
+    },
+    {
       "name": "monaco-editor-react",
       "type": "registry:component",
       "title": "Monaco Editor React",
@@ -656,14 +725,14 @@
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.css",
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/Preview/HighlightedCode.css"
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.tsx",
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/Preview/HighlightedCode.tsx"
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
@@ -674,6 +743,51 @@
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/Preview.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
@@ -821,14 +935,14 @@
       "dependencies": ["react@>=18", "shiki@^4.5.0"],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.css",
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/Preview/HighlightedCode.css"
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/Preview/HighlightedCode.tsx",
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/Preview/HighlightedCode.tsx"
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Source/Source.css",

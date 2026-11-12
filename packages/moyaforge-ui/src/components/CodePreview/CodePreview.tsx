@@ -1,7 +1,7 @@
 import {
   HighlightedCode,
   previewLanguage,
-} from "../Preview/HighlightedCode.js";
+} from "../HighlightedCode/HighlightedCode.js";
 import type { ReactNode } from "react";
 import {
   Preview,

@@ -12,13 +12,22 @@ import {
   CodeGroup,
   CodeTab,
 } from "../../../../src/components/CodeGroup/index.js";
+import { HighlightedCode } from "../../../../src/components/HighlightedCode/HighlightedCode.js";
 import CounterExample from "../../CounterExample.js";
 import source from "../../CounterExample.tsx?raw";
 import styles from "../../counterExample.css?raw";
+import exampleSource from "./SourceTabsExample.tsx?raw";
+
+const compositionSource = exampleSource
+  .replace(/const compositionSource = exampleSource[\s\S]*?;\n\n/, "")
+  .replace("import exampleSource", "import compositionSource")
+  .replaceAll("../../../../src/components/", "./components/ui/")
+  .replaceAll("../../CounterExample", "./CounterExample")
+  .replaceAll("../../counterExample.css", "./counterExample.css");
 
 export default function SourceTabsExample() {
   return (
-    <Preview title="Counter source files" source={source}>
+    <Preview title="Counter source files" source={compositionSource}>
       <PreviewHeader>
         <PreviewTitle>Counter source files</PreviewTitle>
         <PreviewActions>
@@ -32,14 +41,19 @@ export default function SourceTabsExample() {
       <PreviewSource asChild>
         <div>
           <CodeGroup label="Example files">
+            <CodeTab label="SourceTabsExample.tsx">
+              <pre>
+                <HighlightedCode code={compositionSource} language="tsx" />
+              </pre>
+            </CodeTab>
             <CodeTab label="CounterExample.tsx">
               <pre>
-                <code>{source}</code>
+                <HighlightedCode code={source} language="tsx" />
               </pre>
             </CodeTab>
             <CodeTab label="counterExample.css">
               <pre>
-                <code>{styles}</code>
+                <HighlightedCode code={styles} language="css" />
               </pre>
             </CodeTab>
           </CodeGroup>
