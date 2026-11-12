@@ -1,7 +1,7 @@
 {
   "name": "@moyarich/moyaforge-ui",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "React components and styles for documentation sites.",
   "type": "module",
   "sideEffects": [
@@ -29,6 +29,10 @@
     "prepack": "npm run build"
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "engines": {
     "node": ">=24.11.0"
   },
