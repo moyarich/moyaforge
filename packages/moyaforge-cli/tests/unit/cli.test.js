@@ -333,3 +333,33 @@ test("create uses the packaged manifest template and enables only selected featu
   expect(manifest.dependencies["@moyarich/moyaforge"]).toBe("^0.1.0");
   expect(manifest.dependencies["@moyarich/moyaforge-search-sqlite"]).toBe("^0.1.0");
 });
+
+test("playground init uses consumer-owned content and registry-installed components", async () => {
+  const root = await project();
+  const result = run(root, "init", "--template", "playground", "--search", "--no-install");
+  expect(result.status, result.stderr).toBe(0);
+  const registry = await read(root, "registry.config.ts");
+  expect(registry).toContain('base: "docs"');
+  expect(registry).not.toContain("../../packages");
+  const vite = await read(root, "vite.config.ts");
+  expect(vite).toContain("createContentDiscovery");
+  expect(vite).toContain("remarkSourceLinks");
+  expect(vite).toContain("sqliteSearchPlugin");
+  const app = await read(root, "src/App.tsx");
+  expect(app).toContain("RegistryRoutes");
+  expect(app).toContain("PlaygroundShell");
+  expect(app).not.toContain("apps/playground");
+  expect(await read(root, "src/components/ui/Layout/DocumentationSite/DocumentationSite.tsx")).toContain("DocumentationSite");
+  expect(await read(root, "src/components/ui/SidebarV1/SidebarV1.tsx")).toContain("SidebarV1");
+  expect(await read(root, "src/components/ui/CustomBlock/CustomBlock.tsx")).toContain("CustomBlock");
+  const adapter = await read(root, "src/SearchAdapter.tsx");
+  expect(adapter).toContain("searchPages");
+  const manifest = JSON.parse(await read(root, "package.json"));
+  expect(manifest.dependencies).toHaveProperty("@moyarich/moyaforge");
+  expect(manifest.dependencies).toHaveProperty("@moyarich/moyaforge-search-sqlite");
+  expect(manifest.devDependencies).toHaveProperty("shiki");
+  const plain = await project();
+  expect(run(plain, "init", "--template", "playground", "--no-install").status).toBe(0);
+  expect(await read(plain, "src/SearchAdapter.tsx")).not.toContain("searchPages");
+  expect(await read(plain, "vite.config.ts")).not.toContain("sqliteSearchPlugin");
+});
