@@ -7,7 +7,7 @@ export interface InstallOptions {
   registry?: string;
   directory?: string;
   mode?: "source" | "package";
-  template?: "docs" | "hybrid" | "existing";
+  template?: "docs" | "hybrid" | "playground" | "existing";
   search?: boolean;
   dryRun?: boolean;
   diff?: boolean;
