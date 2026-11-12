@@ -7,10 +7,10 @@ const cwd = path.dirname(fileURLToPath(import.meta.url));
 const read = async (file) =>
   JSON.parse(await readFile(path.resolve(cwd, file), "utf8"));
 
-test("UI package publishes its build separately from the framework", async () => {
+test("private UI package builds separately from the framework", async () => {
   const ui = await read("../packages/moyaforge-ui/package.json");
   const pkg = await read("../packages/moyaforge/package.json");
-  expect(ui.private).toBe(false);
+  expect(ui.private).toBe(true);
   expect(ui.files).toEqual(["dist"]);
   expect(ui.exports["./components/*"].import).toBe(
     "./dist/components/*/index.js",
