@@ -37,6 +37,7 @@
     "node": ">=24.11.0"
   },
   "dependencies": {
+    "is-hotkey": "^0.2.1",
     "lucide-react": "^1.56.0",
     "shiki": "^4.5.0"
   },
@@ -70,6 +71,8 @@
     }
   },
   "registryDependencies": {
+    "is-hotkey": "^0.2.1",
+    "@types/is-hotkey": "^0.1.10",
     "lucide-react": "^1.56.0",
     "@monaco-editor/react": ">=4",
     "monaco-editor": "^0.52.2",
@@ -83,12 +86,13 @@
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.0.0",
-    "storybook": "^10.0.0",
+    "@types/is-hotkey": "^0.1.10",
     "@vitejs/plugin-react": "^6.1.2",
-    "vite": "^8.3.4",
-    "typescript": "^7.0.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "storybook": "^10.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
   },
   "author": "Moya Richards",
   "repository": {

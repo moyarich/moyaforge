@@ -9,6 +9,14 @@ import {
 import { useLocation } from "react-router-dom";
 import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
 
+import { DocumentationRoutesContext } from "./DocumentationLink.js";
+import { useDocumentationHash } from "./useDocumentationHash.js";
+
+function RegistryPage({ component: Page }: { component: ComponentType }) {
+  useDocumentationHash();
+  return <Page />;
+}
+
 export interface RegistryLazySources {
   readonly [source: string]: {
     readonly lazyPages?: Readonly<
@@ -104,14 +112,16 @@ export function RegistryRouteView({
   }
   const content = (
     <PageLoadBoundary key={path} pagePath={path}>
-      <Component />
+      <RegistryPage component={Component} />
     </PageLoadBoundary>
   );
   // Keep this boundary stable across routes so transitions retain the current
   // article and its shell until the destination module is ready.
   return (
     <Suspense fallback={fallback}>
-      {renderPage ? renderPage(page, content) : content}
+      <DocumentationRoutesContext.Provider value={routes}>
+        {renderPage ? renderPage(page, content) : content}
+      </DocumentationRoutesContext.Provider>
     </Suspense>
   );
 }

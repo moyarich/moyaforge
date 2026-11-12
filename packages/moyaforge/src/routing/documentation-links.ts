@@ -1,4 +1,6 @@
-import { DocumentationRoute } from "../context/documentation-routes-context";
+import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+
+export type DocumentationRoute = Pick<NormalizedPage, "path" | "navigation">;
 
 /** Resolve MDX links against public routes discovered by the registry, not filesystem paths. */
 export function resolveDocumentationHref(

@@ -1,0 +1,28 @@
+---
+title: Search documentation with SQLite
+label: Search documentation with SQLite
+description: Connect the Search field to a SQLite index and link to matching documentation pages.
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import source from "./Example.tsx?raw";
+
+# Search documentation with SQLite
+
+Type **copy button** or **preview** to try the same search field used in the site header. Results appear below the field inside this demo. The SQLite client returns document keys, which the example turns into links using the route metadata.
+
+Press **Alt+Shift+S** to focus the example. The `hotkey` prop sets the shortcut and `kbd` controls the optional label.
+
+<CodePreview
+  title="Search documentation with SQLite"
+  files={[{ label: "Example.tsx", code: source }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+See [SQLite search setup](/docs/search) to generate and serve an index in your own site.

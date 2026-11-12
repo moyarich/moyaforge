@@ -8,32 +8,10 @@ import {
 } from "react-router-dom";
 import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
 
-export function createContentRouting(pages: readonly NormalizedPage[]) {
-  const routes = pages.filter((page) => page.navigation !== "disabled");
-  return {
-    routes,
-    normalizeRoute(path: string) {
-      if (!path.startsWith("/") || path.startsWith("//")) return null;
-      const normalized = path.replace(/\/+$/, "") || "/";
-      return routes.find((page) => page.path === normalized)?.path ?? null;
-    },
-    firstContentRoute() {
-      return (
-        routes.find((page) => page.navigation === "visible")?.path ??
-        routes[0]?.path ??
-        null
-      );
-    },
-    searchResultPage(key: string) {
-      return (
-        routes.find((page) => `${page.source}/${page.file}` === key) ?? null
-      );
-    },
-    searchResultRoute(key: string) {
-      return this.searchResultPage(key)?.path ?? null;
-    },
-  };
-}
+import { createContentRouting } from "./createContentRouting.js";
+
+export { createContentRouting } from "./createContentRouting.js";
+
 type ContentRouting = ReturnType<typeof createContentRouting>;
 const ContentContext = createContext<ContentRouting | null>(null);
 

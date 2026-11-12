@@ -7,7 +7,7 @@ test.each([
   ["search", "Search"],
   ["source", "Source"],
   ["table-of-contents", "TableOfContents"],
-])("%s is installed from private UI source", async (name, dir) => {
+])("%s is installed from UI source", async (name, dir) => {
   const registry = JSON.parse(
     await readFile(new URL("../registry.json", import.meta.url), "utf8"),
   );
@@ -16,6 +16,14 @@ test.each([
   const files = item.files.filter((entry) =>
     entry.path.startsWith(`packages/moyaforge-ui/src/components/${dir}/`),
   );
-  expect(files).toHaveLength(3);
-  expect(files.some((entry) => entry.path.endsWith(".css"))).toBe(true);
+  const expected = ["index.ts", `${dir}.tsx`, `${dir}.css`];
+  if (name === "search") {
+    expected.push("DocumentationSearch.tsx", "DocumentationSearch.css");
+    expect(item.dependencies).toEqual(
+      expect.arrayContaining(["is-hotkey@^0.2.1", "@types/is-hotkey@^0.1.10"]),
+    );
+  }
+  expect(files.map((entry) => entry.path.split("/").at(-1)).sort()).toEqual(
+    expected.sort(),
+  );
 });

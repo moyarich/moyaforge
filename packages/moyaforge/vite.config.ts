@@ -10,9 +10,14 @@ export default defineConfig({
     copyPublicDir: false,
     emptyOutDir: true,
     rolldownOptions: {
-      input: ["src/index.ts", "src/headless.ts", "src/registry-routes.tsx"],
+      input: [
+        "src/index.ts",
+        "src/headless.ts",
+        "src/registry-routes.tsx",
+        "src/utils/content/index.ts",
+        "src/utils/navigation/index.ts",
+      ],
       external: [/^virtual:moyaforge-mdx\//],
-      treeshake: false,
       output: {
         format: "es",
         entryFileNames: "[name].js",

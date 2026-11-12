@@ -51,7 +51,7 @@ export async function planProject({
 
   // Optional template directories overlay files at the same relative path.
   const selected = new Map<string, string>();
-  for (const layer of ["base", ...(search ? ["search"] : [])]) {
+  for (const layer of ["base", ...(mode === "package" ? ["package"] : []), ...(search ? ["search"] : [])]) {
     const folder = join(templates, layer);
     for await (const file of filesIn(folder)) {
       const name = relative(folder, file).replace(/\.template$/, "");

@@ -31,6 +31,14 @@ npx @moyarich/moyaforge-cli@latest create --template existing
 npm run docs:dev
 ```
 
+To start a playground with shared framework routing, MDX links, and optional SQLite search:
+
+```sh
+npx @moyarich/moyaforge-cli@latest create --template hybrid --mode package --search
+```
+
+The starter includes an editable site shell and MDX component map. The framework handles loading documentation pages and opening heading links.
+
 The `existing` starter writes its Vite entry under `moyaforge/` and uses `docs:*` scripts so that existing host scripts and dependency versions are preserved.
 
 Use `--directory <path>` to select a component source destination, `--registry <source>` for a registry directory or `registry.json` URL, and `--cwd <path>` to choose a project directory.

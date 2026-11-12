@@ -104,7 +104,11 @@ test("documentation-site installs independently of framework routing and DocsLay
     (entry) => entry.name === "documentation-site",
   );
   expect(item).toBeDefined();
-  expect(item.dependencies).toEqual(["react@>=18"]);
+  expect(item.dependencies).toEqual([
+    "@types/is-hotkey@^0.1.10",
+    "is-hotkey@^0.2.1",
+    "react@>=18",
+  ]);
   expect(
     item.files.filter((entry) =>
       entry.path.startsWith("packages/moyaforge/src/"),

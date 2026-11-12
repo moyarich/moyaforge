@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
-import { DocumentationLink } from "../../src/components/DocumentationLink.tsx";
-import { DocumentationRoutesContext } from "../../src/context/documentation-routes-context";
-import { resolveDocumentationHref } from "../../src/utils/resolve-documentation-href";
+import {
+  DocumentationLink,
+  DocumentationRoutesContext,
+  resolveDocumentationHref,
+} from "@moyarich/moyaforge/headless";
 
 const routes = [
   { path: "/ui", navigation: "visible" },

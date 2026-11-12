@@ -442,7 +442,11 @@
       "type": "registry:component",
       "title": "Documentation Site",
       "description": "Editable MoyaForge documentation-site source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "@types/is-hotkey@^0.1.10",
+        "is-hotkey@^0.2.1",
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.css",
@@ -458,6 +462,16 @@
           "path": "packages/moyaforge-ui/src/components/Layout/DocumentationSite/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/Layout/DocumentationSite/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Search/DocumentationSearch.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Search/DocumentationSearch.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Search/DocumentationSearch.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Search/DocumentationSearch.tsx"
         }
       ]
     },
@@ -801,8 +815,22 @@
       "type": "registry:component",
       "title": "Search",
       "description": "Editable MoyaForge search source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "@types/is-hotkey@^0.1.10",
+        "is-hotkey@^0.2.1",
+        "react@>=18"
+      ],
       "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/Search/DocumentationSearch.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Search/DocumentationSearch.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Search/DocumentationSearch.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Search/DocumentationSearch.tsx"
+        },
         {
           "path": "packages/moyaforge-ui/src/components/Search/Search.css",
           "type": "registry:file",

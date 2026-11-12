@@ -1,7 +1,17 @@
-import { useContext, type ComponentPropsWithoutRef } from "react";
+import {
+  createContext,
+  useContext,
+  type ComponentPropsWithoutRef,
+} from "react";
 import { Link, useLocation } from "react-router-dom";
-import { resolveDocumentationHref } from "../utils/resolve-documentation-href";
-import { DocumentationRoutesContext } from "../context/documentation-routes-context";
+import {
+  resolveDocumentationHref,
+  type DocumentationRoute,
+} from "./documentation-links.js";
+
+export const DocumentationRoutesContext = createContext<
+  readonly DocumentationRoute[]
+>([]);
 
 type DocumentationLinkProps = ComponentPropsWithoutRef<"a">;
 

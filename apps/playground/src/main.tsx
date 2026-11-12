@@ -5,7 +5,6 @@ import "@moyarich/console/styles.css";
 import "./styles.css";
 import { PlaygroundMdxProvider } from "./mdx-provider.tsx";
 import { App } from "./App.tsx";
-import { routes } from "virtual:moyaforge-mdx/metadata";
 
 import "./utils/vite-preload-error.ts";
 
@@ -14,7 +13,7 @@ const root = document.getElementById("root");
 if (!root) throw new Error("Playground root element not found");
 createRoot(root).render(
   <React.StrictMode>
-    <PlaygroundMdxProvider routes={routes}>
+    <PlaygroundMdxProvider>
       <App />
     </PlaygroundMdxProvider>
   </React.StrictMode>,

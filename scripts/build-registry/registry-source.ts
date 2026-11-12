@@ -190,6 +190,9 @@ async function collectGraph(ctx: BuildContext, spec: RegistrySpec) {
             `Undeclared registry dependency '${pkg}' imported by ${relative(ctx.root, file)}`,
           );
         dependencies.set(pkg, ctx.declared[pkg]);
+        // Installed TypeScript source also needs any declared companion types.
+        const types = `@types/${pkg.replace(/^@/, "").replace("/", "__")}`;
+        if (ctx.declared[types]) dependencies.set(types, ctx.declared[types]);
       }
     }
   }

@@ -9,30 +9,97 @@ Add local, browser-based search to your documentation. The search package builds
 
 ## Add the Vite plugin
 
-Use the same registry configuration for content discovery and indexing.
+Install the SQLite search package in your Vite documentation app:
 
-```js
-import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
-
-// Add alongside your MDX and React plugins:
-sqliteSearchPlugin({ registry, root: import.meta.dirname });
+```sh
+npm install @moyarich/moyaforge-search-sqlite
 ```
 
-The adapter serves the database during development, rebuilds it when content changes, and emits it as a production asset.
+Use your existing `registry.config.ts` for both page discovery and indexing. If you already have a Vite config, add `sqliteSearchPlugin` to its plugins and pass it the same registry and root as the MDX plugin.
+
+```ts filename="vite.config.ts"
+import mdx from "@mdx-js/rollup";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import {
+  createContentDiscovery,
+  createMdxOptions,
+} from "@moyarich/moyaforge-mdx";
+import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
+import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
+import registry from "./registry.config.ts";
+
+const root = import.meta.dirname;
+const discovery = createContentDiscovery(registry, root);
+
+export default defineConfig({
+  plugins: [
+    mdxRegistryPlugin({ registry, root, discovery }),
+    sqliteSearchPlugin({ registry, root, discovery }),
+    { ...mdx(createMdxOptions()), enforce: "pre" },
+    react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
+  ],
+});
+```
+
+The plugin serves the index during development and writes a SQLite asset when you build the site.
 
 ## Connect the documentation search
 
-The optional browser client loads SQLite on the first query. Pass its search function to the documentation shell.
+[DocumentationSite](/ui/components/documentation-site) is the UI shell that renders the search field. Its `onSearch` prop takes an async function. The shell calls it with the current query, and the function returns matching pages. In this example, `findMatchingPages` maps SQLite result keys to page links. `RegistryRoutes` supplies the page content, and React Router handles navigation when someone selects a result.
 
-```jsx
+```tsx filename="src/App.tsx"
+import {
+  HashRouter,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { createContentRouting } from "@moyarich/moyaforge/headless";
+import { RegistryRoutes } from "@moyarich/moyaforge/registry-routes";
 import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
+import { DocumentationSite } from "@moyarich/moyaforge-ui/components/Layout/DocumentationSite";
+import "@moyarich/moyaforge-ui/components/Layout/DocumentationSite/styles.css";
+import { routes } from "virtual:moyaforge-mdx/metadata";
 
-<DocumentationSite title="My docs" search={searchPages}>
-  <ContentPage />
-</DocumentationSite>;
+const contentRouting = createContentRouting(routes);
+
+async function findMatchingPages(query: string) {
+  return contentRouting.searchResultPages(await searchPages(query));
+}
+
+function Docs() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const firstPage = routes.find((page) => page.navigation === "visible");
+
+  if (pathname === "/" && firstPage && firstPage.path !== "/") {
+    return <Navigate to={firstPage.path} replace />;
+  }
+
+  return (
+    <DocumentationSite
+      title="My docs"
+      pages={routes.filter((page) => page.navigation === "visible")}
+      currentPath={pathname}
+      onNavigate={navigate}
+      onSearch={findMatchingPages}
+    >
+      <RegistryRoutes />
+    </DocumentationSite>
+  );
+}
+
+export function App() {
+  return (
+    <HashRouter>
+      <Docs />
+    </HashRouter>
+  );
+}
 ```
 
-Press Command K or Control K to focus search. Results navigate through React Router. Escape clears the query.
+Press **Cmd+K** or **Ctrl+K** to focus search, and **Escape** in the field to clear it. Try the [live SQLite search example](/ui/components/search/sqlite-search) to see how the client returns results.
 
 ## Use the standalone API
 
@@ -60,4 +127,4 @@ const results = querySearchDatabase(database, "documentation");
 
 ## Keep routing in the framework
 
-Search doesn't choose your URL format. `useContentRouting().searchResultPage(key)` resolves a key against the routable MDX inventory, preserving canonical paths and excluding disabled pages.
+`createContentRouting(routes).searchResultPages(keys)` keeps the order returned by your search backend and skips keys that have no routable page.

@@ -1,4 +1,8 @@
 import "./DocumentationSite.css";
+import {
+  DocumentationSearch,
+  type DocumentationSearchProps,
+} from "../../Search/DocumentationSearch.js";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export interface DocumentationSitePage {
@@ -23,9 +27,15 @@ export interface DocumentationSiteProps {
   outline?: ReactNode;
   outlineHeader?: ReactNode;
   outlineFooter?: ReactNode;
-  search?: (query: string) => Promise<readonly DocumentationSitePage[]>;
+  onSearch?: (query: string) => Promise<readonly DocumentationSitePage[]>;
+  searchShortcut?: Pick<DocumentationSearchProps, "hotkey" | "kbd">;
   onNavigate?: (path: string) => void;
 }
+
+const defaultSearchShortcut = {
+  hotkey: ["meta+k", "ctrl+k"],
+  kbd: "⌘ K",
+} as const;
 
 /** Standalone documentation chrome. Routing, page discovery and search are provided by the consumer. */
 export function DocumentationSite({
@@ -43,51 +53,14 @@ export function DocumentationSite({
   outline,
   outlineHeader,
   outlineFooter,
-  search,
+  onSearch,
+  searchShortcut = defaultSearchShortcut,
   onNavigate,
 }: DocumentationSiteProps) {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<readonly DocumentationSitePage[]>([]);
-  const [error, setError] = useState("");
   const [menu, setMenu] = useState(false);
   const [dark, setDark] = useState(false);
-  const input = useRef<HTMLInputElement>(null);
   const article = useRef<HTMLElement>(null);
   useEffect(() => setMenu(false), [currentPath]);
-  useEffect(() => {
-    const handler = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        input.current?.focus();
-      }
-      if (event.key === "Escape") {
-        setQuery("");
-        input.current?.blur();
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-  useEffect(() => {
-    let active = true;
-    setError("");
-    if (!search || !query.trim()) {
-      setResults([]);
-      return () => {
-        active = false;
-      };
-    }
-    search(query)
-      .then((value) => {
-        if (active) setResults(value);
-      })
-      .catch(() => {
-        if (active) setError("Search is unavailable. Please try again.");
-      });
-    return () => {
-      active = false;
-    };
-  }, [query, search]);
   const currentIndex = pages.findIndex((page) => page.path === currentPath);
   const current = pages[currentIndex];
   const contributeHref =
@@ -96,7 +69,6 @@ export function DocumentationSite({
       : repository;
   const navigate = (path: string) => {
     setMenu(false);
-    setQuery("");
     onNavigate?.(path);
   };
   const link = (page: DocumentationSitePage, children: ReactNode) => (
@@ -128,31 +100,14 @@ export function DocumentationSite({
         <div className="mf-brand">
           {pages[0] ? link(pages[0], title) : title}
         </div>
-        {search ? (
-          <div className="mf-search">
-            <label>
-              <span aria-hidden="true">⌕</span>
-              <input
-                ref={input}
-                aria-label="Search documentation"
-                placeholder="Search documentation…"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-              <kbd>⌘ K</kbd>
-            </label>
-            {query.trim() ? (
-              <div className="mf-results" aria-live="polite">
-                {error ||
-                  (results.length
-                    ? results.map((page) => (
-                        <div key={page.path}>{link(page, page.label)}</div>
-                      ))
-                    : "No matching pages")}
-              </div>
-            ) : null}
-          </div>
-        ) : null}
+        {onSearch && (
+          <DocumentationSearch
+            key={currentPath}
+            search={onSearch}
+            onNavigate={onNavigate ? navigate : undefined}
+            {...searchShortcut}
+          />
+        )}
         <nav aria-label="Main navigation">
           {pages[0] ? link(pages[0], "Guide") : null}
           {repository ? <a href={repository}>GitHub ↗</a> : null}

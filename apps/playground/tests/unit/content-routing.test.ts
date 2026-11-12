@@ -45,6 +45,13 @@ test("search keys resolve against canonical routes rather than inferred URL path
   expect(routing.searchResultRoute("docs/01-guide/page.mdx")).toBe(
     "/docs/guide",
   );
+  expect(
+    routing.searchResultPages([
+      "docs/02-hidden/page.mdx",
+      "docs/03-disabled/page.mdx",
+      "docs/01-guide/page.mdx",
+    ]),
+  ).toEqual([pages[0], pages[1]]);
   expect(routing.searchResultPage("docs/02-hidden/page.mdx")).toBe(pages[0]);
   expect(routing.searchResultRoute("docs/03-disabled/page.mdx")).toBeNull();
   expect(createContentRouting([]).firstContentRoute()).toBeNull();

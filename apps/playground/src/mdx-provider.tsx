@@ -1,6 +1,5 @@
 import type { PropsWithChildren } from "react";
 import type { MDXComponents } from "mdx/types.js";
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
 import {
   BookOpen,
   Camera,
@@ -46,8 +45,7 @@ import { DocsLayout } from "../../../packages/moyaforge-ui/src/components/Layout
 import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx";
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
-import { DocumentationLink } from "./components/DocumentationLink.tsx";
-import { DocumentationRoutesContext } from "./context/documentation-routes-context";
+import { DocumentationLink } from "@moyarich/moyaforge/headless";
 
 const components = {
   a: DocumentationLink,
@@ -96,16 +94,12 @@ const components = {
 export function PlaygroundMdxProvider({
   children,
   components: overrides = {},
-  routes = [],
 }: PropsWithChildren<{
   components?: MDXComponents;
-  routes?: readonly NormalizedPage[];
 }>) {
   return (
-    <DocumentationRoutesContext.Provider value={routes}>
-      <MDXProvider components={{ ...components, ...overrides }}>
-        {children}
-      </MDXProvider>
-    </DocumentationRoutesContext.Provider>
+    <MDXProvider components={{ ...components, ...overrides }}>
+      {children}
+    </MDXProvider>
   );
 }
