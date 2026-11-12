@@ -11,7 +11,7 @@ const OPTIONAL_DEPENDENCIES = {
 export function mergeDependencies(
   manifest: PackageManifest,
   base: PackageManifest,
-  template: "docs" | "hybrid" | "existing",
+  template: "docs" | "hybrid" | "playground" | "existing",
   mode: "source" | "package",
   search: boolean,
 ) {
@@ -31,7 +31,7 @@ export function mergeDependencies(
 
   const runtime: Deps = {
     ...base.dependencies,
-    ...(mode === "package" && OPTIONAL_DEPENDENCIES.package),
+    ...((mode === "package" || template === "playground") && OPTIONAL_DEPENDENCIES.package),
     ...(search && OPTIONAL_DEPENDENCIES.search),
   };
   const development: Deps = { ...base.devDependencies };
