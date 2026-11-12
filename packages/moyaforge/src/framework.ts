@@ -1,9 +1,8 @@
 export const DEFAULT_MOYAFORGE_PATHS = Object.freeze({
-  playground: "apps/playground",
-  source: "apps/playground/src",
+  source: "src",
   docs: "docs",
   api: "api",
-  output: "apps/playground/dist",
+  output: "dist",
 });
 
 export type MoyaForgeMode = "docs" | "app" | "hybrid";
