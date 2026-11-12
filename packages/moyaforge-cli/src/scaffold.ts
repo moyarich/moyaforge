@@ -53,11 +53,12 @@ export async function planProject({
 
   // Optional template directories overlay files at the same relative path.
   const selected = new Map<string, string>();
-  for (const layer of ["base", ...(mode === "package" ? ["package"] : []), ...(search ? ["search"] : []), ...(template === "playground" ? ["playground"] : [])]) {
+  for (const layer of ["base", ...(mode === "package" ? ["package"] : []), ...(search ? ["search"] : []), ...(template === "playground" ? ["playground", ...(search ? ["playground/search"] : [])] : [])]) {
     const folder = join(templates, layer);
     for await (const file of filesIn(folder)) {
       const name = relative(folder, file).replace(/\.template$/, "");
-      if (name !== "package.json") selected.set(name, await readFile(file, "utf8"));
+      if (name !== "package.json" && !(layer === "playground" && name.startsWith("search/")))
+        selected.set(name, await readFile(file, "utf8"));
     }
   }
   for (const [name, source] of selected) {
