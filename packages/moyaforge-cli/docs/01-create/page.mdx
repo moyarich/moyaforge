@@ -14,6 +14,17 @@ npm run dev
 
 By default, `create` generates a React/Vite/MDX site and starter documentation pages under `docs/`. It installs the registered `docs-shell` and `code-group` components into `src/components/ui/` with their required source files.
 
+## Playground starter
+
+To scaffold a standalone documentation playground with the same registry-driven routing, MDX directives, Shiki highlighting and reusable UI architecture as `apps/playground`:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template playground --search
+npm run dev
+```
+
+This creates a consumer-owned `registry.config.ts` with local `docs/` content and installs the documentation UI through the same component registry used by `moyaforge add`. Search is optional: omit `--search` to exclude SQLite indexing. The template does not copy the MoyaForge repository’s package documentation or its development-only monorepo paths.
+
 ## Starter options
 
 ```sh
