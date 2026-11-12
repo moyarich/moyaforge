@@ -1,16 +1,70 @@
 {
   "name": "@moyarich/moyaforge-ui",
   "version": "0.1.0",
-  "private": true,
-  "description": "MoyaForge components distributed",
+  "private": false,
+  "description": "React components and styles for documentation sites.",
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./components/*": {
+      "types": "./dist/components/*/index.d.ts",
+      "import": "./dist/components/*/index.js",
+      "default": "./dist/components/*/index.js"
+    },
+    "./components/*.css": "./dist/components/*.css",
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "vite build && tsc -p tsconfig.json",
     "test": "vitest run tests",
-    "registry:check": "node ../../scripts/build-registry.mjs --check",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "registry:check": "node ../../bin/build-registry.ts --check",
     "storybook": "storybook dev -p 6006 -c .storybook",
-    "test:storybook": "storybook build -c .storybook -o ../../.storybook-static"
+    "test:storybook": "storybook build -c .storybook -o ../../.storybook-static",
+    "prepack": "npm run build"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "dependencies": {
+    "lucide-react": "^1.56.0",
+    "shiki": "^4.5.0"
+  },
+  "peerDependencies": {
+    "@codingame/monaco-vscode-editor-api": "^37.6.1",
+    "@monaco-editor/react": ">=4",
+    "@typefox/monaco-editor-react": "~8.0.2",
+    "monaco-editor": "^0.52.2",
+    "monaco-languageclient": "~11.0.2",
+    "react": ">=18",
+    "react-router-dom": "^7.18.4"
+  },
+  "peerDependenciesMeta": {
+    "@codingame/monaco-vscode-editor-api": {
+      "optional": true
+    },
+    "@monaco-editor/react": {
+      "optional": true
+    },
+    "@typefox/monaco-editor-react": {
+      "optional": true
+    },
+    "monaco-editor": {
+      "optional": true
+    },
+    "monaco-languageclient": {
+      "optional": true
+    },
+    "react-router-dom": {
+      "optional": true
+    }
+  },
   "registryDependencies": {
     "lucide-react": "^1.56.0",
     "@monaco-editor/react": ">=4",

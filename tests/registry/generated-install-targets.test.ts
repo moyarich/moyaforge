@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fixture } from "../fixture/registry-generator.js";
-import { buildRegistry } from "../../scripts/build-registry.mjs";
+import { buildRegistry } from "../../scripts/build-registry/build-registry.ts";
 
 test("installs components directly under ui while preserving external relative imports", async () => {
   const { root } = await fixture();

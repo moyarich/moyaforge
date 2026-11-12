@@ -7,13 +7,21 @@ const cwd = path.dirname(fileURLToPath(import.meta.url));
 const read = async (file) =>
   JSON.parse(await readFile(path.resolve(cwd, file), "utf8"));
 
-test("UI source workspace stays private and outside framework package exports", async () => {
+test("UI package publishes its build separately from the framework", async () => {
   const ui = await read("../packages/moyaforge-ui/package.json");
   const pkg = await read("../packages/moyaforge/package.json");
-  expect(ui.private).toBe(true);
+  expect(ui.private).toBe(false);
+  expect(ui.files).toEqual(["dist"]);
+  expect(ui.exports["./components/*"].import).toBe(
+    "./dist/components/*/index.js",
+  );
+  expect(ui.exports["./styles.css"]).toBe("./dist/styles.css");
   expect(Object.values(pkg.exports).join(" ")).not.toMatch(/moyaforge-ui/);
   expect({ ...pkg.dependencies, ...pkg.peerDependencies }).not.toHaveProperty(
     "@moyarich/moyaforge-ui-source",
+  );
+  expect({ ...pkg.dependencies, ...pkg.peerDependencies }).not.toHaveProperty(
+    "@moyarich/moyaforge-ui",
   );
 });
 
@@ -24,5 +32,8 @@ test("standalone MDX package has no framework or UI dependency", async () => {
   );
   expect({ ...pkg.dependencies, ...pkg.peerDependencies }).not.toHaveProperty(
     "@moyarich/moyaforge-ui-source",
+  );
+  expect({ ...pkg.dependencies, ...pkg.peerDependencies }).not.toHaveProperty(
+    "@moyarich/moyaforge-ui",
   );
 });

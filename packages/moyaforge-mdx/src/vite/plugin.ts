@@ -1,3 +1,5 @@
+/// <reference path="../../vite-client.d.ts" preserve="true" />
+
 import {
   createStaticPublication,
   type StaticPublicationOptions,

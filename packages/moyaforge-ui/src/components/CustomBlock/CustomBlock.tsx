@@ -1,7 +1,10 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import "./CustomBlock.css";
 
-export interface CustomBlockProps extends HTMLAttributes<HTMLDivElement> {
+export interface CustomBlockProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "title"
+> {
   /** Arbitrary semantic admonition type, supplied by the directive parser. */
   type?: string;
   title?: ReactNode;

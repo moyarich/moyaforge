@@ -146,14 +146,7 @@ test("all UI-owned registry entries exclude framework implementation paths", () 
   }
 });
 
-test("the UI workspace remains private and is not an npm-distributed component bundle", async () => {
-  const manifest = JSON.parse(
-    await readFile(
-      new URL("../packages/moyaforge-ui/package.json", import.meta.url),
-      "utf8",
-    ),
-  );
-  expect(manifest.private).toBe(true);
+test("the framework tarball excludes the standalone UI package", async () => {
   const framework = JSON.parse(
     await readFile(
       new URL("../packages/moyaforge/package.json", import.meta.url),

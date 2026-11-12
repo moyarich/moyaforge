@@ -1,6 +1,6 @@
 # @moyarich/moyaforge-cli
 
-The MoyaForge CLI creates React/Vite/MDX documentation sites and installs editable UI components from the public component registry. Requires Node.js 22.12+ and npm.
+The MoyaForge CLI creates React/Vite/MDX documentation sites and installs editable UI components from the public component registry. Requires Node.js 24.11+ and npm.
 
 ## Quick start
 

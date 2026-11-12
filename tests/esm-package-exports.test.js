@@ -19,7 +19,7 @@ test.each(publishablePackages)(
     );
 
     expect(manifest.type).toBe("module");
-    expect(manifest.engines.node).toBe(">=22.12.0");
+    expect(manifest.engines.node).toBe(">=24.11.0");
 
     const exports = Object.values(manifest.exports);
     expect(exports.length).toBeGreaterThan(0);

@@ -80,12 +80,12 @@ test("registry distributes UI shells without bundling headless framework routing
 
 test("playground uses public RegistryRoutes inside its host router", async () => {
   const app = await readFile(
-    new URL("../apps/playground/src/App.jsx", import.meta.url),
+    new URL("../apps/playground/src/App.tsx", import.meta.url),
     "utf8",
   );
   const source = await readFile(
     new URL(
-      "../apps/playground/src/components/PlaygroundRoutes.jsx",
+      "../apps/playground/src/components/PlaygroundRoutes.tsx",
       import.meta.url,
     ),
     "utf8",
@@ -101,7 +101,7 @@ test("playground uses public RegistryRoutes inside its host router", async () =>
 test("playground uses source-owned DocumentationSite with host adapters", async () => {
   const source = await readFile(
     new URL(
-      "../apps/playground/src/components/Shell/PlaygroundShell.jsx",
+      "../apps/playground/src/components/Shell/PlaygroundShell.tsx",
       import.meta.url,
     ),
     "utf8",
@@ -119,7 +119,7 @@ test("playground uses source-owned DocumentationSite with host adapters", async 
 test("playground sidebar and outline use private UI source instead of framework exports", async () => {
   const source = await readFile(
     new URL(
-      "../apps/playground/src/components/Shell/PlaygroundShell.jsx",
+      "../apps/playground/src/components/Shell/PlaygroundShell.tsx",
       import.meta.url,
     ),
     "utf8",
@@ -138,7 +138,7 @@ test("playground sidebar and outline use private UI source instead of framework 
 test("playground no longer imports framework's UI-heavy docs subpath", async () => {
   const app = await readFile(
     new URL(
-      "../apps/playground/src/components/Shell/PlaygroundShell.jsx",
+      "../apps/playground/src/components/Shell/PlaygroundShell.tsx",
       import.meta.url,
     ),
     "utf8",
@@ -149,7 +149,7 @@ test("playground no longer imports framework's UI-heavy docs subpath", async () 
 
 test("playground MDX provider uses source-owned UI without legacy MDX registry", async () => {
   const provider = await readFile(
-    new URL("../apps/playground/src/mdx-provider.jsx", import.meta.url),
+    new URL("../apps/playground/src/mdx-provider.tsx", import.meta.url),
     "utf8",
   );
   expect(provider).toContain(
@@ -181,14 +181,13 @@ test("framework TypeScript build is rooted at published entrypoints", async () =
     "src/index.ts",
     "src/registry-routes.tsx",
     "src/headless.ts",
-    "src/registry-virtual.d.ts",
   ]);
   expect(config.include).not.toContain("src/**/*.tsx");
 });
 
 test("playground styles are source-owned, not imported from framework package", async () => {
   const entry = await readFile(
-    new URL("../apps/playground/src/main.jsx", import.meta.url),
+    new URL("../apps/playground/src/main.tsx", import.meta.url),
     "utf8",
   );
   expect(entry).not.toContain("@moyarich/moyaforge/components.css");

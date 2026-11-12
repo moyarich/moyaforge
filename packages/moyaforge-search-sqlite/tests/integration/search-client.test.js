@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "vitest";
 
 const source = await readFile(
-  new URL("../../src/search/search-client.js", import.meta.url),
+  new URL("../../dist/src/search/search-client.js", import.meta.url),
   "utf8",
 );
 
@@ -40,9 +40,12 @@ test("search refresh invalidates a database whose initial fetch was in flight", 
 
     const standalone = source
       .replace(/^import .*;\n/gm, "")
-      .replace("let SQL;", "let SQL = globalThis.__testSQL;")
+      .replace(/\b(?:let|var) SQL;/, "let SQL = globalThis.__testSQL;")
       .replace("import.meta.hot", "undefined")
-      .replace("querySearchDatabase(database, query)", "[database.version]");
+      .replace(
+        "querySearchDatabase(activeDatabase, query)",
+        "[activeDatabase.version]",
+      );
     // Remove multiline static imports as well.
     const code = standalone
       .replace(/^import \{[\s\S]*?\} from "[^"]+";\n/gm, "")

@@ -984,6 +984,30 @@
           "target": "~/src/components/ui/TableOfContents/index.ts"
         }
       ]
+    },
+    {
+      "name": "version-picker",
+      "type": "registry:component",
+      "title": "Version Picker",
+      "description": "Editable MoyaForge version-picker source. Components import their own CSS.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/VersionPicker/VersionPicker.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/VersionPicker/VersionPicker.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/VersionPicker/VersionPicker.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/VersionPicker/VersionPicker.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/VersionPicker/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/VersionPicker/index.ts"
+        }
+      ]
     }
   ]
 }

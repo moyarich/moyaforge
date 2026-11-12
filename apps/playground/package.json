@@ -33,16 +33,18 @@
     "build": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "check:links": "npm run build --workspace @moyarich/moyaforge-mdx && node ./scripts/check-links.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
     "@shikijs/rehype": "^4.5.0",
     "@vitejs/plugin-react": "^6.1.2",
     "sql.js": "^1.15.0",
+    "typescript": "^7.0.2",
     "vite": "^8.3.4"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=24.11.0"
   }
 }

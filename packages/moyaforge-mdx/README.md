@@ -78,6 +78,8 @@ These are plain JSON-compatible records with no React component imports. The exi
 
 Metadata is authored once in YAML, not in `package.json` or a required MDX JavaScript export. Older integrations can explicitly enable compiled exports with `createMdxOptions({ frontmatterExport: true })`; they are not required.
 
+TypeScript projects that include their Vite config pick up the virtual module declarations through the `@moyarich/moyaforge-mdx/vite` import. If the config is outside your TypeScript project, add `"@moyarich/moyaforge-mdx/vite"` to the existing `compilerOptions.types` array.
+
 ## Derived navigation tree
 
 The headless `buildPageRegistry()` result provides `tree` alongside `navigation`, `routes`, and `byPath`. `buildNavigationTree()` groups pages by their normalized routes; missing directory landing pages become _virtual group nodes_ with no invented route. `flattenNavigation()` returns visible pages in nested, numeric-directory order, so previous/next links respect hierarchy instead of a global sort. Hidden pages remain routable but are not placed in menu groups; disabled pages are excluded from routes and navigation.

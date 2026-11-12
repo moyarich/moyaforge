@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fixture } from "../fixture/registry-generator.js";
-import { buildRegistry } from "../../scripts/build-registry.mjs";
+import { buildRegistry } from "../../scripts/build-registry/build-registry.ts";
 
 test("locates local CSS imports relative to each stylesheet using real at-rules", async () => {
   const { root, put } = await fixture();
