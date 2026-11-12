@@ -34,7 +34,10 @@ export function mergeDependencies(
     ...((mode === "package" || template === "playground") && OPTIONAL_DEPENDENCIES.package),
     ...(search && OPTIONAL_DEPENDENCIES.search),
   };
-  const development: Deps = { ...base.devDependencies };
+  const development: Deps = {
+    ...base.devDependencies,
+    ...(template === "playground" ? { shiki: "^4.5.0" } : {}),
+  };
   manifest.dependencies ??= {};
   manifest.devDependencies ??= {};
 
