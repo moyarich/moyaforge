@@ -22,6 +22,7 @@ on:
           - packages/moyaforge-cli
           - packages/moyaforge-mdx
           - packages/moyaforge-search-sqlite
+          - packages/moyaforge-ui
       target-branch:
         description: Branch used to resolve the package path and changelog
         required: true

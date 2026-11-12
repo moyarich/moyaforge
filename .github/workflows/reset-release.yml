@@ -21,6 +21,7 @@ on:
           - packages/moyaforge-cli
           - packages/moyaforge-mdx
           - packages/moyaforge-search-sqlite
+          - packages/moyaforge-ui
       target-branch:
         description: Release target branch
         required: true

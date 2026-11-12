@@ -35,6 +35,7 @@ on:
           - packages/moyaforge-cli
           - packages/moyaforge-mdx
           - packages/moyaforge-search-sqlite
+          - packages/moyaforge-ui
       version-mode:
         description: Resolve each package version
         type: choice

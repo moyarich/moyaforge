@@ -33,6 +33,7 @@ on:
           - packages/moyaforge-cli
           - packages/moyaforge-mdx
           - packages/moyaforge-search-sqlite
+          - packages/moyaforge-ui
       registry:
         description: Registry alias (npm, github, all, or a configured registry)
         required: true
