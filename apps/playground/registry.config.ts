@@ -19,7 +19,12 @@ export default {
       base: "../../packages",
       include: ["*/README.md", "**/page.md", "**/page.mdx"],
       pageFiles: "all",
-      exclude: ["**/node_modules/**", "**/dist/**", "moyaforge-ui/docs/**"],
+      exclude: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "moyaforge-ui/docs/**",
+        "moyaforge-cli/templates/**",
+      ],
       metadata: ["*/package.json"],
       navigation: { label: "Packages", order: 2 },
     },

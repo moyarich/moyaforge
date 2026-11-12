@@ -1,0 +1,57 @@
+---
+title: Code Group
+label: Code Group
+description: Switch between npm and pnpm command examples.
+---
+
+# Code Group
+
+Switch between npm and pnpm command examples.
+
+## Installation
+
+<CodeGroup label="Install Code Group">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add code-group
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/code-group
+```
+
+</CodeTab>
+</CodeGroup>
+
+The installer copies the component source and CSS into your project.
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { CodeGroup, CodeTab } from "@/components/ui/CodeGroup/CodeGroup";
+
+<CodeGroup label="Package managers">
+  <CodeTab label="npm">
+    <pre>npm install my-package</pre>
+  </CodeTab>
+  <CodeTab label="pnpm">
+    <pre>pnpm add my-package</pre>
+  </CodeTab>
+</CodeGroup>;
+```
+
+## Examples
+
+- [Tabs in Markdown](/ui/components/code-group/tabs-in-md) includes the Vite and MDX provider setup for directive syntax.
+- [Tabs in MDX](/ui/components/code-group/tabs-in-mdx)
+- [Tabs in React](/ui/components/code-group/tabs-in-react)
+
+## Styling
+
+Set `--code-group-active-color` for the selected tab, `--code-group-tabs-gap` for the space between labels, and `--code-group-background` for the group surface.

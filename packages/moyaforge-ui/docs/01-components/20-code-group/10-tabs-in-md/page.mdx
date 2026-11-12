@@ -1,0 +1,76 @@
+---
+title: Tabs in Markdown
+label: Tabs in Markdown
+---
+
+import { CodePreview } from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.mdx";
+import exampleSource from "./Example.mdx?raw";
+
+# Tabs in Markdown
+
+Select a tab to see the install command for that package manager.
+
+<CodePreview
+  title="Tabs in Markdown"
+  files={[{ label: "Example.mdx", code: exampleSource, language: "markdown" }]}
+>
+  <Example />
+</CodePreview>
+
+## Use these tabs in Markdown
+
+Use a `code-group` directive with one `tab` per package manager.
+
+### Configure Vite
+
+Map the `code-group` directive and its nested `tab` directives. If your app already calls `createMdxOptions`, add this entry to its existing `directiveComponents` map.
+
+```ts filename="vite.config.ts"
+import mdx from "@mdx-js/rollup";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [
+    {
+      ...mdx(
+        createMdxOptions({
+          directiveComponents: {
+            "code-group": {
+              component: "CodeGroup",
+              childType: "tab",
+              childComponent: "CodeTab",
+            },
+          },
+        }),
+      ),
+      enforce: "pre",
+    },
+    react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
+  ],
+});
+```
+
+### Register the MDX Component
+
+Import both installed components and register them under the names used in the Vite config. Copy the example from **Code** into `src/Guide.mdx`.
+
+```tsx filename="src/App.tsx"
+import { MDXProvider } from "@mdx-js/react";
+import { CodeGroup, CodeTab } from "./components/ui/CodeGroup/CodeGroup.js";
+import Guide from "./Guide.mdx";
+
+export function App() {
+  return (
+    <MDXProvider components={{ CodeGroup, CodeTab }}>
+      <Guide />
+    </MDXProvider>
+  );
+}
+```
+
+If your app already wraps its documentation in an `MDXProvider`, add the component mapping to that provider.
+
+[Component documentation](/ui/components/code-group)

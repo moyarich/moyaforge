@@ -1,0 +1,50 @@
+---
+title: Edit Page Link
+label: Edit Page Link
+description: Live Edit Page Link component example from canonical MoyaForge UI source.
+---
+
+# Edit Page Link
+
+This component is installed individually from MoyaForge's source registry and rendered here directly using the canonical UI component.
+
+## Installation
+
+<CodeGroup label="Install Edit Page Link">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add edit-page-link
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/edit-page-link
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `edit-page-link` registry item using the MoyaForge CLI. The selected source and required styles are copied into your application.
+
+[UI Components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { EditPageLink } from "@/components/ui/EditPageLink/EditPageLink";
+
+<EditPageLink repository="moyarich/moyaforge" path="docs/page.mdx" />;
+```
+
+## Examples
+
+- [GitHub edit link](/ui/components/edit-page-link/github-edit-link)
+
+## Styling
+
+Pass a `className` to style the edit link alongside your other article actions. The default stylesheet uses the surrounding text color.

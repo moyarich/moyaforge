@@ -1,0 +1,50 @@
+---
+title: Source
+label: Source
+description: Render code as a source snippet without an interactive editor.
+---
+
+# Source
+
+Render code as a source snippet without an interactive editor. This live example uses the canonical MoyaForge UI source and is rendered by the playground's MDX provider.
+
+## Installation
+
+<CodeGroup label="Install Source">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add source
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/source
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `source` component from the MoyaForge component registry. The selected source and CSS are copied into your application; they are not included in the framework package.
+
+[Browse all UI components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { Source } from "@/components/ui/Source/Source";
+
+<Source language="tsx" code={"const ready = true;"} />;
+```
+
+## Examples
+
+- [Highlighted TSX source](/ui/components/source/highlighted-tsx-source)
+
+## Styling
+
+Set `--source-background`, `--source-color`, and `--source-padding` on a wrapper to theme its source panel.

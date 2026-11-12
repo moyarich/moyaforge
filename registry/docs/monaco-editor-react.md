@@ -28,4 +28,4 @@ engine. `MonacoEditorTypeFox` is a separate full editor and additionally needs
 by the direct MonacoEditorReact implementation.
 
 Guide and complete worker setup:
-https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/20-monaco-editor-react
+https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react

@@ -5,7 +5,6 @@ import { listComponentsCommand } from "../list/list-cli.js";
 import { createCommand } from "../create/create-cli.js";
 import { initCommand } from "../init/init-cli.js";
 import { devCommand } from "../dev/dev-cli.js";
-import { buildCommand } from "../build/build-cli.js";
 import { previewCommand } from "../preview/preview-cli.js";
 
 /** Construct an independent root CLI with all supported subcommands. */
@@ -18,7 +17,6 @@ export function createRootCliCommand(): Command {
   program.addCommand(addComponentCommand());
   program.addCommand(listComponentsCommand());
   program.addCommand(devCommand());
-  program.addCommand(buildCommand());
   program.addCommand(previewCommand());
   return program;
 }

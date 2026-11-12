@@ -1,0 +1,50 @@
+---
+title: Empty State
+label: Empty State
+description: Live Empty State component example from canonical MoyaForge UI source.
+---
+
+# Empty State
+
+This component is installed individually from MoyaForge's source registry and rendered here directly using the canonical UI component.
+
+## Installation
+
+<CodeGroup label="Install Empty State">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add empty-state
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/empty-state
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `empty-state` registry item using the MoyaForge CLI. The selected source and required styles are copied into your application.
+
+[UI Components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
+
+<EmptyState title="Nothing here" description="Add your first item." />;
+```
+
+## Examples
+
+- [No search results](/ui/components/empty-state/no-search-results)
+
+## Styling
+
+Add a `className` to the root to arrange the icon, title, description, and actions. For a centered stack, use `display: grid`, `justify-items: center`, and a `gap` on that class.

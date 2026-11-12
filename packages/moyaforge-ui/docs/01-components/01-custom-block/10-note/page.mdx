@@ -1,0 +1,26 @@
+---
+title: Note
+label: Note
+description: Share helpful context alongside a procedure.
+---
+
+import { CodePreview } from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.mdx";
+import exampleSource from "./Example.mdx?raw";
+import exampleStyles from "./Example.css?raw";
+
+# Note
+
+Use a note for information readers may want to know while following the main instructions, such as where their drafts are saved.
+
+<CodePreview
+  title="Note"
+  files={[
+    { label: "Example.mdx", code: exampleSource, language: "markdown" },
+    { label: "Example.css", code: exampleStyles },
+  ]}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/custom-block)

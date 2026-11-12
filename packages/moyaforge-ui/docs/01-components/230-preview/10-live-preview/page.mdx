@@ -1,0 +1,26 @@
+---
+title: Counter with source code
+label: Counter with source code
+---
+
+import LivePreviewExample from "./LivePreviewExample.tsx";
+
+# Counter with source code
+
+Click the counter, then open **Code** to see the TSX behind it. This example uses the standard toolbar and adds a short instruction in the footer.
+
+<LivePreviewExample />
+
+## Customize the Code button
+
+Use `asChild` to give the toggle your own button label or styling. The button still controls the same source panel.
+
+```tsx
+<PreviewCodeToggle asChild>
+  <button type="button" className="my-code-trigger">
+    View source
+  </button>
+</PreviewCodeToggle>
+```
+
+[Component documentation](/ui/components/preview)

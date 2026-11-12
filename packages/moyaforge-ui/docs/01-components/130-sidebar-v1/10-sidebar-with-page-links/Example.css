@@ -1,0 +1,7 @@
+.mf-sidebar.sidebar-v1-example {
+  display: block;
+  position: static;
+  width: min(100%, 16rem);
+  height: auto;
+  box-shadow: none;
+}

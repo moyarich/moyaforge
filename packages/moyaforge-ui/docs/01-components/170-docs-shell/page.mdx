@@ -1,0 +1,62 @@
+---
+title: Docs Shell
+label: Docs Shell
+description: Canonical Docs Shell example in the MoyaForge component gallery.
+---
+
+# Docs Shell
+
+The registry's Docs Shell item is an editable template wrapping DocsLayout; this preview renders its canonical layout dependency.
+
+## Installation
+
+<CodeGroup label="Install Docs Shell">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add docs-shell
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/docs-shell
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install `docs-shell` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+
+[Preview component](/ui/components/preview)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { DocsLayout } from "@/components/ui/Layout/DocsLayout/DocsLayout";
+
+<DocsLayout
+  title="Docs Shell preview"
+  pages={[{ url: "#/ui/components/docs-shell", title: "Docs Shell" }]}
+  currentUrl="#/ui/components/docs-shell"
+  header={<strong>Docs Shell</strong>}
+  sidebar={null}
+  outline={null}
+>
+  <p>
+    Installable DocsShell composes this canonical DocsLayout with host-supplied
+    routes and slots.
+  </p>
+</DocsLayout>;
+```
+
+## Examples
+
+- [Layout with host-supplied routes](/ui/components/docs-shell/layout-with-host-supplied-routes)
+
+## Styling
+
+Docs Shell uses DocsLayout for its page structure. Set `--docs-sidebar-width` and `--docs-outline-width` to adjust the layout columns.

@@ -1,0 +1,83 @@
+---
+title: Counter preview in MDX
+label: Counter preview in MDX
+description: Show a live React counter and its source files in an MDX page.
+---
+
+import { CodePreview } from "../../../../src/components/CodePreview/index.js";
+
+# Counter preview in MDX
+
+Click the counter to try it. Open **Code** to see the React component and stylesheet.
+
+<CodePreview
+  title="Counter"
+  files={[
+    { label: "CounterExample.tsx", code: counterSource },
+    { label: "counterExample.css", code: counterStyles },
+  ]}
+>
+  <CounterExample />
+</CodePreview>
+
+## Use this example
+
+In your Vite React app with MDX configured, install `code-preview`:
+
+```sh
+npx @moyarich/moyaforge-cli@latest add code-preview
+```
+
+### Create the counter
+
+Save these two files in `src/`. The button updates its count on each click.
+
+```tsx filename="src/CounterExample.tsx"
+import "./counterExample.css";
+import { useState } from "react";
+
+export default function CounterExample() {
+  const [count, setCount] = useState(0);
+  return (
+    <button
+      className="mf-preview-example-button"
+      type="button"
+      onClick={() => setCount((n) => n + 1)}
+    >
+      Clicked {count} times
+    </button>
+  );
+}
+```
+
+```css filename="src/counterExample.css"
+.mf-preview-example-button {
+  padding: 0.625rem 1rem;
+  border: 1px solid var(--mf-preview-border, currentColor);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+```
+
+### Render the counter in MDX
+
+Save this as `src/Guide.mdx`, beside the counter and stylesheet. Vite’s `?raw` imports supply the text shown in the **Code** view.
+
+```mdx filename="src/Guide.mdx"
+import { CodePreview } from "./components/ui/CodePreview/index.js";
+import CounterExample from "./CounterExample.tsx";
+import counterSource from "./CounterExample.tsx?raw";
+import counterStyles from "./counterExample.css?raw";
+
+<CodePreview
+  title="Counter"
+  files={[
+    { label: "CounterExample.tsx", code: counterSource },
+    { label: "counterExample.css", code: counterStyles },
+  ]}
+>
+  <CounterExample />
+</CodePreview>
+```
+
+[CodePreview documentation](/ui/components/code-preview)

@@ -1,0 +1,29 @@
+---
+title: Editable workspace
+label: Editable workspace
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+import MultiFileEditor from "../30-real-editor/Example.tsx";
+import editorSource from "../30-real-editor/Example.tsx?raw";
+import setupSource from "../setup.ts?raw";
+
+# Editable workspace
+
+Switch between files, edit their contents, and use Save to see how the workspace handles changes.
+
+<CodePreview
+  title="Editable workspace"
+  files={[
+    { label: "Example.tsx", code: editorSource },
+    { label: "setup.ts", code: setupSource },
+  ]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <MultiFileEditor />
+</CodePreview>
+
+[Component installation and usage](/ui/components/monaco-editor-react)

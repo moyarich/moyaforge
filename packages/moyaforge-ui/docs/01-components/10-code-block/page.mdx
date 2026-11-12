@@ -1,0 +1,111 @@
+---
+title: Code Block
+label: Code Block
+description: Live MoyaForge CodeBlock examples with copy support and syntax highlighting.
+navigation: visible
+---
+
+# Code Block
+
+Use `CodeBlock` to display code that readers can copy.
+
+## Installation
+
+<CodeGroup label="Install Code Block">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add code-block
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/code-block
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `code-block` registry item with the MoyaForge CLI. Its component source and CSS are copied into your application rather than bundled into `@moyarich/moyaforge`.
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { CodeBlock } from "@/components/ui/CodeBlock";
+
+export function Example() {
+  return (
+    <CodeBlock>
+      <code className="language-ts">const answer = 42;</code>
+    </CodeBlock>
+  );
+}
+```
+
+## Use Code Block with MDX
+
+### Configure Vite
+
+Use the MDX plugin to compile fenced code blocks. Add `@shikijs/rehype` if you want syntax highlighting.
+
+```ts filename="vite.config.ts"
+import mdx from "@mdx-js/rollup";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import rehypeShiki from "@shikijs/rehype";
+
+export default defineConfig({
+  plugins: [
+    {
+      ...mdx(
+        createMdxOptions({
+          shiki: [
+            rehypeShiki,
+            { themes: { light: "github-light", dark: "github-dark" } },
+          ],
+        }),
+      ),
+      enforce: "pre",
+    },
+    react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
+  ],
+});
+```
+
+### Register the MDX Component
+
+Map `pre` to the installed `CodeBlock` so ordinary code fences get a copy button.
+
+```tsx filename="src/App.tsx"
+import { MDXProvider } from "@mdx-js/react";
+import { CodeBlock } from "./components/ui/CodeBlock/CodeBlock.js";
+import Guide from "./Guide.mdx";
+
+export function App() {
+  return (
+    <MDXProvider components={{ pre: CodeBlock }}>
+      <Guide />
+    </MDXProvider>
+  );
+}
+```
+
+If your app already wraps its documentation in an `MDXProvider`, add the component mapping to that provider.
+
+## Examples
+
+- [TypeScript](/ui/components/code-block/typescript)
+- [Shell commands](/ui/components/code-block/shell-commands)
+
+## Related
+
+- [All MoyaForge examples](/docs/examples)
+
+## Styling
+
+Set `--code-block-background` and `--code-block-color` for the code surface, or `--code-block-padding` and `--code-block-font-size` for a denser block.

@@ -1,0 +1,25 @@
+---
+title: Tabs in MDX
+label: Tabs in MDX
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.mdx";
+import source from "./Example.mdx?raw";
+
+# Tabs in MDX
+
+Import `CodeGroup` and `CodeTab` in your `.mdx` file. Wrap each fenced code block in a `CodeTab` and give the group a label. Open **Code** to copy the complete example. The import uses `@/` as an alias for `src/`.
+
+<CodePreview
+  title="Tabs in MDX"
+  files={[{ label: "Example.mdx", code: source, language: "markdown" }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/code-group)

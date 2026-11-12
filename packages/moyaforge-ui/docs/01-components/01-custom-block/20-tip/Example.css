@@ -1,0 +1,4 @@
+.tip-example .custom-block.tip {
+  --mf-custom-block-bg: color-mix(in srgb, #15803d 12%, transparent);
+  --mf-custom-block-border: #15803d;
+}

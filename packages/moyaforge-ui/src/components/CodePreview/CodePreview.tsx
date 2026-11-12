@@ -38,11 +38,8 @@ export type CodePreviewProps = {
 /* ---------- Default replacement ---------- */
 
 export const CODE_REPLACEMENTS: Replacement[] = [
-  // any "../../.../src/components/<path>.js" -> "@/components/ui/components/<path>"
-  [
-    /(?:\.\.\/)+src\/components\/([^"']+?)\.js/g,
-    "@/components/ui/components/$1",
-  ],
+  // any "../../.../src/components/<path>.js" -> "@/components/ui/<path>"
+  [/(?:\.\.\/)+src\/components\/([^"']+?)\.js/g, "@/components/ui/$1"],
   // "../setup" or '../setup' -> "./setup" (keeps the original quote style)
   [/(["'])\.\.\/setup\1/g, "$1./setup$1"],
 ];

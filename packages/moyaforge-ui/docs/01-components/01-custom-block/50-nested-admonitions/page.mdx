@@ -1,0 +1,26 @@
+---
+title: Nested admonitions
+label: Nested admonitions
+description: Group a related warning inside another callout.
+---
+
+import { CodePreview } from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.mdx";
+import exampleSource from "./Example.mdx?raw";
+import exampleStyles from "./Example.css?raw";
+
+# Nested admonitions
+
+Put a warning inside a broader callout when it applies only to that topic. Use four colons around the outer callout and three around the inner one.
+
+<CodePreview
+  title="Nested admonitions"
+  files={[
+    { label: "Example.mdx", code: exampleSource, language: "markdown" },
+    { label: "Example.css", code: exampleStyles },
+  ]}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/custom-block)

@@ -1,0 +1,20 @@
+---
+title: moyaforge init
+label: init
+---
+
+# `moyaforge init`
+
+Configure component installation for an existing project. Run this from your project directory.
+
+```sh
+npx @moyarich/moyaforge-cli@latest init
+```
+
+The `moyaforge.components.json` file stores your registry and component directory for later commands. The `registry.config.ts` file configures MDX content discovery.
+
+- `--cwd <path>` selects the project directory.
+- `--registry <source>` selects a local registry directory, a `registry.json` file, or its URL.
+- `--directory <path>` selects where components will be installed.
+- `--dry-run --diff` previews configuration changes.
+- `--overwrite` allows replacement of existing configuration.

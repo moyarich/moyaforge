@@ -1,0 +1,81 @@
+---
+title: Copy Button
+label: Copy Button
+description: A clipboard button with built-in success and error feedback.
+---
+
+# Copy Button
+
+A clipboard button with built-in success and error feedback.
+
+## Installation
+
+Install the component source and styles into your application.
+
+<CodeGroup label="Install Copy Button">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add copy-button
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/copy-button
+```
+
+</CodeTab>
+</CodeGroup>
+
+CopyButton requires React. The preview frames on this page are documentation components and are not required in your application.
+
+The default destination is `src/components/ui`. The component imports its own CSS. The examples below use `@/` as an alias for `src/`; use a relative import if your application does not configure that alias.
+
+## Usage
+
+```tsx
+import { CopyButton } from "@/components/ui/CopyButton";
+
+<CopyButton value="npm install react">Copy command</CopyButton>;
+```
+
+## Examples
+
+- [Copy text to the clipboard](/ui/components/copy-button/copy-text-to-the-clipboard)
+- [With icon](/ui/components/copy-button/with-icon)
+- [Dynamic value](/ui/components/copy-button/dynamic-value)
+- [Disabled](/ui/components/copy-button/disabled)
+- [Copy feedback](/ui/components/copy-button/copy-feedback)
+
+## API Reference
+
+<div className="mf-table-scroll">
+
+| Prop       | Type           | Default     | Description                                       |
+| ---------- | -------------- | ----------- | ------------------------------------------------- |
+| `value`    | `unknown`      | `undefined` | Text to copy; converted to a string.              |
+| `getValue` | `() => string` | `undefined` | Reads the value at click time; overrides `value`. |
+| `children` | `ReactNode`    | `"Copy"`    | The idle button label.                            |
+| `icon`     | `ReactNode`    | `undefined` | An optional icon before the label.                |
+| `onCopy`   | `() => void`   | `undefined` | Called after a successful copy.                   |
+| `disabled` | `boolean`      | `false`     | Disables the native button.                       |
+
+</div>
+
+Other native button props, including `className` and `aria-label`, are forwarded. The feedback label resets after two seconds. Clipboard access requires HTTPS or localhost.
+
+## Styling
+
+Override the component’s public CSS variables on a containing element:
+
+```css
+.copy-button-theme {
+  --copy-button-border-radius: 0.5rem;
+  --copy-button-padding: 0.5rem 0.75rem;
+  --copy-button-background: transparent;
+  --copy-button-border-color: currentColor;
+  --copy-button-color: inherit;
+}
+```

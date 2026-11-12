@@ -1,0 +1,23 @@
+---
+title: Highlighted TSX source
+label: Highlighted TSX source
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Source · Highlighted TSX source
+
+<CodePreview
+  title="Source"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/source)

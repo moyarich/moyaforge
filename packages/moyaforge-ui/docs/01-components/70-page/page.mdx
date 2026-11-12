@@ -1,0 +1,53 @@
+---
+title: Page
+label: Page
+description: Live Page component example from canonical MoyaForge UI source.
+---
+
+# Page
+
+This component is installed individually from MoyaForge's source registry and rendered here directly using the canonical UI component.
+
+## Installation
+
+<CodeGroup label="Install Page">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add page
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/page
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `page` registry item using the MoyaForge CLI. The selected source and required styles are copied into your application.
+
+[UI Components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { Page } from "@/components/ui/Page/Page";
+
+<Page as="section">
+  <h2>Page heading</h2>
+  <p>Page content</p>
+</Page>;
+```
+
+## Examples
+
+- [Semantic page section](/ui/components/page/semantic-page-section)
+
+## Styling
+
+Set `--page-max-width` to cap the reading measure and `--page-padding` to control the page gutters.

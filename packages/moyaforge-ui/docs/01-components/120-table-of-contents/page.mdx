@@ -1,0 +1,50 @@
+---
+title: Table of Contents
+label: Table of Contents
+description: Canonical MoyaForge Table of Contents component example.
+---
+
+# Table of Contents
+
+This live example uses the canonical component source in `packages/moyaforge-ui/src/components/`.
+
+## Installation
+
+<CodeGroup label="Install Table of Contents">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add table-of-contents
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/table-of-contents
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `table-of-contents` registry item through the MoyaForge CLI to copy editable component source and styles.
+
+[UI Components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { TableOfContents } from "@/components/ui/TableOfContents/TableOfContents";
+
+<TableOfContents selector="h2[id], h3[id]" />;
+```
+
+## Examples
+
+- [Outline from page headings](/ui/components/table-of-contents/outline-from-page-headings)
+
+## Styling
+
+Set `--toc-indent` for nested headings, `--toc-gap` for vertical spacing, and `--toc-color` for link text.

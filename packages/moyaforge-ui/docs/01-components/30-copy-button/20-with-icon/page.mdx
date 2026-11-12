@@ -1,0 +1,31 @@
+---
+title: With icon
+label: With icon
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Copy Button · With icon
+
+Pass a Lucide icon through the `icon` prop. This example additionally needs `lucide-react`:
+
+```sh
+npm install lucide-react
+```
+
+Keep decorative icons hidden from assistive technology.
+
+<CodePreview
+  title="With icon"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/copy-button)

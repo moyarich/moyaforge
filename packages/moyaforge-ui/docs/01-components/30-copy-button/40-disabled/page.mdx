@@ -1,0 +1,25 @@
+---
+title: Disabled
+label: Disabled
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+import DisabledExample from "./Example.tsx";
+import disabledSource from "./Example.tsx?raw";
+
+# Copy Button · Disabled
+
+Pass the native `disabled` prop to prevent copying.
+
+<CodePreview
+  title="Disabled"
+  files={[{ label: "Example.tsx", code: disabledSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <DisabledExample />
+</CodePreview>
+
+[Component documentation](/ui/components/copy-button)

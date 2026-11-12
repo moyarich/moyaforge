@@ -1,0 +1,57 @@
+---
+title: Docs Shell Focused
+label: Docs Shell Focused
+description: Canonical Docs Shell Focused example in the MoyaForge component gallery.
+---
+
+# Docs Shell Focused
+
+Use `header={null}` or `navigation={null}` to suppress those slots. Omit a prop to use its default.
+
+## Installation
+
+<CodeGroup label="Install Docs Shell Focused">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add docs-shell-focused
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/docs-shell-focused
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install `docs-shell-focused` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+
+[All UI components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { DocsShellFocused } from "@/components/ui/DocsShellFocused/DocsShellFocused";
+
+<DocsShellFocused
+  title="Focused reading"
+  subtitle="A distraction-free documentation layout"
+  header={<strong>Focused shell preview</strong>}
+  navigation={null}
+>
+  <p>Reading content with independently replaceable slots.</p>
+</DocsShellFocused>;
+```
+
+## Examples
+
+- [Focused reading layout](/ui/components/docs-shell-focused/focused-reading-layout)
+
+## Styling
+
+Set `--focused-width` to change the centered content width and `--focused-border` to theme the shell border.

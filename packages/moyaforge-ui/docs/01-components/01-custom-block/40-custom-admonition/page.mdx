@@ -1,0 +1,26 @@
+---
+title: Custom admonition
+label: Custom admonition
+description: Create a named callout for recurring messages such as release notes.
+---
+
+import { CodePreview } from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.mdx";
+import exampleSource from "./Example.mdx?raw";
+import exampleStyles from "./Example.css?raw";
+
+# Custom admonition
+
+Create a callout for a recurring message, such as announcing a new feature. After [registering admonitions](/ui/components/custom-block#register-admonitions), use `release-note` as the callout type and style it in your CSS.
+
+<CodePreview
+  title="Custom admonition"
+  files={[
+    { label: "Example.mdx", code: exampleSource, language: "markdown" },
+    { label: "Example.css", code: exampleStyles },
+  ]}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/custom-block)

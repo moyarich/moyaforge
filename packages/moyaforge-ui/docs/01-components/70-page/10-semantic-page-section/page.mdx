@@ -1,0 +1,23 @@
+---
+title: Semantic page section
+label: Semantic page section
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Page · Semantic page section
+
+<CodePreview
+  title="Page"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/page)

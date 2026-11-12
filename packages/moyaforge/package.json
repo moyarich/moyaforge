@@ -39,7 +39,7 @@
   "scripts": {
     "build": "npm run build --workspace @moyarich/moyaforge-mdx && node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
     "typecheck": "npm run build --workspace @moyarich/moyaforge-mdx && tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && vitest run --exclude tests/integration/docs-routes.test.js --exclude tests/unit/mdx.test.js --exclude tests/unit/sidebar-composition.test.js --exclude tests/unit/toc-render.test.js",
+    "test": "npm run build && vitest run --exclude tests/integration/docs-routes.test.js --exclude tests/unit/sidebar-composition.test.js --exclude tests/unit/toc-render.test.js",
     "prepack": "npm run build"
   },
   "devDependencies": {

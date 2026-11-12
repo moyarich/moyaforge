@@ -1,0 +1,23 @@
+---
+title: Interactive greeting demo
+label: Interactive greeting demo
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Demo · Interactive greeting demo
+
+<CodePreview
+  title="Demo"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/demo)

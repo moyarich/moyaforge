@@ -1,0 +1,53 @@
+---
+title: Doc Outline
+label: Doc Outline
+description: Canonical MoyaForge Doc Outline component example.
+---
+
+# Doc Outline
+
+This live example uses the canonical component source in `packages/moyaforge-ui/src/components/`.
+
+## Installation
+
+<CodeGroup label="Install Doc Outline">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add doc-outline
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/doc-outline
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `doc-outline` registry item through the MoyaForge CLI to copy editable component source and styles.
+
+[UI Components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { DocOutline } from "@/components/ui/DocOutline/DocOutline";
+
+<DocOutline
+  headings={[{ id: "overview", value: "Overview", depth: 2 }]}
+  collapsible
+/>;
+```
+
+## Examples
+
+- [Collapsible heading outline](/ui/components/doc-outline/collapsible-heading-outline)
+
+## Styling
+
+Set `--doc-outline-marker-color` for the active heading indicator and `--doc-outline-level-indent` for nested headings. Use `--doc-outline-top` to align the sticky outline with your header.

@@ -15,13 +15,3 @@ test("published framework exports contain no legacy UI entry points", async () =
     expect(entry.types).toMatch(/^\.\/dist\/.*\.d\.ts$/);
   }
 });
-
-test("headless MDX registry composition works without bundled UI", async () => {
-  const { defineMdxComponentRegistry } = await import("../../dist/headless.js");
-  const A = () => null;
-  const B = () => null;
-  const original = { Callout: A };
-  const result = defineMdxComponentRegistry(original, { Callout: B });
-  expect(result.Callout).toBe(B);
-  expect(original.Callout).toBe(A);
-});

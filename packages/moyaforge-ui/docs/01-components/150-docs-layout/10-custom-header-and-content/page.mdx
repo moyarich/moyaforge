@@ -1,0 +1,23 @@
+---
+title: Custom header and content
+label: Custom header and content
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Docs Layout · Custom header and content
+
+<CodePreview
+  title="Docs Layout"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/docs-layout)

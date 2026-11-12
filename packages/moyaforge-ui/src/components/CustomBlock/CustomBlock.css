@@ -1,21 +1,66 @@
 .custom-block {
+  --_mf-custom-block-accent: initial;
+  --_mf-custom-block-tint: initial;
   /* Public, stable customization surface with shared theme fallbacks. */
   --_mf-custom-block-padding: var(--mf-custom-block-padding, 1rem);
   --_mf-custom-block-border-width: var(--mf-custom-block-border-width, 0.25rem);
   --_mf-custom-block-border: var(
     --mf-custom-block-border,
-    var(--mf-color-border, currentColor)
+    var(--_mf-custom-block-accent, var(--mf-color-border, currentColor))
   );
   --_mf-custom-block-bg: var(
     --mf-custom-block-bg,
-    var(--mf-color-surface, transparent)
+    var(
+      --_mf-custom-block-tint,
+      var(--mf-color-surface, color-mix(in srgb, currentColor 5%, transparent))
+    )
   );
   --_mf-custom-block-radius: var(--mf-custom-block-radius, 0.375rem);
+  margin-block: 1rem;
   padding: var(--_mf-custom-block-padding);
   border-inline-start: var(--_mf-custom-block-border-width) solid
     var(--_mf-custom-block-border);
   border-radius: var(--_mf-custom-block-radius);
   background: var(--_mf-custom-block-bg);
+}
+
+.custom-block:is(.note, .info) {
+  --_mf-custom-block-accent: #3b82f6;
+}
+
+.custom-block:is(.tip, .success) {
+  --_mf-custom-block-accent: #16a34a;
+}
+
+.custom-block:is(.warning, .caution) {
+  --_mf-custom-block-accent: #d97706;
+}
+
+.custom-block:is(.danger, .error) {
+  --_mf-custom-block-accent: #dc2626;
+}
+
+.custom-block:is(.important, .experimental) {
+  --_mf-custom-block-accent: #8b5cf6;
+}
+
+.custom-block:is(
+  .note,
+  .info,
+  .tip,
+  .success,
+  .warning,
+  .caution,
+  .danger,
+  .error,
+  .important,
+  .experimental
+) {
+  --_mf-custom-block-tint: color-mix(
+    in srgb,
+    var(--_mf-custom-block-accent) 10%,
+    transparent
+  );
 }
 
 .custom-block > .custom-block-title {
@@ -25,4 +70,8 @@
 
 .custom-block > :last-child {
   margin-block-end: 0;
+}
+
+.custom-block :where(.custom-block) {
+  margin-block: 0.75rem;
 }

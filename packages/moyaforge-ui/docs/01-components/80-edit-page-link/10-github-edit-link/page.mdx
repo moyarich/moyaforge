@@ -1,0 +1,23 @@
+---
+title: GitHub edit link
+label: GitHub edit link
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Edit Page Link · GitHub edit link
+
+<CodePreview
+  title="Edit Page Link"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/edit-page-link)

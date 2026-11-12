@@ -1,0 +1,57 @@
+---
+title: Sidebar V1
+label: Sidebar V1
+description: Live demonstration of the canonical Sidebar V1 component.
+---
+
+# Sidebar V1
+
+This example uses the real source-owned MoyaForge UI component. It does not create a second component implementation or application router.
+
+## Installation
+
+<CodeGroup label="Install Sidebar V1">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add sidebar-v1
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/sidebar-v1
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install `sidebar-v1` from the MoyaForge registry to copy the selected component source and CSS into your application.
+
+[All UI components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { SidebarV1 } from "@/components/ui/SidebarV1/SidebarV1";
+
+<SidebarV1
+  label="Documentation"
+  pages={[
+    { url: "/ui", title: "Overview" },
+    { url: "/ui/components/sidebar-v1", title: "Sidebar V1" },
+  ]}
+  currentUrl="/ui/components/sidebar-v1"
+/>;
+```
+
+## Examples
+
+- [Sidebar with page links](/ui/components/sidebar-v1/sidebar-with-page-links)
+
+## Styling
+
+When embedding the sidebar in an article, use an instance class to give it a local width and keep it in normal flow. The example’s CSS overrides the documentation shell’s sticky desktop and hidden mobile sidebar rules.

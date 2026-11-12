@@ -1,0 +1,23 @@
+---
+title: Copy text to the clipboard
+label: Copy text to the clipboard
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+import DefaultExample from "./Example.tsx";
+import defaultSource from "./Example.tsx?raw";
+
+# Copy Button · Copy text to the clipboard
+
+<CodePreview
+  title="Copy Button"
+  files={[{ label: "Example.tsx", code: defaultSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <DefaultExample />
+</CodePreview>
+
+[Component documentation](/ui/components/copy-button)

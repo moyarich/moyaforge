@@ -1,0 +1,29 @@
+---
+title: Copy feedback
+label: Copy feedback
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+import FeedbackExample from "./Example.tsx";
+import feedbackSource from "./Example.tsx?raw";
+import feedbackStyles from "./Example.css?raw";
+
+# Copy Button · Copy feedback
+
+The label changes to “Copied!” after success and “Retry copy” after failure. `onCopy` runs after a successful clipboard write.
+
+<CodePreview
+  title="Copy feedback"
+  files={[
+    { label: "Example.tsx", code: feedbackSource },
+    { label: "Example.css", code: feedbackStyles },
+  ]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <FeedbackExample />
+</CodePreview>
+
+[Component documentation](/ui/components/copy-button)

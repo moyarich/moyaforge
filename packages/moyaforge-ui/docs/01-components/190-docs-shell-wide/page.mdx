@@ -1,0 +1,57 @@
+---
+title: Docs Shell Wide
+label: Docs Shell Wide
+description: Canonical Docs Shell Wide example in the MoyaForge component gallery.
+---
+
+# Docs Shell Wide
+
+Navigation, toolbar, inspector, and footer are optional independent slots.
+
+## Installation
+
+<CodeGroup label="Install Docs Shell Wide">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add docs-shell-wide
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/docs-shell-wide
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install `docs-shell-wide` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
+
+[All UI components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { DocsShellWide } from "@/components/ui/DocsShellWide/DocsShellWide";
+
+<DocsShellWide
+  title="Workspace layout"
+  navigationItems={[{ label: "Overview", href: "/ui" }]}
+  inspector={<p>Inspector panel</p>}
+  toolbar={<span>Workspace tools</span>}
+>
+  <p>Wide workspace content.</p>
+</DocsShellWide>;
+```
+
+## Examples
+
+- [Workspace with an inspector](/ui/components/docs-shell-wide/workspace-with-an-inspector)
+
+## Styling
+
+Set `--wide-panel-width` to resize the side panel and `--wide-border` to theme its divider. Use `--wide-min-height` and `--wide-content-min-height` to embed the shell in a smaller region.

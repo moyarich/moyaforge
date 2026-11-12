@@ -1,0 +1,25 @@
+---
+title: Tabs in React
+label: Tabs in React
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import source from "./Example.tsx?raw";
+
+# Tabs in React
+
+Import `CodeGroup` and `CodeTab` into a React component. Give the group a label and render each command inside `<pre><code>` so the tab can copy it. Open **Code** to copy the TSX example. The import uses `@/` as an alias for `src/`.
+
+<CodePreview
+  title="Tabs in React"
+  files={[{ label: "Example.tsx", code: source }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/code-group)

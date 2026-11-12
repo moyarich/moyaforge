@@ -300,7 +300,7 @@ test("Commander root assembles fresh, independently defined commands", async () 
   const two = createRootCliCommand();
   expect(one).not.toBe(two);
   expect(one.commands.map(command => command.name())).toEqual([
-    "init", "create", "add", "list", "dev", "build", "preview",
+    "init", "create", "add", "list", "dev", "preview",
   ]);
   expect(one.commands[2]).not.toBe(two.commands[2]);
 });

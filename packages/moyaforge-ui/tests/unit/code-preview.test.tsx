@@ -43,7 +43,7 @@ test("replacement rules are explicit, generic across component names and support
       'import "../../src/components/CopyButton/index.js";',
       CODE_REPLACEMENTS,
     ),
-  ).toContain("@/components/ui/components/CopyButton/index");
+  ).toContain("@/components/ui/CopyButton/index");
   expect(applyReplacements('import "../setup";', CODE_REPLACEMENTS)).toBe(
     'import "./setup";',
   );

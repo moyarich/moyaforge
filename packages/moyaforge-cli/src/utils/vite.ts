@@ -2,7 +2,7 @@ import { resolve } from "node:path";
 import { existsSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
-export async function runVite(command: "dev" | "build" | "preview", args: string[]) {
+export async function runVite(command: "dev" | "preview", args: string[]) {
   const at = args.indexOf("--cwd");
   const root = resolve(at >= 0 ? (args[at + 1] ?? ".") : ".");
   const forwarded =

@@ -51,3 +51,26 @@ pre {
 .playground-feedback a {
   color: var(--_feedback-accent);
 }
+
+.playground-loading {
+  display: flex;
+  min-block-size: 100dvh;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: #fff;
+  color: #595960;
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .playground-loading svg {
+    animation: playground-loading-spin 0.85s linear infinite;
+  }
+}
+
+@keyframes playground-loading-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}

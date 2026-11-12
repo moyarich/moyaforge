@@ -1,0 +1,52 @@
+---
+title: Navigation Tree
+label: Navigation Tree
+description: Canonical MoyaForge Navigation Tree component example.
+---
+
+# Navigation Tree
+
+This live example uses the canonical component source in `packages/moyaforge-ui/src/components/`.
+
+## Installation
+
+<CodeGroup label="Install Navigation Tree">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add navigation-tree
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/navigation-tree
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `navigation-tree` registry item through the MoyaForge CLI to copy editable component source and styles.
+
+[UI Components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { NavigationTree } from "@/components/ui/NavigationTree/NavigationTree";
+
+<NavigationTree
+  items={[{ label: "Guides", children: [{ label: "Install", children: [] }] }]}
+/>;
+```
+
+## Examples
+
+- [Nested guide navigation](/ui/components/navigation-tree/nested-guide-navigation)
+
+## Styling
+
+Set `--navigation-tree-indent` to adjust nesting and `--navigation-tree-gap` to change the space between entries.

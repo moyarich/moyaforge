@@ -39,6 +39,14 @@ div[data-moyaforge-code-block] > pre code,
   color: inherit;
   font-size: inherit;
 }
+[data-moyaforge-code-filename] {
+  padding: 0.625rem 4rem 0.625rem var(--_code-padding);
+  border-bottom: 1px solid var(--_mf-line, #e4e5e9);
+  color: var(--_code-muted);
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
 [data-moyaforge-code-language] {
   --_code-language-size: var(--code-block-language-font-size, 12px);
   position: absolute;

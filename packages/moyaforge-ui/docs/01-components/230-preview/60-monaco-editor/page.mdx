@@ -1,0 +1,19 @@
+---
+title: Editable source with Monaco
+label: Editable source with Monaco
+description: Open an editable source panel inside a Preview.
+---
+
+import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
+
+# Editable source with Monaco
+
+Select **Toggle editor** to switch from the counter to an editable panel with TSX and CSS tabs. Edits stay in the editor and do not change the running counter.
+
+<MonacoPreviewExample />
+
+Install `preview` and `monaco-editor-react`. Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers, then render `MonacoCodeGroup` inside `PreviewSource asChild`.
+
+## Styling
+
+The example styles live alongside its TSX source; use the `--mf-preview-*` variables for the outer preview frame.

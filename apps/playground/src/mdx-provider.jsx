@@ -12,7 +12,6 @@ import {
   Terminal as TerminalIcon,
 } from "lucide-react";
 import { MDXProvider } from "@mdx-js/react";
-import { defineMdxComponentRegistry } from "@moyarich/moyaforge/headless";
 import { Console, Terminal } from "@moyarich/console";
 import { CustomBlock } from "../../../packages/moyaforge-ui/src/components/CustomBlock/index.ts";
 import { CodeBlock } from "../../../packages/moyaforge-ui/src/components/CodeBlock/index.ts";
@@ -45,18 +44,16 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { PlaygroundCallout } from "./components/index.js";
-import { PreviewDirective } from "./components/PreviewDirective.jsx";
 import {
   DocumentationLink,
   DocumentationRoutesContext,
 } from "./components/DocumentationLink.jsx";
 
-const components = defineMdxComponentRegistry({
+const components = {
   a: DocumentationLink,
   pre: CodeBlock,
   CodeBlock,
   CustomBlock,
-  PreviewDirective,
   CodeGroup,
   CodeTab,
   CopyButton,
@@ -95,7 +92,7 @@ const components = defineMdxComponentRegistry({
   Settings,
   TerminalIcon,
   Callout: PlaygroundCallout,
-});
+};
 
 export function PlaygroundMdxProvider({
   children,

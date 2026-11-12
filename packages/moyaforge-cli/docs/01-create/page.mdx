@@ -36,9 +36,3 @@ The `existing` starter writes its Vite entry under `moyaforge/` and uses `docs:*
 Use `--directory <path>` to select a component source destination, `--registry <source>` for a registry directory or `registry.json` URL, and `--cwd <path>` to choose a project directory.
 
 Use `--dry-run` to preview changes, `--diff` for proposed file differences, `--no-install` to skip npm installation, and `--overwrite` to permit replacing modified files.
-
-## Template organization
-
-The CLI recursively reads starter files from `templates/base/`. With `--search`, files in `templates/search/` overlay matching base paths. Documentation pages come from `templates/docs/`. The default package manifest is `templates/base/package.json`, with additional dependencies selected by the CLI.
-
-The packaged file `templates/base/tsconfig.json.template` is written as `tsconfig.json` in consumer projects. Files belonging to the CLI are read directly; consumer files are inspected before changes are applied.

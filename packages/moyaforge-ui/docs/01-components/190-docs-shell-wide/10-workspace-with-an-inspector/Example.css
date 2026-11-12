@@ -1,0 +1,7 @@
+.wide-shell-example {
+  width: 100%;
+  min-width: 0;
+  --wide-min-height: 0;
+  --wide-content-min-height: 12rem;
+  --wide-panel-width: 9rem;
+}

@@ -1,0 +1,29 @@
+---
+title: Read-only workspace
+label: Read-only workspace
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+import ReadOnlyEditor from "../20-read-only/Example.tsx";
+import readOnlySource from "../20-read-only/Example.tsx?raw";
+import setupSource from "../setup.ts?raw";
+
+# Read-only workspace
+
+Set `readOnly` on the editor to lock all files, or on an individual file to lock only that file. Copying remains available.
+
+<CodePreview
+  title="Read-only workspace"
+  files={[
+    { label: "Example.tsx", code: readOnlySource },
+    { label: "setup.ts", code: setupSource },
+  ]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <ReadOnlyEditor />
+</CodePreview>
+
+[Component installation and usage](/ui/components/monaco-editor-typefox)

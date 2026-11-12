@@ -1,0 +1,58 @@
+---
+title: Documentation Site
+label: Documentation Site
+description: Live demonstration of the canonical Documentation Site component.
+---
+
+# Documentation Site
+
+This example uses the real source-owned MoyaForge UI component. It does not create a second component implementation or application router.
+
+## Installation
+
+<CodeGroup label="Install Documentation Site">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add documentation-site
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/documentation-site
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install `documentation-site` from the MoyaForge registry to copy the selected component source and CSS into your application.
+
+[All UI components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { DocumentationSite } from "@/components/ui/Layout/DocumentationSite/DocumentationSite";
+
+<DocumentationSite
+  title="Example site"
+  pages={[{ path: "/ui", label: "Overview" }]}
+  currentPath="/ui"
+  sidebar={null}
+  outline={null}
+>
+  <p>Standalone documentation chrome with host-owned routing.</p>
+</DocumentationSite>;
+```
+
+## Examples
+
+- [Standalone documentation site](/ui/components/documentation-site/standalone-documentation-site)
+
+## Styling
+
+Set `--mf-bg`, `--mf-text`, and `--mf-accent` on a wrapper to theme the documentation shell. Use `--mf-nav-font-size` to adjust navigation text.

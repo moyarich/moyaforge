@@ -1,0 +1,23 @@
+---
+title: Standalone documentation site
+label: Standalone documentation site
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Documentation Site · Standalone documentation site
+
+<CodePreview
+  title="Documentation Site"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/documentation-site)

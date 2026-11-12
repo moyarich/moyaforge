@@ -43,8 +43,8 @@ The playground reads the authored-content registry from `apps/playground/registr
 Write a relative Markdown link to the real `.md` or `.mdx` file. For example, from `packages/moyaforge-ui/docs/page.mdx`:
 
 ```mdx
-[Code Block](./01-components/01-code-block/page.mdx)
-[Code Block usage](./01-components/01-code-block/page.mdx#usage)
+[Code Block](./01-components/10-code-block/page.mdx)
+[Code Block usage](./01-components/10-code-block/page.mdx#usage)
 ```
 
 GitHub can follow these file paths directly. In the built playground, the opt-in `remarkSourceLinks` transform looks up the target file in the discovered registry and rewrites it to the public route, such as `/ui/components/code-block`. The site's `HashRouter` then renders that as a GitHub Pages URL containing `#/ui/components/code-block`; a `BrowserRouter` host uses normal paths instead.

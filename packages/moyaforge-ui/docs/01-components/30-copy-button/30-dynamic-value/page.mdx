@@ -1,0 +1,31 @@
+---
+title: Dynamic value
+label: Dynamic value
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+import DynamicExample from "./Example.tsx";
+import dynamicSource from "./Example.tsx?raw";
+import dynamicStyles from "./Example.css?raw";
+
+# Copy Button · Dynamic value
+
+The Code view includes both `Example.tsx` and its `Example.css` file.
+
+Use `getValue` to read the latest text when the button is clicked. It takes precedence over `value`.
+
+<CodePreview
+  title="Dynamic value"
+  files={[
+    { label: "Example.tsx", code: dynamicSource },
+    { label: "Example.css", code: dynamicStyles },
+  ]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <DynamicExample />
+</CodePreview>
+
+[Component documentation](/ui/components/copy-button)

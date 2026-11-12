@@ -1,0 +1,156 @@
+---
+title: Custom Block
+label: Custom Block
+description: Add callouts for useful context, shortcuts, and risks.
+---
+
+# Custom Block
+
+Callouts set important information apart from the main instructions. Use a note for extra context, a tip for a shortcut, or a warning before a step that could cause problems.
+
+## Installation
+
+<CodeGroup label="Install Custom Block">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add custom-block
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/custom-block
+```
+
+</CodeTab>
+</CodeGroup>
+
+## Register admonitions
+
+Set up callouts once in your app. Vite reads the callout syntax, and the MDX provider supplies the component that displays it. In a site created with the MoyaForge CLI, add these settings to the existing `vite.config.ts` and `src/App.tsx`. If you used `create --template existing`, look for those files under `moyaforge/`.
+
+### Configure Vite
+
+Install the MDX dependencies if your app does not already have them:
+
+```sh
+npm install @mdx-js/react @moyarich/moyaforge-mdx
+npm install -D @mdx-js/rollup
+```
+
+In `vite.config.ts`, use `createMdxOptions` to connect Markdown callouts to `CustomBlock`:
+
+```ts filename="vite.config.ts"
+import mdx from "@mdx-js/rollup";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [
+    {
+      ...mdx(
+        createMdxOptions({
+          directiveComponents: {
+            "*": {
+              component: "CustomBlock",
+              typeProp: "type",
+              titleProp: "title",
+            },
+          },
+        }),
+      ),
+      enforce: "pre",
+    },
+    react(),
+  ],
+});
+```
+
+### Register the Mdx Component
+
+In `src/App.tsx`, register the installed `CustomBlock` and render your MDX page inside the provider:
+
+:::: code-group React component
+
+::: tab App.tsx
+
+```tsx filename="src/App.tsx"
+import { MDXProvider } from "@mdx-js/react";
+import { CustomBlock } from "./components/ui/CustomBlock/CustomBlock.js";
+import Guide from "./Guide.mdx";
+
+const components = { CustomBlock };
+
+export function App() {
+  return (
+    <MDXProvider components={components}>
+      <Guide />
+    </MDXProvider>
+  );
+}
+```
+
+:::
+
+::: tab Guide.mdx
+
+```md filename="src/Guide.mdx"
+::: warning Before you continue
+
+Save a backup before changing your settings.
+
+:::
+```
+
+:::
+
+::: tab admonitions.css
+
+```css filename="src/admonitions.css"
+.custom-block.warning {
+  --mf-custom-block-bg: color-mix(in srgb, #c48914 12%, transparent);
+  --mf-custom-block-border: #c48914;
+}
+```
+
+:::
+
+::::
+
+Create `src/Guide.mdx` with the warning below. If your app already renders documentation through a router, keep that setup and add `CustomBlock` to its existing provider. For the `existing` starter with the default component destination, import from `../../src/components/ui/CustomBlock/CustomBlock.js` in `moyaforge/src/App.tsx`.
+
+The `"*"` mapping covers `note`, `tip`, `warning`, and custom types such as `release-note`. Each type becomes a CSS class you can style individually.
+
+## Usage
+
+In your MDX page, start the callout with `:::`, followed by its type and heading. Leave a blank line before the message and close the callout with another `:::`.
+
+```md filename="src/Guide.mdx"
+::: warning Before you continue
+
+Save a backup before changing your settings.
+
+:::
+```
+
+## Styling
+
+Notes, tips, warnings, and other common types come with a tinted background and an accent border. Custom types use a neutral style until you give them their own colors. To change the warning colors, add this to a stylesheet and import it from your app:
+
+```css filename="src/admonitions.css"
+.custom-block.warning {
+  --mf-custom-block-bg: color-mix(in srgb, #c48914 12%, transparent);
+  --mf-custom-block-border: #c48914;
+}
+```
+
+## Examples
+
+- [Warning](/ui/components/custom-block/warning)
+- [Note](/ui/components/custom-block/note)
+- [Tip](/ui/components/custom-block/tip)
+- [Custom admonition](/ui/components/custom-block/custom-admonition)
+- [Nested admonitions](/ui/components/custom-block/nested-admonitions)

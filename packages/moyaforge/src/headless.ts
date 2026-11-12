@@ -8,8 +8,3 @@ export {
   type RegistryRouteViewProps,
   type RegistryLazySources,
 } from "./routing/RegistryRoutes.js";
-
-export {
-  defineMdxComponentRegistry,
-  type MdxComponentRegistry,
-} from "./mdx-registry.js";

@@ -1,0 +1,23 @@
+---
+title: Collapsible heading outline
+label: Collapsible heading outline
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Doc Outline · Collapsible heading outline
+
+<CodePreview
+  title="Doc Outline"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/doc-outline)

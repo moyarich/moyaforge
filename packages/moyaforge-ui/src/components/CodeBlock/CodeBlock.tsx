@@ -12,10 +12,12 @@ export const CodeGroupContext = createContext(false);
 /** MDX pre renderer: preserves Shiki tokens and copies the rendered source text. */
 export function CodeBlock({
   language,
+  "data-filename": filename,
   ...props
 }: ComponentPropsWithoutRef<"pre"> & {
   language?: string;
   "data-language"?: string;
+  "data-filename"?: string;
 }) {
   const pre = useRef<HTMLPreElement>(null);
   const grouped = useContext(CodeGroupContext);
@@ -23,6 +25,7 @@ export function CodeBlock({
   if (grouped) return <pre {...props} />;
   return (
     <div data-moyaforge-code-block="">
+      {filename && <div data-moyaforge-code-filename="">{filename}</div>}
       {label && (
         <span data-moyaforge-code-language="" aria-hidden="true">
           {label}

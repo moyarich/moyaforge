@@ -1,0 +1,23 @@
+---
+title: Outline from page headings
+label: Outline from page headings
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import Example from "./Example.tsx";
+import exampleSource from "./Example.tsx?raw";
+
+# Table of Contents · Outline from page headings
+
+<CodePreview
+  title="Table of Contents"
+  files={[{ label: "Example.tsx", code: exampleSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component documentation](/ui/components/table-of-contents)

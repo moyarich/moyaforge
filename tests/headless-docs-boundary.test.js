@@ -79,19 +79,31 @@ test("registry distributes UI shells without bundling headless framework routing
 });
 
 test("playground uses public RegistryRoutes inside its host router", async () => {
-  const source = await readFile(
+  const app = await readFile(
     new URL("../apps/playground/src/App.jsx", import.meta.url),
     "utf8",
   );
+  const source = await readFile(
+    new URL(
+      "../apps/playground/src/components/PlaygroundRoutes.jsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  expect(app).toContain("<PlaygroundRoutes");
+  expect(app).not.toContain("MoyaForgeRouter");
   expect(source).toContain('from "@moyarich/moyaforge/registry-routes"');
-  expect(source).toContain("<HashRouter>");
+  expect(app).toContain("<HashRouter>");
   expect(source).toContain("<RegistryRoutes");
   expect(source).not.toContain("MoyaForgeRouter");
 });
 
 test("playground uses source-owned DocumentationSite with host adapters", async () => {
   const source = await readFile(
-    new URL("../apps/playground/src/App.jsx", import.meta.url),
+    new URL(
+      "../apps/playground/src/components/Shell/PlaygroundShell.jsx",
+      import.meta.url,
+    ),
     "utf8",
   );
   expect(source).toContain(
@@ -106,7 +118,10 @@ test("playground uses source-owned DocumentationSite with host adapters", async 
 
 test("playground sidebar and outline use private UI source instead of framework exports", async () => {
   const source = await readFile(
-    new URL("../apps/playground/src/App.jsx", import.meta.url),
+    new URL(
+      "../apps/playground/src/components/Shell/PlaygroundShell.jsx",
+      import.meta.url,
+    ),
     "utf8",
   );
   expect(source).toContain(
@@ -122,27 +137,14 @@ test("playground sidebar and outline use private UI source instead of framework 
 
 test("playground no longer imports framework's UI-heavy docs subpath", async () => {
   const app = await readFile(
-    new URL("../apps/playground/src/App.jsx", import.meta.url),
+    new URL(
+      "../apps/playground/src/components/Shell/PlaygroundShell.jsx",
+      import.meta.url,
+    ),
     "utf8",
   );
   expect(app).not.toContain('from "@moyarich/moyaforge/docs"');
   expect(app).toContain('from "@moyarich/moyaforge-mdx/navigation"');
-});
-
-test("headless MDX registry composer does not import legacy UI", async () => {
-  const registry = await readFile(
-    new URL("../packages/moyaforge/src/mdx-registry.ts", import.meta.url),
-    "utf8",
-  );
-  const headless = await readFile(
-    new URL("../packages/moyaforge/src/headless.ts", import.meta.url),
-    "utf8",
-  );
-  expect(registry).not.toMatch(
-    /from ["'][^"']*(?:components\/|monaco|console)/,
-  );
-  expect(registry).toContain("defineMdxComponentRegistry");
-  expect(headless).toContain("./mdx-registry.js");
 });
 
 test("playground MDX provider uses source-owned UI without legacy MDX registry", async () => {
@@ -150,8 +152,6 @@ test("playground MDX provider uses source-owned UI without legacy MDX registry",
     new URL("../apps/playground/src/mdx-provider.jsx", import.meta.url),
     "utf8",
   );
-  expect(provider).toContain('from "@moyarich/moyaforge/headless"');
-  expect(provider).toContain("defineMdxComponentRegistry");
   expect(provider).toContain(
     "packages/moyaforge-ui/src/components/CodeBlock/index.ts",
   );

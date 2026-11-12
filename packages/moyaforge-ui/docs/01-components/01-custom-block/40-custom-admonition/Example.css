@@ -1,0 +1,4 @@
+.custom-block.release-note {
+  --mf-custom-block-bg: color-mix(in srgb, #0d9488 12%, transparent);
+  --mf-custom-block-border: #0d9488;
+}

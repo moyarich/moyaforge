@@ -1,0 +1,4 @@
+.note-example .custom-block.note {
+  --mf-custom-block-bg: color-mix(in srgb, #2563eb 12%, transparent);
+  --mf-custom-block-border: #2563eb;
+}

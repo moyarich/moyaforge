@@ -1,0 +1,71 @@
+---
+title: CodePreview
+label: CodePreview
+---
+
+# CodePreview
+
+Use `CodePreview` for a live demo with one or more named source files. It composes
+the standard Preview slots and uses CodeGroup for multiple files. Installing
+`code-preview` includes these components and their styles automatically.
+CodePreview does not require Monaco, MDX, or Vite.
+The `?raw` imports in this example are a Vite convenience for reading source files.
+
+## Installation
+
+<CodeGroup label="Install CodePreview">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add code-preview
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/code-preview
+```
+
+</CodeTab>
+</CodeGroup>
+
+CodePreview lives in `components/CodePreview`. Its npm dependencies are React, Shiki, and
+`lucide-react`; the installers include its component dependencies automatically.
+
+## Usage
+
+```tsx
+import { CodePreview } from "@/components/ui/CodePreview";
+import Example from "./Example";
+import source from "./Example.tsx?raw";
+import styles from "./Example.css?raw";
+
+<CodePreview
+  title="Example"
+  files={[
+    { label: "Example.tsx", code: source },
+    { label: "Example.css", code: styles },
+  ]}
+>
+  <Example />
+</CodePreview>;
+```
+
+The first file supplies the toolbar’s copy action; each source tab also has its
+own copy control. Source files are highlighted with Shiki using their filename
+extension; use a file’s optional `language` field to override it. Unknown languages
+render as plain text. File labels must be unique. Source text is preserved by default.
+The optional `replacements` prop applies string or RegExp replacement tuples to
+all files. Repository docs can explicitly use `CODE_REPLACEMENTS` to make source
+imports portable; consuming applications can supply their own rules.
+
+## Examples
+
+- [Counter preview in MDX](/ui/components/code-preview/counter-in-mdx)
+
+## Styling
+
+Set `--mf-preview-border`, `--mf-preview-radius`, or `--mf-preview-padding` on a containing element to style the preview frame.
+
+For a custom toolbar or source panel, use the individual [Preview slots](/ui/components/preview) and install them with `add preview`.

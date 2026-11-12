@@ -22,10 +22,7 @@ The CLI installs component source from the MoyaForge registry. Components own th
 
 ## Documentation
 
-Detailed setup, commands, options, and development notes live in **[CLI documentation](docs/page.mdx)**.
+See the [CLI documentation](docs/page.mdx) for setup and command options.
 
 - [Create a project](docs/01-create/page.mdx)
 - [Install components](docs/02-components/page.mdx)
-- [Development and packaging](docs/03-development/page.mdx)
-
-Merging repository source does not publish an npm release. Public CLI commands require the matching packages to be available on npm.

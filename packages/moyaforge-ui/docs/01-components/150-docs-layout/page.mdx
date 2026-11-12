@@ -1,0 +1,60 @@
+---
+title: Docs Layout
+label: Docs Layout
+description: Live demonstration of the canonical Docs Layout component.
+---
+
+# Docs Layout
+
+This example uses the real source-owned MoyaForge UI component. It does not create a second component implementation or application router.
+
+## Installation
+
+<CodeGroup label="Install Docs Layout">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add docs-layout
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/docs-layout
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install `docs-layout` from the MoyaForge registry to copy the selected component source and CSS into your application.
+
+[All UI components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { DocsLayout } from "@/components/ui/Layout/DocsLayout/DocsLayout";
+
+<DocsLayout
+  title="Example documentation"
+  pages={[{ url: "/ui", title: "Overview" }]}
+  currentUrl="/ui"
+  header={<strong>Documentation preview</strong>}
+  sidebar={null}
+  outline={null}
+>
+  <p>Customizable layout content</p>
+</DocsLayout>;
+```
+
+## Examples
+
+- [Custom header and content](/ui/components/docs-layout/custom-header-and-content)
+- [Collapsible outline](/ui/components/docs-layout/collapsible-outline)
+
+## Styling
+
+Set `--docs-sidebar-width` and `--docs-outline-width` to size the side columns. Set `--docs-header-background` and `--docs-border` for the header and dividers.

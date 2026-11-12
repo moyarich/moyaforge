@@ -1,0 +1,28 @@
+---
+title: Collapsible outline
+label: Collapsible outline
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/index.js";
+import OutlineExample from "./Example.tsx";
+import outlineSource from "./Example.tsx?raw";
+
+# Docs Layout · Collapsible outline
+
+Set `toc.collapsible` to enable native HTML `<details>` disclosure, and
+`toc.defaultOpen` to control its initial state. No React disclosure state or
+JavaScript click handler is required. Custom `outline` and `sidebar` slots
+continue to replace the defaults.
+
+<CodePreview
+  title="Collapsible outline"
+  files={[{ label: "Example.tsx", code: outlineSource }]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <OutlineExample />
+</CodePreview>
+
+[Component documentation](/ui/components/docs-layout)

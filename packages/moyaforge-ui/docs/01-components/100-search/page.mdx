@@ -1,0 +1,55 @@
+---
+title: Search
+label: Search
+description: Canonical MoyaForge Search component example.
+---
+
+# Search
+
+This live example uses the canonical component source in `packages/moyaforge-ui/src/components/`.
+
+## Installation
+
+<CodeGroup label="Install Search">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add search
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/search
+```
+
+</CodeTab>
+</CodeGroup>
+
+Install the `search` registry item through the MoyaForge CLI to copy editable component source and styles.
+
+[UI Components](/ui)
+
+## Usage
+
+The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+
+```tsx
+import { Search } from "@/components/ui/Search/Search";
+
+<Search
+  inputProps={{
+    placeholder: "Find components",
+    "aria-label": "Find components",
+  }}
+/>;
+```
+
+## Examples
+
+- [Documentation search field](/ui/components/search/documentation-search-field)
+
+## Styling
+
+Set `--search-background`, `--search-border-color`, and `--search-border-radius` to match the input to your form controls.
