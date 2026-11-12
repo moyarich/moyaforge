@@ -9,7 +9,7 @@ npx @moyarich/moyaforge-cli@latest create
 npm run dev
 ```
 
-Use `create --search` for SQLite-backed documentation search, `create --template hybrid` for an additional playground route, or `create --template existing` to keep an existing React app's entry and scripts separate.
+Use `init --template playground --search` to scaffold a standalone registry-based playground comparable to `apps/playground`. Its UI components are sourced through the same registry as `moyaforge add`.\n\nUse `create --search` for SQLite-backed documentation search, `create --template hybrid` for an additional playground route, or `create --template existing` to keep an existing React app's entry and scripts separate.
 
 To add components without generating an application:
 
