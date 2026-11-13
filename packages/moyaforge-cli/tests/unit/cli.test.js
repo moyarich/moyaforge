@@ -291,6 +291,9 @@ test("commander exposes subcommand help and validates template choices", async (
   const help = run(root, "init", "--help");
   expect(help.status).toBe(0);
   expect(help.stdout).toContain("--template");
+  const removed = run(root, "create", "--no-install");
+  expect(removed.status).not.toBe(0);
+  expect(removed.stderr).toMatch(/unknown command/i);
   expect(help.stdout).toContain("--dry-run");
   const invalid = run(root, "init", "--template", "invalid", "--no-install");
   expect(invalid.status).not.toBe(0);
