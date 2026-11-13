@@ -165,6 +165,22 @@ The published command remains
 Use it when you explicitly want to test the **published npm version**;
 it does not test unmerged or unpublished changes in your checkout.
 
+## Script conventions
+
+Automation and maintenance scripts in `scripts/` and
+`apps/playground/scripts/` use TypeScript (`.ts`), executed by Node.js
+24.11+ directly when appropriate. Do not add new `.mjs`, `.cjs`, or
+`.js` scripts to these directories. `npm run check:script-extensions`
+enforces this convention.
+
+The repository's root `npm run build` already delegates to
+`npm run build --workspaces --if-present`. Use that command for
+workspace compilation instead of introducing redundant build wrapper
+scripts. The remaining dedicated scripts perform **non-build tasks**
+such as package-content auditing, tarball verification, generated
+registry reporting, and GitHub CLI bundling. They are not replaced by
+workspace builds.
+
 ## Test and build
 
 Unit and regression tests use **Vitest** across the workspaces. Run the workspace test scripts through npm rather than replacing the repository's test command:
