@@ -56,7 +56,9 @@ test("packed CLI runs init using only compiled files and packaged templates", as
     );
     run(process.execPath, [
       cli,
-      "create",
+      "init",
+      "--template",
+      "docs",
       "--cwd",
       consumer,
       "--registry",
