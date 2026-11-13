@@ -142,7 +142,7 @@ generated application dependencies separately.
 
 The root `package.json` owns the `moyaforge` binary mapping, a
 `prepare` script, and the `github-cli/` packaging whitelist.
-`scripts/prepare-github-cli.mjs` copies the built CLI workspace output and
+`scripts/prepare-github-cli.ts` copies the built CLI workspace output and
 template assets into `github-cli/`. This directory is generated and should
 not be committed. Keep both the executable and templates present when
 changing the CLI's compiled layout.
