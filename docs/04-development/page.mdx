@@ -170,8 +170,7 @@ it does not test unmerged or unpublished changes in your checkout.
 Automation and maintenance scripts in `scripts/` and
 `apps/playground/scripts/` use TypeScript (`.ts`), executed by Node.js
 24.11+ directly when appropriate. Do not add new `.mjs`, `.cjs`, or
-`.js` scripts to these directories. `npm run check:script-extensions`
-enforces this convention.
+`.js` scripts to these directories.
 
 The repository's root `npm run build` already delegates to
 `npm run build --workspaces --if-present`. Use that command for
