@@ -10,8 +10,9 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import type { SpawnSyncReturns } from "node:child_process";
 
-const run = (cwd, command, args = [], env = {}) => {
+const run = (cwd: string, command: string, args: string[] = [], env: Record<string, string> = {}) => {
   const result = spawnSync(command, args, {
     cwd,
     encoding: "utf8",
@@ -22,7 +23,7 @@ const run = (cwd, command, args = [], env = {}) => {
     output: (result.stdout || "") + (result.stderr || ""),
   };
 };
-const git = (cwd, ...args) =>
+const git = (cwd: string, ...args: string[]) =>
   execFileSync("git", args, { cwd, encoding: "utf8" }).trim();
 
 // Use the exact commit step from the checked-in workflow rather than a copy of its commands.
@@ -42,7 +43,15 @@ const script = match[1]
   .map((line) => (line.startsWith("          ") ? line.slice(10) : line))
   .join("\n");
 
-function fixture(fn) {
+type Fixture = {
+  root: string;
+  remote: string;
+  repo: string;
+  peer: string;
+  execute: () => { status: number | null; output: string };
+};
+
+function fixture(fn: (context: Fixture) => void) {
   const root = mkdtempSync(join(tmpdir(), "moyaforge-registry-workflow-"));
   const remote = join(root, "remote.git"),
     repo = join(root, "repo"),

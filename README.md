@@ -163,3 +163,19 @@ publicly available on npm; it no longer owns the CLI executable.
 See [CLI installation and publishing](packages/moyaforge-cli/README.md) and
 [registry architecture](registry/README.md). These commands require the matching
 CLI/framework releases to be published; merging source alone does not publish npm packages.
+
+## Run the CLI directly from GitHub (unpublished source)
+
+The repository root prepares a self-contained CLI package when npm installs
+this Git repository. From a separate consumer repository:
+
+```sh
+npm exec --yes --package=github:moyarich/moyaforge -- moyaforge init --template playground --search
+npm run dev
+```
+
+This uses the GitHub default branch, not the published npm CLI. The root
+`prepare` hook builds the CLI workspace and bundles its compiled executable
+and templates. Node.js 24.11+ and npm are required. See the
+[development guide](docs/04-development/page.mdx#running-directly-from-github)
+for local-path, link, and tarball alternatives.

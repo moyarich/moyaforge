@@ -74,4 +74,4 @@ jobs:
           COMMIT_RESULT: ${{ steps.commit.outcome }}
           CHANGE_RESULT: ${{ steps.commit.outputs.result }}
           COMMIT_SHA: ${{ steps.commit.outputs.commit_sha }}
-        run: node scripts/report-registry-summary.mjs
+        run: node scripts/report-registry-summary.ts

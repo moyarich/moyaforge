@@ -1,7 +1,8 @@
 import { defineConfig } from "vitest/config";
+import type { Plugin } from "vite";
 
 /** CSS has no runtime semantics in Node tests; Vite handles it in browser builds. */
-const componentCssForNodeTests = {
+const componentCssForNodeTests: Plugin = {
   name: "moyaforge-test-component-css",
   enforce: "pre",
   resolveId(source, importer) {

@@ -12,7 +12,8 @@
     "url": "git+https://github.com/moyarich/moyaforge.git"
   },
   "bin": {
-    "build-registry": "./bin/build-registry.ts"
+    "build-registry": "./bin/build-registry.ts",
+    "moyaforge": "./github-cli/dist/bin/moyaforge.js"
   },
   "scripts": {
     "dev": "npm run dev --workspace @moyarich/moyaforge-playground",
@@ -22,21 +23,21 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit:strict && npm run pack:verify && npm run test:unit && npm run test:consumer:browser",
+    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit:strict && npm run pack:verify && npm run test:consumer:browser && npm run test:github-cli",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
-    "test:all": "npm run test",
     "test:boundaries": "vitest run tests/workspace.test.js",
     "test:consumer": "vitest run tests/consumer.test.js",
     "test:consumer:browser": "npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
     "build": "npm run build --workspaces --if-present",
-    "test:unit": "vitest run --exclude packages/moyaforge/tests/docs-routes.test.js --exclude packages/moyaforge/tests/sidebar-composition.test.js --exclude packages/moyaforge/tests/toc-render.test.js",
     "test:e2e": "playwright test --project=vite-consumer",
     "registry:build": "node bin/build-registry.ts",
     "registry:check": "node bin/build-registry.ts --check",
     "test:cli:browser": "playwright test --project=cli-consumer",
-    "pack:audit": "node scripts/audit-framework-pack.mjs",
-    "pack:verify": "node scripts/verify-package-tarballs.mjs",
-    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict"
+    "pack:audit": "node scripts/audit-framework-pack.ts",
+    "pack:verify": "node scripts/verify-package-tarballs.ts",
+    "pack:audit:strict": "node scripts/audit-framework-pack.ts --strict",
+    "prepare": "npm run build --workspace @moyarich/moyaforge-cli && node scripts/prepare-github-cli.ts",
+    "test:github-cli": "npm run prepare && node scripts/verify-github-cli.ts"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
@@ -56,5 +57,8 @@
   },
   "overrides": {
     "@codingame/monaco-vscode-api": "$@codingame/monaco-vscode-api"
-  }
+  },
+  "files": [
+    "github-cli/"
+  ]
 }

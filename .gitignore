@@ -146,3 +146,6 @@ vite.config.ts.timestamp-*
 .consumer-dist/
 playwright-report/
 test-results/
+
+# Generated self-contained CLI for GitHub-root npm installs
+github-cli/

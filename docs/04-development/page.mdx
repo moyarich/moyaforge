@@ -19,6 +19,167 @@ npm run dev
 
 `npm run dev` launches the private `apps/playground` workspace, building local workspace packages first.
 
+## Test the CLI from another repository (without publishing)
+
+The CLI is the `@moyarich/moyaforge-cli` workspace at
+`packages/moyaforge-cli/`. Its executable is named `moyaforge` (declared
+in that workspace's `package.json`), and the build outputs
+`dist/bin/moyaforge.js`. These workflows use **local source** instead of
+`@latest` from npm. Use Node.js 24.11+.
+
+For the examples below, assume two sibling checkouts:
+
+```text
+projects/
+├── moyaforge/               # This repository (npm workspaces)
+│   └── packages/moyaforge-cli/
+└── my-app/                  # Separate consuming repository
+```
+
+### Option 1: Run the workspace CLI using its local path
+
+Build the CLI before invoking it in the consuming repository:
+
+```sh
+cd projects/moyaforge
+npm ci
+npm run build --workspace @moyarich/moyaforge-cli
+
+cd ../my-app
+npm exec --yes --package=../moyaforge/packages/moyaforge-cli -- moyaforge init --template playground --search
+npm run dev
+```
+
+The `--` separates npm's arguments from the `moyaforge` CLI arguments.
+The final `npm run dev` runs **in the consumer project**, after the
+scaffold command has created its scripts. If the CLI generates into a new
+subdirectory, change into that directory first. Rebuild after editing the
+CLI's TypeScript source.
+
+### Option 2: Link the CLI for repeated local development
+
+Run `npm link` in the built CLI workspace to register its `moyaforge`
+binary, then invoke that binary from any other repository:
+
+```sh
+cd projects/moyaforge
+npm ci
+npm run build --workspace @moyarich/moyaforge-cli
+
+cd packages/moyaforge-cli
+npm link
+
+cd ../../../my-app
+moyaforge init --template playground --search
+npm run dev
+```
+
+The linked executable uses your local checkout. Rebuild the CLI after
+source changes; `npm link` does not compile TypeScript or watch files.
+When finished, run `npm unlink -g @moyarich/moyaforge-cli` to remove
+the global link.
+
+### Option 3: Install a packed CLI from the checkout
+
+To test the same package contents that would be published, produce a
+tarball and install or run it in the consumer repository:
+
+```sh
+cd projects/moyaforge
+npm ci
+npm run build --workspace @moyarich/moyaforge-cli
+npm pack --workspace @moyarich/moyaforge-cli --pack-destination /tmp
+
+cd ../my-app
+npm exec --yes --package=/tmp/moyarich-moyaforge-cli-0.1.0.tgz -- moyaforge init --template playground --search
+npm run dev
+```
+
+Replace the tarball path with the filename printed by `npm pack`
+(the version changes with releases). The tarball approach also works
+when copying the package to a different machine without publishing it.
+
+### Running directly from GitHub
+
+For a **standalone CLI repository** with its `package.json` at the
+repository root and a built executable (or a working install-time build
+script), npm can install the GitHub repository and execute its binary:
+
+```sh
+npm exec --yes --package=github:OWNER/CLI_REPO -- moyaforge init --template playground --search
+```
+
+**MoyaForge supports GitHub-root execution.** The root package exposes
+`moyaforge` as a binary and its npm `prepare` hook builds the CLI workspace,
+then copies the built `dist/` and scaffolding `templates/` into a
+self-contained `github-cli/` folder for npm's Git package installation.
+No npm publication or local clone is required:
+
+```sh
+npm exec --yes --package=github:moyarich/moyaforge -- moyaforge init --template playground --search
+npm run dev
+```
+
+Run these commands from the **consumer** repository. The GitHub dependency
+uses the default branch unless you append a Git ref, for example
+`github:moyarich/moyaforge#main` or a commit SHA. It installs a temporary
+CLI package rather than switching to the source workspace. Git installs
+run the root preparation script, so they must have npm, Node.js 24.11+,
+and access to install build dependencies. Preparation takes longer than
+running the already-published CLI. The consuming app still installs its
+generated application dependencies separately.
+
+### Choose a method
+
+| Method | Best for |
+| --- | --- |
+| Local path with `npm exec --package` | One-off testing from a sibling repository |
+| `npm link` | Frequent edits and CLI runs against local source |
+| `npm pack` | Verifying publishable package contents without publishing |
+| GitHub package URL | Run this monorepo's CLI directly from GitHub without npm publishing |
+
+### Maintaining the GitHub-root distribution
+
+The root `package.json` owns the `moyaforge` binary mapping, a
+`prepare` script, and the `github-cli/` packaging whitelist.
+`scripts/prepare-github-cli.ts` copies the built CLI workspace output and
+template assets into `github-cli/`. This directory is generated and should
+not be committed. Keep both the executable and templates present when
+changing the CLI's compiled layout.
+
+To check the package before pushing changes, use:
+
+```sh
+npm run prepare
+npm pack --dry-run --json
+```
+
+Confirm the file list includes `github-cli/dist/bin/moyaforge.js` and
+`github-cli/templates/`. For an end-to-end check, run the GitHub-root
+command above from a clean test consumer directory against a pushed commit.
+A dry-run pack verifies file inclusion, but does not test Git installation
+or scaffolding by itself.
+
+The published command remains
+`npx @moyarich/moyaforge-cli@latest init --template playground --search`.
+Use it when you explicitly want to test the **published npm version**;
+it does not test unmerged or unpublished changes in your checkout.
+
+## Script conventions
+
+Automation and maintenance scripts in `scripts/` and
+`apps/playground/scripts/` use TypeScript (`.ts`), executed by Node.js
+24.11+ directly when appropriate. Do not add new `.mjs`, `.cjs`, or
+`.js` scripts to these directories.
+
+The repository's root `npm run build` already delegates to
+`npm run build --workspaces --if-present`. Use that command for
+workspace compilation instead of introducing redundant build wrapper
+scripts. The remaining dedicated scripts perform **non-build tasks**
+such as package-content auditing, tarball verification, generated
+registry reporting, and GitHub CLI bundling. They are not replaced by
+workspace builds.
+
 ## Test and build
 
 Unit and regression tests use **Vitest** across the workspaces. Run the workspace test scripts through npm rather than replacing the repository's test command:

@@ -8,7 +8,7 @@ if (!summary) {
 }
 const repository = env.GITHUB_REPOSITORY || "unknown";
 const base = (env.GITHUB_SERVER_URL || "https://github.com") + "/" + repository;
-const format = (value) => String(value || "not run").replaceAll("|", "\\|");
+const format = (value: string | undefined) => String(value || "not run").replaceAll("|", "\\|");
 const lines = [
   "## Component registry generation",
   "",
@@ -63,7 +63,7 @@ if (env.GENERATE_RESULT === "success" && existsSync("registry.json")) {
       lines.push("", "</details>", "");
     }
   } catch (err) {
-    lines.push("Registry item details unavailable: " + String(err.message), "");
+    lines.push("Registry item details unavailable: " + String(err instanceof Error ? err.message : err), "");
   }
 }
 lines.push("### Git result", "");

@@ -40,12 +40,12 @@ try {
         .filter(Boolean)
         .map((path) => path.replace(/^package\//, "")),
     );
-    const missing = [];
-    const requireFile = (path) => {
+    const missing: string[] = [];
+    const requireFile = (path: string) => {
       if (!files.has(path.replace(/^\.\//, ""))) missing.push(path);
     };
 
-    for (const entry of Object.values(manifest.exports ?? {})) {
+    for (const entry of Object.values(manifest.exports ?? {}) as Array<{types: string; import: string; default: string}>) {
       if (typeof entry !== "object" || entry === null) {
         throw new Error(`${manifest.name} has an unexpected export entry`);
       }
