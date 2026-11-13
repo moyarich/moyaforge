@@ -277,22 +277,22 @@ test("shared registry utilities remain siblings of UI files, including custom de
   ).toBe(true);
 });
 
-test("init configures only; create generates the app", async () => {
+test("init without a template configures only; init --template scaffolds the app", async () => {
   const root = await project();
   expect(run(root, "init", "--no-install").status).toBe(0);
   expect(JSON.parse(await read(root, "moyaforge.components.json")).directory).toBe("src/components/ui");
   await expect(read(root, "src/App.tsx")).rejects.toThrow();
-  expect(run(root, "create", "--no-install").status).toBe(0);
+  expect(run(root, "init", "--template", "docs", "--no-install").status).toBe(0);
   expect(await read(root, "src/App.tsx")).toContain("<HashRouter>");
 });
 
 test("commander exposes subcommand help and validates template choices", async () => {
   const root = await project();
-  const help = run(root, "create", "--help");
+  const help = run(root, "init", "--help");
   expect(help.status).toBe(0);
   expect(help.stdout).toContain("--template");
   expect(help.stdout).toContain("--dry-run");
-  const invalid = run(root, "create", "--template", "invalid", "--no-install");
+  const invalid = run(root, "init", "--template", "invalid", "--no-install");
   expect(invalid.status).not.toBe(0);
   expect(invalid.stderr).toMatch(/allowed choices/i);
 });
@@ -303,15 +303,15 @@ test("Commander root assembles fresh, independently defined commands", async () 
   const two = createRootCliCommand();
   expect(one).not.toBe(two);
   expect(one.commands.map(command => command.name())).toEqual([
-    "init", "create", "add", "list", "dev", "preview",
+    "init", "add", "list", "dev", "preview",
   ]);
-  expect(one.commands[2]).not.toBe(two.commands[2]);
+  expect(one.commands[1]).not.toBe(two.commands[1]);
 });
 
-test("create uses the packaged manifest template and enables only selected features", async () => {
+test("init --template uses the packaged manifest and enables only selected features", async () => {
   const base = JSON.parse(await readFile(resolve(repository, "packages/moyaforge-cli/templates/base/package.json"), "utf8"));
   const root = await project();
-  expect(run(root, "create", "--no-install").status).toBe(0);
+  expect(run(root, "init", "--template", "docs", "--no-install").status).toBe(0);
   const standard = JSON.parse(await read(root, "package.json"));
   expect(standard.scripts).toEqual(base.scripts);
   expect(standard.dependencies).toEqual(base.dependencies);
@@ -323,7 +323,7 @@ test("create uses the packaged manifest template and enables only selected featu
     name: "consumer-app", version: "1.2.3", scripts: { dev: "custom-server" },
     dependencies: { react: "^18.3.1" },
   }));
-  expect(run(custom, "create", "--template", "hybrid", "--mode", "package",
+  expect(run(custom, "init", "--template", "hybrid", "--mode", "package",
     "--search", "--no-install").status).toBe(0);
   const manifest = JSON.parse(await read(custom, "package.json"));
   expect(manifest.name).toBe("consumer-app");
