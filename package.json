@@ -12,7 +12,8 @@
     "url": "git+https://github.com/moyarich/moyaforge.git"
   },
   "bin": {
-    "build-registry": "./bin/build-registry.ts"
+    "build-registry": "./bin/build-registry.ts",
+    "moyaforge": "./github-cli/dist/bin/moyaforge.js"
   },
   "scripts": {
     "dev": "npm run dev --workspace @moyarich/moyaforge-playground",
@@ -36,7 +37,8 @@
     "test:cli:browser": "playwright test --project=cli-consumer",
     "pack:audit": "node scripts/audit-framework-pack.mjs",
     "pack:verify": "node scripts/verify-package-tarballs.mjs",
-    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict"
+    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
+    "prepare": "npm run build --workspace @moyarich/moyaforge-cli && node scripts/prepare-github-cli.mjs"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
@@ -56,5 +58,8 @@
   },
   "overrides": {
     "@codingame/monaco-vscode-api": "$@codingame/monaco-vscode-api"
-  }
+  },
+  "files": [
+    "github-cli/"
+  ]
 }
