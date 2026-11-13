@@ -180,12 +180,13 @@ The UI package does not export a separate MDX compiler or Vite registry plugin. 
 Content can live wherever the consuming repository chooses. The default paths are:
 
 ```text
-apps/playground/src/
+src/
 docs/
 api/
+dist/
 ```
 
-Use `defineMoyaForgeConfig()` to override them.
+These paths are relative to the consuming project, not to the MoyaForge repository. Use `defineMoyaForgeConfig()` to override them.
 
 ## Styling components
 
