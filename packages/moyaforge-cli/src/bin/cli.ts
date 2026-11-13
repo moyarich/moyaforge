@@ -2,7 +2,6 @@ import { Command } from "commander";
 import { readFile } from "node:fs/promises";
 import { addComponentCommand } from "../add/add-cli.js";
 import { listComponentsCommand } from "../list/list-cli.js";
-import { createCommand } from "../create/create-cli.js";
 import { initCommand } from "../init/init-cli.js";
 import { devCommand } from "../dev/dev-cli.js";
 import { previewCommand } from "../preview/preview-cli.js";
@@ -13,7 +12,6 @@ export function createRootCliCommand(): Command {
     .name("moyaforge")
     .description("Create MoyaForge documentation sites and install editable components.");
   program.addCommand(initCommand());
-  program.addCommand(createCommand());
   program.addCommand(addComponentCommand());
   program.addCommand(listComponentsCommand());
   program.addCommand(devCommand());
