@@ -8,7 +8,7 @@ import { mergeDependencies } from "./dependencies.js";
 export interface ScaffoldOptions {
   root: string;
   mode?: "source" | "package";
-  template?: "docs" | "hybrid" | "existing";
+  template?: "docs" | "hybrid" | "playground" | "existing";
   search?: boolean;
   directory?: string;
   registry?: string;
@@ -32,15 +32,17 @@ export async function planProject({
 }: ScaffoldOptions): Promise<InstallPlan & { manifestPath: string }> {
   if (mode !== "source" && mode !== "package")
     throw Error("--mode must be source or package");
-  if (template !== "docs" && template !== "hybrid" && template !== "existing")
-    throw Error("--template must be docs, hybrid or existing");
+  if (template !== "docs" && template !== "hybrid" && template !== "playground" && template !== "existing")
+    throw Error("--template must be docs, hybrid, playground or existing");
 
   const appRoot = within(root, template === "existing" ? "moyaforge" : ".");
   const uiPath = relative(resolve(appRoot, "src"), within(root, directory)).replaceAll("\\", "/");
   const tokens: Record<string, string> = {
     __UI__: uiPath.startsWith(".") ? uiPath : `./${uiPath}`,
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
-    __PLAYGROUND_ENABLED__: String(template === "hybrid"),
+    __PLAYGROUND_ENABLED__: String(template === "hybrid" || template === "playground"),
+    __SEARCH_PLUGIN_IMPORT__: search ? 'import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";' : "",
+    __SEARCH_PLUGIN__: search ? "sqliteSearchPlugin({ discovery, registry, root: contentRoot })," : "",
   };
 
   const files: PlannedFile[] = [];
@@ -51,11 +53,12 @@ export async function planProject({
 
   // Optional template directories overlay files at the same relative path.
   const selected = new Map<string, string>();
-  for (const layer of ["base", ...(mode === "package" ? ["package"] : []), ...(search ? ["search"] : [])]) {
+  for (const layer of ["base", ...(mode === "package" ? ["package"] : []), ...(search ? ["search"] : []), ...(template === "playground" ? ["playground", ...(search ? ["playground/search"] : [])] : [])]) {
     const folder = join(templates, layer);
     for await (const file of filesIn(folder)) {
       const name = relative(folder, file).replace(/\.template$/, "");
-      if (name !== "package.json") selected.set(name, await readFile(file, "utf8"));
+      if (name !== "package.json" && !(layer === "playground" && name.startsWith("search/")))
+        selected.set(name, await readFile(file, "utf8"));
     }
   }
   for (const [name, source] of selected) {

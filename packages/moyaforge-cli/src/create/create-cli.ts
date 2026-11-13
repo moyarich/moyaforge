@@ -8,7 +8,7 @@ export function createCommand(): Command {
     .option("--registry <source>", "Registry directory or registry.json URL")
     .option("--directory <path>", "Component destination")
     .addOption(new Option("--mode <mode>").choices(["source", "package"]))
-    .addOption(new Option("--template <template>").choices(["docs", "hybrid", "existing"]))
+    .addOption(new Option("--template <template>").choices(["docs", "hybrid", "playground", "existing"]))
     .option("--search", "Include SQLite search")
     .option("--dry-run", "Preview without writing")
     .option("--diff", "Show changes")
