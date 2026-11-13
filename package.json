@@ -23,7 +23,7 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit:strict && npm run pack:verify && npm run test:unit && npm run test:consumer:browser && npm run test:github-cli",
+    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit:strict && npm run pack:verify && npm run test:unit && npm run test:consumer:browser && npm run test:github-cli && npm run check:script-extensions",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:all": "npm run test",
     "test:boundaries": "vitest run tests/workspace.test.js",
@@ -35,11 +35,12 @@
     "registry:build": "node bin/build-registry.ts",
     "registry:check": "node bin/build-registry.ts --check",
     "test:cli:browser": "playwright test --project=cli-consumer",
-    "pack:audit": "node scripts/audit-framework-pack.mjs",
-    "pack:verify": "node scripts/verify-package-tarballs.mjs",
-    "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
+    "pack:audit": "node scripts/audit-framework-pack.ts",
+    "pack:verify": "node scripts/verify-package-tarballs.ts",
+    "pack:audit:strict": "node scripts/audit-framework-pack.ts --strict",
     "prepare": "npm run build --workspace @moyarich/moyaforge-cli && node scripts/prepare-github-cli.ts",
-    "test:github-cli": "npm run prepare && node scripts/verify-github-cli.ts"
+    "test:github-cli": "npm run prepare && node scripts/verify-github-cli.ts",
+    "check:script-extensions": "node scripts/check-script-extensions.ts"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
