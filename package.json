@@ -38,8 +38,8 @@
     "pack:audit": "node scripts/audit-framework-pack.mjs",
     "pack:verify": "node scripts/verify-package-tarballs.mjs",
     "pack:audit:strict": "node scripts/audit-framework-pack.mjs --strict",
-    "prepare": "npm run build --workspace @moyarich/moyaforge-cli && node scripts/prepare-github-cli.mjs",
-    "test:github-cli": "npm run prepare && node scripts/verify-github-cli.mjs"
+    "prepare": "npm run build --workspace @moyarich/moyaforge-cli && node scripts/prepare-github-cli.ts",
+    "test:github-cli": "npm run prepare && node scripts/verify-github-cli.ts"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
