@@ -124,7 +124,17 @@ Create `src/Guide.mdx` with the warning below. If your app already renders docum
 
 The `"*"` mapping covers `note`, `tip`, `warning`, and custom types such as `release-note`. Each type becomes a CSS class you can style individually.
 
+import { CustomBlock } from "../../../src/components/CustomBlock/index.js";
+
 ## Usage
+
+::: code-preview Warning callout
+
+<CustomBlock type="warning" title="Before you continue">
+  Save a backup before changing your settings.
+</CustomBlock>
+
+:::
 
 In your MDX page, start the callout with `:::`, followed by its type and heading. Leave a blank line before the message and close the callout with another `:::`.
 
