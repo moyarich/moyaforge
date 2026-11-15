@@ -4,7 +4,7 @@ label: Custom Block
 description: Add callouts for useful context, shortcuts, and risks.
 ---
 
-import { CustomBlock } from "../../../src/components/CustomBlock/index.js";
+import { CustomBlock as LiveCustomBlock } from "../../../src/components/CustomBlock/index.js";
 
 # Custom Block
 
@@ -130,9 +130,9 @@ The `"*"` mapping covers `note`, `tip`, `warning`, and custom types such as `rel
 
 ::: code-preview Warning callout
 
-<CustomBlock type="warning" title="Before you continue">
+<LiveCustomBlock type="warning" title="Before you continue">
   Save a backup before changing your settings.
-</CustomBlock>
+</LiveCustomBlock>
 
 :::
 
