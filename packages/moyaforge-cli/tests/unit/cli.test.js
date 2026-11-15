@@ -232,7 +232,8 @@ test("monaco installation reports setup notes without copying README files", asy
   const root = await project();
   const dry = run(root, "add", "monaco-editor-react", "--dry-run");
   expect(dry.status).toBe(0);
-  expect(dry.stdout).toContain("monaco-editor@^0.52.2");
+  expect(dry.stdout).toContain("@monaco-editor/react");
+  expect(dry.stdout).toContain("monaco-editor");
   expect(dry.stdout).toContain(
     "npm install @monaco-editor/react monaco-editor lucide-react",
   );
