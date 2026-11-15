@@ -147,6 +147,7 @@ Add `createCodePreviewPlugin(codePreview)` to Vite’s `plugins` array. Extend t
 
 ```ts
 localSources: true,
+registerInlineReact: codePreview.inlineReact.register,
 resolveCodePreviewComponent: (reference, authoredFile) =>
   resolveCodePreviewSource({ context: codePreview, reference, authoredFile }),
 ```
@@ -174,10 +175,18 @@ The `component` attribute renders a sibling `.tsx` or `.jsx` file with a default
 
 The source file is shown in the preview area and remains available in the **Code** view.
 
+## Inline React imports
+
+Use `:::code-preview[Title]{react}` in an MDX page to compile imports and JSX in a
+separate module. Relative imports resolve from the page's directory. Add named
+fences anywhere in the block for extra source tabs. The fences are displayed as
+source, so any files used by the live example must be imported separately.
+
 ## Examples
 
 - [Inline greeting](/ui/components/code-preview/inline-greeting)
 - [Inline preview with multiple files](/ui/components/code-preview/inline-multiple-files)
+- [Inline React previews](/ui/components/code-preview/inline-react)
 - [Inline source fences](/ui/components/code-preview/inline-source-fences)
 - [Counter preview in MDX](/ui/components/code-preview/counter-in-mdx)
 - [Markdown file preview](/ui/components/code-preview/markdown-file-preview)

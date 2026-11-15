@@ -204,3 +204,64 @@ test("uses native directives for code groups and their nested tabs", async () =>
   expect(result).toContain('label: "npm"');
   expect(result).toContain("_jsx(CodeTab,");
 });
+
+test("isolates repeated import names and keeps named fences as preview sources", async () => {
+  const registered = [];
+  const page = [
+    ":::code-preview[First]{react}",
+    'import {\n  First as Greeting,\n} from "./first.js";',
+    "",
+    "<Greeting />",
+    "",
+    '```css filename="styles.css"',
+    "p { color: red; }",
+    "```",
+    "",
+    ":::",
+    "",
+    ":::code-preview[Second]{react}",
+    "",
+    'import { Second as Greeting } from "./second.js";',
+    "",
+    "<Greeting />",
+    "",
+    ":::",
+  ].join("\n");
+  const result = String(
+    await compile(
+      { value: page, path: "/docs/page.mdx" },
+      createMdxOptions({
+        componentMappings: {
+          "code-preview": {
+            component: "InlineCodePreview",
+            sourceProp: "code",
+            filesProp: "sourceFiles",
+            registerInlineReact(source, file) {
+              registered.push({ source, file });
+              return `virtual:react-preview/${registered.length}`;
+            },
+          },
+        },
+      }),
+    ),
+  );
+  expect(registered).toEqual([
+    {
+      source:
+        'import {\n  First as Greeting,\n} from "./first.js";\n\n<Greeting />',
+      file: "/docs/page.mdx",
+    },
+    {
+      source:
+        'import { Second as Greeting } from "./second.js";\n\n<Greeting />',
+      file: "/docs/page.mdx",
+    },
+  ]);
+  expect(result).toContain(
+    'import MoyaForgeReactPreview0 from "virtual:react-preview/1"',
+  );
+  expect(result).toContain(
+    'import MoyaForgeReactPreview1 from "virtual:react-preview/2"',
+  );
+  expect(result).toContain("styles.css");
+});

@@ -1,0 +1,35 @@
+---
+title: Inline React previews
+---
+
+# Inline React previews
+
+Add `{react}` to write imports and JSX inside a preview. Each block imports its
+own component, so both examples below can use the local name `Greeting`.
+Named fences appear in the Code view and can go before or after the JSX.
+
+:::code-preview[React with source tabs]{react}
+
+```ts filename="config.ts"
+export const message = "Hello from React.";
+```
+
+import Greeting from "../30-inline-multiple-files/Greeting.tsx";
+
+<Greeting />
+
+```css filename="styles.css"
+.greeting {
+  font-weight: 600;
+}
+```
+
+:::
+
+:::code-preview[Separate import scope]{react}
+
+import Greeting from "../../CounterExample.tsx";
+
+<Greeting />
+
+:::

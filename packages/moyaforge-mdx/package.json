@@ -49,7 +49,9 @@
     "prepack": "npm run build"
   },
   "dependencies": {
+    "@mdx-js/mdx": "^3.1.1",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
+    "parse-imports-exports": "^0.2.4",
     "rehype-slug": "^6.0.0",
     "remark-directive": "^3.0.1",
     "remark-flexible-containers": "^1.4.0",
@@ -65,7 +67,6 @@
     "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@mdx-js/mdx": "^3.1.1",
     "typescript": "^7.0.2",
     "vite": "^8.3.4"
   },

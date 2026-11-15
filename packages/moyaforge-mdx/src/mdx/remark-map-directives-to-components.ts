@@ -14,10 +14,20 @@ export interface DirectiveComponent
 export type DirectiveComponentMap = Record<string, DirectiveComponent>;
 
 /** Compose directive handlers for the default MDX compiler. */
-export function remarkMapDirectivesToComponents(mappings: DirectiveComponentMap) {
-  return remarkRenderMappedDirectives<DirectiveComponent>(
+export function remarkMapDirectivesToComponents(
+  mappings: DirectiveComponentMap,
+) {
+  const render = remarkRenderMappedDirectives<DirectiveComponent>(
     mappings,
     collectPreviewContent,
     resolveNestedDirective,
   );
+  return (...args: Parameters<typeof render>) => {
+    const [tree, file] = args;
+    file.data.inlineReactImports = [];
+    render(...args);
+    tree.children.unshift(
+      ...(file.data.inlineReactImports as unknown as typeof tree.children),
+    );
+  };
 }

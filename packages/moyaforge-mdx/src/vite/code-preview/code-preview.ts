@@ -1,3 +1,4 @@
+import { createInlineReactModules } from "./inline-react-modules.js";
 import { readdirSync } from "node:fs";
 import {
   basename,
@@ -28,6 +29,7 @@ export interface CodePreviewOptions {
 }
 
 export interface CodePreviewContext {
+  inlineReact: ReturnType<typeof createInlineReactModules>;
   /** Registry key -> absolute file path */
   modules: ReadonlyMap<string, string>;
 
@@ -123,6 +125,7 @@ export function createCodePreview({
   console.log("registered paths:", keysByPath.size);
 
   return {
+    inlineReact: createInlineReactModules(),
     modules,
     keysByPath,
     basesByPath,
@@ -169,11 +172,17 @@ export function resolveCodePreviewSource({
 
 export function createCodePreviewPlugin({
   modules,
+  inlineReact,
 }: CodePreviewContext): Plugin {
   return {
     name: codePreviewPluginName,
 
-    resolveId(id) {
+    resolveId(id, importer) {
+      const inlineId = inlineReact.resolve(id);
+      if (inlineId) return inlineId;
+      const authoredFile = inlineReact.importer(importer);
+      if (authoredFile)
+        return this.resolve(id, authoredFile, { skipSelf: true });
       if (id === codePreviewComponentVirtualModuleId) {
         return componentModuleId;
       }
@@ -183,7 +192,8 @@ export function createCodePreviewPlugin({
       }
     },
 
-    load(id) {
+    async load(id) {
+      if (inlineReact.importer(id)) return inlineReact.load(id);
       if (id === componentModuleId) {
         const entries = Array.from(modules)
           .filter(([, path]) => componentFilePattern.test(path))

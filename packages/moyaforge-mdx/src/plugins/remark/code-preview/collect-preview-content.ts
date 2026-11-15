@@ -1,3 +1,4 @@
+import { importInlineReactExample } from "./inline-react-module.js";
 import { namedCodeBlock } from "../code-block/named-code-block.js";
 import type { VFile } from "vfile";
 import {
@@ -16,6 +17,7 @@ export interface PreviewComponentOptions {
   sourceProp?: string;
   filesProp?: string;
   localSources?: boolean;
+  registerInlineReact?: (source: string, authoredFile: string) => string;
   resolveCodePreviewComponent?: (
     reference: string,
     authoredFile: string,
@@ -31,6 +33,11 @@ export function collectPreviewContent(
   attributes: Attribute[],
   filePath?: string,
 ) {
+  const inlineReact = header?.flags.includes("react");
+  if (inlineReact && (header?.component || header?.code))
+    throw new Error(
+      "A {react} preview takes its component and source from the directive body.",
+    );
   if (header?.component) {
     if (!/^\.\/[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)$/.test(header.component))
       throw new Error(
@@ -40,9 +47,7 @@ export function collectPreviewContent(
       filePath &&
       selected.resolveCodePreviewComponent?.(header.component, filePath);
     if (!component)
-      throw new Error(
-        `Unregistered preview component: ${header.component}`,
-      );
+      throw new Error(`Unregistered preview component: ${header.component}`);
     attributes.push({
       type: "mdxJsxAttribute",
       name: "component",
@@ -91,7 +96,7 @@ export function collectPreviewContent(
       name: "replacementPreset",
       value: replacements,
     });
-  if (selected.sourceProp) {
+  if (selected.sourceProp || inlineReact) {
     const groups: Node[][] = [];
     let group: Node[] = [];
     for (const child of children) {
@@ -102,21 +107,35 @@ export function collectPreviewContent(
         group = [];
       }
     }
-    attributes.push({
-      type: "mdxJsxAttribute",
-      name: selected.sourceProp,
-      value: hasLocalSources
-        ? ""
-        : groups
-            .map((nodes) => {
-              const start = nodes[0]?.position?.start.offset;
-              const end = nodes.at(-1)?.position?.end.offset;
-              return start === undefined || end === undefined
-                ? ""
-                : source.slice(start, end);
-            })
-            .join("\n\n"),
-    });
+    const body = groups
+      .map((nodes) => {
+        const start = nodes[0]?.position?.start.offset;
+        const end = nodes.at(-1)?.position?.end.offset;
+        return start === undefined || end === undefined
+          ? ""
+          : source.slice(start, end);
+      })
+      .join("\n\n");
+    if (selected.sourceProp)
+      attributes.push({
+        type: "mdxJsxAttribute",
+        name: selected.sourceProp,
+        value: hasLocalSources && !inlineReact ? "" : body,
+      });
+    if (inlineReact) {
+      if (!filePath || !selected.registerInlineReact)
+        throw new Error(
+          "{react} previews require the Vite code preview plugin.",
+        );
+      if (!body.trim())
+        throw new Error("A {react} preview requires a JSX body.");
+      return [
+        importInlineReactExample(
+          file,
+          selected.registerInlineReact(body, filePath),
+        ),
+      ];
+    }
   }
   return content;
 }

@@ -48,6 +48,7 @@ const compileMdx = mdx(
         sourceProp: "code",
         filesProp: "sourceFiles",
         localSources: true,
+        registerInlineReact: codePreview.inlineReact.register,
         resolveCodePreviewComponent: (reference, authoredFile) =>
           resolveCodePreviewSource({
             context: codePreview,

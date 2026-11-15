@@ -37,6 +37,7 @@ const compileMdx = mdx(createMdxOptions({
       sourceProp: "code",
       filesProp: "sourceFiles",
       localSources: true,
+      registerInlineReact: codePreview.inlineReact.register,
       resolveCodePreviewComponent: (reference, authoredFile) => resolveCodePreviewSource({ context: codePreview, reference, authoredFile }),
     },
     "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
