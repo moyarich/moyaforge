@@ -12,6 +12,31 @@ export interface PreviewFile {
   language?: string;
 }
 
+const previewFilePattern =
+  /^\.\/[\w-]+(?:\.[\w-]+)*\.(?:mdx?|tsx|jsx|ts|js|css|json)$/;
+
+export function readPreviewFile(
+  reference: string,
+  filePath: string | undefined,
+  language?: string,
+): PreviewFile {
+  if (!filePath)
+    throw new Error("A code-preview source requires an MDX filename.");
+  if (!previewFilePattern.test(reference))
+    throw new Error(`Invalid preview source: ${reference}`);
+
+  const directory = realpathSync(dirname(filePath));
+  const path = realpathSync(join(directory, reference));
+  if (dirname(path) !== directory)
+    throw new Error(`Preview source escapes its directory: ${reference}`);
+
+  return {
+    label: reference.slice(2),
+    code: readFileSync(path, "utf8"),
+    ...(language ? { language } : {}),
+  };
+}
+
 export function readPreviewSources(
   child: DirectiveNode,
   file: VFile,
@@ -23,24 +48,11 @@ export function readPreviewSources(
     throw new Error(
       "code-preview-sources requires local files and an MDX filename.",
     );
-  const directory = realpathSync(dirname(filePath));
-  const files: PreviewFile[] = [];
-  for (const reference of refs.sources
+
+  const files = refs.sources
     .split(",")
-    .map((value) => value.trim())) {
-    if (
-      !/^\.\/[\w-]+(?:\.[\w-]+)*\.(?:mdx?|tsx|jsx|ts|js|css|json)$/.test(
-        reference,
-      )
-    )
-      throw new Error(`Invalid preview source: ${reference}`);
-    const path = realpathSync(join(directory, reference));
-    if (dirname(path) !== directory)
-      throw new Error(`Preview source escapes its directory: ${reference}`);
-    files.push({
-      label: reference.slice(2),
-      code: readFileSync(path, "utf8"),
-    });
-  }
+    .map((value) => value.trim())
+    .map((reference) => readPreviewFile(reference, filePath));
+
   return { files, replacements: refs.replacements };
 }
