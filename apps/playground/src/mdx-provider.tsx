@@ -56,13 +56,13 @@ const examples = Object.fromEntries(
 );
 
 function PlaygroundInlineCodePreview({
-  example,
+  component,
   children,
   ...preview
-}: ComponentProps<typeof InlineCodePreview> & { example?: string }) {
-  const Example = example ? examples[example] : undefined;
-  if (example && !Example)
-    throw new Error(`Unknown preview example: ${example}`);
+}: ComponentProps<typeof InlineCodePreview> & { component?: string }) {
+  const Example = component ? examples[component] : undefined;
+  if (component && !Example)
+    throw new Error(`Unknown preview component: ${component}`);
   return (
     <InlineCodePreview {...preview}>
       {Example ? <Example /> : children}
