@@ -1,4 +1,4 @@
-import { CodePreviewEditor } from "../../../../src/components/CodePreviewEditor/index.js";
+import { CodePreviewEditor } from "@/components/ui/CodePreviewEditor";
 import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
 import counterSource from "../../CounterExample.tsx?raw";
 import counterStyles from "../../counterExample.css?raw";
