@@ -18,8 +18,17 @@ test("parent component pages expose a navigable section outline", () => {
     const headings = [...source.matchAll(/^## (.+)$/gm)].map(
       (match) => match[1],
     );
-    expect(headings.length, `${page}: should expose section headings`).toBeGreaterThan(0);
-    expect(source, `${page}: should include a live code-preview example`).toMatch(/::: ?code-preview|<CodePreview\\b/);
-    expect(new Set(headings).size, `${page}: section headings should be unique`).toBe(headings.length);
+    expect(
+      headings.length,
+      `${page}: should expose section headings`,
+    ).toBeGreaterThan(0);
+    expect(
+      source,
+      `${page}: should include a live code-preview example`,
+    ).toMatch(/::: ?code-preview|<CodePreview\\b/);
+    expect(
+      new Set(headings).size,
+      `${page}: section headings should be unique`,
+    ).toBe(headings.length);
   }
 });
