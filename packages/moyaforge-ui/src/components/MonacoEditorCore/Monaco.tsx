@@ -13,7 +13,14 @@ import {
   type ReactNode,
 } from "react";
 
-import { ChevronLeft, ChevronRight, Copy, FileCode2, LockKeyhole, Save } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  FileCode2,
+  LockKeyhole,
+  Save,
+} from "lucide-react";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 import { reconcileFileDrafts } from "./drafts.js";
 
@@ -88,42 +95,34 @@ export function Monaco({
   const hasTabs = showFileTabs && files.length > 1;
   const selectedIndex = selectedFile ? files.indexOf(selectedFile) : -1;
   const tabsRef = useRef<HTMLDivElement>(null);
-  const [tabOverflow, setTabOverflow] = useState({ start: false, end: false });
-
+  const [tabScroll, setTabScroll] = useState({ earlier: false, later: false });
   useEffect(() => {
-    if (!hasTabs) {
-      setTabOverflow({ start: false, end: false });
-      return;
-    }
+    const tabs = tabsRef.current;
+    if (!hasTabs || !tabs) return;
+    const updateScroll = () => {
+      const position = Math.abs(tabs.scrollLeft);
+      setTabScroll({
+        earlier: position > 1,
+        later: position + tabs.clientWidth < tabs.scrollWidth - 1,
+      });
+    };
+    const observer = new ResizeObserver(updateScroll);
+    observer.observe(tabs);
+    for (const tab of tabs.children) observer.observe(tab);
+    tabs.addEventListener("scroll", updateScroll, { passive: true });
+    updateScroll();
+    return () => {
+      observer.disconnect();
+      tabs.removeEventListener("scroll", updateScroll);
+    };
+  }, [files, hasTabs]);
+
+  function scrollTabs(direction: number) {
     const tabs = tabsRef.current;
     if (!tabs) return;
-
-    const updateOverflow = () => {
-      const start = tabs.scrollLeft > 1;
-      const end = tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 1;
-      setTabOverflow((current) =>
-        current.start === start && current.end === end
-          ? current
-          : { start, end },
-      );
-    };
-
-    updateOverflow();
-    tabs.addEventListener("scroll", updateOverflow, { passive: true });
-    window.addEventListener("resize", updateOverflow);
-    const observer =
-      typeof ResizeObserver === "undefined"
-        ? undefined
-        : new ResizeObserver(updateOverflow);
-    observer?.observe(tabs);
-    Array.from(tabs.children).forEach((tab) => observer?.observe(tab));
-
-    return () => {
-      tabs.removeEventListener("scroll", updateOverflow);
-      window.removeEventListener("resize", updateOverflow);
-      observer?.disconnect();
-    };
-  }, [files.length, hasTabs]);
+    const inlineDirection = getComputedStyle(tabs).direction === "rtl" ? -1 : 1;
+    tabs.scrollBy({ left: direction * inlineDirection * tabs.clientWidth });
+  }
 
   useEffect(() => {
     if (!hasTabs || !selectedFile) return;
@@ -173,18 +172,6 @@ export function Monaco({
       ?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
       [next]?.focus();
   }
-  function scrollTabs(direction: -1 | 1) {
-    const tabs = tabsRef.current;
-    if (!tabs) return;
-    const reduceMotion = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    tabs.scrollBy({
-      left: direction * Math.max(140, tabs.clientWidth * 0.72),
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-  }
-
   return (
     <div
       data-moyaforge-monaco=""
@@ -205,21 +192,7 @@ export function Monaco({
       {(hasTabs || showCopyButton || onSave) && (
         <div data-moyaforge-monaco-toolbar="" className="mf-monaco-toolbar">
           {hasTabs ? (
-            <div
-              className="mf-monaco-tabs-viewport"
-              data-overflow-start={tabOverflow.start ? "" : undefined}
-              data-overflow-end={tabOverflow.end ? "" : undefined}
-            >
-              {tabOverflow.start && (
-                <button
-                  type="button"
-                  className="mf-monaco-tabs-scroll mf-monaco-tabs-scroll-start"
-                  aria-label="Show earlier files"
-                  onClick={() => scrollTabs(-1)}
-                >
-                  <ChevronLeft size={15} aria-hidden="true" />
-                </button>
-              )}
+            <div className="mf-monaco-tab-strip">
               <div
                 ref={tabsRef}
                 data-moyaforge-monaco-tabs=""
@@ -228,32 +201,42 @@ export function Monaco({
                 aria-label="Files"
               >
                 {files.map((file, index) => (
-                <button
-                  key={file.name}
-                  type="button"
-                  role="tab"
-                  id={`${id}-tab-${index}`}
-                  aria-controls={`${id}-panel`}
-                  aria-selected={file.name === selectedFile.name}
-                  tabIndex={file.name === selectedFile.name ? 0 : -1}
-                  onKeyDown={(event) => keyDown(event, index)}
-                  onClick={() => selectFile(file)}
-                >
-                  <FileCode2 size={15} aria-hidden="true" />
-                  <span>{file.name}</span>
-                </button>
+                  <button
+                    key={file.name}
+                    type="button"
+                    role="tab"
+                    id={`${id}-tab-${index}`}
+                    aria-controls={`${id}-panel`}
+                    aria-selected={file.name === selectedFile.name}
+                    tabIndex={file.name === selectedFile.name ? 0 : -1}
+                    onKeyDown={(event) => keyDown(event, index)}
+                    onClick={() => selectFile(file)}
+                  >
+                    <FileCode2 size={15} aria-hidden="true" />
+                    <span>{file.name}</span>
+                  </button>
                 ))}
               </div>
-              {tabOverflow.end && (
+              <div className="mf-monaco-tab-navigation">
                 <button
                   type="button"
-                  className="mf-monaco-tabs-scroll mf-monaco-tabs-scroll-end"
+                  className="mf-monaco-tab-nav"
+                  aria-label="Show earlier files"
+                  disabled={!tabScroll.earlier}
+                  onClick={() => scrollTabs(-1)}
+                >
+                  <ChevronLeft size={15} aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="mf-monaco-tab-nav"
                   aria-label="Show later files"
+                  disabled={!tabScroll.later}
                   onClick={() => scrollTabs(1)}
                 >
                   <ChevronRight size={15} aria-hidden="true" />
                 </button>
-              )}
+              </div>
             </div>
           ) : (
             <span

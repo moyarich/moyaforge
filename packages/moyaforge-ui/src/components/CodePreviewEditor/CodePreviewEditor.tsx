@@ -1,3 +1,4 @@
+import "./CodePreviewEditor.css";
 import { useState, type ReactNode } from "react";
 import { RotateCcw } from "lucide-react";
 import {
@@ -73,9 +74,7 @@ export function CodePreviewEditor({
       <PreviewHeader>
         <PreviewTitle>{title}</PreviewTitle>
         <PreviewActions>
-          <PreviewCodeToggle asChild>
-            <button type="button">Toggle editor</button>
-          </PreviewCodeToggle>
+          <PreviewCodeToggle />
           <button
             type="button"
             className="mf-preview-action"
@@ -92,21 +91,15 @@ export function CodePreviewEditor({
         </PreviewActions>
       </PreviewHeader>
       <PreviewContent asChild>
-        <div
-          style={{
-            display: "grid",
-            placeItems: "center",
-            minHeight: "10rem",
-            padding: "var(--mf-preview-padding, 1.5rem)",
-          }}
-        >
+        <div className="mf-code-preview-editor-stage">
           {renderPreview(currentFiles)}
         </div>
       </PreviewContent>
       <PreviewSource asChild>
-        <div style={{ minWidth: 0 }}>
+        <div className="mf-code-preview-editor-source">
           <MonacoCodeGroup
             files={editorFiles}
+            defaultActiveFile={currentFiles.find((file) => !file.readOnly)?.name}
             editable
             height={height}
             options={{ fixedOverflowWidgets: true, ...options }}
