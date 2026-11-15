@@ -7,6 +7,7 @@ import {
   type DirectiveAttribute as Attribute,
 } from "../remark-directive/directive-node.js";
 import {
+  readPreviewFile,
   readPreviewSources,
   type PreviewFile,
 } from "../code-preview-sources/read-preview-sources.js";
@@ -15,7 +16,7 @@ export interface PreviewComponentOptions {
   sourceProp?: string;
   filesProp?: string;
   localSources?: boolean;
-  resolveCodePreviewExample?: (
+  resolveCodePreviewComponent?: (
     reference: string,
     authoredFile: string,
   ) => string | undefined;
@@ -30,19 +31,35 @@ export function collectPreviewContent(
   attributes: Attribute[],
   filePath?: string,
 ) {
-  if (header?.example) {
-    const example =
+  if (header?.component) {
+    if (!/^\.\/[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)$/.test(header.component))
+      throw new Error(
+        `Invalid code-preview component: ${header.component}. Use a sibling .tsx or .jsx file.`,
+      );
+    const component =
       filePath &&
-      selected.resolveCodePreviewExample?.(header.example, filePath);
-    if (!example)
-      throw new Error(`Unregistered preview example: ${header.example}`);
+      selected.resolveCodePreviewComponent?.(header.component, filePath);
+    if (!component)
+      throw new Error(
+        `Unregistered preview component: ${header.component}`,
+      );
     attributes.push({
       type: "mdxJsxAttribute",
-      name: "example",
-      value: example,
+      name: "component",
+      value: component,
     });
   }
+
   const files: PreviewFile[] = [];
+  if (header?.code) {
+    files.push(readPreviewFile(header.code, filePath, header.language));
+    attributes.push({
+      type: "mdxJsxAttribute",
+      name: "sourceOnly",
+      value: null,
+    });
+  }
+
   let replacements: string | undefined;
   let hasLocalSources = false;
   const content = children.filter((child) => {
