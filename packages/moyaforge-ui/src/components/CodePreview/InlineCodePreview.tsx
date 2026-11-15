@@ -5,6 +5,7 @@ import {
   type CodePreviewProps,
   type PreviewFile,
 } from "./CodePreview.js";
+import { HighlightedCode, previewLanguage } from "../HighlightedCode/HighlightedCode.js";
 
 type PreviewSourcesProps = Pick<CodePreviewProps, "files" | "replacements">;
 
@@ -18,12 +19,14 @@ export function InlineCodePreview({
   code,
   sourceFiles,
   replacementPreset,
+  sourceOnly = false,
   children,
 }: {
   title?: string;
   code: string;
   sourceFiles?: string;
   replacementPreset?: "portable";
+  sourceOnly?: boolean;
   children: ReactNode;
 }) {
   const content = Children.toArray(children);
@@ -43,6 +46,19 @@ export function InlineCodePreview({
   const files: PreviewFile[] = sourceFiles ? JSON.parse(sourceFiles) : [];
   if (code || !files.length)
     files.unshift({ label: "Example.mdx", code, language: "mdx" });
+  const sourceFile = files[0];
+  const previewContent =
+    sourceOnly && sourceFile ? (
+      <pre>
+        <HighlightedCode
+          code={sourceFile.code}
+          language={sourceFile.language ?? previewLanguage(sourceFile.label)}
+        />
+      </pre>
+    ) : (
+      children
+    );
+
   return (
     <CodePreview
       title={title}
@@ -51,7 +67,7 @@ export function InlineCodePreview({
         replacementPreset === "portable" ? CODE_REPLACEMENTS : undefined
       }
     >
-      {children}
+      {previewContent}
     </CodePreview>
   );
 }
