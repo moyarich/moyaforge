@@ -77,7 +77,7 @@ const compileMdx = mdx(
             name: "moyaforge-code-language",
             pre(node) {
               node.properties["data-language"] = this.options.lang;
-              const filename = /(?:^|\\s)filename="([^"]+)"/.exec(
+              const filename = /(?:^|\s)filename="([^"]+)"/.exec(
                 this.options.meta?.__raw ?? "",
               )?.[1];
               if (filename) node.properties["data-filename"] = filename;
@@ -110,7 +110,7 @@ export default defineConfig({
         return compileMdx.transform.call(this, code, id);
       },
     },
-    react({ include: /\\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
+    react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
   ],
   worker: { format: "es" },
   base: process.env.VITE_BASE_PATH || process.env.PAGES_BASE_PATH || "/",
