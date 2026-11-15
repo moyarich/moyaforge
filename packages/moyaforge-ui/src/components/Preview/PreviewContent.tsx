@@ -1,3 +1,4 @@
+import "./PreviewContent.css";
 import {
   Fragment,
   cloneElement,
@@ -29,6 +30,7 @@ function Slot({ children, asChild, ...props }: SlotProps) {
 
 export function PreviewContent({
   asChild = false,
+  className,
   children,
   ...props
 }: SlotProps) {
@@ -38,13 +40,16 @@ export function PreviewContent({
       asChild={asChild}
       id={contentId}
       data-moyaforge-preview-content=""
+      className={["mf-preview-content", className].filter(Boolean).join(" ")}
       hidden={view === "code"}
       {...props}
     >
       {asChild ? (
         children
       ) : (
-        <div data-moyaforge-preview-stage="">{children}</div>
+        <div className="mf-preview-stage" data-moyaforge-preview-stage="">
+          {children}
+        </div>
       )}
     </Slot>
   );

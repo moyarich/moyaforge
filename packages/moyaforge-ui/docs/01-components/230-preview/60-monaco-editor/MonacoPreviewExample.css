@@ -7,7 +7,7 @@
 .mf-monaco-preview-editor[data-moyaforge-preview-source] {
   min-width: 0;
   padding: 0;
-  --monaco-radius: 0;
+  --mf-monaco-radius: 0;
 }
 
 .mf-monaco-preview-editor [data-moyaforge-monaco] {

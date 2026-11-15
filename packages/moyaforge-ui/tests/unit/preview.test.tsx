@@ -81,7 +81,7 @@ test("asChild composes toggle semantics without nesting buttons", () => {
       h(PreviewSource, { code: "const x = 1" }),
     ),
   );
-  expect(html).toContain('class="custom-trigger"');
+  expect(html).toContain('class="mf-preview-toggle custom-trigger"');
   expect(html).toContain('aria-expanded="false"');
   expect(html).toContain("Show code");
   expect(html).not.toContain("<button><button");
@@ -112,7 +112,7 @@ test("asChild content uses its child as the stage without wrapping it", () => {
     ),
   );
   expect(html).toContain('data-moyaforge-preview-content=""');
-  expect(html).toContain('class="consumer-stage"');
+  expect(html).toContain('class="consumer-stage mf-preview-content"');
   expect(html).toContain("<article");
   expect(html).not.toContain('data-moyaforge-preview-stage=""');
 });

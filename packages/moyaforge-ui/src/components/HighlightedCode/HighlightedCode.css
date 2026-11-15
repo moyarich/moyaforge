@@ -1,7 +1,7 @@
 [data-moyaforge-highlighted-code] > span {
-  --_preview-syntax-color: var(
+  --_mf-preview-syntax-color: var(
     --preview-syntax-color,
     light-dark(var(--shiki-light, inherit), var(--shiki-dark, inherit))
   );
-  color: var(--_preview-syntax-color);
+  color: var(--_mf-preview-syntax-color);
 }

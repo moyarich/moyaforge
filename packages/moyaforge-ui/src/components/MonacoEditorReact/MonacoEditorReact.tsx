@@ -1,10 +1,10 @@
-import { useEditorTheme } from "../MonacoEditorShared/useEditorTheme.js";
+import { useEditorTheme } from "../MonacoEditorCore/useEditorTheme.js";
 import { useEffect, useId, useRef } from "react";
 import type { editor } from "monaco-editor";
 import type { EditorProps, OnMount } from "@monaco-editor/react";
-import { Monaco, type MonacoProps } from "../MonacoEditorShared/Monaco.js";
+import { Monaco, type MonacoProps } from "../MonacoEditorCore/Monaco.js";
 import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
-import { languageForPath } from "../MonacoEditorShared/languages.js";
+import { languageForPath } from "../MonacoEditorCore/languages.js";
 
 export interface MonacoEditorReactProps extends Omit<
   MonacoProps,

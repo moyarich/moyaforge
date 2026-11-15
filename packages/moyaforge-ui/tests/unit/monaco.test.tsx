@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Monaco } from "../../src/components/MonacoEditorShared/Monaco.js";
+import { Monaco } from "../../src/components/MonacoEditorCore/Monaco.js";
 const files = [
   { name: "index.ts", value: "const a = 1;" },
   { name: "styles.css", value: "body {}" },
@@ -36,7 +36,7 @@ test("minimal and controlled configurations retain their supplied file and toolb
   expect(html).not.toContain('role="tablist"');
   expect(html).not.toContain('role="tabpanel"');
   expect(html).not.toContain("data-moyaforge-monaco-toolbar");
-  expect(html).toContain('class="custom-editor"');
+  expect(html).toContain('class="mf-monaco custom-editor"');
   expect(html).toContain("body {}");
   expect(render({ files: [] })).toBe("");
 });

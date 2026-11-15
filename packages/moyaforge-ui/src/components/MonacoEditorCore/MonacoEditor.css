@@ -1,0 +1,25 @@
+.mf-monaco-editor {
+  min-width: 0;
+}
+.mf-monaco-editor > textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: var(--_mf-monaco-editor-min-height);
+  resize: vertical;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  padding: var(--_mf-monaco-editor-padding);
+  background: var(--_mf-monaco-background);
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: var(--_mf-monaco-font-size);
+  line-height: 1.75;
+  tab-size: 2;
+}
+.mf-monaco-editor > textarea:focus-visible {
+  outline: 2px solid var(--_mf-monaco-focus);
+  outline-offset: -2px;
+}

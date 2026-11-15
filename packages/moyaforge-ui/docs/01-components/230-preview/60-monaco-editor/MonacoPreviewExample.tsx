@@ -62,7 +62,7 @@ export default function MonacoPreviewExample() {
           </PreviewCodeToggle>
           <button
             type="button"
-            data-moyaforge-preview-action=""
+            className="mf-preview-action"
             disabled={source === counterSource && styles === counterStyles}
             onClick={() => {
               setSource(counterSource);

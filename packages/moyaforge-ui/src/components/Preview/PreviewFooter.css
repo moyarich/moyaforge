@@ -1,0 +1,6 @@
+.mf-preview-footer {
+  padding: 0.875rem 1rem;
+  border-top: 1px solid var(--_mf-preview-border);
+  font-size: var(--_mf-preview-font-size);
+  line-height: 1.6;
+}

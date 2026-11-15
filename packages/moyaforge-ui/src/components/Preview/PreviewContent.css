@@ -1,0 +1,10 @@
+.mf-preview-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: var(--_mf-preview-stage-height);
+  padding: var(--_mf-preview-padding);
+}
+.mf-preview-content[hidden] {
+  display: none;
+}

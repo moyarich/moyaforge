@@ -15,7 +15,7 @@ vi.mock(
 );
 import { MonacoEditorReact } from "../../src/components/MonacoEditorReact/MonacoEditorReact.js";
 import { MonacoCodeGroup } from "../../src/components/MonacoEditorReact/MonacoCodeGroup.js";
-import { languageForPath } from "../../src/components/MonacoEditorShared/languages.js";
+import { languageForPath } from "../../src/components/MonacoEditorCore/languages.js";
 const files = [
   { name: "App.tsx", value: "const app = true;" },
   { name: "locked.json", value: "{}", readOnly: true },
@@ -66,7 +66,7 @@ test("language inference handles common extensions, query suffixes and unknown f
 
 test("explicit host updates replace changed values while preserving other drafts and removing old files", async () => {
   const { reconcileFileDrafts } =
-    await import("../../src/components/MonacoEditorShared/drafts.js");
+    await import("../../src/components/MonacoEditorCore/drafts.js");
   const previous = new Map([
     ["a.ts", "original a"],
     ["b.ts", "original b"],

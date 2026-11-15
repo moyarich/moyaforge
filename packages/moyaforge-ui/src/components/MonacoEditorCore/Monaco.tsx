@@ -1,4 +1,8 @@
 import "./Monaco.css";
+import "./MonacoToolbar.css";
+import "./MonacoTabs.css";
+import "./MonacoActions.css";
+import "./MonacoEditor.css";
 import {
   useEffect,
   useId,
@@ -128,7 +132,7 @@ export function Monaco({
   return (
     <div
       data-moyaforge-monaco=""
-      className={className}
+      className={["mf-monaco", className].filter(Boolean).join(" ")}
       data-readonly={locked || undefined}
       onKeyDownCapture={(event) => {
         if (
@@ -143,10 +147,11 @@ export function Monaco({
       }}
     >
       {(hasTabs || showCopyButton || onSave) && (
-        <div data-moyaforge-monaco-toolbar="">
+        <div data-moyaforge-monaco-toolbar="" className="mf-monaco-toolbar">
           {hasTabs ? (
             <div
               data-moyaforge-monaco-tabs=""
+              className="mf-monaco-tabs"
               role="tablist"
               aria-label="Files"
             >
@@ -168,14 +173,20 @@ export function Monaco({
               ))}
             </div>
           ) : (
-            <span data-moyaforge-monaco-filename="">
+            <span
+              data-moyaforge-monaco-filename=""
+              className="mf-monaco-filename"
+            >
               <FileCode2 size={15} aria-hidden="true" />
               {selectedFile.name}
             </span>
           )}
-          <div data-moyaforge-monaco-actions="">
+          <div data-moyaforge-monaco-actions="" className="mf-monaco-actions">
             {locked && (
-              <span data-moyaforge-monaco-readonly="">
+              <span
+                data-moyaforge-monaco-readonly=""
+                className="mf-monaco-readonly"
+              >
                 <LockKeyhole size={13} aria-hidden="true" />
                 <span>Read only</span>
               </span>
@@ -184,6 +195,7 @@ export function Monaco({
               <button
                 type="button"
                 data-moyaforge-monaco-save=""
+                className="mf-monaco-save"
                 disabled={locked}
                 aria-label={`Save ${selectedFile.name}`}
                 onClick={saveFile}
@@ -195,6 +207,7 @@ export function Monaco({
             {showCopyButton && (
               <CopyButton
                 data-moyaforge-monaco-copy=""
+                className="mf-monaco-copy"
                 aria-label={`Copy ${selectedFile.name}`}
                 icon={<Copy size={14} aria-hidden="true" />}
                 getValue={() => drafts[selectedFile.name] ?? selectedFile.value}
@@ -207,6 +220,7 @@ export function Monaco({
       )}
       <div
         data-moyaforge-monaco-editor=""
+        className="mf-monaco-editor"
         id={`${id}-panel`}
         role={hasTabs ? "tabpanel" : undefined}
         aria-labelledby={hasTabs ? `${id}-tab-${selectedIndex}` : undefined}

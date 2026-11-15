@@ -1,4 +1,4 @@
-import { Monaco } from "../../../../src/components/MonacoEditorShared/Monaco.js";
+import { Monaco } from "../../../../src/components/MonacoEditorCore/Monaco.js";
 
 const files = [
   {

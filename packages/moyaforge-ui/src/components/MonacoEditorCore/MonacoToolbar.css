@@ -1,0 +1,19 @@
+.mf-monaco-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-inline: 0.375rem;
+  min-height: 3rem;
+  background: var(--_mf-monaco-toolbar-background);
+  border-bottom: 1px solid var(--_mf-monaco-tabs-border-color);
+}
+@media (max-width: 480px) {
+  .mf-monaco-toolbar {
+    flex-wrap: wrap;
+  }
+  .mf-monaco-actions {
+    margin-inline-start: auto;
+    padding-bottom: 0.375rem;
+  }
+}

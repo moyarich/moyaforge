@@ -1,4 +1,5 @@
-import { useEditorTheme } from "../MonacoEditorShared/useEditorTheme.js";
+import "../MonacoEditorCore/MonacoLoading.css";
+import { useEditorTheme } from "../MonacoEditorCore/useEditorTheme.js";
 import { useEffect, useId, useRef, useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
@@ -9,8 +10,8 @@ import {
   Monaco,
   type MonacoProps,
   type MonacoEditorRenderProps,
-} from "../MonacoEditorShared/Monaco.js";
-import { languageForPath } from "../MonacoEditorShared/languages.js";
+} from "../MonacoEditorCore/Monaco.js";
+import { languageForPath } from "../MonacoEditorCore/languages.js";
 
 export interface MonacoEditorTypeFoxProps extends Omit<
   MonacoProps,
@@ -62,6 +63,7 @@ function TypeFoxEditor({
       {!ready && !error && (
         <div
           data-moyaforge-monaco-loading=""
+          className="mf-monaco-loading"
           role="status"
           style={{ position: "absolute", inset: 0, zIndex: 1 }}
         >

@@ -1,0 +1,43 @@
+.mf-monaco-tabs {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: var(--_mf-monaco-tabs-gap);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.mf-monaco-tabs button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: inherit;
+  padding: var(--_mf-monaco-tabs-padding);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.mf-monaco-tabs button:hover {
+  background: var(--_mf-monaco-hover);
+}
+.mf-monaco-tabs button[aria-selected="true"] {
+  border-bottom-color: var(--_mf-monaco-tabs-active-color);
+  color: var(--_mf-monaco-tabs-active-color);
+  font-weight: 600;
+}
+.mf-monaco-tabs button:focus-visible {
+  outline: 2px solid var(--_mf-monaco-focus);
+  outline-offset: -4px;
+}
+.mf-monaco-filename {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding: 0.75rem 0.5rem;
+}

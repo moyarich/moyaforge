@@ -50,7 +50,7 @@ export function Preview({
         data-moyaforge-preview=""
         data-view={view}
         aria-label={title}
-        className={className}
+        className={["mf-preview", className].filter(Boolean).join(" ")}
         {...props}
       >
         {hasSlots ? (
@@ -92,16 +92,3 @@ function isPreviewSlot(value: ReactNode): boolean {
     slotComponents.has(value.type)
   );
 }
-
-export {
-  PreviewActions,
-  PreviewCodeToggle,
-  PreviewContent,
-  PreviewCopyButton,
-  PreviewFooter,
-  PreviewHeader,
-  PreviewSource,
-  PreviewTitle,
-};
-export type { PreviewCodeToggleProps } from "./PreviewCodeToggle.js";
-export type { PreviewSourceProps } from "./PreviewSource.js";

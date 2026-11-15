@@ -1,4 +1,5 @@
-import "../MonacoEditorShared/Monaco.css";
+import "../MonacoEditorCore/MonacoLoading.css";
+import "../MonacoEditorCore/Monaco.css";
 import { Editor, type EditorProps } from "@monaco-editor/react";
 import { LoaderCircle } from "lucide-react";
 
@@ -10,7 +11,11 @@ export function ReactMonacoSourceEditor(props: ReactMonacoSourceEditorProps) {
       {...props}
       loading={
         props.loading ?? (
-          <div data-moyaforge-monaco-loading="" role="status">
+          <div
+            data-moyaforge-monaco-loading=""
+            className="mf-monaco-loading"
+            role="status"
+          >
             <LoaderCircle size={18} aria-hidden="true" />
             <span>Loading editor…</span>
           </div>

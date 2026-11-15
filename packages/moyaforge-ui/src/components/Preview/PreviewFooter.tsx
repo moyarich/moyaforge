@@ -1,5 +1,15 @@
+import "./PreviewFooter.css";
 import type { ComponentPropsWithoutRef } from "react";
 
-export function PreviewFooter(props: ComponentPropsWithoutRef<"div">) {
-  return <div data-moyaforge-preview-footer="" {...props} />;
+export function PreviewFooter({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"div">) {
+  return (
+    <div
+      data-moyaforge-preview-footer=""
+      className={["mf-preview-footer", className].filter(Boolean).join(" ")}
+      {...props}
+    />
+  );
 }

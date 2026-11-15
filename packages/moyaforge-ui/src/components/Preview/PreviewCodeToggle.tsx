@@ -22,6 +22,7 @@ export function PreviewCodeToggle({
   asChild = false,
   children,
   onClick,
+  className,
   ...props
 }: PreviewCodeToggleProps) {
   const { view, setView, contentId } = usePreview();
@@ -31,6 +32,7 @@ export function PreviewCodeToggle({
   };
   const triggerProps = {
     ...props,
+    className: ["mf-preview-toggle", className].filter(Boolean).join(" "),
     "aria-controls": contentId,
     "aria-expanded": view === "code",
     "data-moyaforge-preview-toggle": "",
@@ -49,6 +51,9 @@ export function PreviewCodeToggle({
     return cloneElement(child, {
       ...triggerProps,
       ...child.props,
+      className: [triggerProps.className, child.props.className]
+        .filter(Boolean)
+        .join(" "),
       "aria-controls": contentId,
       "aria-expanded": view === "code",
       onClick: (event: MouseEvent<HTMLButtonElement>) => {
