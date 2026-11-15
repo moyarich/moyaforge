@@ -15,11 +15,24 @@ import usageSource from "./CodePreviewEditorUsage.tsx.txt?raw";
 
 Select **Code** to edit the TSX or CSS, then select **Preview** to see the updated counter. TSX edits restart the component. Select **Reset code** to restore the original TSX and CSS.
 
-Install the `code-preview-editor` registry item; it includes the required Preview and Monaco source files and dependencies. With the MoyaForge CLI, run:
+Install the `code-preview-editor` registry item; it includes the required Preview and Monaco source files and dependencies:
+
+<CodeGroup label="Install CodePreviewEditor">
+<CodeTab label="MoyaForge CLI">
 
 ```sh
 npx @moyarich/moyaforge-cli@latest add code-preview-editor
 ```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/code-preview-editor
+```
+
+</CodeTab>
+</CodeGroup>
 
 Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers. `CodePreviewEditor` owns the editable files and reset action; its `renderPreview` callback lets each application choose how to render those files.
 
