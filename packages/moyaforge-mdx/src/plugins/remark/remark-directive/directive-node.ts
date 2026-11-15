@@ -3,7 +3,9 @@ import type { VFile } from "vfile";
 export interface DirectiveHeader {
   title?: string;
   flags: string[];
-  example?: string;
+  component?: string;
+  code?: string;
+  language?: string;
   sources?: string;
   replacements?: string;
 }
