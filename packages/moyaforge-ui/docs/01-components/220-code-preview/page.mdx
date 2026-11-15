@@ -30,8 +30,15 @@ npx shadcn@latest add moyarich/moyaforge/code-preview
 
 ### Inline MDX preview
 
-Save this as `example.md` in a docs site with the mapping below. The
-directive renders the greeting and shows its source when you select **Code**.
+Try the live example. Select **Code** to view its Markdown source.
+
+::: code-preview Greeting
+
+**Hello** from `Markdown`.
+
+:::
+
+Write the same directive in an `example.md` file in a docs site with the mapping below:
 
 ```md filename="example.md"
 :::code-preview[Greeting]
@@ -135,7 +142,6 @@ default export. This syntax works in plain Markdown pages.
 - [Inline preview with multiple files](/ui/components/code-preview/inline-multiple-files)
 - [Inline source fences](/ui/components/code-preview/inline-source-fences)
 - [Counter preview in MDX](/ui/components/code-preview/counter-in-mdx)
-
 - [Markdown file preview](/ui/components/code-preview/markdown-file-preview)
 
 ## Styling
