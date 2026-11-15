@@ -5,7 +5,7 @@ description: A multi-file code editor with read-only mode and copy support.
 ---
 
 import "../setup-monaco-worker.ts";
-import { MonacoEditorTypeFox } from "../../../src/components/MonacoEditorTypeFox/index.js";
+import { MonacoEditorTypeFox as LiveMonacoEditorTypeFox } from "../../../src/components/MonacoEditorTypeFox/index.js";
 
 # Monaco Editor TypeFox
 
@@ -44,7 +44,7 @@ For Vite, copy `setup.ts` from the preview’s Code tab and import it before the
 
 ::: code-preview TypeFox workspace
 
-<MonacoEditorTypeFox
+<LiveMonacoEditorTypeFox
   files={[{ name: "index.ts", value: "const answer = 42;" }]}
   height={320}
 />
