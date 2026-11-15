@@ -597,26 +597,6 @@
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoCodeGroup.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/MonacoCodeGroup.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/ReactMonacoSourceEditor.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/index.ts"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/Monaco.css",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorShared/Monaco.css"
@@ -640,6 +620,26 @@
           "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/useEditorTheme.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorShared/useEditorTheme.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoCodeGroup.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorReact/MonacoCodeGroup.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorReact/ReactMonacoSourceEditor.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorReact/index.ts"
         }
       ]
     },
