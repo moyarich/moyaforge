@@ -4,33 +4,46 @@ label: Editable source with Monaco
 description: Open an editable source panel inside a Preview.
 ---
 
+import { CodePreviewEditor } from "../../../../src/components/CodePreviewEditor/index.js";
 import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
-import { PreviewSources, CODE_REPLACEMENTS } from "../../../../src/components/CodePreview/index.js";
-import previewSource from "./MonacoPreviewExample.tsx?raw";
-import previewStyles from "./MonacoPreviewExample.css?raw";
+import counterSource from "../../CounterExample.tsx?raw";
+import counterStyles from "../../counterExample.css?raw";
 import workerSource from "../../setup-monaco-worker.ts?raw";
 
 # Editable source with Monaco
 
 Select **Toggle editor** to switch from the counter to an editable panel with TSX and CSS tabs. Edit the TSX or CSS, then select **Toggle editor** again to see the updated counter. TSX edits restart the component. Select **Reset code** to restore the original TSX and CSS.
 
+Install `preview` and `monaco-editor-react`. Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers.
 
-Install `preview` and `monaco-editor-react`. Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers, then render `MonacoCodeGroup` inside `PreviewSource asChild`.
-
-:::code-preview[Monaco preview]
-
-<PreviewSources
+<CodePreviewEditor
+  title="Monaco source editor"
   files={[
-    { label: "MonacoPreviewExample.tsx", code: previewSource },
-    { label: "MonacoPreviewExample.css", code: previewStyles },
-    { label: "setup-monaco-worker.ts", code: workerSource },
+    {
+      name: "CounterExample.tsx",
+      language: "typescript",
+      value: counterSource,
+    },
+    { name: "counterExample.css", language: "css", value: counterStyles },
+    {
+      name: "setup-monaco-worker.ts",
+      language: "typescript",
+      value: workerSource,
+      readOnly: true,
+    },
   ]}
-  replacements={CODE_REPLACEMENTS}
+  height={320}
+  renderPreview={(files) => (
+    <MonacoPreviewExample
+      source={
+        files.find((file) => file.name === "CounterExample.tsx")?.value ?? ""
+      }
+      styles={
+        files.find((file) => file.name === "counterExample.css")?.value ?? ""
+      }
+    />
+  )}
 />
-
-<MonacoPreviewExample />
-
-:::
 
 ## Styling
 
