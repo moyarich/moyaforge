@@ -14,7 +14,7 @@ import workerSource from "../../setup-monaco-worker.ts?raw";
 
 Select **Toggle editor** to switch from the counter to an editable panel with TSX and CSS tabs. Edit the TSX or CSS, then select **Toggle editor** again to see the updated counter. TSX edits restart the component. Select **Reset code** to restore the original TSX and CSS.
 
-Install `preview` and `monaco-editor-react`. Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers.
+Install `code-preview-editor`, `preview`, and `monaco-editor-react`. Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers. `CodePreviewEditor` owns the editable files and reset action; its `renderPreview` callback lets each application choose how to render those files.
 
 <CodePreviewEditor
   title="Monaco source editor"
