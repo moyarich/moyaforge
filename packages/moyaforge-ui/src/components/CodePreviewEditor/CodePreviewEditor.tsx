@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { RotateCcw } from "lucide-react";
 import {
   Preview,
@@ -37,17 +37,17 @@ export function CodePreviewEditor({
   height = 320,
   options,
 }: CodePreviewEditorProps) {
-  const initialFiles = useRef(files.map((file) => ({ ...file })));
+  const [initialFiles] = useState(() => files.map((file) => ({ ...file })));
   const [currentFiles, setCurrentFiles] = useState(() =>
-    initialFiles.current.map((file) => ({ ...file })),
+    files.map((file) => ({ ...file })),
   );
 
   const unchanged =
-    currentFiles.length === initialFiles.current.length &&
+    currentFiles.length === initialFiles.length &&
     currentFiles.every(
       (file, index) =>
-        file.name === initialFiles.current[index]?.name &&
-        file.value === initialFiles.current[index]?.value,
+        file.name === initialFiles[index]?.name &&
+        file.value === initialFiles[index]?.value,
     );
 
   return (
@@ -64,7 +64,7 @@ export function CodePreviewEditor({
             disabled={unchanged}
             onClick={() =>
               setCurrentFiles(
-                initialFiles.current.map((file) => ({ ...file })),
+                initialFiles.map((file) => ({ ...file })),
               )
             }
           >
