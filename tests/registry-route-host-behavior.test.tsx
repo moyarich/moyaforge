@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { RegistryRouteView } from "../packages/moyaforge/src/routing/RegistryRoutes.js";
+import { RegistryRouteView } from "../packages/moyaforge/src/index.ts";
 
 const routes = [
   { path: "/docs", source: "docs", file: "index.mdx", navigation: "visible" },
