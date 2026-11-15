@@ -1,6 +1,7 @@
 .mf-monaco-tabs {
   display: flex;
   flex: 1;
+  align-self: stretch;
   min-width: 0;
   gap: var(--_mf-monaco-tabs-gap);
   overflow-x: auto;
@@ -12,12 +13,12 @@
   align-items: center;
   gap: 0.5rem;
   border: 0;
-  border-bottom: 2px solid transparent;
   background: transparent;
   color: inherit;
   padding: var(--_mf-monaco-tabs-padding);
   cursor: pointer;
   font: inherit;
+  font-weight: 500;
   line-height: 1.5;
   white-space: nowrap;
 }
@@ -25,9 +26,9 @@
   background: var(--_mf-monaco-hover);
 }
 .mf-monaco-tabs button[aria-selected="true"] {
-  border-bottom-color: var(--_mf-monaco-tabs-active-color);
+  background: var(--_mf-monaco-hover);
+  box-shadow: inset 0 -2px 0 var(--_mf-monaco-tabs-active-color);
   color: var(--_mf-monaco-tabs-active-color);
-  font-weight: 600;
 }
 .mf-monaco-tabs button:focus-visible {
   outline: 2px solid var(--_mf-monaco-focus);
