@@ -9,6 +9,7 @@ import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
 import counterSource from "../../CounterExample.tsx?raw";
 import counterStyles from "../../counterExample.css?raw";
 import workerSource from "../../setup-monaco-worker.ts?raw";
+import usageSource from "./CodePreviewEditorUsage.tsx?raw";
 
 # Editable source with Monaco
 
@@ -18,6 +19,8 @@ Install `code-preview-editor`, `preview`, and `monaco-editor-react`. Follow the 
 
 <CodePreviewEditor
   title="Monaco source editor"
+  usageSource={usageSource}
+  usageFileName="CodePreviewEditorUsage.tsx"
   files={[
     {
       name: "CounterExample.tsx",
