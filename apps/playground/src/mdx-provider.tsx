@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import { lazy, type ComponentProps, type PropsWithChildren } from "react";
 import type { MDXComponents } from "mdx/types.js";
 import {
   BookOpen,
@@ -46,9 +46,34 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { DocumentationLink } from "@moyarich/moyaforge/headless";
+import { InlineCodePreview } from "../../../packages/moyaforge-ui/src/components/CodePreview/InlineCodePreview.js";
+import { CodePreview } from "../../../packages/moyaforge-ui/src/components/CodePreview/CodePreview.tsx";
+
+import componentModules from "virtual:moyaforge-mdx/code-preview-components";
+
+const examples = Object.fromEntries(
+  Object.entries(componentModules).map(([key, load]) => [key, lazy(load)]),
+);
+
+function PlaygroundInlineCodePreview({
+  example,
+  children,
+  ...preview
+}: ComponentProps<typeof InlineCodePreview> & { example?: string }) {
+  const Example = example ? examples[example] : undefined;
+  if (example && !Example)
+    throw new Error(`Unknown preview example: ${example}`);
+  return (
+    <InlineCodePreview {...preview}>
+      {Example ? <Example /> : children}
+    </InlineCodePreview>
+  );
+}
 
 const components = {
   a: DocumentationLink,
+  InlineCodePreview: PlaygroundInlineCodePreview,
+  CodePreview,
   pre: CodeBlock,
   CodeBlock,
   CustomBlock,

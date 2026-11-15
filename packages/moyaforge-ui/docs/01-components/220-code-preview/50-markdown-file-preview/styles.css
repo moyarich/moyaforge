@@ -1,0 +1,16 @@
+.mf-preview-greeting {
+  display: grid;
+  justify-items: center;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+  text-align: center;
+}
+
+.mf-preview-greeting p {
+  margin: 0;
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  font-weight: 650;
+  line-height: 1.2;
+}

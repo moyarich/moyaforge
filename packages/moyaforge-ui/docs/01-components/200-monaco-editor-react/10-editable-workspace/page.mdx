@@ -9,7 +9,7 @@ import {
 } from "../../../../src/components/CodePreview/CodePreview.tsx";
 import MultiFileEditor from "../30-real-editor/Example.tsx";
 import editorSource from "../30-real-editor/Example.tsx?raw";
-import setupSource from "../setup.ts?raw";
+import setupWorkspaceSource from "../../setup-workspace.ts?raw";
 
 # Editable workspace
 
@@ -19,7 +19,7 @@ Switch between files, edit their contents, and use Save to see how the workspace
   title="Editable workspace"
   files={[
     { label: "Example.tsx", code: editorSource },
-    { label: "setup.ts", code: setupSource },
+    { label: "setup-workspace.ts", code: setupWorkspaceSource },
   ]}
   replacements={CODE_REPLACEMENTS}
 >

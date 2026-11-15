@@ -54,7 +54,8 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "@moyarich/moyaforge-mdx": "^0.1.0"
+    "@moyarich/moyaforge-mdx": "^0.1.0",
+    "lucide-react": "^1.72.0"
   },
   "publisher": "moyarich",
   "author": "Moya Richards",

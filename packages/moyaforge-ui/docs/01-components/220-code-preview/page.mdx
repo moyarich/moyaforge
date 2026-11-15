@@ -5,11 +5,7 @@ label: CodePreview
 
 # CodePreview
 
-Use `CodePreview` for a live demo with one or more named source files. It composes
-the standard Preview slots and uses CodeGroup for multiple files. Installing
-`code-preview` includes these components and their styles automatically.
-CodePreview does not require Monaco, MDX, or Vite.
-The `?raw` imports in this example are a Vite convenience for reading source files.
+Use `:::code-preview` to show a live example and its source files.
 
 ## Installation
 
@@ -30,39 +26,115 @@ npx shadcn@latest add moyarich/moyaforge/code-preview
 </CodeTab>
 </CodeGroup>
 
-CodePreview lives in `components/CodePreview`. Its npm dependencies are React, Shiki, and
-`lucide-react`; the installers include its component dependencies automatically.
+## Inline MDX preview
 
-## Usage
+Save this as `example.md` in a docs site with the mapping below. The
+directive renders the greeting and shows its source when you select **Code**.
 
-```tsx
-import { CodePreview } from "@/components/ui/CodePreview";
-import Example from "./Example";
-import source from "./Example.tsx?raw";
-import styles from "./Example.css?raw";
+```md filename="example.md"
+:::code-preview[Greeting]
 
-<CodePreview
-  title="Example"
-  files={[
-    { label: "Example.tsx", code: source },
-    { label: "Example.css", code: styles },
-  ]}
->
-  <Example />
-</CodePreview>;
+**Hello** from `Markdown`.
+
+:::
 ```
 
-The first file supplies the toolbar’s copy action; each source tab also has its
-own copy control. Source files are highlighted with Shiki using their filename
-extension; use a file’s optional `language` field to override it. Unknown languages
-render as plain text. File labels must be unique. Source text is preserved by default.
-The optional `replacements` prop applies string or RegExp replacement tuples to
-all files. Repository docs can explicitly use `CODE_REPLACEMENTS` to make source
-imports portable; consuming applications can supply their own rules.
+Add the following mapping to `createMdxOptions` and register
+`InlineCodePreview` from `@moyarich/moyaforge-ui/components/CodePreview` in
+your MDX provider. Write the example once inside the directive. MDX renders the
+body in the preview and shows the authored Markdown and JSX in the **Code** tab.
+
+```ts
+createMdxOptions({
+  componentMappings: {
+    "code-preview": {
+      component: "InlineCodePreview",
+      titleProp: "title",
+      sourceProp: "code",
+      filesProp: "sourceFiles",
+    },
+  },
+});
+```
+
+Use a unique `filename="..."` on each top-level fence to add a source tab.
+Import any stylesheet you want to apply to the live preview.
+
+## File-backed previews with Vite
+
+Register your docs directory first. This registry discovers Markdown and MDX pages under `docs/`.
+
+```ts filename="registry.config.ts"
+import type { RegistryConfiguration } from "@moyarich/moyaforge-mdx/vite";
+
+export default {
+  sources: {
+    docs: {
+      base: "docs",
+      include: ["**/*.md", "**/*.mdx"],
+      pageFiles: "all",
+      navigation: { label: "Docs" },
+    },
+  },
+} satisfies RegistryConfiguration;
+```
+
+Add the preview plugin to your Vite config after discovering the content registry. The CLI playground template already includes this setup.
+
+```ts
+import {
+  createCodePreview,
+  createCodePreviewPlugin,
+  resolveCodePreviewSource,
+} from "@moyarich/moyaforge-mdx/vite";
+
+import { createContentDiscovery } from "@moyarich/moyaforge-mdx";
+import registry from "./registry.config.js";
+
+const contentRoot = import.meta.dirname;
+const discovery = createContentDiscovery(registry, contentRoot);
+const { registry: discovered } = await discovery.get();
+const codePreview = createCodePreview({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+});
+```
+
+Add `createCodePreviewPlugin(codePreview)` to Vite’s `plugins` array. Extend the
+`code-preview` mapping above with these options.
+
+```ts
+localSources: true,
+resolveCodePreviewExample: (reference, authoredFile) =>
+  resolveCodePreviewSource({ context: codePreview, reference, authoredFile }),
+```
+
+In your MDX provider, use the loader map from
+`virtual:moyaforge-mdx/code-preview-components` to render the component selected
+by the directive. The plugin also exposes
+`virtual:moyaforge-mdx/code-preview-sources` for lazy raw-source imports.
+The nested source directive supplies the files shown in the Code view.
+
+```md
+::::code-preview[Greeting]{example="./Greeting.tsx"}
+
+::code-preview-sources{files="./Greeting.tsx,./styles.css" replacements="portable"}
+
+::::
+```
+
+The referenced React component should be a sibling `.tsx` or `.jsx` file with a
+default export. This syntax works in plain Markdown pages.
 
 ## Examples
 
+- [Inline greeting](/ui/components/code-preview/inline-greeting)
+- [Inline preview with multiple files](/ui/components/code-preview/inline-multiple-files)
+- [Inline source fences](/ui/components/code-preview/inline-source-fences)
 - [Counter preview in MDX](/ui/components/code-preview/counter-in-mdx)
+
+- [Markdown file preview](/ui/components/code-preview/markdown-file-preview)
 
 ## Styling
 

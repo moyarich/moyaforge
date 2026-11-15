@@ -22,7 +22,7 @@ The CLI installs component source from the MoyaForge registry. Components own th
 
 ## Documentation
 
-See the [CLI documentation](docs/page.mdx) for setup and command options.
+See the [CLI documentation](https://github.com/moyarich/moyaforge/blob/main/packages/moyaforge-cli/docs/page.mdx) for setup and command options.
 
-- [Create a project](docs/01-create/page.mdx)
-- [Install components](docs/02-components/page.mdx)
+- [Create a project](https://github.com/moyarich/moyaforge/blob/main/packages/moyaforge-cli/docs/01-create/page.mdx)
+- [Install components](https://github.com/moyarich/moyaforge/blob/main/packages/moyaforge-cli/docs/add/page.mdx)

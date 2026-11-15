@@ -15,7 +15,7 @@ export {
   RegistryRouteView,
   type RegistryRouteViewProps,
   type RegistryLazySources,
-} from "./routing/RegistryRoutes.js";
+} from "./routing/ErrorBoundary.js";
 
 export {
   HeadlessDocsRoutes,

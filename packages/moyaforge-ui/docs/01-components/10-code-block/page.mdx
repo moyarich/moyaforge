@@ -64,7 +64,7 @@ export default defineConfig({
     {
       ...mdx(
         createMdxOptions({
-          shiki: [
+          highlightingPlugin: [
             rehypeShiki,
             { themes: { light: "github-light", dark: "github-dark" } },
           ],
@@ -104,7 +104,7 @@ If your app already wraps its documentation in an `MDXProvider`, add the compone
 
 ## Related
 
-- [All MoyaForge examples](/docs/examples)
+- [UI component gallery](/ui)
 
 ## Styling
 

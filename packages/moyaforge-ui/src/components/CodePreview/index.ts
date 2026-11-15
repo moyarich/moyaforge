@@ -6,3 +6,4 @@ export {
   type PreviewFile,
   type Replacement,
 } from "./CodePreview.js";
+export { InlineCodePreview, PreviewSources } from "./InlineCodePreview.js";

@@ -2,6 +2,7 @@
   "name": "moyaforge-workspace",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -12,8 +13,8 @@
     "url": "git+https://github.com/moyarich/moyaforge.git"
   },
   "bin": {
-    "build-registry": "./bin/build-registry.ts",
-    "moyaforge": "./github-cli/dist/bin/moyaforge.js"
+    "build-registry": "./scripts/build-registry/build-registry-cli.ts",
+    "moyaforge": "./packages/moyaforge-cli/dist/bin/moyaforge.js"
   },
   "scripts": {
     "dev": "npm run dev --workspace @moyarich/moyaforge-playground",
@@ -23,29 +24,27 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run pack:audit:strict && npm run pack:verify && npm run test:consumer:browser && npm run test:github-cli",
+    "checks": "npm run registry:check && npm run typecheck && npm test && npm run check:links && npm run build && npm run test:consumer:browser",
     "check:links": "npm run check:links --workspace @moyarich/moyaforge-playground",
     "test:boundaries": "vitest run tests/workspace.test.js",
     "test:consumer": "vitest run tests/consumer.test.js",
     "test:consumer:browser": "npm exec --workspace @moyarich/moyaforge-playground -- vite build --config ../../tests/vite-consumer-build/vite.config.js",
     "build": "npm run build --workspaces --if-present",
     "test:e2e": "playwright test --project=vite-consumer",
-    "registry:build": "node bin/build-registry.ts",
-    "registry:check": "node bin/build-registry.ts --check",
+    "registry:build": "node scripts/build-registry/build-registry-cli.ts",
+    "registry:check": "node scripts/build-registry/build-registry-cli.ts --check",
     "test:cli:browser": "playwright test --project=cli-consumer",
-    "pack:audit": "node scripts/audit-framework-pack.ts",
-    "pack:verify": "node scripts/verify-package-tarballs.ts",
-    "pack:audit:strict": "node scripts/audit-framework-pack.ts --strict",
-    "prepare": "npm run build --workspace @moyarich/moyaforge-cli && node scripts/prepare-github-cli.ts",
-    "test:github-cli": "npm run prepare && node scripts/verify-github-cli.ts"
+    "prepare": "npm run build --workspace @moyarich/moyaforge-cli"
+  },
+  "dependencies": {
+    "commander": "^15.1.0"
   },
   "devDependencies": {
     "@babel/parser": "^8.0.7",
     "@codingame/monaco-vscode-api": "^37.6.1",
     "@playwright/test": "^1.64.1",
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "@vitejs/plugin-react": "^6.1.2",
-    "commander": "^15.1.0",
     "postcss": "^8.5.31",
     "postcss-value-parser": "^4.2.0",
     "prettier": "^3.9.10",
@@ -59,6 +58,8 @@
     "@codingame/monaco-vscode-api": "$@codingame/monaco-vscode-api"
   },
   "files": [
-    "github-cli/"
+    "packages/moyaforge-cli/dist/",
+    "packages/moyaforge-cli/templates/",
+    "packages/moyaforge-cli/package.json"
   ]
 }

@@ -12,7 +12,7 @@ export default defineConfig({
   plugins: [
     mdxRegistryPlugin({ registry, root: import.meta.dirname }),
     sqliteSearchPlugin({ registry, root: import.meta.dirname }),
-    {enforce: "pre", ...mdx(createMdxOptions({shiki:[rehypeShiki,{themes:{light:"github-light",dark:"github-dark"}, fallbackLanguage:"text"}]}))},
+    {enforce: "pre", ...mdx(createMdxOptions({highlightingPlugin:[rehypeShiki,{themes:{light:"github-light",dark:"github-dark"}, fallbackLanguage:"text"}]}))},
     react({include:/\.(?:js|jsx|md|mdx|ts|tsx)$/})
   ],
 });

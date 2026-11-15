@@ -7,21 +7,33 @@ import type { ShikiTransformer } from "shiki";
 import {
   createMdxOptions,
   createContentDiscovery,
-  remarkSourceLinks,
+  remarkRewriteSourceLinks,
 } from "@moyarich/moyaforge-mdx";
-import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
+import {
+  createCodePreviewPlugin,
+  createCodePreview,
+  mdxRegistryPlugin,
+  resolveCodePreviewSource,
+} from "@moyarich/moyaforge-mdx/vite";
 import registry from "./registry.config.ts";
 import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
 
 const contentRoot = fileURLToPath(new URL(".", import.meta.url));
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
+const codePreview = createCodePreview({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+  resolutionScope: "global",
+  outOfRoot: "allow",
+});
 
 const compileMdx = mdx(
   createMdxOptions({
-    remarkPlugins: [
+    additionalRemarkPlugins: [
       [
-        remarkSourceLinks,
+        remarkRewriteSourceLinks,
         {
           config: registry,
           root: contentRoot,
@@ -29,7 +41,20 @@ const compileMdx = mdx(
         },
       ],
     ],
-    directiveComponents: {
+    componentMappings: {
+      "code-preview": {
+        component: "InlineCodePreview",
+        titleProp: "title",
+        sourceProp: "code",
+        filesProp: "sourceFiles",
+        localSources: true,
+        resolveCodePreviewExample: (reference, authoredFile) =>
+          resolveCodePreviewSource({
+            context: codePreview,
+            reference,
+            authoredFile,
+          }),
+      },
       "*": {
         component: "CustomBlock",
         typeProp: "type",
@@ -41,7 +66,7 @@ const compileMdx = mdx(
         childComponent: "CodeTab",
       },
     },
-    shiki: [
+    highlightingPlugin: [
       rehypeShiki,
       {
         themes: { light: "github-light", dark: "github-dark" },
@@ -66,6 +91,7 @@ const compileMdx = mdx(
 
 export default defineConfig({
   plugins: [
+    createCodePreviewPlugin(codePreview),
     mdxRegistryPlugin({
       discovery,
       registry,

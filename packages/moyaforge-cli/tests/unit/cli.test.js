@@ -10,7 +10,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
-import { planComponentInstallation, resolveItems } from "../../src/registry.ts";
+import { planComponentInstallation, resolveItems } from "../../src/index.ts";
 
 const repository = resolve(import.meta.dirname, "../../../..");
 const cli = resolve(import.meta.dirname, "../../dist/bin/moyaforge.js");
@@ -343,7 +343,7 @@ test("playground init uses consumer-owned content and registry-installed compone
   expect(registry).not.toContain("../../packages");
   const vite = await read(root, "vite.config.ts");
   expect(vite).toContain("createContentDiscovery");
-  expect(vite).toContain("remarkSourceLinks");
+  expect(vite).toContain("remarkRewriteSourceLinks");
   expect(vite).toContain("sqliteSearchPlugin");
   const app = await read(root, "src/App.tsx");
   expect(app).toContain("RegistryRoutes");
@@ -360,6 +360,8 @@ test("playground init uses consumer-owned content and registry-installed compone
   expect(manifest.devDependencies).toHaveProperty("shiki");
   const plain = await project();
   expect(run(plain, "init", "--template", "playground", "--no-install").status).toBe(0);
+  const plainManifest = JSON.parse(await read(plain, "package.json"));
+  expect(plainManifest.dependencies["is-hotkey"]).toBe("^0.2.1");
   expect(await read(plain, "src/SearchAdapter.tsx")).not.toContain("searchPages");
   expect(await read(plain, "vite.config.ts")).not.toContain("sqliteSearchPlugin");
 });

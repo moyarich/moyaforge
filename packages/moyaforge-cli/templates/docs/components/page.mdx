@@ -1,0 +1,107 @@
+---
+title: Components
+description: Learn how to use custom blocks, syntax-highlighted code, and tabbed code groups.
+---
+
+# Components
+
+[← Back](../)
+
+Enhance your documentation with Markdown and React components. Use custom blocks to highlight important information, code fences to display commands, and tabs to organize related examples.
+
+## Custom blocks
+
+Custom blocks help draw attention to important information, tips, and warnings.
+
+::: note Edit this guide
+
+Open and modify the content to experiment with these components.
+
+:::
+
+::: tip Try it yourself
+
+Create a custom block using the `::: tip` syntax to highlight useful advice.
+
+:::
+
+::: warning Important
+
+Make sure every custom block has a matching closing `:::` to avoid rendering issues.
+
+:::
+
+## Code blocks
+
+Use fenced code blocks with a language identifier to enable syntax highlighting.
+
+For example, start the development server with:
+
+```sh
+npm run dev
+```
+
+You can also display JavaScript:
+
+```js
+const message = "Hello, world!";
+console.log(message);
+```
+
+## Code tabs
+
+Use a `code-group` container to display alternative commands in separate tabs.
+
+This is especially useful when supporting multiple package managers.
+
+:::: code-group Start the development server
+
+::: tab npm
+
+```sh
+npm run dev
+```
+
+:::
+
+::: tab pnpm
+
+```sh
+pnpm dev
+```
+
+:::
+
+::: tab yarn
+
+```sh
+yarn dev
+```
+
+:::
+
+::: tab bun
+
+```sh
+bun run dev
+```
+
+:::
+
+::::
+
+__CODE_PREVIEW_EXAMPLE__## Best practices
+
+Keep your documentation clear and easy to navigate:
+
+- **Use descriptive headings** to organize related content.
+- **Choose the right custom block** for notes, tips, and warnings.
+- **Specify code languages** for syntax highlighting.
+- **Group related commands** using tabs instead of repeating sections.
+- **Close all containers correctly** to prevent rendering errors.
+
+## Next steps
+
+Explore more Markdown and MDX features to create interactive, well-structured documentation.
+
+[← Back](../)

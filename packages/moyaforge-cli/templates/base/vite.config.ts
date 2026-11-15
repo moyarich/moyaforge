@@ -10,7 +10,11 @@ export default defineConfig({
   base: process.env.VITE_BASE_PATH || "/",
   plugins: [
     mdxRegistryPlugin({ registry, root: import.meta.dirname }),
-    {enforce: "pre", ...mdx(createMdxOptions({shiki:[rehypeShiki,{themes:{light:"github-light",dark:"github-dark"}, fallbackLanguage:"text"}]}))},
+    {enforce: "pre", ...mdx(createMdxOptions({
+      componentMappings: {
+        "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" },
+      },
+      highlightingPlugin:[rehypeShiki,{themes:{light:"github-light",dark:"github-dark"}, fallbackLanguage:"text"}]}))},
     react({include:/\.(?:js|jsx|md|mdx|ts|tsx)$/})
   ],
 });

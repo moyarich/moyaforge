@@ -36,12 +36,13 @@ test("npm installs the packed CLI and add copy-button installs registry source",
       type: "module",
     }, null, 2) + "\n");
 
-    const pack = JSON.parse(run("npm", [
+    const result = JSON.parse(run("npm", [
       "pack", "--ignore-scripts", "--json", "--pack-destination", temporary,
     ], packageRoot));
-    const archive = join(temporary, pack[0].filename);
-    expect(pack[0].files.some(file => file.path === "dist/bin/moyaforge.js")).toBe(true);
-    expect(pack[0].files.some(file => file.path === "dist/registry.js")).toBe(true);
+    const pack = Array.isArray(result) ? result[0] : result["@moyarich/moyaforge-cli"];
+    const archive = join(temporary, pack.filename);
+    expect(pack.files.some(file => file.path === "dist/bin/moyaforge.js")).toBe(true);
+    expect(pack.files.some(file => file.path === "dist/index.js")).toBe(true);
 
     run("npm", [
       "install", "--no-save", "--ignore-scripts",

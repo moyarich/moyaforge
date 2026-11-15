@@ -24,7 +24,7 @@ Use a `code-group` directive with one `tab` per package manager.
 
 ### Configure Vite
 
-Map the `code-group` directive and its nested `tab` directives. If your app already calls `createMdxOptions`, add this entry to its existing `directiveComponents` map.
+Map the `code-group` directive and its nested `tab` directives. If your app already calls `createMdxOptions`, add this entry to its existing `componentMappings` map.
 
 ```ts filename="vite.config.ts"
 import mdx from "@mdx-js/rollup";
@@ -37,7 +37,7 @@ export default defineConfig({
     {
       ...mdx(
         createMdxOptions({
-          directiveComponents: {
+          componentMappings: {
             "code-group": {
               component: "CodeGroup",
               childType: "tab",

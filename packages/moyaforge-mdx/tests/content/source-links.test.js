@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkMdx from "remark-mdx";
-import { remarkSourceLinks } from "../../src/plugins/remark/remark-source-links.ts";
+import { remarkRewriteSourceLinks } from "../../src/plugins/remark/source-links/remark-rewrite-source-links.ts";
 
 const config = {
   sources: {
@@ -23,7 +23,7 @@ async function parse(content) {
   const processor = unified()
     .use(remarkParse)
     .use(remarkMdx)
-    .use(remarkSourceLinks, { config, root, routes });
+    .use(remarkRewriteSourceLinks, { config, root, routes });
   const tree = processor.parse(content);
   return processor.run(tree, {
     path: "/project/packages/moyaforge-ui/docs/page.mdx",

@@ -52,7 +52,7 @@ test("frontmatter JavaScript export remains an explicit option", async () => {
   const compiled = String(
     await compile(
       { value: source, path: "page.mdx" },
-      createMdxOptions({ frontmatterExport: true }),
+      createMdxOptions({ exportFrontmatter: true }),
     ),
   );
   assert.match(compiled, /frontmatter/);

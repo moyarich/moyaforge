@@ -51,7 +51,7 @@ test("Markdown and MDX resolve identical heading IDs and filtered TOCs", async (
 
 test("compiler plugin options do not mutate later calls", () => {
   const extra = () => {};
-  const withExtension = createMdxOptions({ rehypePlugins: [extra] });
+  const withExtension = createMdxOptions({ additionalRehypePlugins: [extra] });
   const plain = createMdxOptions();
   assert.equal(withExtension.rehypePlugins.at(-1), extra);
   assert.equal(plain.rehypePlugins.includes(extra), false);

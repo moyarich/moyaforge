@@ -1,0 +1,52 @@
+---
+title: Animation
+description: Animate React content with fades, slides, reveals, and a typewriter effect.
+---
+
+import { Animation, AnimationGroup } from "../../../src/components/Animation/index.js";
+
+# Animation
+
+Use `Animation` for a single effect and `AnimationGroup` to coordinate effects.
+
+## Single animation
+
+::: code-preview Fade in
+
+<Animation effect="fade">
+  <p>Welcome to the guide.</p>
+</Animation>
+
+:::
+
+## Play animations in order
+
+Place each `Animation` directly inside the group. With `sequence`, each effect finishes before the next one starts. Without `sequence`, `stagger` offsets the start of each effect.
+
+::: code-preview Sequential animation
+
+<AnimationGroup sequence stagger={0.15}>
+  <Animation effect="fade-slide">
+    <h2>Build your documentation</h2>
+  </Animation>
+  <Animation effect="typewriter" duration={1}>
+    <p>Start with a Markdown page.</p>
+  </Animation>
+</AnimationGroup>
+
+:::
+
+Change the group's React `key` to replay it from the beginning.
+
+## Options
+
+| Option             | Description                                                                                                       |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `effect`           | `fade`, `slide`, `fade-slide` (default), `reveal`, or `typewriter`. Use the typewriter effect for static text.    |
+| `sequence` (group) | Wait for the previous entry to finish. Defaults to `false`.                                                       |
+| `duration`         | Effect duration in seconds. Defaults to `0.3`.                                                                    |
+| `wait`             | Initial delay in seconds. Defaults to `0`.                                                                        |
+| `stagger` (group)  | Delay in seconds between sequential entries. For independent entries, adds this delay per index. Defaults to `0`. |
+| `distance`         | Vertical offset in pixels for slide effects. Defaults to `12`.                                                    |
+
+Entries show their content immediately when the user prefers reduced motion.

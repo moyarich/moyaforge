@@ -1,11 +1,12 @@
 import { Command } from "commander";
 import { readFile } from "node:fs/promises";
-import { addComponentCommand } from "../add/add-cli.js";
-import { listComponentsCommand } from "../list/list-cli.js";
-import { createCommand } from "../create/create-cli.js";
-import { initCommand } from "../init/init-cli.js";
-import { devCommand } from "../dev/dev-cli.js";
-import { previewCommand } from "../preview/preview-cli.js";
+import { addComponentCommand } from "./add-cli.js";
+import { listComponentsCommand } from "./list-cli.js";
+
+import { createCommand } from "./create-cli.js";
+import { initCommand } from "./init-cli.js";
+import { devCommand } from "./dev-cli.js";
+import { previewCommand } from "./preview-cli.js";
 
 /** Construct an independent root CLI with all supported subcommands. */
 export function createRootCliCommand(): Command {

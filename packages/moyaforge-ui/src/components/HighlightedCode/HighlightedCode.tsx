@@ -10,6 +10,7 @@ import json from "shiki/langs/json.mjs";
 import html from "shiki/langs/html.mjs";
 import bash from "shiki/langs/bash.mjs";
 import markdown from "shiki/langs/markdown.mjs";
+import mdx from "shiki/langs/mdx.mjs";
 import yaml from "shiki/langs/yaml.mjs";
 import lightTheme from "shiki/themes/github-light.mjs";
 import darkTheme from "shiki/themes/github-dark.mjs";
@@ -41,6 +42,7 @@ const DEFAULT_HIGHLIGHTER = /* @__PURE__ */ createHighlighterCoreSync({
     html,
     bash,
     markdown,
+    mdx,
     yaml,
   ],
   themes: [lightTheme, darkTheme],

@@ -11,8 +11,8 @@ import remarkCodeGroup from "./remarkCodeGroup";
 import rehypeShiki from "@shikijs/rehype";
 
 const options = createMdxOptions({
-  remarkPlugins: [remarkCodeGroup],
-  rehypePlugins: [rehypeShiki],
+  additionalRemarkPlugins: [remarkCodeGroup],
+  additionalRehypePlugins: [rehypeShiki],
 });
 const plugin = mdx(options);
 ```
@@ -76,7 +76,7 @@ import {
 
 These are plain JSON-compatible records with no React component imports. The existing `virtual:moyaforge-mdx/lazy-registry` supplies page loaders separately. Pages marked `navigation: disabled` appear in the complete `pages` inventory but are excluded from `routes` and `navigation`. Hidden pages remain routable but are not in navigation.
 
-Metadata is authored once in YAML, not in `package.json` or a required MDX JavaScript export. Older integrations can explicitly enable compiled exports with `createMdxOptions({ frontmatterExport: true })`; they are not required.
+Metadata is authored once in YAML, not in `package.json` or a required MDX JavaScript export. Older integrations can explicitly enable compiled exports with `createMdxOptions({ exportFrontmatter: true })`; they are not required.
 
 TypeScript projects that include their Vite config pick up the virtual module declarations through the `@moyarich/moyaforge-mdx/vite` import. If the config is outside your TypeScript project, add `"@moyarich/moyaforge-mdx/vite"` to the existing `compilerOptions.types` array.
 
@@ -152,7 +152,7 @@ for a text-only item. Icons are decorative; links retain their accessible labels
 
 ## Compiled frontmatter exports
 
-Registry-based metadata discovery reads authored YAML from `page.md` and `page.mdx` at build time, without evaluating compiled components. `createMdxOptions()` does **not** generate a JavaScript `frontmatter` export by default. Older consumer integrations that explicitly import `page.frontmatter` can opt in with `createMdxOptions({ frontmatterExport: true })` while migrating to `virtual:moyaforge-mdx/metadata`. This does not change the YAML syntax or normalized page registry.
+Registry-based metadata discovery reads authored YAML from `page.md` and `page.mdx` at build time, without evaluating compiled components. `createMdxOptions()` does **not** generate a JavaScript `frontmatter` export by default. Older consumer integrations that explicitly import `page.frontmatter` can opt in with `createMdxOptions({ exportFrontmatter: true })` while migrating to `virtual:moyaforge-mdx/metadata`. This does not change the YAML syntax or normalized page registry.
 
 ## Optional static syntax highlighting
 
@@ -165,7 +165,7 @@ import rehypeShiki from "@shikijs/rehype";
 import { createMdxOptions } from "@moyarich/moyaforge-mdx";
 
 const options = createMdxOptions({
-  shiki: [
+  highlightingPlugin: [
     rehypeShiki,
     {
       themes: { light: "github-light", dark: "github-dark" },
@@ -174,4 +174,4 @@ const options = createMdxOptions({
 });
 ```
 
-The Shiki rehype plugin runs after heading slugs and table-of-contents extraction, but before any additional host `rehypePlugins`. It highlights **static** code blocks in the Markdown/MDX compile pipeline. Interactive editors, Monaco, terminal output, and runnable snippets should be rendered through their own MDX components rather than this static highlighter; avoid applying a second syntax highlighter to their output. This option does not enable highlighting in the playground unless that app opts in.
+The Shiki rehype plugin runs after heading slugs and table-of-contents extraction, but before any additional host `additionalRehypePlugins`. It highlights **static** code blocks in the Markdown/MDX compile pipeline. Interactive editors, Monaco, terminal output, and runnable snippets should be rendered through their own MDX components rather than this static highlighter; avoid applying a second syntax highlighter to their output. This option does not enable highlighting in the playground unless that app opts in.

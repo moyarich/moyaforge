@@ -6,26 +6,43 @@ import type { ShikiTransformer } from "shiki";
 import {
   createContentDiscovery,
   createMdxOptions,
-  remarkSourceLinks,
+  remarkRewriteSourceLinks,
 } from "@moyarich/moyaforge-mdx";
-import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
+import { createCodePreviewPlugin, createCodePreview, mdxRegistryPlugin, resolveCodePreviewSource } from "@moyarich/moyaforge-mdx/vite";
 __SEARCH_PLUGIN_IMPORT__
 import registry from "./registry.config.js";
 
 const contentRoot = import.meta.dirname;
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
+
+const codePreview = createCodePreview({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+  resolutionScope: "global",
+  outOfRoot: "allow",
+});
+
 const compileMdx = mdx(createMdxOptions({
-  remarkPlugins: [[remarkSourceLinks, {
+  additionalRemarkPlugins: [[remarkRewriteSourceLinks, {
     config: registry,
     root: contentRoot,
     routes: discovered.routes,
   }]],
-  directiveComponents: {
+  componentMappings: {
+    "code-preview": {
+      component: "InlineCodePreview",
+      titleProp: "title",
+      sourceProp: "code",
+      filesProp: "sourceFiles",
+      localSources: true,
+      resolveCodePreviewExample: (reference, authoredFile) => resolveCodePreviewSource({ context: codePreview, reference, authoredFile }),
+    },
     "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
     "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" },
   },
-  shiki: [rehypeShiki, {
+  highlightingPlugin: [rehypeShiki, {
     themes: { light: "github-light", dark: "github-dark" },
     fallbackLanguage: "text",
     transformers: [{
@@ -40,6 +57,7 @@ const compileMdx = mdx(createMdxOptions({
 }));
 export default defineConfig({
   plugins: [
+    createCodePreviewPlugin(codePreview),
     mdxRegistryPlugin({ discovery, registry, root: contentRoot }),
     __SEARCH_PLUGIN__
     {

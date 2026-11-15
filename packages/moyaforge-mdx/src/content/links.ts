@@ -1,3 +1,6 @@
+import { directiveHeaderRules } from "../plugins/remark/directive-header-rules.js";
+import remarkDirective from "remark-directive";
+import { remarkNormalizeDirectiveHeaders } from "../plugins/remark/remark-directive/remark-normalize-directive-headers.js";
 import { posix } from "node:path";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -49,6 +52,8 @@ export function validateInternalLinks(
       .use(remarkFrontmatter, ["yaml"])
       .use(remarkGfm)
       .use(remarkMdx)
+      .use(remarkDirective)
+      .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules)
       .parse(document.content);
     const visit = (node: any) => {
       const mdxAnchor =

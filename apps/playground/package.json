@@ -39,8 +39,10 @@
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
     "@shikijs/rehype": "^4.5.0",
+    "@types/node": "^26.6.6",
     "@vitejs/plugin-react": "^6.1.2",
     "sql.js": "^1.15.0",
+    "sucrase": "^3.35.1",
     "typescript": "^7.0.2",
     "vite": "^8.3.4"
   },

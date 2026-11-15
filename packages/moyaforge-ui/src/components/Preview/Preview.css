@@ -67,7 +67,11 @@
   margin-inline-start: auto;
 }
 [data-moyaforge-preview-actions]
-  :is([data-moyaforge-preview-toggle], [data-moyaforge-preview-copy]) {
+  :is(
+    [data-moyaforge-preview-toggle],
+    [data-moyaforge-preview-copy],
+    [data-moyaforge-preview-action]
+  ) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -88,15 +92,18 @@
     border-color 150ms;
 }
 [data-moyaforge-preview-actions]
-  :is([data-moyaforge-preview-toggle], [data-moyaforge-preview-copy]):hover:not(
-    :disabled
-  ) {
+  :is(
+    [data-moyaforge-preview-toggle],
+    [data-moyaforge-preview-copy],
+    [data-moyaforge-preview-action]
+  ):hover:not(:disabled) {
   background: var(--_preview-button-hover);
 }
 [data-moyaforge-preview-actions]
   :is(
     [data-moyaforge-preview-toggle],
-    [data-moyaforge-preview-copy]
+    [data-moyaforge-preview-copy],
+    [data-moyaforge-preview-action]
   ):focus-visible {
   outline: 2px solid var(--_preview-focus);
   outline-offset: 2px;

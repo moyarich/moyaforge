@@ -53,7 +53,7 @@ export default defineConfig({
     {
       ...mdx(
         createMdxOptions({
-          directiveComponents: {
+          componentMappings: {
             "*": {
               component: "CustomBlock",
               typeProp: "type",

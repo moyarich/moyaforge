@@ -20,8 +20,8 @@ test("host plugins extend defaults without replacing shared conventions", () => 
   const customRemark = () => {};
   const customRehype = () => {};
   const options = createMdxOptions({
-    remarkPlugins: [customRemark],
-    rehypePlugins: [customRehype],
+    additionalRemarkPlugins: [customRemark],
+    additionalRehypePlugins: [customRehype],
   });
   assert.ok(options.remarkPlugins.includes(customRemark));
   assert.ok(options.rehypePlugins.includes(customRehype));

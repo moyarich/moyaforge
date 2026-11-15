@@ -8,7 +8,7 @@ test("ordinary Markdown preview directives emit declarative host component refer
   const result = String(
     await compile(
       { value: md, path: "page.md" },
-      createMdxOptions({ previewDirectives: true }),
+      createMdxOptions({ filePreviewOptions: true }),
     ),
   );
   expect(result).toContain("PreviewDirective");
@@ -29,14 +29,14 @@ test("preview directives reject unsafe and missing references", async () => {
           value: `::: preview Unsafe\n\nexample: ${ref}\n\n:::`,
           path: "page.md",
         },
-        createMdxOptions({ previewDirectives: true }),
+        createMdxOptions({ filePreviewOptions: true }),
       ),
     ).rejects.toThrow(/Invalid preview/);
   }
   await expect(
     compile(
       { value: "::: preview Empty\nNothing here.\n:::", path: "page.md" },
-      createMdxOptions({ previewDirectives: true }),
+      createMdxOptions({ filePreviewOptions: true }),
     ),
   ).rejects.toThrow(/requires an example/);
 });
@@ -46,7 +46,7 @@ test("preview transformation is opt-in and unrelated directives continue working
   const result = String(
     await compile(
       { value: md, path: "page.md" },
-      createMdxOptions({ previewDirectives: true }),
+      createMdxOptions({ filePreviewOptions: true }),
     ),
   );
   expect(result).toContain("custom-block");
@@ -68,7 +68,7 @@ test("preview directives reject malformed references and duplicate declarations"
           value: `::: preview Invalid\n\nexample: ${ref}\n\n:::`,
           path: "page.md",
         },
-        createMdxOptions({ previewDirectives: true }),
+        createMdxOptions({ filePreviewOptions: true }),
       ),
     ).rejects.toThrow(/Invalid preview/);
   }
@@ -79,7 +79,7 @@ test("preview directives reject malformed references and duplicate declarations"
           "::: preview Duplicate\n\nexample: ./A.tsx\n\nexample: ./B.tsx\n\n:::",
         path: "page.md",
       },
-      createMdxOptions({ previewDirectives: true }),
+      createMdxOptions({ filePreviewOptions: true }),
     ),
   ).rejects.toThrow(/Duplicate preview/);
 });
@@ -87,7 +87,7 @@ test("preview directives reject malformed references and duplicate declarations"
 test("host preview resolver validates the authored Markdown path", async () => {
   const seen = [];
   const options = createMdxOptions({
-    previewDirectives: {
+    filePreviewOptions: {
       resolveReference(reference, authoredFile, kind) {
         seen.push([reference, authoredFile, kind]);
         return reference === "./Registered.tsx"
@@ -116,4 +116,91 @@ test("host preview resolver validates the authored Markdown path", async () => {
       options,
     ),
   ).rejects.toThrow(/Unresolved preview/);
+});
+
+test("code-preview preserves authored JSX as source and renders it as children", async () => {
+  const body = '<p className="greeting">Hello from MDX.</p>';
+  const result = String(
+    await compile(
+      `::: code-preview Greeting\n\n${body}\n\n:::`,
+      createMdxOptions({
+        componentMappings: {
+          "code-preview": {
+            component: "InlineCodePreview",
+            titleProp: "title",
+            sourceProp: "code",
+          },
+        },
+      }),
+    ),
+  );
+  expect(result).toContain("InlineCodePreview");
+  expect(result).toContain(`code: ${JSON.stringify(body)}`);
+  expect(result).toContain('className: "greeting"');
+});
+
+test.each([
+  ["::: tip Before you start", ":::", "tip", "Before you start"],
+  [":::tip[Before you start]", ":::", "tip", "Before you start"],
+  ['::alert{type="warning"}', "::", "warning", undefined],
+  ["::: {.callout-note}", ":::", "note", undefined],
+])("normalizes %s to a mapped component", async (open, close, type, title) => {
+  const result = String(
+    await compile(
+      `${open}\n\nHello\n\n${close}`,
+      createMdxOptions({
+        componentMappings: {
+          "*": {
+            component: "CustomBlock",
+            typeProp: "type",
+            titleProp: "title",
+          },
+        },
+      }),
+    ),
+  );
+  expect(result).toContain(`type: "${type}"`);
+  expect(result).toContain('children: "Hello"');
+  if (title) expect(result).toContain(`title: "${title}"`);
+});
+
+test("forwards configured directive flags and preserves inline preview source", async () => {
+  const result = String(
+    await compile(
+      ":::code-preview[Fade in]{refresh}\n\n<p>Hello</p>\n\n:::",
+      createMdxOptions({
+        componentMappings: {
+          "code-preview": {
+            component: "InlineCodePreview",
+            titleProp: "title",
+            sourceProp: "code",
+            booleanProps: ["refresh"],
+          },
+        },
+      }),
+    ),
+  );
+  expect(result).toContain('title: "Fade in"');
+  expect(result).toContain("refresh: true");
+  expect(result).toContain('code: "<p>Hello</p>"');
+});
+
+test("uses native directives for code groups and their nested tabs", async () => {
+  const result = String(
+    await compile(
+      "::::code-group[Commands]\n\n:::tab[npm]\n\nInstall with npm.\n\n:::\n\n::::",
+      createMdxOptions({
+        componentMappings: {
+          "code-group": {
+            component: "CodeGroup",
+            childType: "tab",
+            childComponent: "CodeTab",
+          },
+        },
+      }),
+    ),
+  );
+  expect(result).toContain('label: "Commands"');
+  expect(result).toContain('label: "npm"');
+  expect(result).toContain("_jsx(CodeTab,");
 });

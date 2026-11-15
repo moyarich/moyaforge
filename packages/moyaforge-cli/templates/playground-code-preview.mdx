@@ -1,0 +1,23 @@
+## Code preview
+
+Select **Code** to see the live markup and the named source file.
+
+::: code-preview Greeting
+
+<p><strong>Hello from the playground.</strong></p>
+
+```ts filename="greeting.ts"
+export const greeting = "Hello from the playground.";
+```
+
+:::
+
+### Preview a React component from a file
+
+The `example` attribute loads `Greeting.tsx` through `virtual:moyaforge-mdx/code-preview-components`. The `code-preview-sources` directive lists the files shown in the Code view. This works in plain Markdown pages too.
+
+::::code-preview[Greeting component]{example="./Greeting.tsx"}
+
+::code-preview-sources{files="./Greeting.tsx"}
+
+::::

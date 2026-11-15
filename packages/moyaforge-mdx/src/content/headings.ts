@@ -1,3 +1,6 @@
+import { directiveHeaderRules } from "../plugins/remark/directive-header-rules.js";
+import remarkDirective from "remark-directive";
+import { remarkNormalizeDirectiveHeaders } from "../plugins/remark/remark-directive/remark-normalize-directive-headers.js";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
@@ -14,37 +17,45 @@ import type { TocHeading } from "../navigation/toc.js";
  * used by the MDX compiler, without evaluating the page component.
  */
 export async function extractPageHeadings(
-  source: string,
+  markdownSource: string,
   filename = "page.md",
 ): Promise<TocHeading[]> {
-  const processor = unified()
+  const headingProcessor = unified()
     .use(remarkParse)
     .use(remarkFrontmatter, ["yaml"])
     .use(remarkGfm)
     .use(remarkMdx)
+    .use(remarkDirective)
+    .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules)
     .use(remarkRehype)
     .use(rehypeSlug)
     .use(rehypeExtractToc);
-  const file = new VFile({ value: source, path: filename });
-  await processor.run(processor.parse(file), file);
-  type Entry = {
+  const markdownFile = new VFile({ value: markdownSource, path: filename });
+  const markdownTree = headingProcessor.parse(markdownFile);
+  await headingProcessor.run(markdownTree, markdownFile);
+
+  type ExtractedHeading = {
     id?: string;
     value: string;
     depth: number;
-    children?: Entry[];
+    children?: ExtractedHeading[];
   };
-  const normalize = (entries: readonly Entry[]): TocHeading[] =>
-    entries.flatMap((entry) => {
-      const children = normalize(entry.children ?? []);
-      if (!entry.id) return children;
+
+  const normalizeHeadings = (
+    headings: readonly ExtractedHeading[],
+  ): TocHeading[] =>
+    headings.flatMap((heading) => {
+      const childHeadings = normalizeHeadings(heading.children ?? []);
+      if (!heading.id) return childHeadings;
       return [
         {
-          id: entry.id,
-          value: entry.value,
-          depth: entry.depth,
-          ...(children.length ? { children } : {}),
+          id: heading.id,
+          value: heading.value,
+          depth: heading.depth,
+          ...(childHeadings.length ? { children: childHeadings } : {}),
         },
       ];
     });
-  return normalize((file.data.toc ?? []) as Entry[]);
+
+  return normalizeHeadings((markdownFile.data.toc ?? []) as ExtractedHeading[]);
 }
