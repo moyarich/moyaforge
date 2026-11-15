@@ -18,11 +18,11 @@ import type { MonacoFile } from "../MonacoEditorCore/Monaco.js";
 export interface CodePreviewEditorProps {
   /** Label shown above the live preview. */
   title: string;
-  /** Initial editor files. The first file is copied by the Preview toolbar. */
+  /** Initial editable source files. */
   files: readonly MonacoFile[];
   /** Render the current editor files using an application-owned renderer. */
   renderPreview: (files: readonly MonacoFile[]) => ReactNode;
-  /** Optional integration snippet shown as a read-only tab in the Code view. */
+  /** Optional integration snippet shown in Code and copied by the Preview toolbar. */
   usageSource?: string;
   /** File tab label for usageSource. Defaults to CodePreviewEditor.tsx. */
   usageFileName?: string;
