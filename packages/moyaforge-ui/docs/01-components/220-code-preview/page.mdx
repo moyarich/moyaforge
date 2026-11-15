@@ -3,6 +3,8 @@ title: CodePreview
 label: CodePreview
 ---
 
+import { CodePreview as LiveCodePreview } from "../../../src/components/CodePreview/index.js";
+
 # CodePreview
 
 Use `:::code-preview` to show a live example and its source files.
@@ -28,17 +30,47 @@ npx shadcn@latest add moyarich/moyaforge/code-preview
 
 ## Usage
 
-### Inline MDX preview
+::: code-preview Named source files
 
-Try the live example. Select **Code** to view its Markdown source.
-
-::: code-preview Greeting
-
-**Hello** from `Markdown`.
+<LiveCodePreview
+  title="Greeting"
+  files={[
+    {
+      label: "Greeting.tsx",
+      language: "tsx",
+      code={"export function Greeting() {\n  return <p>Hello from React.</p>;\n}"},
+    },
+  ]}
+>
+  <p>Hello from React.</p>
+</LiveCodePreview>
 
 :::
 
-Write the same directive in an `example.md` file in a docs site with the mapping below:
+Use `CodePreview` when you want to provide named source files and control the
+rendered preview. The Code tab shows the first file by default; multiple files
+appear as tabs.
+
+```tsx
+import { CodePreview } from "@/components/ui/CodePreview";
+
+<CodePreview
+  title="Greeting"
+  files={[
+    {
+      label: "Greeting.tsx",
+      language: "tsx",
+      code: "export function Greeting() {\\n  return <p>Hello from React.</p>;\\n}",
+    },
+  ]}
+>
+  <p>Hello from React.</p>
+</CodePreview>;
+```
+
+Use the `:::code-preview` directive when you want MDX to capture authored
+Markdown and JSX automatically. Save this as `example.md` in a docs site with
+the mapping below:
 
 ```md filename="example.md"
 :::code-preview[Greeting]
