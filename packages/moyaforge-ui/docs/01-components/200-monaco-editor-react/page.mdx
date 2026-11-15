@@ -5,7 +5,7 @@ description: A multi-file code editor with read-only mode and copy support.
 ---
 
 import "../setup-monaco-worker.ts";
-import { MonacoEditorReact } from "../../../src/components/MonacoEditorReact/index.js";
+import { MonacoEditorReact as LiveMonacoEditorReact } from "../../../src/components/MonacoEditorReact/index.js";
 
 # Monaco Editor React
 
@@ -44,7 +44,7 @@ For Vite, copy `setup.ts` from the preview’s Code tab and import it before the
 
 ::: code-preview Editable TypeScript workspace
 
-<MonacoEditorReact
+<LiveMonacoEditorReact
   files={[{ name: "index.ts", value: "const answer = 42;" }]}
   height={320}
 />
