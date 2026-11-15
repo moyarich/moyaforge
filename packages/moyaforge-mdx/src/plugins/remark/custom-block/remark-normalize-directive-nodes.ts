@@ -27,7 +27,9 @@ export function remarkNormalizeDirectiveNodes() {
           flags: Object.keys(attrs).filter(
             (key) => attrs[key] === "" || attrs[key] === null,
           ),
-          example: attrs.example ?? undefined,
+          component: attrs.component ?? undefined,
+          code: attrs.code ?? undefined,
+          language: attrs.language ?? undefined,
           sources: attrs.files ?? undefined,
           replacements:
             attrs.replacements === "portable" ? "portable" : undefined,
