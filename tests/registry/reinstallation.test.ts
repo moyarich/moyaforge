@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 import {
   planComponentInstallation,
   applyPlan,
-} from "../../packages/moyaforge-cli/src/registry.ts";
+} from "../../packages/moyaforge-cli/src/index.ts";
 
 test("reinstalling a registry item preserves user modifications by default", async () => {
   const repository = resolve(import.meta.dirname, "../..");
