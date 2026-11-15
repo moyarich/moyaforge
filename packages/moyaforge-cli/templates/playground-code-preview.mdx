@@ -14,10 +14,17 @@ export const greeting = "Hello from the playground.";
 
 ### Preview a React component from a file
 
-The `example` attribute loads `Greeting.tsx` through `virtual:moyaforge-mdx/code-preview-components`. The `code-preview-sources` directive lists the files shown in the Code view. This works in plain Markdown pages too.
+The `component` attribute loads `Greeting.tsx` through `virtual:moyaforge-mdx/code-preview-components`. The `code-preview-sources` directive lists the files shown in the Code view. This works in plain Markdown pages too.
 
-::::code-preview[Greeting component]{example="./Greeting.tsx"}
+::::code-preview[Greeting component]{component="./Greeting.tsx"}
 
 ::code-preview-sources{files="./Greeting.tsx"}
 
 ::::
+
+### Preview source code without rendering it
+
+Use `code` when you want to display a file as highlighted source without loading it as a React component.
+
+:::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}
+:::
