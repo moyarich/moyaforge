@@ -22,6 +22,10 @@ export interface CodePreviewEditorProps {
   files: readonly MonacoFile[];
   /** Render the current editor files using an application-owned renderer. */
   renderPreview: (files: readonly MonacoFile[]) => ReactNode;
+  /** Optional integration snippet shown as a read-only tab in the Code view. */
+  usageSource?: string;
+  /** File tab label for usageSource. Defaults to CodePreviewEditor.tsx. */
+  usageFileName?: string;
   height?: number | string;
   options?: MonacoEditorReactProps["options"];
 }
@@ -34,6 +38,8 @@ export function CodePreviewEditor({
   title,
   files,
   renderPreview,
+  usageSource,
+  usageFileName = "CodePreviewEditor.tsx",
   height = 320,
   options,
 }: CodePreviewEditorProps) {
@@ -41,6 +47,18 @@ export function CodePreviewEditor({
   const [currentFiles, setCurrentFiles] = useState(() =>
     files.map((file) => ({ ...file })),
   );
+
+  const editorFiles = usageSource
+    ? [
+        {
+          name: usageFileName,
+          language: "typescript",
+          value: usageSource,
+          readOnly: true,
+        },
+        ...currentFiles,
+      ]
+    : currentFiles;
 
   const unchanged =
     currentFiles.length === initialFiles.length &&
@@ -51,7 +69,7 @@ export function CodePreviewEditor({
     );
 
   return (
-    <Preview title={title} source={currentFiles[0]?.value}>
+    <Preview title={title} source={usageSource ?? currentFiles[0]?.value}>
       <PreviewHeader>
         <PreviewTitle>{title}</PreviewTitle>
         <PreviewActions>
@@ -88,7 +106,7 @@ export function CodePreviewEditor({
       <PreviewSource asChild>
         <div style={{ minWidth: 0 }}>
           <MonacoCodeGroup
-            files={currentFiles}
+            files={editorFiles}
             editable
             height={height}
             options={{ fixedOverflowWidgets: true, ...options }}
