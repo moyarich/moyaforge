@@ -1,13 +1,24 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect, test } from "vitest";
 
-test("parent component pages expose a navigable section outline", () => {
+function findExamplePages(folder: string, depth = 0): string[] {
+  return readdirSync(folder, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .flatMap((entry) => {
+      const child = join(folder, entry.name);
+      const page = join(child, "page.mdx");
+      const ownPage = depth > 0 && existsSync(page) ? [page] : [];
+      return [...ownPage, ...findExamplePages(child, depth + 1)];
+    });
+}
+
+test("component example pages include a live CodePreview", () => {
   const docs = fileURLToPath(
     new URL("../../docs/01-components/", import.meta.url),
   );
-  // Nested example pages and the components index have their own outlines.
+  // Parent pages may use their own outline; nested example pages show live usage.
   const pages = readdirSync(docs, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => join(docs, entry.name, "page.mdx"));
@@ -23,12 +34,19 @@ test("parent component pages expose a navigable section outline", () => {
       `${page}: should expose section headings`,
     ).toBeGreaterThan(0);
     expect(
-      source,
-      `${page}: should include a live code-preview example`,
-    ).toMatch(/::: ?code-preview|<CodePreview\b/);
-    expect(
       new Set(headings).size,
       `${page}: section headings should be unique`,
     ).toBe(headings.length);
+  }
+
+  const examples = pages.flatMap((page) =>
+    findExamplePages(join(page, "..")),
+  );
+  expect(examples.length).toBeGreaterThan(20);
+  for (const page of examples) {
+    expect(
+      readFileSync(page, "utf8"),
+      `${page}: should include CodePreview or ::: code-preview`,
+    ).toMatch(/::: ?code-preview|<CodePreview\\b/);
   }
 });
