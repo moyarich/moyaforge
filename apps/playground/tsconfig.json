@@ -18,6 +18,7 @@
     "registry.config.ts",
     "vite.config.ts",
     "../../packages/moyaforge-ui/docs/**/*.ts",
-    "../../packages/moyaforge-ui/docs/**/*.tsx"
+    "../../packages/moyaforge-ui/docs/**/*.tsx",
+    "../../packages/moyaforge-mdx/vite-client.d.ts"
   ]
 }

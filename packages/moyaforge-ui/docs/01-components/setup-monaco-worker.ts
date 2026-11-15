@@ -42,6 +42,11 @@ export function configureReactWorkers() {
   for (const { content, filePath } of reactWorkerLibraries)
     defaults.addExtraLib(content, filePath);
 
+  defaults.addExtraLib(
+    'declare module "*.css" {}',
+    "file:///types/styles.d.ts",
+  );
+
   environment.MonacoEnvironment = {
     ...environment.MonacoEnvironment,
     getWorker(_moduleId, label) {
