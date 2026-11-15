@@ -1,5 +1,6 @@
 import { lazy, type ReactNode } from "react";
 import { CODE_REPLACEMENTS, CodePreview, type PreviewFile } from "__UI__/CodePreview/index.js";
+import { HighlightedCode, previewLanguage } from "__UI__/HighlightedCode/HighlightedCode.js";
 import { BookOpen } from "lucide-react";
 import { MDXProvider } from "@mdx-js/react";
 import { DocumentationLink } from "@moyarich/moyaforge/headless";
@@ -14,21 +15,26 @@ const examples = Object.fromEntries(
 );
 
 // Use the registry's CodePreview with source collected by the MDX compiler.
-function InlineCodePreview({ title = "Example", code, sourceFiles, example, replacementPreset, children }: {
+function InlineCodePreview({ title = "Example", code, sourceFiles, component, sourceOnly, replacementPreset, children }: {
   title?: string;
   code: string;
   sourceFiles?: string;
-  example?: string;
+  component?: string;
+  sourceOnly?: boolean;
   replacementPreset?: "portable";
   children: ReactNode;
 }) {
   const files: PreviewFile[] = sourceFiles ? JSON.parse(sourceFiles) : [];
   if (code || !files.length) files.unshift({ label: "Example.mdx", code, language: "markdown" });
-  const Example = example ? examples[example] : undefined;
-  if (example && !Example) throw new Error(`Unknown preview example: ${example}`);
+  const Example = component ? examples[component] : undefined;
+  if (component && !Example) throw new Error(`Unknown preview component: ${component}`);
+  const source = files[0];
+  const previewContent = sourceOnly && source
+    ? <pre><HighlightedCode code={source.code} language={source.language ?? previewLanguage(source.label)} /></pre>
+    : Example ? <Example /> : children;
   return (
     <CodePreview title={title} files={files} replacements={replacementPreset === "portable" ? CODE_REPLACEMENTS : undefined}>
-      {Example ? <Example /> : children}
+      {previewContent}
     </CodePreview>
   );
 }
