@@ -6,6 +6,8 @@ description: A multi-file code editor with read-only mode and copy support.
 
 # Monaco Editor React
 
+import { MonacoEditorReact } from "../../../src/components/MonacoEditorReact/index.js";
+
 A multi-file code editor with read-only mode and copy support.
 
 ## Installation
@@ -36,6 +38,15 @@ npm install @monaco-editor/react monaco-editor lucide-react
 For Vite, copy `setup.ts` from the preview’s Code tab and import it before the editor. It configures local Monaco workers. Other bundlers need their own worker setup.
 
 ## Usage
+
+::: code-preview Editable TypeScript workspace
+
+<MonacoEditorReact
+  files={[{ name: "index.ts", value: "const answer = 42;" }]}
+  height={320}
+/>
+
+:::
 
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 
