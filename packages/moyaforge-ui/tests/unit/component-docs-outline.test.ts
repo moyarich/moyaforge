@@ -25,7 +25,7 @@ test("parent component pages expose a navigable section outline", () => {
     expect(
       source,
       `${page}: should include a live code-preview example`,
-    ).toMatch(/::: ?code-preview|<CodePreview\\b/);
+    ).toMatch(/::: ?code-preview|<CodePreview\b/);
     expect(
       new Set(headings).size,
       `${page}: section headings should be unique`,
