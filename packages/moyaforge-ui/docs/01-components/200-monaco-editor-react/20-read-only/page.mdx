@@ -9,7 +9,7 @@ import {
 } from "../../../../src/components/CodePreview/CodePreview.tsx";
 import ReadOnlyEditor from "../20-read-only/Example.tsx";
 import readOnlySource from "../20-read-only/Example.tsx?raw";
-import setupSource from "../setup.ts?raw";
+import setupSource from "../../setup-monaco-worker.ts?raw";
 
 # Read-only workspace
 
@@ -19,7 +19,7 @@ Set `readOnly` on the editor to lock all files, or on an individual file to lock
   title="Read-only workspace"
   files={[
     { label: "Example.tsx", code: readOnlySource },
-    { label: "setup.ts", code: setupSource },
+    { label: "setup-monaco-worker.ts", code: setupSource },
   ]}
   replacements={CODE_REPLACEMENTS}
 >
