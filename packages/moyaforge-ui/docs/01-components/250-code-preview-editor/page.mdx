@@ -11,19 +11,24 @@ Use `CodePreviewEditor` to show a live React preview beside editable Monaco sour
 
 ## Installation
 
-The registry item includes the Preview and Monaco source files it uses.
+<CodeGroup label="Install CodePreviewEditor">
+<CodeTab label="MoyaForge CLI">
 
 ```sh
 npx @moyarich/moyaforge-cli@latest add code-preview-editor
 ```
 
-Or install it with shadcn:
+</CodeTab>
+<CodeTab label="shadcn">
 
 ```sh
 npx shadcn@latest add moyarich/moyaforge/code-preview-editor
 ```
 
-The CLI installs its declared npm dependencies. Configure Monaco workers for your bundler before rendering the editor.
+</CodeTab>
+</CodeGroup>
+
+The registry item includes the Preview and Monaco source files it uses. The CLI installs its declared npm dependencies. Configure Monaco workers for your bundler before rendering the editor.
 
 ## Usage
 
