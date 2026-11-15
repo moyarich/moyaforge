@@ -13,7 +13,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { Copy, FileCode2, LockKeyhole, Save } from "lucide-react";
+import { ChevronLeft, ChevronRight, Copy, FileCode2, LockKeyhole, Save } from "lucide-react";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 import { reconcileFileDrafts } from "./drafts.js";
 
@@ -85,6 +85,52 @@ export function Monaco({
     () => files.find((file) => file.name === selectedName) ?? files[0],
     [files, selectedName],
   );
+  const hasTabs = showFileTabs && files.length > 1;
+  const selectedIndex = selectedFile ? files.indexOf(selectedFile) : -1;
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const [tabOverflow, setTabOverflow] = useState({ start: false, end: false });
+
+  useEffect(() => {
+    if (!hasTabs) {
+      setTabOverflow({ start: false, end: false });
+      return;
+    }
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+
+    const updateOverflow = () => {
+      const start = tabs.scrollLeft > 1;
+      const end = tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 1;
+      setTabOverflow((current) =>
+        current.start === start && current.end === end
+          ? current
+          : { start, end },
+      );
+    };
+
+    updateOverflow();
+    tabs.addEventListener("scroll", updateOverflow, { passive: true });
+    window.addEventListener("resize", updateOverflow);
+    const observer =
+      typeof ResizeObserver === "undefined"
+        ? undefined
+        : new ResizeObserver(updateOverflow);
+    observer?.observe(tabs);
+    Array.from(tabs.children).forEach((tab) => observer?.observe(tab));
+
+    return () => {
+      tabs.removeEventListener("scroll", updateOverflow);
+      window.removeEventListener("resize", updateOverflow);
+      observer?.disconnect();
+    };
+  }, [files.length, hasTabs]);
+
+  useEffect(() => {
+    if (!hasTabs || !selectedFile) return;
+    tabsRef.current
+      ?.querySelector<HTMLElement>('[aria-selected="true"]')
+      ?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [hasTabs, selectedFile?.name]);
 
   if (!selectedFile) return null;
 
@@ -127,8 +173,18 @@ export function Monaco({
       ?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
       [next]?.focus();
   }
-  const hasTabs = showFileTabs && files.length > 1;
-  const selectedIndex = files.indexOf(selectedFile);
+  function scrollTabs(direction: -1 | 1) {
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+    const reduceMotion = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    tabs.scrollBy({
+      left: direction * Math.max(140, tabs.clientWidth * 0.72),
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }
+
   return (
     <div
       data-moyaforge-monaco=""
@@ -150,12 +206,28 @@ export function Monaco({
         <div data-moyaforge-monaco-toolbar="" className="mf-monaco-toolbar">
           {hasTabs ? (
             <div
-              data-moyaforge-monaco-tabs=""
-              className="mf-monaco-tabs"
-              role="tablist"
-              aria-label="Files"
+              className="mf-monaco-tabs-viewport"
+              data-overflow-start={tabOverflow.start ? "" : undefined}
+              data-overflow-end={tabOverflow.end ? "" : undefined}
             >
-              {files.map((file, index) => (
+              {tabOverflow.start && (
+                <button
+                  type="button"
+                  className="mf-monaco-tabs-scroll mf-monaco-tabs-scroll-start"
+                  aria-label="Show earlier files"
+                  onClick={() => scrollTabs(-1)}
+                >
+                  <ChevronLeft size={15} aria-hidden="true" />
+                </button>
+              )}
+              <div
+                ref={tabsRef}
+                data-moyaforge-monaco-tabs=""
+                className="mf-monaco-tabs"
+                role="tablist"
+                aria-label="Files"
+              >
+                {files.map((file, index) => (
                 <button
                   key={file.name}
                   type="button"
@@ -170,7 +242,18 @@ export function Monaco({
                   <FileCode2 size={15} aria-hidden="true" />
                   <span>{file.name}</span>
                 </button>
-              ))}
+                ))}
+              </div>
+              {tabOverflow.end && (
+                <button
+                  type="button"
+                  className="mf-monaco-tabs-scroll mf-monaco-tabs-scroll-end"
+                  aria-label="Show later files"
+                  onClick={() => scrollTabs(1)}
+                >
+                  <ChevronRight size={15} aria-hidden="true" />
+                </button>
+              )}
             </div>
           ) : (
             <span
