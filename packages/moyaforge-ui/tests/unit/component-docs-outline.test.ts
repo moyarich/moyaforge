@@ -47,6 +47,6 @@ test("component example pages include a live CodePreview", () => {
     expect(
       readFileSync(page, "utf8"),
       `${page}: should include CodePreview or ::: code-preview`,
-    ).toMatch(/::: ?code-preview|<CodePreview\b/);
+    ).toMatch(/::: ?code-preview|<CodePreview(?:Editor)?\b/);
   }
 });
