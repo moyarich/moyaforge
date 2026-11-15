@@ -3,7 +3,7 @@ import { initializeProject } from "../project/init.js";
 
 export function initCommand(): Command {
   return new Command("init")
-    .description("Configure a project; legacy template flags create a site")
+    .description("Configure components or scaffold a React/Vite/MDX project")
     .option("--cwd <path>", "Consumer project directory")
     .option("--registry <source>", "Registry directory or registry.json URL")
     .option("--directory <path>", "Component destination")
@@ -16,7 +16,7 @@ export function initCommand(): Command {
         "existing",
       ]),
     )
-    .option("--search", "Legacy starter with SQLite search")
+    .option("--search", "Include SQLite search when scaffolding a site")
     .option("--dry-run", "Preview without writing")
     .option("--diff", "Show changes")
     .option("--overwrite", "Replace existing files")
