@@ -7,6 +7,8 @@ navigation: visible
 
 # Code Block
 
+import { CodeBlock } from "../../../src/components/CodeBlock/index.js";
+
 Use `CodeBlock` to display code that readers can copy.
 
 ## Installation
@@ -31,6 +33,14 @@ npx shadcn@latest add moyarich/moyaforge/code-block
 Install the `code-block` registry item with the MoyaForge CLI. Its component source and CSS are copied into your application rather than bundled into `@moyarich/moyaforge`.
 
 ## Usage
+
+::: code-preview Copyable code
+
+<CodeBlock>
+  <code className="language-ts">const answer = 42;</code>
+</CodeBlock>
+
+:::
 
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 
