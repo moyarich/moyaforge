@@ -158,15 +158,21 @@ by the directive. The plugin also exposes
 The nested source directive supplies the files shown in the Code view.
 
 ```md
-::::code-preview[Greeting]{example="./Greeting.tsx"}
+::::code-preview[Greeting]{component="./Greeting.tsx"}
 
 ::code-preview-sources{files="./Greeting.tsx,./styles.css" replacements="portable"}
 
 ::::
 ```
 
-The referenced React component should be a sibling `.tsx` or `.jsx` file with a
-default export. This syntax works in plain Markdown pages.
+The `component` attribute renders a sibling `.tsx` or `.jsx` file with a default export. Use the `code` attribute to preview a source file without rendering it as a React component:
+
+```md
+:::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}
+:::
+```
+
+The source file is shown in the preview area and remains available in the **Code** view.
 
 ## Examples
 
