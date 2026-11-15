@@ -4,6 +4,8 @@ label: Custom Block
 description: Add callouts for useful context, shortcuts, and risks.
 ---
 
+import { CustomBlock } from "../../../src/components/CustomBlock/index.js";
+
 # Custom Block
 
 Callouts set important information apart from the main instructions. Use a note for extra context, a tip for a shortcut, or a warning before a step that could cause problems.
@@ -123,8 +125,6 @@ Save a backup before changing your settings.
 Create `src/Guide.mdx` with the warning below. If your app already renders documentation through a router, keep that setup and add `CustomBlock` to its existing provider. For the `existing` starter with the default component destination, import from `../../src/components/ui/CustomBlock/CustomBlock.js` in `moyaforge/src/App.tsx`.
 
 The `"*"` mapping covers `note`, `tip`, `warning`, and custom types such as `release-note`. Each type becomes a CSS class you can style individually.
-
-import { CustomBlock } from "../../../src/components/CustomBlock/index.js";
 
 ## Usage
 
