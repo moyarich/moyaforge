@@ -147,7 +147,7 @@ Add `createCodePreviewPlugin(codePreview)` to Vite’s `plugins` array. Extend t
 
 ```ts
 localSources: true,
-resolveCodePreviewExample: (reference, authoredFile) =>
+resolveCodePreviewComponent: (reference, authoredFile) =>
   resolveCodePreviewSource({ context: codePreview, reference, authoredFile }),
 ```
 
