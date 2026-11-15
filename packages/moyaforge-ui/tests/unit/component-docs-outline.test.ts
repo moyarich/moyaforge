@@ -3,14 +3,14 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect, test } from "vitest";
 
-function findExamplePages(folder: string, depth = 0): string[] {
+function findExamplePages(folder: string): string[] {
   return readdirSync(folder, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .flatMap((entry) => {
       const child = join(folder, entry.name);
       const page = join(child, "page.mdx");
-      const ownPage = depth > 0 && existsSync(page) ? [page] : [];
-      return [...ownPage, ...findExamplePages(child, depth + 1)];
+      const ownPage = existsSync(page) ? [page] : [];
+      return [...ownPage, ...findExamplePages(child)];
     });
 }
 
@@ -47,6 +47,6 @@ test("component example pages include a live CodePreview", () => {
     expect(
       readFileSync(page, "utf8"),
       `${page}: should include CodePreview or ::: code-preview`,
-    ).toMatch(/::: ?code-preview|<CodePreview\\b/);
+    ).toMatch(/::: ?code-preview|<CodePreview\b/);
   }
 });
