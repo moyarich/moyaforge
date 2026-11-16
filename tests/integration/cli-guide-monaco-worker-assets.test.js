@@ -4,7 +4,7 @@ import { expect, test } from "vitest";
 
 const monacoRoot = resolve(import.meta.dirname, "../../packages/moyaforge-monaco");
 
-test("TypeFox workers use consumer-resolved Vite worker imports, not library asset URLs", async () => {
+test("TypeFox workers use Vite URLs with monaco-languageclient's Worker metadata", async () => {
   const source = await readFile(resolve(monacoRoot, "src/typefox.ts"), "utf8");
   const packages = [
     "@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker.js",
@@ -14,9 +14,11 @@ test("TypeFox workers use consumer-resolved Vite worker imports, not library ass
     "@codingame/monaco-vscode-standalone-html-language-features/worker",
   ];
   for (const worker of packages) {
-    expect(source).toContain(`${worker}?worker`);
+    expect(source).toContain(`${worker}?worker&url`);
   }
-  expect(source).not.toMatch(/new URL\(/);
+  expect(source).toContain('import { useWorkerFactory, Worker }');
+  expect(source).toContain("new Worker(new URL(");
+  expect(source).toContain('type: "module"');
   expect(source).toContain("useWorkerFactory");
 });
 
