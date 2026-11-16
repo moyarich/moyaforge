@@ -153,7 +153,8 @@ export async function verifyPackedConsumer(fixture, index) {
       );
       const prefix = fixture.template === "existing" ? "docs:" : "";
       await run("npm", ["run", `${prefix}typecheck`], root);
-      await run(process.execPath, [packedCLI, "build"], root);
+      // Build with the script generated for this template, not a removed CLI command.
+      await run("npm", ["run", `${prefix}build`], root);
       if (fixture.template === "existing")
         assert.equal(manifest.scripts.dev, "echo host-app");
       const port =
@@ -165,11 +166,13 @@ export async function verifyPackedConsumer(fixture, index) {
           "hybrid-app",
         ].indexOf(index);
       assert.ok(port >= 4280, `unknown consumer fixture: ${index}`);
+      // Use the generated app's Vite script (docs:dev for existing hosts).
       const server = spawn(
-        process.execPath,
+        "npm",
         [
-          packedCLI,
-          "dev",
+          "run",
+          `${prefix}dev`,
+          "--",
           "--host",
           "127.0.0.1",
           "--port",
