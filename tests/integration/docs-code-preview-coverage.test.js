@@ -18,6 +18,18 @@ describe("component documentation examples", () => {
     const missing = [];
     for (const page of examplePages) {
       const source = readFileSync(resolve(docs, page), "utf8");
+      // The counter's canonical source lives outside its example directory.
+      // Keep the raw imports rather than copying it or weakening path guards.
+      if (page === "220-code-preview/10-counter-in-mdx/page.mdx") {
+        if (
+          !source.includes("<CodePreview") ||
+          !source.includes('../../CounterExample.tsx?raw') ||
+          !source.includes('../../counterExample.css?raw')
+        ) {
+          missing.push(page);
+        }
+        continue;
+      }
       if (!/:{3,4}code-preview\[/.test(source)) {
         missing.push(page);
         continue;
