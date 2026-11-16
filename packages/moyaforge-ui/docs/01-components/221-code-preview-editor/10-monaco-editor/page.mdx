@@ -4,13 +4,6 @@ label: Editable source with Monaco
 description: Open an editable source panel inside a Preview.
 ---
 
-import { CodePreviewEditor } from "../../../../src/components/CodePreviewEditor/index.js";
-import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
-import counterSource from "../../CounterExample.tsx?raw";
-import counterStyles from "../../counterExample.css?raw";
-import workerSource from "../../setup-monaco-worker.ts?raw";
-import usageSource from "./CodePreviewEditorUsage.tsx.txt?raw";
-
 # Editable source with Monaco
 
 Select **Code** to edit the TSX or CSS, then select **Preview** to see the updated counter. TSX edits restart the component. Select **Reset code** to restore the original TSX and CSS.
@@ -36,10 +29,16 @@ npx shadcn@latest add moyarich/moyaforge/code-preview-editor
 
 Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers.
 
+::::code-preview[CodePreviewEditor]{react replacements="portable"}
+
+import { CodePreviewEditor } from "../../../../src/components/CodePreviewEditor/index.js";
+import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
+import counterSource from "../../CounterExample.tsx?raw";
+import counterStyles from "../../counterExample.css?raw";
+import workerSource from "../../setup-react-monaco-worker.ts?raw";
+
 <CodePreviewEditor
   title="Monaco source editor"
-  usageSource={usageSource}
-  usageFileName="CodePreviewEditorUsage.tsx"
   files={[
     {
       name: "CounterExample.tsx",
@@ -48,7 +47,7 @@ Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#instal
     },
     { name: "counterExample.css", language: "css", value: counterStyles },
     {
-      name: "setup-monaco-worker.ts",
+      name: "setup-react-monaco-worker.ts",
       language: "typescript",
       value: workerSource,
       readOnly: true,
@@ -66,6 +65,7 @@ Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#instal
     />
   )}
 />
+::::
 
 ## Styling
 

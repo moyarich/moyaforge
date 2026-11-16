@@ -7,9 +7,11 @@ import {
   CodePreview,
   CODE_REPLACEMENTS,
 } from "../../../../src/components/CodePreview/CodePreview.tsx";
-import ReadOnlyEditor from "../20-read-only/Example.tsx";
-import readOnlySource from "../20-read-only/Example.tsx?raw";
-import setupSource from "../../setup-monaco-worker.ts?raw";
+
+import setupSource from "../../setup-react-monaco-worker.ts?raw";
+
+import Example from "./Example.tsx";
+import editorSource from "./Example.tsx?raw";
 
 # Read-only workspace
 
@@ -18,12 +20,12 @@ Set `readOnly` on the editor to lock all files, or on an individual file to lock
 <CodePreview
   title="Read-only workspace"
   files={[
-    { label: "Example.tsx", code: readOnlySource },
-    { label: "setup-monaco-worker.ts", code: setupSource },
+    { label: "Example.tsx", code: editorSource },
+    { label: "setup-react-monaco-worker.ts", code: setupSource },
   ]}
   replacements={CODE_REPLACEMENTS}
 >
-  <ReadOnlyEditor />
+  <Example />
 </CodePreview>
 
-[Component installation and usage](/ui/components/monaco-editor-react)
+[Component installation and usage](../)

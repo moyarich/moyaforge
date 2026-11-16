@@ -14,6 +14,7 @@ import {
   createCodePreview,
   mdxRegistryPlugin,
   resolveCodePreviewSource,
+  monacoReactTypesPlugin,
 } from "@moyarich/moyaforge-mdx/vite";
 import registry from "./registry.config.ts";
 import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
@@ -92,6 +93,7 @@ const compileMdx = mdx(
 
 export default defineConfig({
   plugins: [
+    monacoReactTypesPlugin(contentRoot),
     createCodePreviewPlugin(codePreview),
     mdxRegistryPlugin({
       discovery,

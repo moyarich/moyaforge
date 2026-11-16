@@ -59,7 +59,7 @@ export const codePreviewPluginName = "moyaforge-mdx:code-preview";
 const componentModuleId = `\0${codePreviewComponentVirtualModuleId}`;
 const sourceModuleId = `\0${codePreviewSourceVirtualModuleId}`;
 
-const sourceFilePattern = /^[\w-]+\.(?:tsx|jsx|ts|js|md|mdx)$/;
+const sourceFilePattern = /^[\w-]+\.(?:tsx|jsx|ts|js|md|mdx|css)$/;
 const componentFilePattern = /\.(?:tsx|jsx)$/;
 
 export function createCodePreview({
@@ -120,10 +120,6 @@ export function createCodePreview({
     }
   }
 
-  console.log("---$$$$createCodePreview");
-  console.log("registered modules:", modules.size);
-  console.log("registered paths:", keysByPath.size);
-
   return {
     inlineReact: createInlineReactModules(),
     modules,
@@ -143,12 +139,6 @@ export function resolveCodePreviewSource({
   const authored = resolve(authoredFile);
   const candidate = resolve(dirname(authored), reference);
   const key = keysByPath.get(candidate);
-
-  console.log("---$$$$resolveCodePreviewSource");
-  console.log("reference:", reference);
-  console.log("authoredFile:", authored);
-  console.log("candidate:", candidate);
-  console.log("resolved key:", key);
 
   if (!key) return;
 
@@ -204,10 +194,6 @@ export function createCodePreviewPlugin({
 
         const componentModule = `export default {\n${entries.join("\n")}\n};\n`;
 
-        console.log("---$$$$code-preview-components");
-        console.log("registered components:", entries.length);
-        console.log(componentModule);
-
         return componentModule;
       }
 
@@ -222,10 +208,6 @@ export function createCodePreviewPlugin({
         });
 
         const sourceModule = `export default {\n${entries.join("\n")}\n};\n`;
-
-        console.log("---$$$$code-preview-sources");
-        console.log("registered sources:", entries.length);
-        console.log(sourceModule);
 
         return sourceModule;
       }

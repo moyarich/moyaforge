@@ -1,0 +1,25 @@
+::highlight(mf-typewriter-hidden) {
+  color: transparent;
+  text-shadow: none;
+}
+
+.mf-animation-expanding-entry {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms ease-out;
+}
+
+.mf-animation-expanding-entry[data-expanded="true"] {
+  grid-template-rows: 1fr;
+}
+
+.mf-animation-expanding-entry > div {
+  min-block-size: 0;
+  overflow: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mf-animation-expanding-entry {
+    transition: none;
+  }
+}

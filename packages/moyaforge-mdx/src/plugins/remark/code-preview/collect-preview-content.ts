@@ -65,7 +65,7 @@ export function collectPreviewContent(
     });
   }
 
-  let replacements: string | undefined;
+  let replacements = header?.replacements;
   let hasLocalSources = false;
   const content = children.filter((child) => {
     if (
@@ -75,7 +75,7 @@ export function collectPreviewContent(
       const sources = readPreviewSources(child, file, filePath);
       files.push(...sources.files);
       hasLocalSources = true;
-      replacements = sources.replacements;
+      replacements ??= sources.replacements;
       return false;
     }
     const block = selected.filesProp && namedCodeBlock(child);

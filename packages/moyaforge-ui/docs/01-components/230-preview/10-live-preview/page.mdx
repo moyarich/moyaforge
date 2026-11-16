@@ -3,15 +3,49 @@ title: Counter with source code
 label: Counter with source code
 ---
 
-import LivePreviewExample from "./LivePreviewExample.tsx";
-
 # Counter with source code
 
-Click the counter, then open **Code** to see the TSX behind it. This example uses the standard toolbar and adds a short instruction in the footer.
+This example uses the standard toolbar and adds a short instruction in the footer.
+Slots can be omitted, replaced or reordered without modifying Preview.
 
-::: code-preview Counter with source
+:::code-preview[Counter with source]{react replacements="portable"}
 
-<LivePreviewExample />
+import {
+  Preview,
+  PreviewHeader,
+  PreviewTitle,
+  PreviewActions,
+  PreviewCodeToggle,
+  PreviewCopyButton,
+  PreviewContent,
+  PreviewSource,
+  PreviewFooter,
+} from "../../../../src/components/Preview/index.js";
+
+import "../../counterExample.css";
+
+import CounterExample from "../../CounterExample.js";
+import counterSource from "../../CounterExample.tsx?raw";
+
+export default function LivePreviewExample() {
+return (
+
+<Preview source={counterSource}>
+  <PreviewHeader>
+    <PreviewTitle>Interactive counter</PreviewTitle>
+    <PreviewActions>
+      <PreviewCodeToggle />
+      <PreviewCopyButton />
+    </PreviewActions>
+  </PreviewHeader>
+  <PreviewContent>
+    <CounterExample />
+  </PreviewContent>
+  <PreviewSource code={counterSource} language="tsx" />
+  <PreviewFooter>Click the button, then inspect its source.</PreviewFooter>
+</Preview>
+);
+}
 
 :::
 

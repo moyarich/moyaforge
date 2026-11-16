@@ -1,5 +1,8 @@
 "use client";
 
+import "./Animation.css";
+import { clsx, type ClassValue } from "clsx";
+
 import { motion, useReducedMotion } from "motion/react";
 import {
   Children,
@@ -45,6 +48,7 @@ export function TypewriterEntry({
   completed,
   sequence,
   options,
+  className,
   children,
 }: AnimationEntryProps) {
   const root = useRef<HTMLDivElement>(null);
@@ -86,62 +90,76 @@ export function TypewriterEntry({
       return;
     }
 
+    const document = element.ownerDocument;
+    if (typeof Highlight === "undefined" || !globalThis.CSS?.highlights) {
+      done();
+      return;
+    }
+    const highlightName = "mf-typewriter-hidden";
+    const registry = CSS.highlights;
+    const hidden = registry.get(highlightName) ?? new Highlight();
+    registry.set(highlightName, hidden);
+
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-    const entries: Array<{ node: Text; value: string }> = [];
+    const segmenter = new Intl.Segmenter();
+    const entries: { range: Range; offsets: number[]; length: number }[] = [];
     let node: Node | null;
     while ((node = walker.nextNode())) {
       const text = node as Text;
-      if (text.textContent)
-        entries.push({ node: text, value: text.textContent });
+      if (!text.length) continue;
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      const offsets = Array.from(
+        segmenter.segment(text.data),
+        ({ index }) => index,
+      );
+      entries.push({ range, offsets, length: text.length });
+      hidden.add(range);
     }
-    const segmenter = new Intl.Segmenter();
-    const segments = entries.map(({ value }) =>
-      Array.from(segmenter.segment(value), ({ segment }) => segment),
-    );
-    const total = segments.reduce((sum, segment) => sum + segment.length, 0);
+    const total = entries.reduce((sum, entry) => sum + entry.offsets.length, 0);
     if (!total) {
       done();
       return;
     }
 
-    for (const entry of entries) entry.node.textContent = "";
-
-    let position = 0;
-    const duration = Math.max(0, durationOpt ?? 0.3) * 1000;
-    const stepTime = duration / total;
-    const startDelay =
-      getAnimationDelay(index, isSequence, wait, stagger) * 1000;
-
-    let ticker: ReturnType<typeof setInterval> | undefined;
-    const reveal = () => {
-      position += 1;
-      let remaining = position;
-      entries.forEach((entry, i) => {
-        const chars = segments[i]!;
-        const amount = Math.min(chars.length, Math.max(0, remaining));
-        entry.node.textContent = chars.slice(0, amount).join("");
-        remaining -= amount;
-      });
-      if (position >= total) {
-        if (ticker !== undefined) clearInterval(ticker);
-        done();
-      }
+    const clearRanges = () => {
+      for (const { range } of entries) hidden.delete(range);
     };
-    const start = setTimeout(() => {
-      if (stepTime <= 0) {
-        for (const entry of entries) entry.node.textContent = entry.value;
-        done();
-      } else {
-        ticker = setInterval(reveal, Math.max(1, stepTime));
-      }
-    }, startDelay);
+    const duration = Math.max(0, durationOpt ?? 0.3) * 1000;
+    const delay = getAnimationDelay(index, isSequence, wait, stagger) * 1000;
+    let frame: number;
+    let started: number | undefined;
 
+    const reveal = (now: number) => {
+      started ??= now;
+      let remaining = duration
+        ? Math.floor(((now - started) / duration) * total)
+        : total;
+      if (remaining >= total) {
+        clearRanges();
+        done();
+        return;
+      }
+      for (const { range, offsets, length } of entries) {
+        range.setStart(
+          range.startContainer,
+          offsets[Math.max(0, remaining)] ?? length,
+        );
+        remaining -= offsets.length;
+      }
+      frame = requestAnimationFrame(reveal);
+    };
+
+    const start = setTimeout(() => {
+      frame = requestAnimationFrame(reveal);
+    }, delay);
     return () => {
       clearTimeout(start);
-      if (ticker !== undefined) clearInterval(ticker);
-      for (const entry of entries) entry.node.textContent = entry.value;
+      cancelAnimationFrame(frame);
+      clearRanges();
     };
   }, [
+    children,
     id,
     index,
     completed,
@@ -156,6 +174,7 @@ export function TypewriterEntry({
 
   return createElement("div", {
     ref: root,
+    className: clsx(className) || undefined,
     style: {
       visibility: isSequence && !ready && !reducedMotion ? "hidden" : undefined,
     },
@@ -164,6 +183,7 @@ export function TypewriterEntry({
 }
 
 interface AnimationEntryProps {
+  className?: ClassValue;
   id?: string;
   index: number;
   completed: Set<string>;
@@ -184,6 +204,7 @@ function MotionEntry({
   completed,
   sequence,
   options,
+  className,
   children,
 }: AnimationEntryProps) {
   const reducedMotion = useReducedMotion();
@@ -215,9 +236,10 @@ function MotionEntry({
           ? { clipPath: "inset(0 0% 0 0)" }
           : { opacity: 1, y: 0 };
   return createElement(motion.div, {
-    initial: reducedMotion || alreadyCompleted || !ready ? false : initial,
+    initial: reducedMotion || alreadyCompleted ? false : initial,
     animate: visible ? animate : initial,
     transition: {
+      ease: "easeOut",
       duration:
         reducedMotion || alreadyCompleted
           ? 0
@@ -245,6 +267,7 @@ function MotionEntry({
           ? "hidden"
           : undefined,
     },
+    className: clsx(className) || undefined,
     children,
   });
 }
@@ -254,13 +277,15 @@ type AnimationProps = Pick<
   "effect" | "duration" | "distance" | "wait"
 > & {
   children: ReactNode;
+  className?: ClassValue;
 };
 
-export function Animation({ children, ...options }: AnimationProps) {
+export function Animation({ children, className, ...options }: AnimationProps) {
   const [sequence] = useState(() => new AnimationSequence());
   const [completed] = useState(() => new Set<string>());
   return createElement(AnimatedEntry, {
     index: 0,
+    className,
     sequence,
     completed,
     options,
@@ -268,7 +293,35 @@ export function Animation({ children, ...options }: AnimationProps) {
   });
 }
 
+function ExpandingEntry({
+  index,
+  sequence,
+  children,
+}: {
+  index: number;
+  sequence: AnimationSequence;
+  children: ReactNode;
+}) {
+  const active = useSyncExternalStore(
+    sequence.subscribe,
+    sequence.snapshot,
+    () => 0,
+  );
+  const reducedMotion = useReducedMotion();
+  return (
+    <div
+      className="mf-animation-expanding-entry"
+      data-expanded={active >= index || !!reducedMotion}
+    >
+      <div>{children}</div>
+    </div>
+  );
+}
+
 interface AnimationGroupProps {
+  className?: ClassValue;
+  /** Expand each sequential entry as it starts. */
+  expand?: boolean;
   sequence?: boolean;
   stagger?: number;
   wait?: number;
@@ -277,6 +330,8 @@ interface AnimationGroupProps {
 
 export function AnimationGroup({
   sequence: sequential = false,
+  expand = false,
+  className,
   stagger = 0,
   wait = 0,
   children,
@@ -284,12 +339,18 @@ export function AnimationGroup({
   const [sequence] = useState(() => new AnimationSequence());
   const [completed] = useState(() => new Set<string>());
   let index = 0;
-  return Children.map(children, (child) => {
+  const entries = Children.map(children, (child) => {
     if (!isValidElement<AnimationProps>(child) || child.type !== Animation)
       return child;
-    const { children: content, ...options } = child.props;
-    return createElement(AnimatedEntry, {
-      index: index++,
+    const {
+      children: content,
+      className: entryClassName,
+      ...options
+    } = child.props;
+    const entryIndex = index++;
+    const entry = createElement(AnimatedEntry, {
+      index: entryIndex,
+      className: entryClassName,
       sequence,
       completed,
       options: {
@@ -300,5 +361,18 @@ export function AnimationGroup({
       },
       children: content,
     });
+    return expand && sequential ? (
+      <ExpandingEntry index={entryIndex} sequence={sequence}>
+        {entry}
+      </ExpandingEntry>
+    ) : (
+      entry
+    );
   });
+  const groupClassName = clsx(className);
+  return groupClassName ? (
+    <div className={groupClassName}>{entries}</div>
+  ) : (
+    entries
+  );
 }

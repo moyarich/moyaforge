@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
@@ -6,6 +7,9 @@ import { createMdxOptions } from "@moyarich/moyaforge-mdx";
 import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
 import registry from "./registry.config";
 export default defineConfig({
+  resolve: {
+    alias: { "@": fileURLToPath(new URL("__SOURCE_ALIAS__/", import.meta.url)) },
+  },
   root: import.meta.dirname,
   base: process.env.VITE_BASE_PATH || "/",
   plugins: [

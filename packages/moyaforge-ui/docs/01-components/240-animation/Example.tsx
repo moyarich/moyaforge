@@ -1,3 +1,4 @@
+import "./Example.css";
 import { useState } from "react";
 import {
   Animation,
@@ -7,7 +8,7 @@ import {
 export function AnimationExample() {
   const [run, setRun] = useState(0);
   return (
-    <>
+    <div className="mf-animation-example">
       <button type="button" onClick={() => setRun((current) => current + 1)}>
         Replay animation
       </button>
@@ -19,6 +20,6 @@ export function AnimationExample() {
           <p>Start with a Markdown page.</p>
         </Animation>
       </AnimationGroup>
-    </>
+    </div>
   );
 }

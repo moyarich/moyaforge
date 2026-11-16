@@ -35,7 +35,7 @@ export function mergeDependencies(
   };
   const development: Deps = {
     ...base.devDependencies,
-    ...(template === "playground" ? { shiki: "^4.5.0" } : {}),
+    ...(template === "playground" ? { shiki: "^4.5.0", csstype: "^3.2.3" } : {}),
   };
   for (const spec of componentDependencies) {
     const separator = spec.indexOf("@", 1);

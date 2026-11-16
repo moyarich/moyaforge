@@ -1,4 +1,4 @@
-import { configureTypeFoxWorkers } from "../setup.js";
+import { configureTypeFoxWorkers } from "../setup-typefox-monaco-workers.js";
 import { MonacoEditorTypeFox } from "../../../../src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
 
 export default function ReadOnlyEditor() {

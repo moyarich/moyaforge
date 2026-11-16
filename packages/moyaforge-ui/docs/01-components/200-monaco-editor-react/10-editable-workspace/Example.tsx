@@ -1,4 +1,4 @@
-import { configureReactWorkers } from "../../setup-monaco-worker.js";
+import { configureReactWorkers } from "../../setup-react-monaco-worker.js";
 import { useState } from "react";
 import { MonacoEditorReact } from "../../../../src/components/MonacoEditorReact/MonacoEditorReact.js";
 

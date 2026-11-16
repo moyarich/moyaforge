@@ -52,6 +52,11 @@ export function remarkDirectiveParser(
         }
       }
 
+      // An empty replacement preset is equivalent to omitting it.
+      if (/^ {0,3}:{3,}code-preview(?:\[[^\]]*\])?\{/.test(line)) {
+        line = line.replace(/(\sreplacements)=(?=[\t ]*\})/, "$1 ");
+      }
+
       const match = /^( {0,3})(:{2,})([^\r\n]*)(\r?\n)?$/.exec(line);
       if (!match) return line;
       const [, indent, colons, tail, newline = ""] = match;

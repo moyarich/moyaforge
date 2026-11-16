@@ -1,4 +1,4 @@
-import { configureReactWorkers } from "../../setup-monaco-worker.js";
+import { configureReactWorkers } from "../../setup-react-monaco-worker.js";
 import { MonacoEditorReact } from "../../../../src/components/MonacoEditorReact/MonacoEditorReact.js";
 
 export default function ReadOnlyEditor() {

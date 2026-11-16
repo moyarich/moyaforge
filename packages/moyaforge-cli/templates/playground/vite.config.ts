@@ -1,3 +1,5 @@
+import { monacoReactTypes } from "./monaco-react-types.js";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
@@ -57,7 +59,11 @@ const compileMdx = mdx(createMdxOptions({
   }],
 }));
 export default defineConfig({
+  resolve: {
+    alias: { "@": fileURLToPath(new URL("__SOURCE_ALIAS__/", import.meta.url)) },
+  },
   plugins: [
+    monacoReactTypes(contentRoot),
     createCodePreviewPlugin(codePreview),
     mdxRegistryPlugin({ discovery, registry, root: contentRoot }),
     __SEARCH_PLUGIN__

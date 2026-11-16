@@ -208,7 +208,7 @@ test("uses native directives for code groups and their nested tabs", async () =>
 test("isolates repeated import names and keeps named fences as preview sources", async () => {
   const registered = [];
   const page = [
-    ":::code-preview[First]{react}",
+    "::::code-preview[First]{react replacements=}",
     'import {\n  First as Greeting,\n} from "./first.js";',
     "",
     "<Greeting />",
@@ -217,9 +217,9 @@ test("isolates repeated import names and keeps named fences as preview sources",
     "p { color: red; }",
     "```",
     "",
-    ":::",
+    "::::",
     "",
-    ":::code-preview[Second]{react}",
+    ":::code-preview[Second]{react replacements=portable}",
     "",
     'import { Second as Greeting } from "./second.js";',
     "",
@@ -264,4 +264,5 @@ test("isolates repeated import names and keeps named fences as preview sources",
     'import MoyaForgeReactPreview1 from "virtual:react-preview/2"',
   );
   expect(result).toContain("styles.css");
+  expect(result.match(/replacementPreset: "portable"/g)).toHaveLength(1);
 });

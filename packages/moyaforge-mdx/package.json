@@ -20,6 +20,9 @@
       "import": "./dist/vite/plugin.js",
       "default": "./dist/vite/plugin.js"
     },
+    "./vite-client": {
+      "types": "./vite-client.d.ts"
+    },
     "./source-files": {
       "types": "./dist/content/source-files.d.ts",
       "import": "./dist/content/source-files.js",

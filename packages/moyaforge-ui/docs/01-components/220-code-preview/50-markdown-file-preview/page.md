@@ -16,5 +16,8 @@ The `component` attribute selects the live React component. The nested `code-pre
 
 Use the `code` attribute to display a source file as highlighted code without importing it as a React component.
 
-:::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}
-:::
+::::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}
+
+::code-preview-sources{files="./source-only-example.md"}
+
+::::

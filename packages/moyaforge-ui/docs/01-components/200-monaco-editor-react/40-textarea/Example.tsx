@@ -15,7 +15,7 @@ const files = [
   },
 ];
 
-export default function MonacoExample() {
+export default function Example() {
   return (
     <Monaco
       files={files}

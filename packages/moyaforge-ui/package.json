@@ -37,6 +37,8 @@
     "node": ">=24.11.0"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "csstype": "^3.2.3",
     "is-hotkey": "^0.2.1",
     "lucide-react": "^1.56.0",
     "motion": "^14.14.0",

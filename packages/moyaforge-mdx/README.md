@@ -175,3 +175,18 @@ const options = createMdxOptions({
 ```
 
 The Shiki rehype plugin runs after heading slugs and table-of-contents extraction, but before any additional host `additionalRehypePlugins`. It highlights **static** code blocks in the Markdown/MDX compile pipeline. Interactive editors, Monaco, terminal output, and runnable snippets should be rendered through their own MDX components rather than this static highlighter; avoid applying a second syntax highlighter to their output. This option does not enable highlighting in the playground unless that app opts in.
+
+
+### Vite client types
+
+Add `@moyarich/moyaforge-mdx/vite-client` to the `compilerOptions.types` array
+in your Vite app’s TypeScript config to load declarations for the virtual
+registry and code preview modules.
+
+```json
+{
+  "compilerOptions": {
+    "types": ["vite/client", "@moyarich/moyaforge-mdx/vite-client"]
+  }
+}
+```

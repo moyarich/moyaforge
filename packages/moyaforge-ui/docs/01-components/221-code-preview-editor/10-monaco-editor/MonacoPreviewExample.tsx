@@ -1,6 +1,6 @@
 import * as React from "react";
 import { transform } from "sucrase";
-import { configureReactWorkers } from "../../setup-monaco-worker.js";
+import { configureReactWorkers } from "../../setup-react-monaco-worker.js";
 import "./MonacoPreviewExample.css";
 
 export interface MonacoPreviewExampleProps {

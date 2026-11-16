@@ -166,6 +166,22 @@ The nested source directive supplies the files shown in the Code view.
 ::::
 ```
 
+Save the component and stylesheet beside the Markdown page.
+
+```tsx filename="Greeting.tsx"
+import "./styles.css";
+
+export default function Greeting() {
+  return <p className="greeting">Hello from React.</p>;
+}
+```
+
+```css filename="styles.css"
+.greeting {
+  font-weight: 600;
+}
+```
+
 The `component` attribute renders a sibling `.tsx` or `.jsx` file with a default export. Use the `code` attribute to preview a source file without rendering it as a React component:
 
 ```md
@@ -181,6 +197,30 @@ Use `:::code-preview[Title]{react}` in an MDX page to compile imports and JSX in
 separate module. Relative imports resolve from the page's directory. Add named
 fences anywhere in the block for extra source tabs. The fences are displayed as
 source, so any files used by the live example must be imported separately.
+
+Use `{react replacements="portable"}` to apply `CODE_REPLACEMENTS` to the Code
+view. An empty `replacements=` leaves the source as written.
+
+Save this as `example.mdx`. The live preview renders the greeting and the Code
+view includes both the React body and the `styles.css` snippet.
+
+````mdx filename="example.mdx"
+::::code-preview[Greeting]{react replacements="portable"}
+
+import { Fragment } from "react";
+
+<Fragment>
+  <strong>Hello from React.</strong>
+</Fragment>
+
+```css filename="styles.css"
+strong {
+  font-weight: 600;
+}
+```
+
+::::
+````
 
 ## Examples
 
