@@ -32,6 +32,7 @@ on:
           - packages/moyaforge
           - packages/moyaforge-cli
           - packages/moyaforge-mdx
+          - packages/moyaforge-monaco
           - packages/moyaforge-search-sqlite
           - packages/moyaforge-ui
       registry:
