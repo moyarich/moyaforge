@@ -92,3 +92,51 @@ test("duplicate public names across packages fail before overwriting registry en
     }),
   ).rejects.toThrow(/Duplicate registry name/);
 });
+
+test("Monaco registry entries remain installable without coupling ordinary UI components", async () => {
+  const root = new URL("../../", import.meta.url);
+  const registry = JSON.parse(
+    await readFile(new URL("registry.json", root), "utf8"),
+  );
+  const byName = new Map(
+    registry.items.map((item: { name: string }) => [item.name, item]),
+  );
+  for (const name of ["monaco-editor-react", "monaco-editor-typefox"]) {
+    const item = byName.get(name) as {
+      files: { path: string; target: string }[];
+      dependencies: string[];
+    };
+    expect(item).toBeDefined();
+    expect(item.files.length).toBeGreaterThan(0);
+    expect(
+      item.files.every((file) =>
+        file.path.startsWith("packages/moyaforge-monaco/src/components/"),
+      ),
+    ).toBe(true);
+    expect(
+      item.files.every((file) =>
+        file.target.startsWith("~/src/components/ui/"),
+      ),
+    ).toBe(true);
+  }
+
+  const codeBlock = byName.get("code-block") as {
+    files: { path: string }[];
+    dependencies: string[];
+  };
+  expect(codeBlock.files.every((file) => !file.path.includes("monaco"))).toBe(
+    true,
+  );
+  expect(codeBlock.dependencies.join(" ")).not.toMatch(/monaco|typefox/i);
+
+  const preview = byName.get("code-preview-editor") as {
+    files: { path: string }[];
+    dependencies: string[];
+  };
+  expect(preview.dependencies).toContain(
+    "@moyarich/moyaforge-monaco@^0.1.0",
+  );
+  expect(preview.files.some((file) => file.path.includes("MonacoEditor"))).toBe(
+    false,
+  );
+});
