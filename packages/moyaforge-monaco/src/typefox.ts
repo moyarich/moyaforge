@@ -54,56 +54,45 @@ export function configureTypeFoxWorkers() {
   };
   if (environment.MonacoEnvironment)
     delete environment.MonacoEnvironment.getWorker;
+  const editorWorker = () =>
+    new Worker(
+      new URL(
+        "@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker.js",
+        import.meta.url,
+      ),
+      { type: "module" },
+    );
+  const languageWorker = (specifier: string) =>
+    new Worker(new URL(specifier, import.meta.url), { type: "module" });
+
+  const typescriptWorker = () =>
+    languageWorker(
+      "@codingame/monaco-vscode-standalone-typescript-language-features/worker",
+    );
+  const cssWorker = () =>
+    languageWorker(
+      "@codingame/monaco-vscode-standalone-css-language-features/worker",
+    );
+  const htmlWorker = () =>
+    languageWorker(
+      "@codingame/monaco-vscode-standalone-html-language-features/worker",
+    );
+
   useWorkerFactory({
     workerLoaders: {
-      editorWorkerService: () =>
-        new Worker(
-          new URL(
-            "@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker.js",
-            import.meta.url,
-          ),
-          { type: "module" },
-        ),
-      typescript: () =>
-        new Worker(
-          new URL(
-            "@codingame/monaco-vscode-standalone-typescript-language-features/worker",
-            import.meta.url,
-          ),
-          { type: "module" },
-        ),
-      javascript: () =>
-        new Worker(
-          new URL(
-            "@codingame/monaco-vscode-standalone-typescript-language-features/worker",
-            import.meta.url,
-          ),
-          { type: "module" },
-        ),
-      css: () =>
-        new Worker(
-          new URL(
-            "@codingame/monaco-vscode-standalone-css-language-features/worker",
-            import.meta.url,
-          ),
-          { type: "module" },
-        ),
+      editorWorkerService: editorWorker,
+      typescript: typescriptWorker,
+      javascript: typescriptWorker,
+      css: cssWorker,
+      scss: cssWorker,
+      less: cssWorker,
       json: () =>
-        new Worker(
-          new URL(
-            "@codingame/monaco-vscode-standalone-json-language-features/worker",
-            import.meta.url,
-          ),
-          { type: "module" },
+        languageWorker(
+          "@codingame/monaco-vscode-standalone-json-language-features/worker",
         ),
-      html: () =>
-        new Worker(
-          new URL(
-            "@codingame/monaco-vscode-standalone-html-language-features/worker",
-            import.meta.url,
-          ),
-          { type: "module" },
-        ),
+      html: htmlWorker,
+      handlebars: htmlWorker,
+      razor: htmlWorker,
     },
   });
   configured = true;
