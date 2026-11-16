@@ -1,6 +1,7 @@
 import { readFile, readdir, realpath, stat } from "node:fs/promises";
 import { basename, dirname, extname, relative, resolve } from "node:path";
 import { imports } from "./imports.ts";
+import type { BuildRegistryOptions } from "./build-registry.ts";
 
 interface RegistryManifest {
   dependencies?: Record<string, string>;
@@ -50,7 +51,9 @@ export interface RegistryItem {
 interface BuildContext {
   root: string;
   sources: SourceContext[];
-  templateRoot: string;
+  templateRoot?: string;
+  docsRoot?: string;
+  targetDir: string;
 }
 
 const byName = (a: string, b: string) => a.localeCompare(b, "en");
@@ -94,18 +97,46 @@ async function readJson<T>(path: string): Promise<T> {
 
 export async function createContext(
   rawRoot: string,
-  packages: readonly RegistryComponentSource[] = [
-    { packagePath: "packages/moyaforge-ui" },
-  ],
+  {
+    // Keep the original default for existing programmatic callers. The CLI
+    // always supplies the complete list from registry.config.ts.
+    packages = [{ packagePath: "packages/moyaforge-ui" }],
+    dependencyManifests = [],
+    templatesDir = "registry/templates",
+    docsDir = "registry/docs",
+    targetDir = "~/src/components/ui",
+  }: Pick<
+    BuildRegistryOptions,
+    | "packages"
+    | "dependencyManifests"
+    | "templatesDir"
+    | "docsDir"
+    | "targetDir"
+  > = {},
 ): Promise<BuildContext> {
   const root = await realpath(rawRoot);
   if (!packages.length)
     throw Error("Registry generation requires at least one component source.");
+  if (
+    !targetDir.startsWith("~/") ||
+    targetDir.endsWith("/") ||
+    targetDir.split("/").some((part) => part === ".." || part === ".")
+  )
+    throw Error(`Invalid component installation target: ${targetDir}`);
 
-  const headlessManifestPath = resolve(root, "packages/moyaforge/package.json");
-  const headlessManifest: RegistryManifest = (await isFile(headlessManifestPath))
-    ? await readJson<RegistryManifest>(headlessManifestPath)
-    : {};
+  const sharedManifests = await Promise.all(
+    dependencyManifests.map(async (manifestPath) => {
+      const path = resolve(root, manifestPath);
+      return (await isFile(path)) ? readJson<RegistryManifest>(path) : {};
+    }),
+  );
+  const declaredShared = Object.assign(
+    {},
+    ...sharedManifests.flatMap((manifest) => [
+      manifest.peerDependencies ?? {},
+      manifest.dependencies ?? {},
+    ]),
+  );
 
   const sources = await Promise.all(
     packages.map(async ({ packagePath, componentsPath, nameOverrides }) => {
@@ -133,15 +164,16 @@ export async function createContext(
         relativeComponents.startsWith("../") ||
         relativeComponents.startsWith("..\\")
       )
-        throw Error(`Registry component directory is outside src: ${componentsPath}`);
+        throw Error(
+          `Registry component directory is outside src: ${componentsPath}`,
+        );
 
       return {
         sourceRoot,
         componentRoot,
         nameOverrides: nameOverrides ?? {},
         declared: {
-          ...headlessManifest.peerDependencies,
-          ...headlessManifest.dependencies,
+          ...declaredShared,
           ...manifest.peerDependencies,
           ...manifest.dependencies,
           ...manifest.registryDependencies,
@@ -153,7 +185,9 @@ export async function createContext(
   return {
     root,
     sources,
-    templateRoot: resolve(root, "registry/templates"),
+    templateRoot: templatesDir === false ? undefined : resolve(root, templatesDir),
+    docsRoot: docsDir === false ? undefined : resolve(root, docsDir),
+    targetDir,
   };
 }
 
@@ -194,7 +228,7 @@ export async function discoverSpecs(ctx: BuildContext) {
     if (await pathExists(source.componentRoot))
       await discoverComponents(source.componentRoot, source);
 
-  if (await pathExists(ctx.templateRoot))
+  if (ctx.templateRoot && (await pathExists(ctx.templateRoot)))
     for (const entry of (await readdir(ctx.templateRoot)).sort())
       if (/\.(tsx|ts)$/.test(entry))
         add(kebab(basename(entry, extname(entry))), {
@@ -272,10 +306,10 @@ async function collectGraph(ctx: BuildContext, spec: RegistrySpec) {
  */
 function installTarget(ctx: BuildContext, spec: RegistrySpec, file: string) {
   if (file === spec.entry && spec.template)
-    return `~/src/components/ui/${basename(file)}`;
+    return `${ctx.targetDir}/${basename(file)}`;
   if (file.startsWith(spec.source.componentRoot + "/"))
-    return `~/src/components/ui/${relative(spec.source.componentRoot, file)}`;
-  return `~/src/components/${relative(spec.source.sourceRoot, file)}`;
+    return `${ctx.targetDir}/${relative(spec.source.componentRoot, file)}`;
+  return `${dirname(ctx.targetDir)}/${relative(spec.source.sourceRoot, file)}`;
 }
 
 export async function buildItem(
@@ -294,8 +328,8 @@ export async function buildItem(
     .sort((a, b) => byCodeUnit(a.path, b.path));
 
   // Documentation belongs to the registry, never to component source folders.
-  const guidePath = resolve(ctx.root, "registry/docs", `${name}.md`);
-  const docs = (await isFile(guidePath))
+  const guidePath = ctx.docsRoot && resolve(ctx.docsRoot, `${name}.md`);
+  const docs = guidePath && (await isFile(guidePath))
     ? await readFile(guidePath, "utf8")
     : undefined;
 

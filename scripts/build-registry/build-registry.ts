@@ -8,17 +8,32 @@ import {
 } from "./registry-source.ts";
 import { updateRegistryOutput } from "./output.ts";
 
+/** Paths are relative to the workspace root supplied by the caller. */
 export interface BuildRegistryOptions {
+  name?: string;
+  homepage?: string;
   check?: boolean;
-  /** Publish components from any configured set of workspace packages. */
   packages?: readonly RegistryComponentSource[];
+  dependencyManifests?: readonly string[];
+  templatesDir?: string | false;
+  docsDir?: string | false;
+  outputFile?: string;
+  targetDir?: string;
+  legacyStylesDir?: string | false;
 }
 
 export async function buildRegistry(
   root: string,
-  { check = false, packages }: BuildRegistryOptions = {},
+  {
+    name = "registry",
+    homepage,
+    check = false,
+    outputFile = "registry.json",
+    legacyStylesDir = "registry/styles",
+    ...sources
+  }: BuildRegistryOptions = {},
 ) {
-  const context = await createContext(root, packages);
+  const context = await createContext(root, sources);
   const specs = await discoverSpecs(context);
   const items: RegistryItem[] = [];
   for (const [name, spec] of [...specs].sort(([a], [b]) =>
@@ -29,13 +44,16 @@ export async function buildRegistry(
 
   const registry = {
     $schema: "https://ui.shadcn.com/schema/registry.json",
-    name: "moyaforge",
-    homepage: "https://github.com/moyarich/moyaforge",
+    name,
+    ...(homepage ? { homepage } : {}),
     items,
   };
   const output = await format(JSON.stringify(registry, null, 2), {
     parser: "json",
   });
-  await updateRegistryOutput(context.root, output, check);
+  await updateRegistryOutput(context.root, output, check, {
+    outputFile,
+    legacyStylesDir,
+  });
   return registry;
 }

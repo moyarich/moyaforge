@@ -23,6 +23,13 @@ export async function fixture() {
       peerDependencies: { react: ">=18", "@example/icons": "^1.0.0" },
     }),
   );
+  // Component dependencies are owned by the package, not a framework.
+  await put(
+    "packages/moyaforge-ui/package.json",
+    JSON.stringify({
+      peerDependencies: { react: ">=18", "@example/icons": "^1.0.0" },
+    }),
+  );
   await mkdir(resolve(root, "registry/templates"), { recursive: true });
   await mkdir(resolve(root, "packages/moyaforge/src/components"), {
     recursive: true,

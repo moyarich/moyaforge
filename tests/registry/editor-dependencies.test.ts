@@ -11,7 +11,7 @@ test("editor registry entries keep their engine dependencies separate", async ()
     (item) => item.name === "monaco-editor-react",
   );
   const typefox = registry.items.find(
-    (item) => item.name === "monaco-editor-type-fox",
+    (item) => item.name === "monaco-editor-typefox",
   );
   expect(
     react.dependencies.some((dependency) =>
