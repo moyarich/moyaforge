@@ -182,35 +182,40 @@ export function createCodePreviewPlugin({
       }
     },
 
-    async load(id) {
-      if (inlineReact.importer(id)) return inlineReact.load(id);
-      if (id === componentModuleId) {
-        const entries = Array.from(modules)
-          .filter(([, path]) => componentFilePattern.test(path))
-          .map(
-            ([key, path]) =>
-              `  ${JSON.stringify(key)}: () => import(${JSON.stringify(normalizePath(path))}),`,
-          );
+    load: {
+      filter: {
+        id: /^\0virtual:moyaforge-mdx\/(?:react-preview\/|code-preview-(?:components|sources)$)/,
+      },
+      async handler(id) {
+        if (inlineReact.importer(id)) return inlineReact.load(id);
+        if (id === componentModuleId) {
+          const entries = Array.from(modules)
+            .filter(([, path]) => componentFilePattern.test(path))
+            .map(
+              ([key, path]) =>
+                `  ${JSON.stringify(key)}: () => import(${JSON.stringify(normalizePath(path))}),`,
+            );
 
-        const componentModule = `export default {\n${entries.join("\n")}\n};\n`;
+          const componentModule = `export default {\n${entries.join("\n")}\n};\n`;
 
-        return componentModule;
-      }
+          return componentModule;
+        }
 
-      if (id === sourceModuleId) {
-        const entries = Array.from(modules, ([key, path]) => {
-          const file = `${normalizePath(path)}?raw`;
+        if (id === sourceModuleId) {
+          const entries = Array.from(modules, ([key, path]) => {
+            const file = `${normalizePath(path)}?raw`;
 
-          return (
-            `  ${JSON.stringify(key)}: () => ` +
-            `import(${JSON.stringify(file)}).then(m => m.default),`
-          );
-        });
+            return (
+              `  ${JSON.stringify(key)}: () => ` +
+              `import(${JSON.stringify(file)}).then(m => m.default),`
+            );
+          });
 
-        const sourceModule = `export default {\n${entries.join("\n")}\n};\n`;
+          const sourceModule = `export default {\n${entries.join("\n")}\n};\n`;
 
-        return sourceModule;
-      }
+          return sourceModule;
+        }
+      },
     },
   };
 }

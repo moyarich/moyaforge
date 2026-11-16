@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { readFile } from "node:fs/promises";
 
 const registry = JSON.parse(
-  await readFile(new URL("../registry.json", import.meta.url), "utf8"),
+  await readFile(new URL("../../registry.json", import.meta.url), "utf8"),
 );
 test.each(["code-block", "code-group", "doc-outline"])(
   "%s installs UI-owned component graph",

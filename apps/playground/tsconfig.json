@@ -13,7 +13,7 @@
     "types": [
       "vite/client",
       "node",
-      "@moyarich/moyaforge-mdx/vite-client",
+      "@moyarich/moyaforge-mdx/virtual",
       "@moyarich/moyaforge-monaco/vite-client"
     ]
   },
