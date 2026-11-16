@@ -1,11 +1,12 @@
 #!/usr/bin/env node
+import { stat } from "node:fs/promises";
 import { Command } from "commander";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { buildRegistry, type BuildRegistryOptions } from "./build-registry.ts";
 
 interface CliOptions {
-  config: string;
+  config?: string;
   check?: boolean;
   package: string[];
   dependencyManifest: string[];
@@ -17,8 +18,6 @@ interface CliOptions {
   docs?: boolean;
   outputFile?: string;
   targetDir?: string;
-  legacyStylesDir?: string;
-  legacyStyles?: boolean;
   printOutput: boolean;
 }
 
@@ -26,11 +25,10 @@ const append = (value: string, entries: string[]) => [...entries, value];
 
 await new Command()
   .name("build-registry")
-  .description("Generate a component registry using registry.config.ts and optional overrides")
+  .description("Generate a component registry from registry.config.ts or CLI options")
   .option(
     "--config <path>",
-    "Registry config file, relative to the current directory",
-    "registry.config.ts",
+    "Explicit config file (auto-detect registry.config.ts when omitted)",
   )
   .option("--check", "Verify generated output without writing files")
   .option("--name <name>", "Override the registry name")
@@ -53,25 +51,40 @@ await new Command()
   .option("--no-docs", "Skip registry documentation")
   .option("--output-file <path>", "Override the generated registry filename")
   .option("--target-dir <path>", "Override component installation targets")
-  .option("--legacy-styles-dir <directory>", "Override the legacy styles cleanup directory")
-  .option("--no-legacy-styles", "Disable legacy styles cleanup")
   .option("--print-output", "Print the effective output filename without generating files", false)
   .action(async (options: CliOptions) => {
-    const configPath = resolve(process.cwd(), options.config);
-    const { default: configured } = (await import(
-      pathToFileURL(configPath).href
-    )) as { default: BuildRegistryOptions };
+    const configPath = resolve(
+      process.cwd(),
+      options.config ?? "registry.config.ts",
+    );
+    const hasConfig = await stat(configPath).then(
+      (info) => info.isFile(),
+      (error: NodeJS.ErrnoException) => {
+        if (error.code === "ENOENT") return false;
+        throw error;
+      },
+    );
 
-    if (!configured || !Array.isArray(configured.packages) || !configured.packages.length)
-      throw Error(`Registry config must declare a nonempty packages list: ${configPath}`);
+    if (options.config && !hasConfig)
+      throw Error(`Registry config file not found: ${configPath}`);
+
+    const configured: BuildRegistryOptions = hasConfig
+      ? ((await import(pathToFileURL(configPath).href)) as {
+          default: BuildRegistryOptions;
+        }).default
+      : {};
+
+    if (!configured || typeof configured !== "object")
+      throw Error(`Invalid registry configuration: ${configPath}`);
 
     const packages = options.package.length
       ? options.package.map(
           (packagePath) =>
-            configured.packages!.find((source) => source.packagePath === packagePath)
-            ?? { packagePath },
+            configured.packages?.find(
+              (source) => source.packagePath === packagePath,
+            ) ?? { packagePath },
         )
-      : configured.packages;
+      : (configured.packages ?? []);
 
     const settings: BuildRegistryOptions = {
       ...configured,
@@ -87,9 +100,6 @@ await new Command()
       docsDir: options.docs === false
         ? false
         : (options.docsDir ?? configured.docsDir),
-      legacyStylesDir: options.legacyStyles === false
-        ? false
-        : (options.legacyStylesDir ?? configured.legacyStylesDir),
       outputFile: options.outputFile ?? configured.outputFile,
       targetDir: options.targetDir ?? configured.targetDir,
       check: options.check ?? configured.check,
@@ -100,7 +110,13 @@ await new Command()
       return;
     }
 
-    const registry = await buildRegistry(dirname(configPath), settings);
+    if (!packages.length)
+      throw Error(
+        "No component packages configured. Use --package <directory> or provide registry.config.ts with a packages list.",
+      );
+
+    const root = hasConfig ? dirname(configPath) : process.cwd();
+    const registry = await buildRegistry(root, settings);
     console.log(
       `Validated ${registry.items.length} automatically discovered registry items.`,
     );

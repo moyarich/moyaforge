@@ -23,7 +23,7 @@ export async function updateRegistryOutput(
   check: boolean,
   {
     outputFile = "registry.json",
-    legacyStylesDir = "registry/styles",
+    legacyStylesDir = false,
   }: RegistryOutputOptions = {},
 ) {
   const manifestPath = resolve(root, outputFile);

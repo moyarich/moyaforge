@@ -162,7 +162,6 @@ test("explicit CLI flags override configuration without mutating its defaults", 
     "--docs-dir", "examples/docs",
     "--output-file", "generated/overridden.json",
     "--target-dir", "~/custom/ui",
-    "--legacy-styles-dir", "legacy/styles",
   ];
 
   const output = run("--print-output", ...args);
@@ -197,7 +196,6 @@ test("explicit CLI flags override configuration without mutating its defaults", 
     "--dependency-manifest", "shared/override.json",
     "--no-templates",
     "--no-docs",
-    "--no-legacy-styles",
     "--output-file", "generated/minimal.json",
   ];
   const minimum = run(...withoutExtras);
@@ -219,4 +217,72 @@ test("explicit CLI flags override configuration without mutating its defaults", 
   expect(defaults.name).toBe("default-name");
   expect(defaults.homepage).toBe("https://default.example");
   expect(defaults.items[0].dependencies).toContain("shared-lib@^1.0.0");
+});
+
+
+test("CLI generates a registry from flags when no config exists", async () => {
+  const root = await mkdtemp(join(tmpdir(), "registry-no-config-"));
+  temporary.push(root);
+  const component = join(root, "packages/simple/src/components/Greeting");
+  await mkdir(component, { recursive: true });
+  await mkdir(join(root, "registry/styles"), { recursive: true });
+  await writeFile(
+    join(root, "packages/simple/package.json"),
+    JSON.stringify({ peerDependencies: { react: ">=18" } }),
+  );
+  await writeFile(
+    join(component, "index.ts"),
+    'export * from "./Greeting.js";\n',
+  );
+  await writeFile(
+    join(component, "Greeting.tsx"),
+    'import React from "react";\nexport const Greeting = () => null;\n',
+  );
+  await writeFile(join(root, "registry/styles/old.css"), "/* preserved */\n");
+
+  const run = (...args: string[]) =>
+    spawnSync(process.execPath, [cli, ...args], {
+      cwd: root,
+      encoding: "utf8",
+    });
+
+  const print = run("--print-output");
+  expect(print.status, print.stderr).toBe(0);
+  expect(print.stdout.trim()).toBe("registry.json");
+
+  const missingPackages = run();
+  expect(missingPackages.status).not.toBe(0);
+  expect(missingPackages.stderr).toContain("Use --package");
+
+  const args = [
+    "--package", "packages/simple",
+    "--name", "standalone",
+    "--output-file", "out/registry.json",
+    "--no-templates",
+    "--no-docs",
+  ];
+  const generated = run(...args);
+  expect(generated.status, generated.stderr).toBe(0);
+  const registry = JSON.parse(
+    await readFile(join(root, "out/registry.json"), "utf8"),
+  );
+  expect(registry.name).toBe("standalone");
+  expect(registry.items.map((item: { name: string }) => item.name)).toEqual([
+    "greeting",
+  ]);
+
+  const checked = run(...args, "--check");
+  expect(checked.status, checked.stderr).toBe(0);
+
+  // No config means no cleanup of an unrelated legacy registry directory.
+  expect(await readFile(join(root, "registry/styles/old.css"), "utf8")).toBe(
+    "/* preserved */\n",
+  );
+
+  const invalidConfig = run(
+    "--config", "missing.registry.config.ts",
+    "--package", "packages/simple",
+  );
+  expect(invalidConfig.status).not.toBe(0);
+  expect(invalidConfig.stderr).toContain("Registry config file not found");
 });

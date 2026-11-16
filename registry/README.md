@@ -27,6 +27,9 @@ npm exec -- build-registry --config registry.config.ts
 # Restrict discovery to selected packages:
 npm run registry:build -- --package packages/moyaforge-monaco
 
+# In another workspace without registry.config.ts, use flags only:
+node /path/to/build-registry-cli.ts --package packages/my-components --name my-registry
+
 # Override registry metadata, output and installation targets:
 npm run registry:build -- \
   --name custom-registry \
@@ -37,20 +40,24 @@ npm run registry:build -- \
 # Select shared dependency manifests or disable optional discovery:
 npm run registry:build -- \
   --dependency-manifest packages/example/package.json \
-  --no-templates --no-docs --no-legacy-styles
+  --no-templates --no-docs
 ```
 
-The CLI reads `registry.config.ts` first. Explicit options take precedence
-without modifying the configuration file. Supported overrides are
+The CLI automatically loads `registry.config.ts` if present. Without it,
+use `--package` to declare at least one package; optional flags supply the
+other settings. Explicit options take precedence without modifying the
+configuration file. Supported overrides are
 `--name`, `--homepage`, repeatable `--package` and
 `--dependency-manifest`, `--templates-dir`, `--docs-dir`,
-`--output-file`, `--target-dir`, `--legacy-styles-dir`,
-`--no-templates`, `--no-docs` and `--no-legacy-styles`.
+`--output-file`, `--target-dir`, `--no-templates` and `--no-docs`.
 Use `--check` to validate without writing, and `--print-output` to print
 the effective output filename, including any `--output-file` override.
 
 An explicit `--package` selection preserves the corresponding package's
-`nameOverrides` from the config. To build a different registry, pass
+`nameOverrides` from the config. An explicit `--config` path must exist.
+Legacy styles cleanup is not a generic CLI feature; MoyaForge opts into it
+through `legacyStylesDir` in its `registry.config.ts`. To build a different
+registry, pass
 `--config path/to/other.registry.config.ts`; paths are resolved from
 the config file's directory, not the current shell directory.
 

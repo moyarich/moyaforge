@@ -29,7 +29,7 @@ export async function buildRegistry(
     homepage,
     check = false,
     outputFile = "registry.json",
-    legacyStylesDir = "registry/styles",
+    legacyStylesDir = false,
     ...sources
   }: BuildRegistryOptions = {},
 ) {
