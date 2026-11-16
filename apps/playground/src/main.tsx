@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
 import "@fontsource-variable/inter";
 import "@moyarich/console/styles.css";
 import "./styles.css";
@@ -11,6 +12,8 @@ import "./utils/vite-preload-error.ts";
 // Lazy-page failures that persist after a refresh are handled by RegistryRouteView.
 const root = document.getElementById("root");
 if (!root) throw new Error("Playground root element not found");
+await initializeSharedMonaco();
+
 createRoot(root).render(
   <React.StrictMode>
     <PlaygroundMdxProvider>

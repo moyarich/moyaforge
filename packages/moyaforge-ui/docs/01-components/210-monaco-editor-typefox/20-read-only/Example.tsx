@@ -1,8 +1,6 @@
-import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/typefox";
 import { MonacoEditorTypeFox } from "../../../../src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
 
 export default function ReadOnlyEditor() {
-  configureTypeFoxWorkers();
   return (
     <MonacoEditorTypeFox
       readOnly

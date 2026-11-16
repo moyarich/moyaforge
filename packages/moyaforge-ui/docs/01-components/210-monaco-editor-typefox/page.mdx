@@ -4,7 +4,6 @@ label: Monaco Editor TypeFox
 description: A multi-file code editor with read-only mode and copy support.
 ---
 
-import "@moyarich/moyaforge-monaco/typefox/auto";
 import { MonacoEditorTypeFox as LiveMonacoEditorTypeFox } from "../../../src/components/MonacoEditorTypeFox/index.js";
 
 # Monaco Editor TypeFox
@@ -39,7 +38,15 @@ npm install @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monac
 npm install @codingame/monaco-vscode-standalone-languages@^37.6.1 @codingame/monaco-vscode-standalone-typescript-language-features@^37.6.1 @codingame/monaco-vscode-standalone-css-language-features@^37.6.1 @codingame/monaco-vscode-standalone-json-language-features@^37.6.1 @codingame/monaco-vscode-standalone-html-language-features@^37.6.1
 ```
 
-For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and import `@moyarich/moyaforge-monaco/typefox/auto` once before rendering the editor. Other bundlers need their own worker setup.
+For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and call `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/typefox` once at application startup. If using React Monaco too, call `initializeSharedMonaco()` from `/shared` instead. Other bundlers need their own worker setup.
+
+The editor setup belongs in your application's `main.tsx`, **not** inside the component. For standalone TypeFox applications:
+
+```ts
+import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/typefox";
+
+configureTypeFoxWorkers();
+```
 
 ## Usage
 
@@ -55,7 +62,6 @@ For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 
 ```tsx
-import "@moyarich/moyaforge-monaco/typefox/auto";
 import { MonacoEditorTypeFox } from "@/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox";
 
 <MonacoEditorTypeFox

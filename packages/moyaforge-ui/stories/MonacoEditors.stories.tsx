@@ -38,7 +38,7 @@ const meta = {
         component:
           "Both implementations use one application-level VS Code-compatible Monaco runtime. " +
           "The shared Storybook loader awaits initialization before rendering either editor. " +
-          "Do not import the React or TypeFox standalone /auto worker entry points.",
+          "Do not call either standalone worker initializer.",
       },
     },
   },

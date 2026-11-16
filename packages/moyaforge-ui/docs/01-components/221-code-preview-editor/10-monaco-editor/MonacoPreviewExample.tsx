@@ -1,6 +1,5 @@
 import * as React from "react";
 import { transform } from "sucrase";
-import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
 import "./MonacoPreviewExample.css";
 
 export interface MonacoPreviewExampleProps {
@@ -13,7 +12,6 @@ export default function MonacoPreviewExample({
   source,
   styles,
 }: MonacoPreviewExampleProps) {
-  configureReactWorkers();
   const result = React.useMemo(() => {
     try {
       const { code } = transform(source, {

@@ -17,7 +17,7 @@ import { MonacoEditorReact } from "@/components/ui/MonacoEditorReact/MonacoEdito
 ```
 
 Adjust the import for your component destination and path aliases. Component CSS
-is imported automatically. Configure Monaco workers before mounting the editor:
+is imported automatically. Configure standalone Monaco workers once in the application entry point using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react`. If TypeFox is also used, initialize the shared runtime using `initializeSharedMonaco()` from `/shared`. Worker configuration belongs to the host application:
 the Vite example on the Monaco documentation page provides a complete `setup.ts`
 using local workers and `loader.config({ monaco })`. Other bundlers need their
 own worker configuration; importing the component does not configure workers.

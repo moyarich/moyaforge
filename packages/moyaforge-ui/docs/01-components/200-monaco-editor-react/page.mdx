@@ -4,7 +4,6 @@ label: Monaco Editor React
 description: A multi-file code editor with read-only mode and copy support.
 ---
 
-import "@moyarich/moyaforge-monaco/react/auto";
 import { MonacoEditorReact as LiveMonacoEditorReact } from "../../../src/components/MonacoEditorReact/index.js";
 
 # Monaco Editor React
@@ -38,7 +37,15 @@ In an existing React app, ensure these runtime dependencies are installed:
 npm install @moyarich/moyaforge-monaco @monaco-editor/react monaco-editor lucide-react
 ```
 
-For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and import `@moyarich/moyaforge-monaco/react/auto` once before rendering the editor. Other bundlers need their own worker setup.
+For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and call `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react` once at application startup. If using TypeFox too, call `initializeSharedMonaco()` from `/shared` instead. Other bundlers need their own worker setup.
+
+The editor setup belongs in your application's `main.tsx`, **not** inside the component. For standalone React Monaco applications:
+
+```ts
+import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
+
+configureReactWorkers();
+```
 
 ## Usage
 
@@ -54,7 +61,6 @@ For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 
 ```tsx
-import "@moyarich/moyaforge-monaco/react/auto";
 import { MonacoEditorReact } from "@/components/ui/MonacoEditorReact/MonacoEditorReact";
 
 <MonacoEditorReact

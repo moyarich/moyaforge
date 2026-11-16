@@ -1,8 +1,6 @@
-import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
 import { MonacoEditorReact } from "../../../../src/components/MonacoEditorReact/MonacoEditorReact.js";
 
 export default function ReadOnlyEditor() {
-  configureReactWorkers();
   return (
     <MonacoEditorReact
       readOnly

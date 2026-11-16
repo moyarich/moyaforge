@@ -1,20 +1,29 @@
 # @moyarich/moyaforge-monaco
 
-Optional Monaco worker integration, independent of the MDX compiler.
+Small application-level Monaco integration, independent of the MDX compiler.
 
-## React Monaco only
+## Package entry points
+
+| Import | Purpose |
+| --- | --- |
+| `/react` | Standalone `@monaco-editor/react` workers |
+| `/typefox` | Standalone TypeFox workers |
+| `/shared` | One VS Code-compatible runtime for React Monaco + TypeFox |
+| `/vite` | Vite plugin for TSX worker declarations |
+| `/virtual` | TypeScript declarations for the Vite virtual module |
+
+Choose **one** runtime strategy and initialize it at application startup,
+before mounting editors. There are no implicit `/auto` entry points.
+
+### React Monaco only
 
 ```ts
-import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
 import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
 
 configureReactWorkers();
-// Add monacoReactTypesPlugin(projectRoot) to Vite plugins.
 ```
 
-Import `@moyarich/moyaforge-monaco/react/auto` for automatic standalone setup.
-
-## TypeFox only
+### TypeFox only
 
 ```ts
 import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/typefox";
@@ -22,16 +31,7 @@ import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/typefox";
 configureTypeFoxWorkers();
 ```
 
-Import `@moyarich/moyaforge-monaco/typefox/auto` for automatic standalone setup.
-
-## React Monaco and TypeFox together
-
-Initialize **one VS Code-compatible Monaco runtime** for both editors, instead of
-configuring both standalone worker providers. The shared entry uses
-`@codingame/monaco-vscode-editor-api` for `@monaco-editor/react` and TypeFox,
-and uses the TypeFox worker factory for compatible language workers.
-
-**Await the async initialization before either editor mounts:**
+### Both editor integrations
 
 ```tsx
 import { createRoot } from "react-dom/client";
@@ -43,35 +43,22 @@ await initializeSharedMonaco();
 createRoot(document.getElementById("root")!).render(<App />);
 ```
 
-```tsx
-import { MonacoEditorReact } from "./components/ui/MonacoEditorReact/index.js";
-import { MonacoEditorTypeFox } from "./components/ui/MonacoEditorTypeFox/index.js";
+`initializeSharedMonaco()` configures TypeFox's worker factory, points
+`@monaco-editor/react` at the same VS Code-compatible editor API, and
+initializes VS Code services once. It caches one initialization promise.
+Do not also call either standalone initializer.
 
-export function App() {
-  return (
-    <>
-      <MonacoEditorReact files={[{ name: "react.tsx", value: "const a = 1;" }]} />
-      <MonacoEditorTypeFox files={[{ name: "typefox.tsx", value: "const b = 2;" }]} />
-    </>
-  );
-}
-```
+Monaco prefers `MonacoEnvironment.getWorker` over `getWorkerUrl` if both
+exist. The standalone React integration uses `getWorker`; TypeFox uses
+`getWorkerUrl` and `getWorkerOptions`. Instead of deleting or overwriting
+the competing callback, the package reports a clear configuration error.
+Worker scripts and protocol can be shared without sharing Worker instances.
 
-Do not additionally import `/react/auto` or `/typefox/auto` when using
-the shared entry. `initializeSharedMonaco()` configures the compatible
-workers and starts VS Code services once. `configureSharedMonacoWorkers()`
-only configures the workers, so it is not sufficient before mounting both
-editors.
+## Vite
 
-The two editors share a Monaco runtime and worker **scripts/protocol**;
-each language service may still create its own Worker instance. Install the
-optional peers needed by both integrations, including
-`@codingame/monaco-vscode-editor-api` and the matching
-`@codingame/monaco-vscode-standalone-*` versions.
-
-## Virtual module
-
-The Vite plugin provides `virtual:moyaforge-monaco/react-types`
-containing React, React DOM and `csstype` declarations for TSX workers.
-Add `@moyarich/moyaforge-monaco/virtual` to `compilerOptions.types` and
-register `monacoReactTypesPlugin(projectRoot)` in your Vite config.
+Register `monacoReactTypesPlugin(projectRoot)` from
+`@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and add
+`@moyarich/moyaforge-monaco/virtual` to `compilerOptions.types`.
+The plugin provides `virtual:moyaforge-monaco/react-types` with
+React, React DOM and `csstype` declarations for Monaco's TSX worker.
+Install the optional peers for the runtime strategy you choose.

@@ -1,9 +1,7 @@
-import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/typefox";
 import { useState } from "react";
 import { MonacoEditorTypeFox } from "../../../../src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
 
 export default function MultiFileEditor() {
-  configureTypeFoxWorkers();
   const [saved, setSaved] = useState("");
   return (
     <div>

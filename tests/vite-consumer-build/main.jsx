@@ -14,7 +14,13 @@ import {
 } from "react-router-dom";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 
-const SharedMonacoFixture = lazy(() => import("../fixtures/monaco-shared.jsx"));
+const SharedMonacoFixture = lazy(async () => {
+  const { initializeSharedMonaco } = await import(
+    "@moyarich/moyaforge-monaco/shared"
+  );
+  await initializeSharedMonaco();
+  return import("../fixtures/monaco-shared.jsx");
+});
 
 const toc = getTableOfContents([
   { id: "overview", value: "Overview", depth: 2 },

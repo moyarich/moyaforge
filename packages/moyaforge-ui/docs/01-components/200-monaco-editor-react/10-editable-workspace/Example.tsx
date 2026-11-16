@@ -1,9 +1,7 @@
-import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
 import { useState } from "react";
 import { MonacoEditorReact } from "../../../../src/components/MonacoEditorReact/MonacoEditorReact.js";
 
 export default function MultiFileEditor() {
-  configureReactWorkers();
   const [saved, setSaved] = useState("");
   return (
     <div>
