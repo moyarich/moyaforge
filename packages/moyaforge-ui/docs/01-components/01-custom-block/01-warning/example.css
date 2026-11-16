@@ -1,0 +1,4 @@
+.warning-example .custom-block.warning {
+  --mf-custom-block-bg: color-mix(in srgb, #b45309 12%, transparent);
+  --mf-custom-block-border: #b45309;
+}
