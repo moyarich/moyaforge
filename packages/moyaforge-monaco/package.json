@@ -33,6 +33,11 @@
     },
     "./virtual": {
       "types": "./dist/virtual-modules.d.ts"
+    },
+    "./shared": {
+      "types": "./dist/shared.d.ts",
+      "import": "./dist/shared.js",
+      "default": "./dist/shared.js"
     }
   },
   "files": [
@@ -53,7 +58,8 @@
     "@codingame/monaco-vscode-standalone-typescript-language-features": "^37.6.1",
     "@codingame/monaco-vscode-standalone-css-language-features": "^37.6.1",
     "@codingame/monaco-vscode-standalone-json-language-features": "^37.6.1",
-    "@codingame/monaco-vscode-standalone-html-language-features": "^37.6.1"
+    "@codingame/monaco-vscode-standalone-html-language-features": "^37.6.1",
+    "@codingame/monaco-vscode-editor-api": "^37.6.1"
   },
   "peerDependenciesMeta": {
     "vite": {
@@ -81,6 +87,9 @@
       "optional": true
     },
     "@codingame/monaco-vscode-standalone-html-language-features": {
+      "optional": true
+    },
+    "@codingame/monaco-vscode-editor-api": {
       "optional": true
     }
   },

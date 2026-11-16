@@ -44,7 +44,10 @@ typescriptDefaults.addExtraLib(
   "file:///types/styles.d.ts",
 );
 
+let configured = false;
+
 export function configureTypeFoxWorkers() {
+  if (configured) return;
   // The gallery can navigate between independent Monaco engines.
   const environment = globalThis as typeof globalThis & {
     MonacoEnvironment?: { getWorker?: unknown };
@@ -103,4 +106,5 @@ export function configureTypeFoxWorkers() {
         ),
     },
   });
+  configured = true;
 }

@@ -1,6 +1,7 @@
 // Vite example: keep the editor runtime and workers local, without a CDN.
 import * as monaco from "monaco-editor";
 import { loader } from "@monaco-editor/react";
+import { isSharedMonacoRuntime } from "./runtime.js";
 
 // Syntax highlighting (basic-languages) and language services (language/*).
 import "monaco-editor/esm/vs/basic-languages/css/css.contribution";
@@ -22,8 +23,10 @@ const environment = globalThis as typeof globalThis & {
 let configured = false;
 
 export function configureReactWorkers() {
-  if (configured) return;
+  // A shared TypeFox/React runtime owns both the loader and worker factory.
+  if (configured || isSharedMonacoRuntime()) return;
   configured = true;
+  loader.config({ monaco });
 
   // Newer monaco-editor versions expose `monaco.typescript`;
   // older ones only have `monaco.languages.typescript`.
@@ -78,7 +81,5 @@ export function configureReactWorkers() {
     },
   };
 }
-
-loader.config({ monaco });
 
 export { monaco };
