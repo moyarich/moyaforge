@@ -6,11 +6,8 @@ description: Help readers avoid problems before taking a risky step.
 
 # Warning
 
-import { CodePreview } from "../../../../src/components/CodePreview/index.js";
 import Example from "./Example.mdx";
 import ReactExample from "./ReactExample.mdx";
-import exampleSource from "./Example.mdx?raw";
-import exampleStyles from "./Example.css?raw";
 
 ## React Component
 
@@ -34,14 +31,12 @@ import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
 Place a warning before the step where readers need to take action, such as saving a backup before changing settings.
 
-<CodePreview
-  title="Warning"
-  files={[
-    { label: "Example.mdx", code: exampleSource, language: "markdown" },
-    { label: "Example.css", code: exampleStyles },
-  ]}
->
-  <Example />
-</CodePreview>
+::::code-preview[Warning Markdown source]
+
+::code-preview-sources{files="./Example.mdx,./Example.css"}
+
+<Example />
+
+::::
 
 [Component documentation](/ui/components/custom-block)

@@ -3,12 +3,6 @@ title: With icon
 label: With icon
 ---
 
-import {
-  CodePreview,
-  CODE_REPLACEMENTS,
-} from "../../../../src/components/CodePreview/CodePreview.tsx";
-import Example from "./Example.tsx";
-import exampleSource from "./Example.tsx?raw";
 
 # Copy Button · With icon
 
@@ -20,12 +14,10 @@ npm install lucide-react
 
 Keep decorative icons hidden from assistive technology.
 
-<CodePreview
-  title="With icon"
-  files={[{ label: "Example.tsx", code: exampleSource }]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+::::code-preview[With icon]{component="./Example.tsx"}
+
+::code-preview-sources{files="./Example.tsx" replacements="portable"}
+
+::::
 
 [Component documentation](/ui/components/copy-button)

@@ -4,25 +4,15 @@ label: Counter preview in MDX
 description: Show a live React counter and its source files in an MDX page.
 ---
 
-import { CodePreview } from "../../../../src/components/CodePreview/index.js";
-import CounterExample from "../../CounterExample.tsx";
-import counterSource from "../../CounterExample.tsx?raw";
-import counterStyles from "../../counterExample.css?raw";
-import previewMarkup from "./example.mdx?raw";
 
 # Counter preview in MDX
 
 Click the counter to try it. Open **Code** to see the React component and stylesheet.
 
-<CodePreview
-  title="Counter"
-  files={[
-    { label: "example.mdx", code: previewMarkup, language: "mdx" },
-    { label: "CounterExample.tsx", code: counterSource },
-    { label: "counterExample.css", code: counterStyles },
-  ]}
->
-  <CounterExample />
-</CodePreview>
+::::code-preview[Counter]{component="../../CounterExample.tsx"}
+
+::code-preview-sources{files="./example.mdx,../../CounterExample.tsx,../../counterExample.css" replacements="portable"}
+
+::::
 
 [CodePreview documentation](/ui/components/code-preview)
