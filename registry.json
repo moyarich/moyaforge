@@ -4,13 +4,40 @@
   "homepage": "https://github.com/moyarich/moyaforge",
   "items": [
     {
+      "name": "animation",
+      "type": "registry:component",
+      "title": "Animation",
+      "description": "Editable MoyaForge animation source. Components import their own CSS.",
+      "dependencies": ["clsx@^2.1.1", "motion@^14.14.0", "react@>=18"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/Animation.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/Animation.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/Animation.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/Animation.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/AnimationSequence.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/AnimationSequence.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/index.ts"
+        }
+      ]
+    },
+    {
       "name": "code-block",
       "type": "registry:component",
       "title": "Code Block",
       "description": "Editable MoyaForge code-block source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -49,9 +76,7 @@
       "type": "registry:component",
       "title": "Code Group",
       "description": "Editable MoyaForge code-group source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -100,11 +125,7 @@
       "type": "registry:component",
       "title": "Code Preview",
       "description": "Editable MoyaForge code-preview source. Components import their own CSS.",
-      "dependencies": [
-        "lucide-react@^1.56.0",
-        "react@>=18",
-        "shiki@^4.5.0"
-      ],
+      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -142,6 +163,11 @@
           "target": "~/src/components/ui/CodePreview/CodePreview.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/CodePreview/InlineCodePreview.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodePreview/InlineCodePreview.tsx"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/CodePreview/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/CodePreview/index.ts"
@@ -177,6 +203,11 @@
           "target": "~/src/components/ui/Preview/Preview.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewActions.tsx"
@@ -185,6 +216,11 @@
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
@@ -197,9 +233,19 @@
           "target": "~/src/components/ui/Preview/PreviewContext.ts"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
@@ -207,9 +253,19 @@
           "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
@@ -217,9 +273,19 @@
           "target": "~/src/components/ui/Preview/PreviewSource.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewTitle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/index.ts"
         }
       ]
     },
@@ -229,13 +295,17 @@
       "title": "Code Preview Editor",
       "description": "Editable MoyaForge code-preview-editor source. Components import their own CSS.",
       "dependencies": [
-        "@monaco-editor/react@>=4",
+        "@moyarich/moyaforge-monaco@^0.1.0",
         "lucide-react@^1.56.0",
-        "monaco-editor@^0.52.2",
         "react@>=18",
         "shiki@^4.5.0"
       ],
       "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CodePreviewEditor/CodePreviewEditor.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodePreviewEditor/CodePreviewEditor.css"
+        },
         {
           "path": "packages/moyaforge-ui/src/components/CodePreviewEditor/CodePreviewEditor.tsx",
           "type": "registry:file",
@@ -265,76 +335,6 @@
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/Monaco.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/Monaco.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/Monaco.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/Monaco.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/MonacoActions.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoActions.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/MonacoEditor.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoEditor.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/MonacoLoading.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/MonacoTabs.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoTabs.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/MonacoToolbar.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoToolbar.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/drafts.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/drafts.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/languages.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/languages.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/useEditorTheme.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/useEditorTheme.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoCodeGroup.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/MonacoCodeGroup.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/ReactMonacoSourceEditor.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
@@ -438,9 +438,7 @@
       "type": "registry:component",
       "title": "Copy Button",
       "description": "Editable MoyaForge copy-button source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -464,9 +462,7 @@
       "type": "registry:component",
       "title": "Custom Block",
       "description": "Editable MoyaForge custom-block source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.css",
@@ -490,9 +486,7 @@
       "type": "registry:component",
       "title": "Demo",
       "description": "Editable MoyaForge demo source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Demo/Demo.css",
@@ -516,9 +510,7 @@
       "type": "registry:component",
       "title": "Doc Outline",
       "description": "Editable MoyaForge doc-outline source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
@@ -562,9 +554,7 @@
       "type": "registry:component",
       "title": "Docs Layout",
       "description": "Editable MoyaForge docs-layout source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
@@ -593,9 +583,7 @@
       "type": "registry:block",
       "title": "Docs Shell",
       "description": "Editable MoyaForge docs-shell source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
@@ -624,9 +612,7 @@
       "type": "registry:component",
       "title": "Docs Shell Focused",
       "description": "Editable MoyaForge docs-shell-focused source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellFocused/DocsShellFocused.css",
@@ -650,9 +636,7 @@
       "type": "registry:component",
       "title": "Docs Shell Wide",
       "description": "Editable MoyaForge docs-shell-wide source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellWide/DocsShellWide.css",
@@ -714,9 +698,7 @@
       "type": "registry:component",
       "title": "Edit Page Link",
       "description": "Editable MoyaForge edit-page-link source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
@@ -740,9 +722,7 @@
       "type": "registry:component",
       "title": "Empty State",
       "description": "Editable MoyaForge empty-state source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EmptyState/EmptyState.tsx",
@@ -761,10 +741,7 @@
       "type": "registry:component",
       "title": "Highlighted Code",
       "description": "Editable MoyaForge highlighted-code source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18",
-        "shiki@^4.5.0"
-      ],
+      "dependencies": ["react@>=18", "shiki@^4.5.0"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
@@ -788,77 +765,102 @@
       "type": "registry:component",
       "title": "Monaco Editor React",
       "description": "Editable MoyaForge monaco-editor-react source. Components import their own CSS.",
-      "docs": "## MonacoEditorReact setup\n\nUse MonacoEditorReact inside a React application. If dependencies were not installed\nby your component installer (for example, `--no-install`), run:\n\n```sh\nnpm install @monaco-editor/react monaco-editor lucide-react\n```\n\nYour application also needs `react` and `react-dom`. With TypeScript, install\n`@types/react` and `@types/react-dom` as development dependencies.\n\nImport the real editor directly from the installed source:\n\n```tsx\nimport { MonacoEditorReact } from \"@/components/ui/MonacoEditorReact/MonacoEditorReact\";\n```\n\nAdjust the import for your component destination and path aliases. Component CSS\nis imported automatically. Configure standalone Monaco workers once in the application entry point using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react`. If TypeFox is also used, initialize the shared runtime using `initializeSharedMonaco()` from `/shared`. Worker configuration belongs to the host application:\nthe Vite example on the Monaco documentation page provides a complete `setup.ts`\nusing local workers and `loader.config({ monaco })`. Other bundlers need their\nown worker configuration; importing the component does not configure workers.\n\nThe lightweight `Monaco` shell with a textarea renderer does not need an editor\nengine. `MonacoEditorTypeFox` is a separate full editor and additionally needs\n`@typefox/monaco-editor-react` and `monaco-languageclient`; these are not needed\nby the direct MonacoEditorReact implementation.\n\nGuide and complete worker setup:\nhttps://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react\n",
+      "docs": "## MonacoEditorReact setup\n\nUse MonacoEditorReact inside a React application. If dependencies were not installed\nby your component installer (for example, `--no-install`), run:\n\n```sh\nnpm install @monaco-editor/react monaco-editor lucide-react\n```\n\nYour application also needs `react` and `react-dom`. With TypeScript, install\n`@types/react` and `@types/react-dom` as development dependencies.\n\nImport the real editor directly from the installed source:\n\n```tsx\nimport { MonacoEditorReact } from \"@moyarich/moyaforge-monaco/components/MonacoEditorReact\";\n```\n\nAdjust the import for your component destination and path aliases. Component CSS\nis imported automatically. Configure standalone Monaco workers once in the application entry point using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react`. If TypeFox is also used, initialize the shared runtime using `initializeSharedMonaco()` from `/shared`. Worker configuration belongs to the host application:\nthe Vite example on the Monaco documentation page provides a complete `setup.ts`\nusing local workers and `loader.config({ monaco })`. Other bundlers need their\nown worker configuration; importing the component does not configure workers.\n\nThe lightweight `Monaco` shell with a textarea renderer does not need an editor\nengine. `MonacoEditorTypeFox` is a separate full editor and additionally needs\n`@typefox/monaco-editor-react` and `monaco-languageclient`; these are not needed\nby the direct MonacoEditorReact implementation.\n\nGuide and complete worker setup:\nhttps://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react\n",
       "dependencies": [
         "@monaco-editor/react@>=4",
         "lucide-react@^1.56.0",
-        "monaco-editor@^0.52.2",
+        "monaco-editor@^0.52.0",
         "react@>=18"
       ],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/MonacoEditorCore/Monaco.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/MonacoEditorCore/Monaco.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/Monaco.css",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoActions.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/Monaco.css"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoActions.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/Monaco.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/Monaco.tsx"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/drafts.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/drafts.ts"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/languages.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoEditor.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/languages.ts"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoEditor.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/useEditorTheme.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoLoading.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/useEditorTheme.ts"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoCodeGroup.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoTabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoTabs.css"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoToolbar.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoToolbar.css"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/drafts.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/drafts.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/languages.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/languages.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/useEditorTheme.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/useEditorTheme.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/MonacoCodeGroup.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/MonacoCodeGroup.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/ReactMonacoSourceEditor.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/ReactMonacoSourceEditor.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorReact/index.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/index.ts"
         }
       ]
     },
     {
-      "name": "monaco-editor-type-fox",
+      "name": "monaco-editor-typefox",
       "type": "registry:component",
-      "title": "Monaco Editor Type Fox",
-      "description": "Editable MoyaForge monaco-editor-type-fox source. Components import their own CSS.",
-      "docs": "# MonacoEditorTypeFox\n\nMulti-file editor using `@typefox/monaco-editor-react` and VS Code services.\n\nThe CLI and shadcn install runtime dependencies. In an existing React app:\n\n```sh\nnpm install @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react\n```\n\nConfigure workers once in the application entry point with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/typefox`. For applications using both editors, call `initializeSharedMonaco()` from `/shared` instead. Install compatible standalone language features.\n\nImport `MonacoEditorTypeFox` from `./MonacoEditorTypeFox`. Pass `files` with unique names, optional per-file `readOnly`, and `onSave` to persist changes. `readOnly` locks the workspace. `vscodeApiConfig` customizes host services; all instances share the application's VS Code service initialization.\n\n`languageClientConfig` forwards the optional TypeFox `LanguageClientConfig` unchanged to the underlying editor for Language Server Protocol (LSP) integration. The host must provide a reachable language server and transport; this component does not start a server. If both Monaco integrations are used, initialize shared services once before mounting either editor.\n",
+      "title": "Monaco Editor Typefox",
+      "description": "Editable MoyaForge monaco-editor-typefox source. Components import their own CSS.",
+      "docs": "# MonacoEditorTypeFox\n\nMulti-file editor using `@typefox/monaco-editor-react` and VS Code services.\n\nThe CLI and shadcn install runtime dependencies. In an existing React app:\n\n```sh\nnpm install @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react\n```\n\nConfigure workers once in the application entry point with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/typefox`. For applications using both editors, call `initializeSharedMonaco()` from `/shared` instead. Install compatible standalone language features.\n\nImport `MonacoEditorTypeFox` from `@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox` (or from the installed CLI component source). Pass `files` with unique names, optional per-file `readOnly`, and `onSave` to persist changes. `readOnly` locks the workspace. `vscodeApiConfig` customizes host services; all instances share the application's VS Code service initialization.\n\n`languageClientConfig` forwards the optional TypeFox `LanguageClientConfig` unchanged to the underlying editor for Language Server Protocol (LSP) integration. The host must provide a reachable language server and transport; this component does not start a server. If both Monaco integrations are used, initialize shared services once before mounting either editor.\n",
       "dependencies": [
         "@codingame/monaco-vscode-editor-api@^37.6.1",
         "@typefox/monaco-editor-react@~8.0.2",
@@ -868,47 +870,72 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+          "target": "~/src/components/ui/MonacoEditorCore/Monaco.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+          "target": "~/src/components/ui/MonacoEditorCore/Monaco.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/Monaco.css",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoActions.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/Monaco.css"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoActions.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/Monaco.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/Monaco.tsx"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/drafts.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/drafts.ts"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/languages.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoEditor.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/languages.ts"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoEditor.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorCore/useEditorTheme.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoLoading.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorShared/useEditorTheme.ts"
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoTabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoTabs.css"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoToolbar.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/MonacoToolbar.css"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/drafts.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/drafts.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/languages.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/languages.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/useEditorTheme.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorCore/useEditorTheme.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorTypeFox/index.ts",
+          "path": "packages/moyaforge-monaco/src/components/MonacoEditorTypeFox/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorTypeFox/index.ts"
         }
@@ -919,9 +946,7 @@
       "type": "registry:component",
       "title": "Navigation Tree",
       "description": "Editable MoyaForge navigation-tree source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.css",
@@ -945,9 +970,7 @@
       "type": "registry:component",
       "title": "Page",
       "description": "Editable MoyaForge page source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -971,11 +994,7 @@
       "type": "registry:component",
       "title": "Preview",
       "description": "Editable MoyaForge preview source. Components import their own CSS.",
-      "dependencies": [
-        "lucide-react@^1.56.0",
-        "react@>=18",
-        "shiki@^4.5.0"
-      ],
+      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -1008,6 +1027,11 @@
           "target": "~/src/components/ui/Preview/Preview.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewActions.tsx"
@@ -1016,6 +1040,11 @@
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
@@ -1028,9 +1057,19 @@
           "target": "~/src/components/ui/Preview/PreviewContext.ts"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
@@ -1038,14 +1077,29 @@
           "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewSource.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.css"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
@@ -1135,9 +1189,7 @@
       "type": "registry:component",
       "title": "Sidebar V2",
       "description": "Editable MoyaForge sidebar-v2 source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -1211,10 +1263,7 @@
       "type": "registry:component",
       "title": "Source",
       "description": "Editable MoyaForge source source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18",
-        "shiki@^4.5.0"
-      ],
+      "dependencies": ["react@>=18", "shiki@^4.5.0"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
@@ -1248,9 +1297,7 @@
       "type": "registry:component",
       "title": "Table Of Contents",
       "description": "Editable MoyaForge table-of-contents source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
+      "dependencies": ["react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
