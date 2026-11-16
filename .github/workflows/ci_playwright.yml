@@ -1,5 +1,17 @@
 name: CI / Playwright
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/ci_playwright.yml"
+      - "playwright.config.ts"
+      - "packages/moyaforge-monaco/**"
+      - "packages/moyaforge-ui/src/components/MonacoEditor*/**"
+      - "packages/moyaforge-ui/docs/01-components/200-monaco-editor-react/**"
+      - "packages/moyaforge-ui/docs/01-components/210-monaco-editor-typefox/**"
+      - "apps/playground/**"
+      - "tests/integration/monaco-shared-runtime.spec.ts"
+      - "tests/fixtures/monaco-shared.jsx"
+      - "tests/vite-consumer-build/**"
   workflow_call:
     inputs:
       checkout-sha:
