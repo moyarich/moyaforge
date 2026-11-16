@@ -65,9 +65,9 @@ test("normalized metadata manifest excludes disabled pages and compiled modules"
       ["/docs"],
     );
     const plugin = mdxRegistryPlugin({ root, registry: config });
-    const id = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
+    const id = plugin.resolveId.handler.call({}, "virtual:moyaforge-mdx/metadata");
     assert.ok(id);
-    const code = await plugin.load.call({}, id);
+    const code = await plugin.load.handler.call({}, id);
     assert.doesNotMatch(code, /import \* as page|\(\) => import\(/);
     assert.match(code, /"title":"Guide"/);
   } finally {
@@ -102,8 +102,8 @@ test("project TOC defaults apply to Markdown and MDX with page overrides", async
     });
     assert.equal(discovered.registry.byPath.get("/docs/hidden-toc").toc, false);
     const plugin = mdxRegistryPlugin({ root, registry: config });
-    const id = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
-    const module = await plugin.load.call({}, id);
+    const id = plugin.resolveId.handler.call({}, "virtual:moyaforge-mdx/metadata");
+    const module = await plugin.load.handler.call({}, id);
     assert.match(module, /"placement":"sidebar"/);
     assert.match(module, /"placement":"inline"/);
     assert.match(module, /"toc":false/);
@@ -175,8 +175,8 @@ test("configured package identity JSON is separate from page navigation metadata
     assert.equal(result.registry.routes[0].navigation, "visible");
     assert.equal(result.registry.routes[0].title, "Component docs");
     const plugin = mdxRegistryPlugin({ registry: config, root });
-    const id = plugin.resolveId.call({}, "virtual:moyaforge-mdx/metadata");
-    const code = await plugin.load.call({}, id);
+    const id = plugin.resolveId.handler.call({}, "virtual:moyaforge-mdx/metadata");
+    const code = await plugin.load.handler.call({}, id);
     assert.match(code, /sourceMetadata/);
     assert.ok(code.includes("@example/component"));
     await writeFile(
