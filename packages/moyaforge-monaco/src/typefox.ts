@@ -62,20 +62,30 @@ export function configureTypeFoxWorkers() {
       ),
       { type: "module" },
     );
-  const languageWorker = (specifier: string) =>
-    new Worker(new URL(specifier, import.meta.url), { type: "module" });
-
+  // Literal new URL() paths let Vite emit these workers as bundled assets.
   const typescriptWorker = () =>
-    languageWorker(
-      "@codingame/monaco-vscode-standalone-typescript-language-features/worker",
+    new Worker(
+      new URL(
+        "@codingame/monaco-vscode-standalone-typescript-language-features/worker",
+        import.meta.url,
+      ),
+      { type: "module" },
     );
   const cssWorker = () =>
-    languageWorker(
-      "@codingame/monaco-vscode-standalone-css-language-features/worker",
+    new Worker(
+      new URL(
+        "@codingame/monaco-vscode-standalone-css-language-features/worker",
+        import.meta.url,
+      ),
+      { type: "module" },
     );
   const htmlWorker = () =>
-    languageWorker(
-      "@codingame/monaco-vscode-standalone-html-language-features/worker",
+    new Worker(
+      new URL(
+        "@codingame/monaco-vscode-standalone-html-language-features/worker",
+        import.meta.url,
+      ),
+      { type: "module" },
     );
 
   useWorkerFactory({
@@ -87,8 +97,12 @@ export function configureTypeFoxWorkers() {
       scss: cssWorker,
       less: cssWorker,
       json: () =>
-        languageWorker(
-          "@codingame/monaco-vscode-standalone-json-language-features/worker",
+        new Worker(
+          new URL(
+            "@codingame/monaco-vscode-standalone-json-language-features/worker",
+            import.meta.url,
+          ),
+          { type: "module" },
         ),
       html: htmlWorker,
       handlebars: htmlWorker,
