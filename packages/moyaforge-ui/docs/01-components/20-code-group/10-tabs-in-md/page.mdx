@@ -3,20 +3,19 @@ title: Tabs in Markdown
 label: Tabs in Markdown
 ---
 
-import { CodePreview } from "../../../../src/components/CodePreview/index.js";
 import Example from "./Example.mdx";
-import exampleSource from "./Example.mdx?raw";
 
 # Tabs in Markdown
 
 Select a tab to see the install command for that package manager.
 
-<CodePreview
-  title="Tabs in Markdown"
-  files={[{ label: "Example.mdx", code: exampleSource, language: "markdown" }]}
->
-  <Example />
-</CodePreview>
+::::code-preview[Tabs in Markdown]
+
+::code-preview-sources{files="./Example.mdx"}
+
+<Example />
+
+::::
 
 ## Use these tabs in Markdown
 

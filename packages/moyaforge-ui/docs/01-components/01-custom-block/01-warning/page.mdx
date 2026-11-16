@@ -6,42 +6,22 @@ description: Help readers avoid problems before taking a risky step.
 
 # Warning
 
-import { CodePreview } from "../../../../src/components/CodePreview/index.js";
-import Example from "./Example.mdx";
-import ReactExample from "./ReactExample.mdx";
-import exampleSource from "./Example.mdx?raw";
-import exampleStyles from "./Example.css?raw";
-
 ## React Component
 
-::::code-preview[Warning callout]
+::::code-preview[Warning callout]{component="./Example.tsx"}
 
-::code-preview-sources{files="./ReactExample.mdx" replacements="portable"}
+::code-preview-sources{files="./Example.tsx,./example.css" replacements="portable"}
 
-<ReactExample />
-
-::::
-
-::::code-preview[Warning callout]{react replacements="portable"}
-import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
-
-<CustomBlock type="warning" title="Before you continue">
-  Save a backup before changing your settings.
-</CustomBlock>
 ::::
 
 ## Markdown Source
 
-Place a warning before the step where readers need to take action, such as saving a backup before changing settings.
+Place a warning before a step where readers need to take action, such as saving a backup before changing settings.
 
-<CodePreview
-  title="Warning"
-  files={[
-    { label: "Example.mdx", code: exampleSource, language: "markdown" },
-    { label: "Example.css", code: exampleStyles },
-  ]}
->
-  <Example />
-</CodePreview>
+::::code-preview[Warning MDX source]{code="./Example.mdx" language="mdx"}
 
-[Component documentation](/ui/components/custom-block)
+::code-preview-sources{files="./example.css" replacements="portable"}
+
+::::
+
+[Component documentation](../)

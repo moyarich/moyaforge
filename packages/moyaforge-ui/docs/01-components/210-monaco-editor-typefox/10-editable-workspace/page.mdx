@@ -3,27 +3,15 @@ title: Editable workspace
 label: Editable workspace
 ---
 
-import {
-  CodePreview,
-  CODE_REPLACEMENTS,
-} from "../../../../src/components/CodePreview/CodePreview.tsx";
-import Example from "./Example.tsx";
-import editorSource from "./Example.tsx?raw";
-export const setupWorkspaceSource = "import { configureTypeFoxWorkers } from \"@moyarich/moyaforge-monaco/typefox\";\\nconfigureTypeFoxWorkers();";
 
 # Editable workspace
 
 Switch between files, edit their contents, and use Save to see how the workspace handles changes.
 
-<CodePreview
-  title="Editable workspace"
-  files={[
-    { label: "Example.tsx", code: editorSource },
-    { label: "setup.ts", code: setupWorkspaceSource },
-  ]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+::::code-preview[Editable workspace]{component="./Example.tsx"}
+
+::code-preview-sources{files="./Example.tsx,./setup.ts" replacements="portable"}
+
+::::
 
 [Component installation and usage](../)
