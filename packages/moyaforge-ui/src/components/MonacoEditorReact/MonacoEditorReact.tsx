@@ -88,7 +88,12 @@ export function MonacoEditorReact({
             onChange={(next) => {
               if (next !== undefined && !readOnly) onChange(next);
             }}
-            options={{ ...options, readOnly, domReadOnly: readOnly }}
+            options={{
+              fixedOverflowWidgets: true,
+              ...options,
+              readOnly,
+              domReadOnly: readOnly,
+            }}
           />
         )}
       />
