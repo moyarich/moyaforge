@@ -36,7 +36,7 @@ test(
         ...runtime,
         useMDXComponents,
         ...createMdxOptions({
-          shiki: [
+          highlightingPlugin: [
             rehypeShiki,
             { themes: { light: "github-light", dark: "github-dark" } },
           ],
@@ -125,7 +125,7 @@ test("Markdown code-group directives render React tabs while other directives st
     ...runtime,
     useMDXComponents,
     ...createMdxOptions({
-      directiveComponents: {
+      componentMappings: {
         "code-group": {
           component: "CodeGroup",
           childType: "tab",
@@ -159,7 +159,7 @@ test("wildcard directive mapping emits semantic components with type/title and s
     ...runtime,
     useMDXComponents,
     ...createMdxOptions({
-      directiveComponents: {
+      componentMappings: {
         "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
       },
     }),

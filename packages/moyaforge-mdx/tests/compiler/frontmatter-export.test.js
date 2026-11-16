@@ -15,7 +15,7 @@ test("registry metadata does not require a compiled JavaScript frontmatter expor
     ),
     false,
   );
-  const legacy = createMdxOptions({ frontmatterExport: true });
+  const legacy = createMdxOptions({ exportFrontmatter: true });
   assert.ok(
     legacy.remarkPlugins.some(
       (plugin) => Array.isArray(plugin) && plugin[1]?.name === "frontmatter",

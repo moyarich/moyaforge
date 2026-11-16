@@ -53,7 +53,7 @@ export default defineConfig({
     {
       ...mdx(
         createMdxOptions({
-          directiveComponents: {
+          componentMappings: {
             "*": {
               component: "CustomBlock",
               typeProp: "type",
@@ -120,15 +120,11 @@ Save a backup before changing your settings.
 
 ::::
 
-Create `src/Guide.mdx` with the warning below. If your app already renders documentation through a router, keep that setup and add `CustomBlock` to its existing provider. For the `existing` starter with the default component destination, import from `../../src/components/ui/CustomBlock/CustomBlock.js` in `moyaforge/src/App.tsx`.
-
-The `"*"` mapping covers `note`, `tip`, `warning`, and custom types such as `release-note`. Each type becomes a CSS class you can style individually.
-
 ## Usage
 
 In your MDX page, start the callout with `:::`, followed by its type and heading. Leave a blank line before the message and close the callout with another `:::`.
 
-```md filename="src/Guide.mdx"
+```md filename="src/warning.mdx"
 ::: warning Before you continue
 
 Save a backup before changing your settings.

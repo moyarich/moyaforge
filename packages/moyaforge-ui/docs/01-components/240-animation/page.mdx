@@ -1,0 +1,93 @@
+---
+title: Animation
+description: Animate React content with fades, slides, reveals, and a typewriter effect.
+---
+
+# Animation
+
+Use `Animation` for a single effect and `AnimationGroup` to coordinate several effects.
+
+Change the group's React `key` to replay it from the beginning.
+
+## Options
+
+Both components accept a `className` string, array, or conditional object.
+
+```tsx
+<Animation effect="fade" className={["message", { featured: isFeatured }]}>
+  <p>Welcome to the guide.</p>
+</Animation>
+```
+
+| Option             | Description                                                                                                       |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `effect`           | `fade`, `slide`, `fade-slide` (default), `reveal`, or `typewriter`. Use the typewriter effect for static text.    |
+| `sequence` (group) | Wait for the previous entry to finish. Defaults to `false`.                                                       |
+| `duration`         | Effect duration in seconds. Defaults to `0.3`.                                                                    |
+| `wait`             | Initial delay in seconds. Defaults to `0`.                                                                        |
+| `stagger` (group)  | Delay in seconds between sequential entries. For independent entries, adds this delay per index. Defaults to `0`. |
+| `distance`         | Vertical offset in pixels for slide effects. Defaults to `12`.                                                    |
+
+Entries show their content immediately when the user prefers reduced motion.
+
+## Single animation
+
+:::code-preview[Fade in]{react replacements="portable"}
+
+import { Animation } from "../../../src/components/Animation/index.js";
+
+<Animation effect="fade">
+  <p>Welcome to the guide.</p>
+</Animation>
+
+:::
+
+---
+
+## AnimationGroup
+
+Place each `Animation` directly inside the group. With `sequence`, each effect finishes before the next one starts. Without `sequence`, `stagger` offsets the start of each effect.
+
+:::code-preview[Sequential animation]{react replacements="portable"}
+
+import {
+  Animation,
+  AnimationGroup,
+} from "../../../src/components/Animation/index.js";
+
+<AnimationGroup sequence stagger={0.15}>
+  <Animation effect="fade-slide">
+    <h2>Build your documentation</h2>
+  </Animation>
+  <Animation effect="typewriter" duration={1}>
+    <p>Start with a Markdown page.</p>
+  </Animation>
+</AnimationGroup>
+
+:::
+
+::::code-preview[Replay animation]{react replacements="portable"}
+
+import { AnimationExample } from "./Example.tsx";
+
+<AnimationExample />
+
+::code-preview-sources{files="./Example.tsx,./example.css"}
+
+::::
+
+---
+
+## Terminal animation
+
+Type the command, reveal each result in order, and replay the simulated run.
+
+::::code-preview[shadcn initialization]{react replacements="portable"}
+
+import { TerminalExample } from "./TerminalExample.tsx";
+
+<TerminalExample />
+
+::code-preview-sources{files="./TerminalExample.tsx,./TerminalExample.css"}
+
+::::

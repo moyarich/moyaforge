@@ -21,7 +21,7 @@ test("rejects naming collisions, missing imports, undeclared packages and bounda
   await put("outside.ts", "export const x = 1;");
   await put(entry, 'export * from "../../../../../../outside.ts";');
   await expect(buildRegistry(root)).rejects.toThrow(
-    "outside canonical UI source",
+    "outside configured component source",
   );
   await expect(readFile(resolve(root, "registry.json"))).rejects.toThrow();
 });

@@ -35,7 +35,7 @@ const workflow = readFileSync(
   "utf8",
 );
 const match = workflow.match(
-  /      - name: Commit generated registry files when changed\n(?:        id: [^\n]+\n)?        shell: bash\n        run: \|\n((?:          .*\n|\n)+)/,
+  /      - name: Commit generated registry files when changed\n(?:        id: [^\n]+\n)?        shell: bash\n(?:        env:\n(?:          [^\n]+\n)+)?        run: \|\n((?:          .*\n|\n)+)/,
 );
 assert.ok(match, "registry workflow commit step exists");
 const script = match[1]
@@ -81,6 +81,7 @@ function fixture(fn: (context: Fixture) => void) {
         run(repo, "bash", ["-e", "-c", script], {
           GITHUB_REF_NAME: "main",
           GITHUB_OUTPUT: join(root, "outputs"),
+          REGISTRY_OUTPUT: "registry.json",
         }),
     });
   } finally {
@@ -157,7 +158,8 @@ test("workflow has manual dispatch, per-ref serialization, and PR freshness chec
     /group: build-component-registry-\$\{\{ github\.ref \}\}/,
   );
   assert.match(workflow, /cancel-in-progress: false/);
-  assert.match(workflow, /git add -- registry\.json\s*\n/);
+  assert.match(workflow, /git add -- "\$REGISTRY_OUTPUT"\s*\n/);
+  assert.match(workflow, /--config registry\.config\.ts/);
   assert.doesNotMatch(script, /--force|push\s+-f\b/);
   assert.match(workflow, /npm run registry:check/);
 });

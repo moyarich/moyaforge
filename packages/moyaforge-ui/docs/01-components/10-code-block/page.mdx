@@ -5,6 +5,8 @@ description: Live MoyaForge CodeBlock examples with copy support and syntax high
 navigation: visible
 ---
 
+import { CodeBlock as LiveCodeBlock } from "../../../src/components/CodeBlock/index.js";
+
 # Code Block
 
 Use `CodeBlock` to display code that readers can copy.
@@ -31,6 +33,14 @@ npx shadcn@latest add moyarich/moyaforge/code-block
 Install the `code-block` registry item with the MoyaForge CLI. Its component source and CSS are copied into your application rather than bundled into `@moyarich/moyaforge`.
 
 ## Usage
+
+::: code-preview Copyable code
+
+<LiveCodeBlock>
+  <code className="language-ts">const answer = 42;</code>
+</LiveCodeBlock>
+
+:::
 
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 
@@ -64,7 +74,7 @@ export default defineConfig({
     {
       ...mdx(
         createMdxOptions({
-          shiki: [
+          highlightingPlugin: [
             rehypeShiki,
             { themes: { light: "github-light", dark: "github-dark" } },
           ],
@@ -104,7 +114,7 @@ If your app already wraps its documentation in an `MDXProvider`, add the compone
 
 ## Related
 
-- [All MoyaForge examples](/docs/examples)
+- [UI component gallery](/ui)
 
 ## Styling
 

@@ -1,7 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const packages = [
@@ -11,66 +10,46 @@ const packages = [
   "moyaforge-search-sqlite",
 ];
 
-const temp = mkdtempSync(join(tmpdir(), "moyaforge-package-exports-"));
-try {
-  for (const name of packages) {
-    const manifest = JSON.parse(
-      readFileSync(join(root, "packages", name, "package.json"), "utf8"),
-    );
-    const tarballName = execFileSync(
+for (const name of packages) {
+  const manifest = JSON.parse(
+    readFileSync(resolve(root, "packages", name, "package.json"), "utf8"),
+  );
+  const result = JSON.parse(
+    execFileSync(
       "npm",
       [
         "pack",
         "--workspace",
         manifest.name,
+        "--dry-run",
+        "--json",
         "--ignore-scripts",
-        "--silent",
-        "--pack-destination",
-        temp,
       ],
       { cwd: root, encoding: "utf8" },
-    )
-      .trim()
-      .split("\n")
-      .at(-1);
-    const tarball = join(temp, tarballName);
-    const files = new Set(
-      execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
-        .split("\n")
-        .filter(Boolean)
-        .map((path) => path.replace(/^package\//, "")),
-    );
-    const missing: string[] = [];
-    const requireFile = (path: string) => {
-      if (!files.has(path.replace(/^\.\//, ""))) missing.push(path);
-    };
-
-    for (const entry of Object.values(manifest.exports ?? {}) as Array<{types: string; import: string; default: string}>) {
-      if (typeof entry !== "object" || entry === null) {
-        throw new Error(`${manifest.name} has an unexpected export entry`);
-      }
-      requireFile(entry.types);
-      requireFile(entry.import);
-      if (entry.default !== entry.import) {
-        throw new Error(`${manifest.name} default export differs from import`);
-      }
-    }
-    for (const path of Object.values(manifest.bin ?? {})) requireFile(path);
-    requireFile(manifest.main);
-    requireFile(manifest.types);
-    requireFile("package.json");
-    requireFile("README.md");
-    requireFile("CHANGELOG.md");
-
-    if (missing.length) {
-      throw new Error(
-        `${manifest.name} tarball is missing declared files: ${missing.join(", ")}`,
-      );
-    }
-    console.log(
-      `${manifest.name}: verified ${files.size} packaged files and public exports`,
+    ),
+  );
+  const pack = Array.isArray(result) ? result[0] : result[manifest.name];
+  const files = new Set(pack.files.map(({ path }: { path: string }) => path));
+  const exports = Object.values(manifest.exports ?? {}) as Record<
+    string,
+    string
+  >[];
+  const required = [
+    "package.json",
+    "README.md",
+    "CHANGELOG.md",
+    manifest.main,
+    manifest.types,
+    ...Object.values(manifest.bin ?? {}),
+    ...exports.flatMap(Object.values),
+  ] as string[];
+  const missing = [...new Set(required)].filter(
+    (path) => !files.has(path.replace(/^\.\//, "")),
+  );
+  if (missing.length) {
+    throw new Error(
+      `${manifest.name} package is missing: ${missing.join(", ")}`,
     );
   }
-} finally {
-  rmSync(temp, { recursive: true, force: true });
+  console.log(`${manifest.name}: verified ${files.size} packaged files`);
 }

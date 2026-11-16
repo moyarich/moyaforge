@@ -5,7 +5,7 @@ import { resolve, relative } from "node:path";
 import {
   planComponentInstallation,
   applyPlan,
-} from "../../packages/moyaforge-cli/src/registry.ts";
+} from "../../packages/moyaforge-cli/src/index.ts";
 
 test("each registry item installs independently at its declared targets", async () => {
   const repository = resolve(import.meta.dirname, "../..");

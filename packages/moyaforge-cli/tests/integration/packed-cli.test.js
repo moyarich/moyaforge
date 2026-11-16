@@ -1,8 +1,7 @@
 import { test, expect } from "vitest";
-import { mkdtemp, mkdir, readFile, rm, stat } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 
 const repository = resolve(import.meta.dirname, "../../../..");
@@ -32,10 +31,11 @@ test("packed CLI runs init using only compiled files and packaged templates", as
       false,
     );
     expect(
-      packed.files.some((file) => file.path === "dist/registry.d.ts"),
+      packed.files.some((file) => file.path === "dist/index.d.ts"),
     ).toBe(true);
     expect(packed.files.some(file => file.path === "templates/base/package.json")).toBe(true);
-    expect(packed.files.some(file => file.path === "templates/search/vite.config.ts")).toBe(true);
+    // Search augments the base Vite template, rather than replacing its MDX mapping.
+    expect(packed.files.some(file => file.path === "templates/search/vite.config.ts")).toBe(false);
     run("tar", ["-xzf", join(temporary, packed.filename), "-C", temporary]);
     expect(
       packed.files.some((file) => file.path === "dist/cli.js"),
@@ -72,10 +72,34 @@ test("packed CLI runs init using only compiled files and packaged templates", as
       "__UI__",
     );
     expect((await stat(cli)).mode & 0o111).not.toBe(0);
-    const api = await import(
-      pathToFileURL(join(consumer, "node_modules/@moyarich/moyaforge-cli/dist/registry.js")).href
+    const programmatic = join(temporary, "programmatic");
+    await mkdir(programmatic);
+    await writeFile(join(consumer, "programmatic.mts"), `
+import {
+  createProject,
+  planComponentInstallation,
+  type InstallOptions,
+} from "@moyarich/moyaforge-cli";
+
+const options: InstallOptions = {
+  cwd: ${JSON.stringify(programmatic)},
+  registry: ${JSON.stringify(repository)},
+  install: false,
+};
+if (typeof planComponentInstallation !== "function") throw new Error("Missing registry API");
+await createProject({ ...options, dryRun: true });
+export const create = () => createProject(options);
+`);
+    run(resolve(repository, "node_modules/.bin/tsc"), [
+      "--ignoreConfig", "--noEmit", "--strict", "--skipLibCheck", "--module", "NodeNext",
+      "programmatic.mts",
+    ], consumer);
+    run(process.execPath, ["programmatic.mts"], consumer);
+    await expect(stat(join(programmatic, "vite.config.ts"))).rejects.toMatchObject({ code: "ENOENT" });
+    run(process.execPath, ["--input-type=module", "-e", "await (await import('./programmatic.mts')).create()"], consumer);
+    expect(await readFile(join(programmatic, "vite.config.ts"), "utf8")).toContain(
+      "defineConfig",
     );
-    expect(typeof api.planComponentInstallation).toBe("function");
   } finally {
     await rm(temporary, { recursive: true, force: true });
   }

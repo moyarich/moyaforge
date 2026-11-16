@@ -1,5 +1,5 @@
-import { lstat, readFile, rm, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { lstat, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
 
 function isMissing(error: unknown) {
   return error instanceof Error && "code" in error && error.code === "ENOENT";
@@ -12,12 +12,21 @@ function firstMismatch(a: string, b: string) {
   return index;
 }
 
+export interface RegistryOutputOptions {
+  outputFile?: string;
+  legacyStylesDir?: string | false;
+}
+
 export async function updateRegistryOutput(
   root: string,
   output: string,
   check: boolean,
+  {
+    outputFile = "registry.json",
+    legacyStylesDir = false,
+  }: RegistryOutputOptions = {},
 ) {
-  const manifestPath = resolve(root, "registry.json");
+  const manifestPath = resolve(root, outputFile);
   const existing = await readFile(manifestPath, "utf8").catch(
     (error: unknown) => {
       if (!check && isMissing(error)) return undefined;
@@ -31,20 +40,28 @@ export async function updateRegistryOutput(
     );
   }
 
-  const stylesRoot = resolve(root, "registry/styles");
-  const hasLegacyStyles = await lstat(stylesRoot).then(
-    () => true,
-    (error: unknown) => {
-      if (isMissing(error)) return false;
-      throw error;
-    },
-  );
+  const stylesRoot = legacyStylesDir
+    ? resolve(root, legacyStylesDir)
+    : undefined;
+  const hasLegacyStyles = stylesRoot
+    ? await lstat(stylesRoot).then(
+        () => true,
+        (error: unknown) => {
+          if (isMissing(error)) return false;
+          throw error;
+        },
+      )
+    : false;
   if (check && hasLegacyStyles)
     throw Error(
       "Obsolete registry/styles output exists. Run npm run registry:build.",
     );
   if (check) return;
 
-  if (existing !== output) await writeFile(manifestPath, output);
-  if (hasLegacyStyles) await rm(stylesRoot, { recursive: true, force: true });
+  if (existing !== output) {
+    await mkdir(dirname(manifestPath), { recursive: true });
+    await writeFile(manifestPath, output);
+  }
+  if (stylesRoot && hasLegacyStyles)
+    await rm(stylesRoot, { recursive: true, force: true });
 }

@@ -1,0 +1,29 @@
+---
+title: Textarea
+label: Textarea
+---
+
+import {
+  CodePreview,
+  CODE_REPLACEMENTS,
+} from "../../../../src/components/CodePreview/CodePreview.tsx";
+
+export const setupSource = "import { configureTypeFoxWorkers } from \"@moyarich/moyaforge-monaco/typefox\";\\nconfigureTypeFoxWorkers();";
+
+import Example from "./Example.tsx";
+import editorSource from "./Example.tsx?raw";
+
+# Render Editor in Textarea
+
+<CodePreview
+  title="Textarea"
+  files={[
+    { label: "Example.tsx", code: editorSource },
+    { label: "setup.ts", code: setupSource },
+  ]}
+  replacements={CODE_REPLACEMENTS}
+>
+  <Example />
+</CodePreview>
+
+[Component installation and usage](../)

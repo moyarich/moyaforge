@@ -32,13 +32,13 @@ export default defineConfig({
           new URL("./src/bin/moyaforge.ts", import.meta.url),
         ),
         cli: fileURLToPath(new URL("./src/bin/cli.ts", import.meta.url)),
-        registry: fileURLToPath(new URL("./src/registry.ts", import.meta.url)),
-        scaffold: fileURLToPath(new URL("./src/scaffold.ts", import.meta.url)),
+        index: fileURLToPath(new URL("./src/index.ts", import.meta.url)),
       },
       formats: ["es"],
       fileName: (_format, name) => `${name}.js`,
     },
     rolldownOptions: {
+      output: { chunkFileNames: "chunks/[name]-[hash].js" },
       external: [
         ...builtinModules,
         ...builtinModules.map((name) => `node:${name}`),

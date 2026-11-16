@@ -1,0 +1,195 @@
+import { readFile } from "node:fs/promises";
+import { expect, test } from "vitest";
+
+test("headless docs routing does not import installable UI", async () => {
+  const source = await readFile(
+    new URL(
+      "../../packages/moyaforge/src/routing/HeadlessDocsRoutes.tsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  expect(source).not.toMatch(
+    /DocsLayout|SidebarV1|SidebarV2|DocOutline|moyaforge-ui/,
+  );
+  expect(source).toContain("renderLayout");
+});
+
+test("both framework entrypoints expose headless documentation routes", async () => {
+  for (const entry of ["index.ts", "headless.ts"]) {
+    const source = await readFile(
+      new URL(`../../packages/moyaforge/src/${entry}`, import.meta.url),
+      "utf8",
+    );
+    expect(source).toContain("HeadlessDocsRoutes");
+  }
+});
+
+test("routing remains separate from installable UI", async () => {
+  const source = await readFile(
+    new URL(
+      "../../packages/moyaforge/src/routing/HeadlessDocsRoutes.tsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  expect(source).toContain("renderLayout");
+  expect(source).not.toContain("<DocsLayout");
+});
+
+test("headless package subpath exports routing without legacy layout imports", async () => {
+  const source = await readFile(
+    new URL("../../packages/moyaforge/src/headless.ts", import.meta.url),
+    "utf8",
+  );
+  const pkg = JSON.parse(
+    await readFile(
+      new URL("../../packages/moyaforge/package.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  expect(pkg.exports["./headless"]).toEqual({
+    types: "./dist/headless.d.ts",
+    import: "./dist/headless.js",
+    default: "./dist/headless.js",
+  });
+  expect(source).toContain("HeadlessDocsRoutes");
+  expect(source).toContain("RegistryRouteView");
+  expect(source).not.toMatch(
+    /DocsLayout|DocumentationSite|SidebarV1|SidebarV2|DocOutline/,
+  );
+});
+
+test("registry distributes UI shells without bundling headless framework routing", async () => {
+  const registry = JSON.parse(
+    await readFile(new URL("../../registry.json", import.meta.url), "utf8"),
+  );
+  expect(registry.items.some((entry) => entry.name === "docs-routes")).toBe(
+    false,
+  );
+  for (const name of ["docs-shell", "docs-shell-focused", "docs-shell-wide"]) {
+    const shell = registry.items.find((entry) => entry.name === name);
+    expect(shell).toBeDefined();
+    expect(
+      shell.files.every(
+        (file) => !file.path.startsWith("packages/moyaforge/src/"),
+      ),
+    ).toBe(true);
+  }
+});
+
+test("playground uses public RegistryRoutes inside its host router", async () => {
+  const app = await readFile(
+    new URL("../../apps/playground/src/App.tsx", import.meta.url),
+    "utf8",
+  );
+  const source = await readFile(
+    new URL(
+      "../../apps/playground/src/components/PlaygroundRoutes.tsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  expect(app).toContain("<PlaygroundRoutes");
+  expect(app).not.toContain("MoyaForgeRouter");
+  expect(source).toContain('from "@moyarich/moyaforge/registry-routes"');
+  expect(app).toContain("<HashRouter>");
+  expect(source).toContain("<RegistryRoutes");
+  expect(source).not.toContain("MoyaForgeRouter");
+});
+
+test("playground uses source-owned DocumentationSite with host adapters", async () => {
+  const source = await readFile(
+    new URL(
+      "../../apps/playground/src/components/Shell/PlaygroundShell.tsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  expect(source).toContain(
+    "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx",
+  );
+  expect(source).toContain("onNavigate={navigate}");
+  expect(source).toContain("currentPath={page?.path}");
+  expect(source).not.toMatch(
+    /import\s*\{\s*DocumentationSite[\s\S]*?from "@moyarich\/moyaforge\/docs"/,
+  );
+});
+
+test("playground sidebar and outline use private UI source instead of framework exports", async () => {
+  const source = await readFile(
+    new URL(
+      "../../apps/playground/src/components/Shell/PlaygroundShell.tsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  expect(source).toContain(
+    "packages/moyaforge-ui/src/components/SidebarV1/index.ts",
+  );
+  expect(source).toContain(
+    "packages/moyaforge-ui/src/components/DocOutline/index.ts",
+  );
+  expect(source).not.toMatch(
+    /import\s*\{[^}]*SidebarV1[^}]*\}\s*from "@moyarich\/moyaforge\/docs"/,
+  );
+});
+
+test("playground no longer imports framework's UI-heavy docs subpath", async () => {
+  const app = await readFile(
+    new URL(
+      "../../apps/playground/src/components/Shell/PlaygroundShell.tsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  expect(app).not.toContain('from "@moyarich/moyaforge/docs"');
+  expect(app).toContain('from "@moyarich/moyaforge-mdx/navigation"');
+});
+
+test("playground MDX provider uses source-owned UI without legacy MDX registry", async () => {
+  const provider = await readFile(
+    new URL("../../apps/playground/src/mdx-provider.tsx", import.meta.url),
+    "utf8",
+  );
+  expect(provider).toContain(
+    "packages/moyaforge-ui/src/components/CodeBlock/index.ts",
+  );
+  expect(provider).not.toContain("@moyarich/moyaforge/mdx");
+  expect(provider).not.toContain("moyaForgeComponents");
+});
+
+test("framework root entrypoint does not re-export installable UI or bundled MDX", async () => {
+  const root = await readFile(
+    new URL("../../packages/moyaforge/src/index.ts", import.meta.url),
+    "utf8",
+  );
+  expect(root).not.toContain('export * from "./components/index.js"');
+  expect(root).not.toContain('export * from "./utils/index.js"');
+  expect(root).toContain('export * from "./utils/content/index.js"');
+  expect(root).toContain('export * from "./utils/navigation/index.js"');
+});
+
+test("framework TypeScript build is rooted at published entrypoints", async () => {
+  const config = JSON.parse(
+    await readFile(
+      new URL("../../packages/moyaforge/tsconfig.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  expect(config.include).toEqual([
+    "src/index.ts",
+    "src/registry-routes.tsx",
+    "src/headless.ts",
+  ]);
+  expect(config.include).not.toContain("src/**/*.tsx");
+});
+
+test("playground styles are source-owned, not imported from framework package", async () => {
+  const entry = await readFile(
+    new URL("../../apps/playground/src/main.tsx", import.meta.url),
+    "utf8",
+  );
+  expect(entry).not.toContain("@moyarich/moyaforge/components.css");
+  expect(entry).toContain('import "./styles.css"');
+});

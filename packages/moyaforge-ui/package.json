@@ -20,12 +20,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.json",
+    "build": "npm run build --workspace @moyarich/moyaforge-monaco && vite build && tsc -p tsconfig.json",
     "test": "vitest run tests",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "npm run build --workspace @moyarich/moyaforge-monaco && tsc -p tsconfig.json --noEmit",
     "registry:check": "node ../../bin/build-registry.ts --check",
-    "storybook": "storybook dev -p 6006 -c .storybook",
-    "test:storybook": "storybook build -c .storybook -o ../../.storybook-static",
+    "storybook": "npm run build --workspace @moyarich/moyaforge-monaco && storybook dev -p 6006 -c .storybook",
+    "test:storybook": "npm run build --workspace @moyarich/moyaforge-monaco && storybook build -c .storybook -o ../../.storybook-static",
     "prepack": "npm run build"
   },
   "license": "MIT",
@@ -37,36 +37,23 @@
     "node": ">=24.11.0"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "csstype": "^3.2.3",
     "is-hotkey": "^0.2.1",
     "lucide-react": "^1.56.0",
+    "motion": "^14.14.0",
     "shiki": "^4.5.0"
   },
   "peerDependencies": {
-    "@codingame/monaco-vscode-editor-api": "^37.6.1",
-    "@monaco-editor/react": ">=4",
-    "@typefox/monaco-editor-react": "~8.0.2",
-    "monaco-editor": "^0.52.2",
-    "monaco-languageclient": "~11.0.2",
     "react": ">=18",
-    "react-router-dom": "^7.18.4"
+    "react-router-dom": "^7.18.4",
+    "@moyarich/moyaforge-monaco": "^0.1.0"
   },
   "peerDependenciesMeta": {
-    "@codingame/monaco-vscode-editor-api": {
-      "optional": true
-    },
-    "@monaco-editor/react": {
-      "optional": true
-    },
-    "@typefox/monaco-editor-react": {
-      "optional": true
-    },
-    "monaco-editor": {
-      "optional": true
-    },
-    "monaco-languageclient": {
-      "optional": true
-    },
     "react-router-dom": {
+      "optional": true
+    },
+    "@moyarich/moyaforge-monaco": {
       "optional": true
     }
   },
@@ -74,23 +61,19 @@
     "is-hotkey": "^0.2.1",
     "@types/is-hotkey": "^0.1.10",
     "lucide-react": "^1.56.0",
-    "@monaco-editor/react": ">=4",
-    "monaco-editor": "^0.52.2",
-    "@typefox/monaco-editor-react": "~8.0.2",
-    "monaco-languageclient": "~11.0.2",
     "@moyarich/moyaforge-mdx": "^0.1.0",
     "react": ">=18",
     "react-router-dom": "^7.18.4",
-    "@codingame/monaco-vscode-editor-api": "^37.6.1",
-    "shiki": "^4.5.0"
+    "shiki": "^4.5.0",
+    "@moyarich/moyaforge-monaco": "^0.1.0"
   },
   "devDependencies": {
-    "@storybook/react-vite": "^10.0.0",
+    "@storybook/react-vite": "^10.6.7",
     "@types/is-hotkey": "^0.1.10",
     "@vitejs/plugin-react": "^6.1.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "storybook": "^10.0.0",
+    "storybook": "^10.6.7",
     "typescript": "^7.0.2",
     "vite": "^8.3.4"
   },

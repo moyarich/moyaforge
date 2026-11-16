@@ -9,7 +9,7 @@ import {
 } from "../../../../src/components/CodePreview/CodePreview.tsx";
 import ReadOnlyEditor from "../20-read-only/Example.tsx";
 import readOnlySource from "../20-read-only/Example.tsx?raw";
-import setupSource from "../setup.ts?raw";
+export const setupSource = "import { configureTypeFoxWorkers } from \"@moyarich/moyaforge-monaco/typefox\";\\nconfigureTypeFoxWorkers();";
 
 # Read-only workspace
 
@@ -26,4 +26,4 @@ Set `readOnly` on the editor to lock all files, or on an individual file to lock
   <ReadOnlyEditor />
 </CodePreview>
 
-[Component installation and usage](/ui/components/monaco-editor-typefox)
+[Component installation and usage](../)

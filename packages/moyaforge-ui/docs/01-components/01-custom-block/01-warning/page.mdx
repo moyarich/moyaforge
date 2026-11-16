@@ -4,12 +4,33 @@ label: Warning
 description: Help readers avoid problems before taking a risky step.
 ---
 
+# Warning
+
 import { CodePreview } from "../../../../src/components/CodePreview/index.js";
 import Example from "./Example.mdx";
+import ReactExample from "./ReactExample.mdx";
 import exampleSource from "./Example.mdx?raw";
 import exampleStyles from "./Example.css?raw";
 
-# Warning
+## React Component
+
+::::code-preview[Warning callout]
+
+::code-preview-sources{files="./ReactExample.mdx" replacements="portable"}
+
+<ReactExample />
+
+::::
+
+::::code-preview[Warning callout]{react replacements="portable"}
+import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+
+<CustomBlock type="warning" title="Before you continue">
+  Save a backup before changing your settings.
+</CustomBlock>
+::::
+
+## Markdown Source
 
 Place a warning before the step where readers need to take action, such as saving a backup before changing settings.
 

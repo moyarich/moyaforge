@@ -1,0 +1,72 @@
+---
+title: Editable source with Monaco
+label: Editable source with Monaco
+description: Open an editable source panel inside a Preview.
+---
+
+# Editable source with Monaco
+
+Select **Code** to edit the TSX or CSS, then select **Preview** to see the updated counter. TSX edits restart the component. Select **Reset code** to restore the original TSX and CSS.
+
+## Installation
+
+<CodeGroup label="Install CodePreviewEditor">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add code-preview-editor
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/code-preview-editor
+```
+
+</CodeTab>
+</CodeGroup>
+
+Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers.
+
+::::code-preview[CodePreviewEditor]{react replacements="portable"}
+
+import { CodePreviewEditor } from "../../../../src/components/CodePreviewEditor/index.js";
+import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
+import counterSource from "../../CounterExample.tsx?raw";
+import counterStyles from "../../counterExample.css?raw";
+export const workerSource = 'import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";\nconfigureReactWorkers();\n';
+
+<CodePreviewEditor
+  title="Monaco source editor"
+  files={[
+    {
+      name: "CounterExample.tsx",
+      language: "typescript",
+      value: counterSource,
+    },
+    { name: "counterExample.css", language: "css", value: counterStyles },
+    {
+      name: "setup-react-monaco-worker.ts",
+      language: "typescript",
+      value: workerSource,
+      readOnly: true,
+    },
+  ]}
+  height={320}
+  renderPreview={(files) => (
+    <MonacoPreviewExample
+      source={
+        files.find((file) => file.name === "CounterExample.tsx")?.value ?? ""
+      }
+      styles={
+        files.find((file) => file.name === "counterExample.css")?.value ?? ""
+      }
+    />
+  )}
+/>
+::::
+
+## Styling
+
+The example styles live alongside its TSX source; use the `--mf-preview-*` variables for the outer preview frame.

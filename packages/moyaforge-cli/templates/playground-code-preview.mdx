@@ -1,0 +1,46 @@
+## Code preview
+
+Select **Code** to see the live markup and the named source file.
+
+::: code-preview Greeting
+
+<p><strong>Hello from the playground.</strong></p>
+
+```ts filename="greeting.ts"
+export const greeting = "Hello from the playground.";
+```
+
+:::
+
+### Import React components inline
+
+Use `{react}` to keep imports scoped to the preview. Named fences add source tabs.
+
+:::code-preview[Inline React greeting]{react}
+
+import Greeting from "./Greeting.tsx";
+
+<Greeting />
+
+```ts filename="message.ts"
+export const message = "Hello from a React component.";
+```
+
+:::
+
+### Preview a React component from a file
+
+The `component` attribute loads `Greeting.tsx` through `virtual:moyaforge-mdx/code-preview-components`. The `code-preview-sources` directive lists the files shown in the Code view. This works in plain Markdown pages too.
+
+::::code-preview[Greeting component]{component="./Greeting.tsx"}
+
+::code-preview-sources{files="./Greeting.tsx"}
+
+::::
+
+### Preview source code without rendering it
+
+Use `code` when you want to display a file as highlighted source without loading it as a React component.
+
+:::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}
+:::

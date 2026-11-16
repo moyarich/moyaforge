@@ -1,0 +1,33 @@
+.mf-preview-source {
+  padding: var(--_mf-preview-padding);
+  margin: 0;
+  overflow-x: auto;
+}
+pre.mf-preview-source {
+  border: 0;
+  border-radius: 0;
+  background: var(--_mf-preview-source-background);
+  font-size: var(--_mf-preview-font-size);
+  line-height: 1.75;
+  white-space: pre;
+  max-height: 32rem;
+}
+pre.mf-preview-source > code {
+  display: block;
+  font: inherit;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+.mf-preview-source[hidden] {
+  display: none;
+}
+
+/* A source slot can contain a file-tab CodeGroup instead of a plain snippet. */
+.mf-preview-source:not(pre) {
+  --code-group-margin: 0;
+  --code-group-border-radius: 0;
+  padding: 0;
+}

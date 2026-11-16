@@ -1,3 +1,4 @@
+import "./PreviewSource.css";
 import {
   Fragment,
   cloneElement,
@@ -24,6 +25,7 @@ export function PreviewSource({
   children,
   code,
   language = "tsx",
+  className,
   ...props
 }: PreviewSourceProps) {
   const { view, source } = usePreview();
@@ -43,6 +45,9 @@ export function PreviewSource({
       ...child.props,
       ...props,
       "data-moyaforge-preview-source": "",
+      className: ["mf-preview-source", child.props.className, className]
+        .filter(Boolean)
+        .join(" "),
       "data-language": language,
       hidden: view !== "code",
     });
@@ -50,6 +55,7 @@ export function PreviewSource({
   return (
     <pre
       data-moyaforge-preview-source=""
+      className={["mf-preview-source", className].filter(Boolean).join(" ")}
       data-language={language}
       hidden={view !== "code"}
       {...props}

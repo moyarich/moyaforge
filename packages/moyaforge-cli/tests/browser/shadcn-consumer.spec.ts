@@ -2,43 +2,45 @@ import { test } from "@playwright/test";
 import { mkdtemp, mkdir, writeFile, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { spawn } from "node:child_process";
-import { once } from "node:events";
-import { createServer } from "node:http";
+import { spawn, type ChildProcess } from "node:child_process";
+import { createServer, type Server } from "node:http";
 import assert from "node:assert/strict";
-import { chromium } from "@playwright/test";
-
-test.setTimeout(300_000);
+import { run, stopServer, waitForServer } from "./packed-consumer-helper.js";
 
 const repo = resolve(import.meta.dirname, "../../../..");
-test("GitHub shadcn consumer", async () => {
-  async function run(command, args, cwd) {
-    const child = spawn(command, args, {
-      cwd,
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let text = "";
-    child.stdout.on("data", (chunk) => (text += chunk));
-    child.stderr.on("data", (chunk) => (text += chunk));
-    const [status] = await once(child, "exit");
-    if (status !== 0)
-      throw Error(`${command} ${args.join(" ")} failed\n${text}`);
-    return text.trim();
-  }
+
+interface ShadcnConsumer {
+  root: string;
+  url: string;
+  registryItem: string;
+  server?: ChildProcess;
+  registryServer?: Server;
+}
+
+let consumer: ShadcnConsumer;
+
+/** npm installation, shadcn scaffolding, typecheck and build are setup, not browser assertions. */
+async function prepareShadcnConsumer(): Promise<ShadcnConsumer> {
   const ref =
     process.env.MOYAFORGE_REGISTRY_REF ??
-    (await run("git", ["rev-parse", "HEAD"], repo));
+    (await run("git", ["rev-parse", "HEAD"], repo)).trim();
   const root = await mkdtemp(join(tmpdir(), "moyaforge-shadcn-consumer-"));
-  let registryServer;
+  let registryServer: Server | undefined;
+  let server: ChildProcess | undefined;
   let registryItem = `moyarich/moyaforge/code-block#${ref}`;
-  let browser;
-  let server;
+
   try {
     if (process.env.MOYAFORGE_REGISTRY_SOURCE === "local") {
       const registry = JSON.parse(
         await readFile(join(repo, "registry.json"), "utf8"),
-      );
+      ) as {
+        items: Array<{
+          name: string;
+          files: Array<{ path: string }>;
+        }>;
+      };
       const item = registry.items.find((item) => item.name === "code-block");
+      assert.ok(item, "local registry contains code-block");
       const payload = JSON.stringify({
         ...item,
         files: await Promise.all(
@@ -48,19 +50,21 @@ test("GitHub shadcn consumer", async () => {
           })),
         ),
       });
-      registryServer = createServer((req, res) => {
-        if (req.url !== "/code-block.json") {
-          res.writeHead(404);
-          res.end();
+      registryServer = createServer((request, response) => {
+        if (request.url !== "/code-block.json") {
+          response.writeHead(404);
+          response.end();
           return;
         }
-        res.writeHead(200, { "content-type": "application/json" });
-        res.end(payload);
+        response.writeHead(200, { "content-type": "application/json" });
+        response.end(payload);
       });
-      await new Promise((resolve) =>
-        registryServer.listen(0, "127.0.0.1", resolve),
+      await new Promise<void>((done) =>
+        registryServer!.listen(0, "127.0.0.1", done),
       );
-      registryItem = `http://127.0.0.1:${registryServer.address().port}/code-block.json`;
+      const address = registryServer.address();
+      assert.ok(address && typeof address !== "string");
+      registryItem = `http://127.0.0.1:${address.port}/code-block.json`;
     }
     await mkdir(join(root, "src"));
     await writeFile(
@@ -150,7 +154,7 @@ test("GitHub shadcn consumer", async () => {
     );
     await run(
       "npm",
-      ["install", "--ignore-scripts", "--no-audit", "--no-fund"],
+      ["install", "--ignore-scripts", "--prefer-offline", "--no-audit", "--no-fund"],
       root,
     );
     const installed = await run(
@@ -191,52 +195,55 @@ test("GitHub shadcn consumer", async () => {
       stdio: "ignore",
       detached: true,
     });
-    let ready = false;
-    for (let i = 0; i < 100; i++) {
-      try {
-        if ((await fetch("http://127.0.0.1:4390")).ok) {
-          ready = true;
-          break;
-        }
-      } catch {}
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-    assert.ok(ready);
-    browser = await chromium.launch();
-    const page = await browser.newPage({
-      permissions: ["clipboard-read", "clipboard-write"],
-    });
-    const errors = [];
-    page.on("pageerror", (error) => errors.push(error.message));
-    await page.goto("http://127.0.0.1:4390");
-    await page.locator("[data-moyaforge-code-block]").waitFor();
-    assert.equal(
-      await page
-        .locator("[data-moyaforge-code-block] pre")
-        .evaluate((element) => getComputedStyle(element).paddingTop),
-      "24px",
-      "component CSS loads without an aggregate stylesheet",
-    );
-    await page.locator("[data-moyaforge-code-block]").hover();
-    await page.getByRole("button", { name: "Copy code", exact: true }).click();
-    assert.equal(
-      await page.evaluate(() => navigator.clipboard.readText()),
-      'const message = "Hello";',
-    );
-    assert.deepEqual(errors, []);
-    console.log(
-      `Passed shadcn install, colocated CSS and clipboard check: ${registryItem}`,
-    );
-  } finally {
-    await browser?.close();
+    const url = "http://127.0.0.1:4390";
+    await waitForServer(url);
+    return { root, url, registryItem, server, registryServer };
+  } catch (error) {
+    stopServer(server);
     if (registryServer)
-      await new Promise((resolve) => registryServer.close(resolve));
-    if (server)
-      try {
-        process.kill(-server.pid, "SIGTERM");
-      } catch {}
+      await new Promise<void>((done) => registryServer!.close(() => done()));
     if (!process.env.MOYAFORGE_KEEP_CONSUMERS)
       await rm(root, { recursive: true, force: true });
-    else console.log(`Shadcn fixture retained at ${root}`);
+    throw error;
   }
+}
+
+test.beforeAll(async () => {
+  // Expensive npm and shadcn setup has its own timeout; the browser test remains 60s.
+  test.setTimeout(12 * 60_000);
+  consumer = await prepareShadcnConsumer();
+});
+
+test.afterAll(async () => {
+  if (!consumer) return;
+  stopServer(consumer.server);
+  if (consumer.registryServer)
+    await new Promise<void>((done) => consumer.registryServer!.close(() => done()));
+  if (!process.env.MOYAFORGE_KEEP_CONSUMERS)
+    await rm(consumer.root, { recursive: true, force: true });
+  else console.log(`Shadcn fixture retained at ${consumer.root}`);
+});
+
+test("GitHub shadcn consumer", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(consumer.url);
+  await page.locator("[data-moyaforge-code-block]").waitFor();
+  assert.equal(
+    await page
+      .locator("[data-moyaforge-code-block] pre")
+      .evaluate((element) => getComputedStyle(element).paddingTop),
+    "24px",
+    "component CSS loads without an aggregate stylesheet",
+  );
+  await page.locator("[data-moyaforge-code-block]").hover();
+  await page.getByRole("button", { name: "Copy code", exact: true }).click();
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    'const message = "Hello";',
+  );
+  assert.deepEqual(errors, []);
+  console.log(
+    `Passed shadcn install, colocated CSS and clipboard check: ${consumer.registryItem}`,
+  );
 });

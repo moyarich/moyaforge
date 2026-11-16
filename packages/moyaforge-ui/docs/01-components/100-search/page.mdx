@@ -4,6 +4,8 @@ label: Search
 description: A search field you can connect to a documentation index.
 ---
 
+import { Search as LiveSearch } from "../../../src/components/Search/index.js";
+
 # Search
 
 Use Search to collect a query. Connect it to your own results or try the SQLite example below.
@@ -30,6 +32,17 @@ npx shadcn@latest add moyarich/moyaforge/search
 Install the `search` registry item through the MoyaForge CLI to copy editable component source and styles.
 
 ## Usage
+
+::: code-preview Search field
+
+<LiveSearch
+  inputProps={{
+    placeholder: "Find components",
+    "aria-label": "Find components",
+  }}
+/>
+
+:::
 
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 

@@ -18,16 +18,17 @@ import source from "../../CounterExample.tsx?raw";
 import styles from "../../counterExample.css?raw";
 import exampleSource from "./SourceTabsExample.tsx?raw";
 
+/*
 const compositionSource = exampleSource
   .replace(/const compositionSource = exampleSource[\s\S]*?;\n\n/, "")
   .replace("import exampleSource", "import compositionSource")
   .replaceAll("../../../../src/components/", "./components/ui/")
   .replaceAll("../../CounterExample", "./CounterExample")
   .replaceAll("../../counterExample.css", "./counterExample.css");
-
+*/
 export default function SourceTabsExample() {
   return (
-    <Preview title="Counter source files" source={compositionSource}>
+    <Preview title="Counter source files" source={exampleSource}>
       <PreviewHeader>
         <PreviewTitle>Counter source files</PreviewTitle>
         <PreviewActions>
@@ -41,11 +42,6 @@ export default function SourceTabsExample() {
       <PreviewSource asChild>
         <div>
           <CodeGroup label="Example files">
-            <CodeTab label="SourceTabsExample.tsx">
-              <pre>
-                <HighlightedCode code={compositionSource} language="tsx" />
-              </pre>
-            </CodeTab>
             <CodeTab label="CounterExample.tsx">
               <pre>
                 <HighlightedCode code={source} language="tsx" />

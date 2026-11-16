@@ -4,7 +4,11 @@ label: Monaco Editor React
 description: A multi-file code editor with read-only mode and copy support.
 ---
 
+import { MonacoEditorReact as LiveMonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
+
 # Monaco Editor React
+
+import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 A multi-file code editor with read-only mode and copy support.
 
@@ -30,17 +34,33 @@ npx shadcn@latest add moyarich/moyaforge/monaco-editor-react
 In an existing React app, ensure these runtime dependencies are installed:
 
 ```sh
-npm install @monaco-editor/react monaco-editor lucide-react
+npm install @moyarich/moyaforge-monaco @monaco-editor/react monaco-editor lucide-react
 ```
 
-For Vite, copy `setup.ts` from the preview’s Code tab and import it before the editor. It configures local Monaco workers. Other bundlers need their own worker setup.
+For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and call `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react` once at application startup. If using TypeFox too, call `initializeSharedMonaco()` from `/shared` instead. Other bundlers need their own worker setup.
+
+The editor setup belongs in your application's `main.tsx`, **not** inside the component. For standalone React Monaco applications:
+
+```ts
+import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
+
+configureReactWorkers();
+```
 
 ## Usage
 
-The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+::: code-preview Editable TypeScript workspace
+
+<LiveMonacoEditorReact
+  files={[{ name: "index.ts", value: "const answer = 42;" }]}
+  height={320}
+/>
+
+:::
+
+For source installs, the `@/` path maps to your configured UI directory. Package consumers can import from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` or `/MonacoEditorTypeFox` instead.
 
 ```tsx
-import "./setup";
 import { MonacoEditorReact } from "@/components/ui/MonacoEditorReact/MonacoEditorReact";
 
 <MonacoEditorReact
@@ -66,7 +86,7 @@ Use `onSave` to handle Save or Ctrl/Cmd+S and persist changes. Use `onFileChange
 - `theme` overrides the inherited light/dark appearance.
 - `options`, `beforeMount`, and `onMount` customize Monaco.
 - `showCopyButton` and `showFileTabs` control toolbar visibility.
-- `className` and `--monaco-*` CSS variables customize styling.
+- `className` and `--mf-monaco-*` CSS variables customize styling.
 
 The installed `components/MonacoEditorReact/README.md` includes additional dependency and setup guidance.
 
@@ -74,4 +94,4 @@ The installed `components/MonacoEditorReact/README.md` includes additional depen
 
 ## Styling
 
-Customize the editor using `className` and the public `--monaco-*` CSS variables described in Advanced options.
+Customize the editor using `className` and the public `--mf-monaco-*` CSS variables described in Advanced options.

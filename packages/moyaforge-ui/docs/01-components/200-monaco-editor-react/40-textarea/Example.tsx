@@ -1,4 +1,4 @@
-import { Monaco } from "../../../../src/components/MonacoEditorShared/Monaco.js";
+import { Monaco } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 const files = [
   {
@@ -15,7 +15,7 @@ const files = [
   },
 ];
 
-export default function MonacoExample() {
+export default function Example() {
   return (
     <Monaco
       files={files}

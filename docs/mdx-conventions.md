@@ -54,3 +54,14 @@ export default {
 The shared compiler enables GitHub-flavored Markdown, frontmatter exports, heading slugs and table-of-contents extraction. Add consumer-specific plugins (such as search indexing) locally. Pass the compiled pages to `createMoyaForgeSource` for URL normalization, navigation and search metadata.
 
 The shared MDX components registry supports consumer overrides through `createMdxComponents`; Console keeps ownership of Console-specific components and content.
+
+### Remark plugins and directive helpers
+
+Files and exports prefixed with `remark` are plugin entry points. The compiler registers them through `createMdxOptions`. Use `componentMappings` to configure how an authored directive renders.
+
+| Syntax | Plugin |
+| --- | --- |
+| Fenced code blocks | Standard Markdown parsing. Preview source collection uses `namedCodeBlock` to identify fences with filenames. |
+| `code-group` and its nested `tab` | `remarkMapDirectivesToComponents` maps the group and its tabs to the configured components. |
+| `code-preview` and `code-preview-sources` | `remarkMapDirectivesToComponents` calls the preview helpers to collect inline source and load named files. |
+| File-backed `preview` | `remarkMapFilePreviewDirectives`, enabled by `filePreviewOptions`. |

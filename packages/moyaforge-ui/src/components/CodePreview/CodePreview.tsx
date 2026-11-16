@@ -12,7 +12,7 @@ import {
   PreviewCopyButton,
   PreviewContent,
   PreviewSource,
-} from "../Preview/Preview.js";
+} from "../Preview/index.js";
 import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 
 export type PreviewFile = {

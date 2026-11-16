@@ -1,0 +1,52 @@
+.mf-monaco-copy {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 0.375rem;
+  border-color: var(--_mf-monaco-border);
+  padding: 0.375rem 0.625rem;
+  font: inherit;
+}
+.mf-monaco-copy:hover {
+  background: var(--_mf-monaco-hover);
+}
+.mf-monaco-copy:focus-visible {
+  outline: 2px solid var(--_mf-monaco-focus);
+  outline-offset: 2px;
+}
+.mf-monaco-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+.mf-monaco-readonly {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding-inline: 0.375rem;
+  font-size: 0.75rem;
+}
+.mf-monaco-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: 1px solid var(--_mf-monaco-border);
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.mf-monaco-save:hover:not(:disabled) {
+  background: var(--_mf-monaco-hover);
+}
+.mf-monaco-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.mf-monaco-save:focus-visible {
+  outline: 2px solid var(--_mf-monaco-focus);
+  outline-offset: 2px;
+}

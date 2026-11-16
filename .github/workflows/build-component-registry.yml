@@ -5,10 +5,14 @@ on:
     branches: [main]
     paths:
       - "packages/moyaforge-ui/src/**"
+      - "packages/moyaforge-monaco/src/**"
       - "packages/moyaforge/src/**"
-      - "scripts/build-registry.mjs"
+      - "scripts/build-registry/**"
+      - "registry.config.ts"
+      - "registry/docs/**"
       - "packages/moyaforge/package.json"
       - "packages/moyaforge-ui/package.json"
+      - "packages/moyaforge-monaco/package.json"
       - "registry/templates/**"
       - "package.json"
       - "package-lock.json"
@@ -38,21 +42,28 @@ jobs:
           cache: npm
       - name: Install generator dependencies
         run: npm ci --ignore-scripts --include=optional
-      - name: Rebuild registry from canonical component source
+      - name: Resolve registry output from configuration
+        id: config
+        run: echo "path=$(node scripts/build-registry/build-registry-cli.ts --config registry.config.ts --print-output)" >> "$GITHUB_OUTPUT"
+      - name: Rebuild registry from configured component sources
         id: generate
-        run: npm run registry:build
+        run: npm run registry:build -- --config registry.config.ts
       - name: Verify generated registry freshness
         id: freshness
-        run: npm run registry:check
+        run: npm run registry:check -- --config registry.config.ts
       - name: Validate shadcn compatibility
         id: schema
-        run: npx --yes shadcn@4.21.5 registry validate ./registry.json
+        env:
+          REGISTRY_OUTPUT: ${{ steps.config.outputs.path }}
+        run: npx --yes shadcn@4.21.5 registry validate "$REGISTRY_OUTPUT"
       - name: Commit generated registry files when changed
         id: commit
         shell: bash
+        env:
+          REGISTRY_OUTPUT: ${{ steps.config.outputs.path }}
         run: |
           set -euo pipefail
-          git add -- registry.json
+          git add -- "$REGISTRY_OUTPUT"
           if git diff --cached --quiet; then
             echo "Registry is already current."
             echo "result=unchanged" >> "$GITHUB_OUTPUT"
@@ -74,4 +85,4 @@ jobs:
           COMMIT_RESULT: ${{ steps.commit.outcome }}
           CHANGE_RESULT: ${{ steps.commit.outputs.result }}
           COMMIT_SHA: ${{ steps.commit.outputs.commit_sha }}
-        run: node scripts/report-registry-summary.ts
+        run: node scripts/build-registry/report-registry-summary.ts

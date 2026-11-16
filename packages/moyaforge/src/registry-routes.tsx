@@ -1,6 +1,8 @@
+/// <reference types="@moyarich/moyaforge-mdx/virtual" preserve="true" />
+
 import type { ReactNode } from "react";
 import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
-import { RegistryRouteView } from "./routing/RegistryRoutes.js";
+import { RegistryRouteView } from "./routing/ErrorBoundary.js";
 import { routes } from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 

@@ -10,7 +10,12 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["vite/client", "node"]
+    "types": [
+      "vite/client",
+      "node",
+      "@moyarich/moyaforge-mdx/virtual",
+      "@moyarich/moyaforge-monaco/virtual"
+    ]
   },
   "include": [
     "src",

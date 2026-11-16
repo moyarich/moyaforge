@@ -7,9 +7,9 @@ import {
   CodePreview,
   CODE_REPLACEMENTS,
 } from "../../../../src/components/CodePreview/CodePreview.tsx";
-import MultiFileEditor from "../30-real-editor/Example.tsx";
-import editorSource from "../30-real-editor/Example.tsx?raw";
-import setupSource from "../setup.ts?raw";
+import Example from "./Example.tsx";
+import editorSource from "./Example.tsx?raw";
+export const setupWorkspaceSource = "import { configureReactWorkers } from \"@moyarich/moyaforge-monaco/react\";\\nconfigureReactWorkers();";
 
 # Editable workspace
 
@@ -19,11 +19,11 @@ Switch between files, edit their contents, and use Save to see how the workspace
   title="Editable workspace"
   files={[
     { label: "Example.tsx", code: editorSource },
-    { label: "setup.ts", code: setupSource },
+    { label: "setup.ts", code: setupWorkspaceSource },
   ]}
   replacements={CODE_REPLACEMENTS}
 >
-  <MultiFileEditor />
+  <Example />
 </CodePreview>
 
-[Component installation and usage](/ui/components/monaco-editor-react)
+[Component installation and usage](../)

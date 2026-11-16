@@ -4,7 +4,7 @@ import { compile } from "@mdx-js/mdx";
 import { createMdxOptions } from "../../dist/index.js";
 
 const options = createMdxOptions({
-  directiveComponents: {
+  componentMappings: {
     "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
     "code-group": {
       component: "CodeGroup",

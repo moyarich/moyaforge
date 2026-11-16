@@ -20,17 +20,19 @@
     "@moyarich/moyaforge-mdx": "*",
     "@moyarich/moyaforge-search-sqlite": "*",
     "@typefox/monaco-editor-react": "^8.0.2",
+    "csstype": "^3.2.3",
     "lucide-react": "^1.56.0",
     "monaco-editor": "^0.52.0",
     "monaco-languageclient": "^11.0.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.4",
-    "shiki": "^4.5.0"
+    "shiki": "^4.5.0",
+    "@moyarich/moyaforge-monaco": "*"
   },
   "scripts": {
-    "dev": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite --host 0.0.0.0",
-    "build": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite build",
+    "dev": "npm run build --workspace @moyarich/moyaforge-monaco && npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite --host 0.0.0.0",
+    "build": "npm run build --workspace @moyarich/moyaforge-monaco && npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "check:links": "npm run build --workspace @moyarich/moyaforge-mdx && node ./scripts/check-links.ts",
     "test": "vitest run",
@@ -39,8 +41,12 @@
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
     "@shikijs/rehype": "^4.5.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "sql.js": "^1.15.0",
+    "sucrase": "^3.35.1",
     "typescript": "^7.0.2",
     "vite": "^8.3.4"
   },

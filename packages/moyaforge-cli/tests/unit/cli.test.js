@@ -10,7 +10,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
-import { planComponentInstallation, resolveItems } from "../../src/registry.ts";
+import { planComponentInstallation, resolveItems } from "../../src/index.ts";
 
 const repository = resolve(import.meta.dirname, "../../../..");
 const cli = resolve(import.meta.dirname, "../../dist/bin/moyaforge.js");
@@ -148,6 +148,13 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(await read(packageRoot, "vite.config.ts")).toContain(
     "sqliteSearchPlugin",
   );
+  const searchViteConfig = await read(packageRoot, "vite.config.ts");
+  expect(searchViteConfig).toContain('"code-group": {');
+  expect(searchViteConfig).toContain('childComponent: "CodeTab"');
+  expect(searchViteConfig).not.toContain("__SEARCH_PLUGIN__");
+  expect(searchViteConfig).not.toContain("__SEARCH_PLUGIN_IMPORT__");
+  expect(searchViteConfig).toContain("sqliteSearchPlugin({");
+  expect(searchViteConfig).toContain('import registry from "./registry.config"');
   expect(await read(packageRoot, "src/components/ui/docs-shell.tsx")).toContain(
     "DocsShell",
   );
@@ -232,7 +239,8 @@ test("monaco installation reports setup notes without copying README files", asy
   const root = await project();
   const dry = run(root, "add", "monaco-editor-react", "--dry-run");
   expect(dry.status).toBe(0);
-  expect(dry.stdout).toContain("monaco-editor@^0.52.2");
+  expect(dry.stdout).toContain("@monaco-editor/react");
+  expect(dry.stdout).toContain("monaco-editor");
   expect(dry.stdout).toContain(
     "npm install @monaco-editor/react monaco-editor lucide-react",
   );
@@ -346,7 +354,7 @@ test("playground init uses consumer-owned content and registry-installed compone
   expect(registry).not.toContain("../../packages");
   const vite = await read(root, "vite.config.ts");
   expect(vite).toContain("createContentDiscovery");
-  expect(vite).toContain("remarkSourceLinks");
+  expect(vite).toContain("remarkRewriteSourceLinks");
   expect(vite).toContain("sqliteSearchPlugin");
   const app = await read(root, "src/App.tsx");
   expect(app).toContain("RegistryRoutes");
@@ -363,6 +371,24 @@ test("playground init uses consumer-owned content and registry-installed compone
   expect(manifest.devDependencies).toHaveProperty("shiki");
   const plain = await project();
   expect(run(plain, "init", "--template", "playground", "--no-install").status).toBe(0);
+  const plainManifest = JSON.parse(await read(plain, "package.json"));
+  expect(plainManifest.dependencies["is-hotkey"]).toBe("^0.2.1");
   expect(await read(plain, "src/SearchAdapter.tsx")).not.toContain("searchPages");
   expect(await read(plain, "vite.config.ts")).not.toContain("sqliteSearchPlugin");
+});
+
+test("Monaco integration is installed only for the playground starter", async () => {
+  const docsRoot = await project();
+  expect(run(docsRoot, "init", "--template", "docs", "--no-install").status).toBe(0);
+  const docsManifest = JSON.parse(await read(docsRoot, "package.json"));
+  expect(docsManifest.devDependencies).not.toHaveProperty("@moyarich/moyaforge-monaco");
+  const docsTsconfig = await read(docsRoot, "tsconfig.json");
+  expect(docsTsconfig).not.toContain("@moyarich/moyaforge-monaco/virtual");
+
+  const playgroundRoot = await project();
+  expect(run(playgroundRoot, "init", "--template", "playground", "--no-install").status).toBe(0);
+  const playgroundManifest = JSON.parse(await read(playgroundRoot, "package.json"));
+  expect(playgroundManifest.devDependencies["@moyarich/moyaforge-monaco"]).toBe("^0.1.0");
+  const playgroundTsconfig = await read(playgroundRoot, "tsconfig.json");
+  expect(playgroundTsconfig).toContain("@moyarich/moyaforge-monaco/virtual");
 });

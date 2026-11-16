@@ -29,10 +29,13 @@ test("discovers unknown nested components, complete imports, styles and declared
   expect(await readFile(resolve(root, "registry.json"), "utf8")).toBe(output);
   await buildRegistry(root, { check: true });
   await put("registry/styles/obsolete.css", "stale");
-  await expect(buildRegistry(root, { check: true })).rejects.toThrow(
-    "Obsolete registry/styles output",
-  );
-  await buildRegistry(root);
+  await expect(
+    buildRegistry(root, {
+      check: true,
+      legacyStylesDir: "registry/styles",
+    }),
+  ).rejects.toThrow("Obsolete registry/styles output");
+  await buildRegistry(root, { legacyStylesDir: "registry/styles" });
   await expect(
     readFile(resolve(root, "registry/styles/obsolete.css")),
   ).rejects.toThrow();

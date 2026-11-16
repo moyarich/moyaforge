@@ -4,23 +4,23 @@ label: Tip
 description: Show a shortcut readers can try.
 ---
 
-import { CodePreview } from "../../../../src/components/CodePreview/index.js";
-import Example from "./Example.mdx";
-import exampleSource from "./Example.mdx?raw";
-import exampleStyles from "./Example.css?raw";
-
 # Tip
 
 Use a tip to offer an optional shortcut, such as duplicating a template to save time.
 
-<CodePreview
-  title="Tip"
-  files={[
-    { label: "Example.mdx", code: exampleSource, language: "markdown" },
-    { label: "Example.css", code: exampleStyles },
-  ]}
->
-  <Example />
-</CodePreview>
+::::code-preview[Tip callout]{react}
+
+import "./Example.css";
+import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+
+<div className="tip-example">
+  <CustomBlock type="tip" title="Save time">
+    Duplicate an existing template when you need a similar layout.
+  </CustomBlock>
+</div>
+
+::code-preview-sources{files="./Example.css" replacements="portable"}
+
+::::
 
 [Component documentation](/ui/components/custom-block)

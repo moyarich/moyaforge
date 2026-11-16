@@ -4,11 +4,36 @@ import {
   createContext,
   discoverSpecs,
   type RegistryItem,
+  type RegistryComponentSource,
 } from "./registry-source.ts";
 import { updateRegistryOutput } from "./output.ts";
 
-export async function buildRegistry(root: string, { check = false } = {}) {
-  const context = await createContext(root);
+/** Paths are relative to the workspace root supplied by the caller. */
+export interface BuildRegistryOptions {
+  name?: string;
+  homepage?: string;
+  check?: boolean;
+  packages?: readonly RegistryComponentSource[];
+  dependencyManifests?: readonly string[];
+  templatesDir?: string | false;
+  docsDir?: string | false;
+  outputFile?: string;
+  targetDir?: string;
+  legacyStylesDir?: string | false;
+}
+
+export async function buildRegistry(
+  root: string,
+  {
+    name = "registry",
+    homepage,
+    check = false,
+    outputFile = "registry.json",
+    legacyStylesDir = false,
+    ...sources
+  }: BuildRegistryOptions = {},
+) {
+  const context = await createContext(root, sources);
   const specs = await discoverSpecs(context);
   const items: RegistryItem[] = [];
   for (const [name, spec] of [...specs].sort(([a], [b]) =>
@@ -19,13 +44,16 @@ export async function buildRegistry(root: string, { check = false } = {}) {
 
   const registry = {
     $schema: "https://ui.shadcn.com/schema/registry.json",
-    name: "moyaforge",
-    homepage: "https://github.com/moyarich/moyaforge",
+    name,
+    ...(homepage ? { homepage } : {}),
     items,
   };
   const output = await format(JSON.stringify(registry, null, 2), {
     parser: "json",
   });
-  await updateRegistryOutput(context.root, output, check);
+  await updateRegistryOutput(context.root, output, check, {
+    outputFile,
+    legacyStylesDir,
+  });
   return registry;
 }

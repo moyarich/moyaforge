@@ -22,6 +22,19 @@ npx @moyarich/moyaforge-cli@latest add code-block
 
 The CLI installs component source from the MoyaForge registry. Components own their CSS imports, and user modifications are preserved unless `--overwrite` is provided.
 
+## Import generated components
+
+The generated Vite and TypeScript configs resolve `@/` to your project's
+`src/` directory. With the default component destination, use imports such as
+`import { CodePreview } from "@/components/ui/CodePreview";`.
+
+The playground template provides `virtual:monaco-react-types` for Monaco
+worker setups. It resolves the installed React and CSS type packages from the
+generated project's package manifest. The template installs `@types/react`,
+`@types/react-dom`, and `csstype` as direct development dependencies. Its
+TypeScript config loads the MDX virtual module declarations from
+`@moyarich/moyaforge-mdx/vite-client`.
+
 ## Documentation
 
 See the [CLI documentation](docs/page.mdx) for setup and command options.

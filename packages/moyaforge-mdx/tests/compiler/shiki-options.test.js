@@ -7,8 +7,8 @@ test("Shiki integration is optional and maintains deterministic rehype ordering"
   const additional = () => {};
   const defaults = createMdxOptions();
   const configured = createMdxOptions({
-    shiki: [shiki, { themes: { light: "github-light", dark: "github-dark" } }],
-    rehypePlugins: [additional],
+    highlightingPlugin: [shiki, { themes: { light: "github-light", dark: "github-dark" } }],
+    additionalRehypePlugins: [additional],
   });
   assert.equal(
     configured.rehypePlugins.length,
