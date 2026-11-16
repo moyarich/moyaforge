@@ -9,7 +9,7 @@ test.each([
   ["table-of-contents", "TableOfContents"],
 ])("%s is installed from UI source", async (name, dir) => {
   const registry = JSON.parse(
-    await readFile(new URL("../registry.json", import.meta.url), "utf8"),
+    await readFile(new URL("../../registry.json", import.meta.url), "utf8"),
   );
   const item = registry.items.find((entry) => entry.name === name);
   expect(item).toBeDefined();

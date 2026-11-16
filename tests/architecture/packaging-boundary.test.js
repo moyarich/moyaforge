@@ -8,8 +8,8 @@ const read = async (file) =>
   JSON.parse(await readFile(path.resolve(cwd, file), "utf8"));
 
 test("UI package publishes its build separately from the framework", async () => {
-  const ui = await read("../packages/moyaforge-ui/package.json");
-  const pkg = await read("../packages/moyaforge/package.json");
+  const ui = await read("../../packages/moyaforge-ui/package.json");
+  const pkg = await read("../../packages/moyaforge/package.json");
   expect(ui.private).toBe(false);
   expect(ui.files).toEqual(["dist"]);
   expect(ui.exports["./components/*"].import).toBe(
@@ -26,7 +26,7 @@ test("UI package publishes its build separately from the framework", async () =>
 });
 
 test("standalone MDX package has no framework or UI dependency", async () => {
-  const pkg = await read("../packages/moyaforge-mdx/package.json");
+  const pkg = await read("../../packages/moyaforge-mdx/package.json");
   expect({ ...pkg.dependencies, ...pkg.peerDependencies }).not.toHaveProperty(
     "@moyarich/moyaforge",
   );

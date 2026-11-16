@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 
 test("EmptyState installs from its independent UI source", async () => {
   const registry = JSON.parse(
-    await readFile(new URL("../registry.json", import.meta.url), "utf8"),
+    await readFile(new URL("../../registry.json", import.meta.url), "utf8"),
   );
   const entry = registry.items.find((item) => item.name === "empty-state");
   expect(entry).toBeDefined();
@@ -22,7 +22,7 @@ test.each([
   ["edit-page-link", "EditPageLink"],
 ])("%s installs canonical editable UI source", async (name, folder) => {
   const registry = JSON.parse(
-    await readFile(new URL("../registry.json", import.meta.url), "utf8"),
+    await readFile(new URL("../../registry.json", import.meta.url), "utf8"),
   );
   const entry = registry.items.find((item) => item.name === name);
   expect(entry).toBeDefined();

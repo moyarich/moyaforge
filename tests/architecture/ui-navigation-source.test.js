@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { readFile } from "node:fs/promises";
 const registry = JSON.parse(
-  await readFile(new URL("../registry.json", import.meta.url), "utf8"),
+  await readFile(new URL("../../registry.json", import.meta.url), "utf8"),
 );
 test.each([
   ["navigation-tree", "NavigationTree"],
@@ -28,7 +28,7 @@ test("sidebar-v1 carries its structural navigation type without importing MDX", 
   for (const filename of ["Navigation.tsx", "SidebarV1.tsx"]) {
     const source = await readFile(
       new URL(
-        `../packages/moyaforge-ui/src/components/SidebarV1/${filename}`,
+        `../../packages/moyaforge-ui/src/components/SidebarV1/${filename}`,
         import.meta.url,
       ),
       "utf8",
@@ -90,7 +90,7 @@ test("docs-layout installs as a standalone React component", async () => {
   ).toBe(true);
   const source = await readFile(
     new URL(
-      "../packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx",
+      "../../packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx",
       import.meta.url,
     ),
     "utf8",
@@ -123,7 +123,7 @@ test("documentation-site installs independently of framework routing and DocsLay
   );
   const source = await readFile(
     new URL(
-      "../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx",
+      "../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx",
       import.meta.url,
     ),
     "utf8",
@@ -153,7 +153,7 @@ test("all UI-owned registry entries exclude framework implementation paths", () 
 test("the framework tarball excludes the standalone UI package", async () => {
   const framework = JSON.parse(
     await readFile(
-      new URL("../packages/moyaforge/package.json", import.meta.url),
+      new URL("../../packages/moyaforge/package.json", import.meta.url),
       "utf8",
     ),
   );
@@ -175,7 +175,7 @@ test("documentation-site registry metadata matches generator conventions", () =>
 test("framework publishes its stylesheet once from dist", async () => {
   const manifest = JSON.parse(
     await readFile(
-      new URL("../packages/moyaforge/package.json", import.meta.url),
+      new URL("../../packages/moyaforge/package.json", import.meta.url),
       "utf8",
     ),
   );

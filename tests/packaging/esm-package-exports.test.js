@@ -13,7 +13,7 @@ test.each(publishablePackages)(
   async (name) => {
     const manifest = JSON.parse(
       await readFile(
-        new URL(`../packages/${name}/package.json`, import.meta.url),
+        new URL(`../../packages/${name}/package.json`, import.meta.url),
         "utf8",
       ),
     );
