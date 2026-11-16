@@ -4,11 +4,21 @@ import {
   createContext,
   discoverSpecs,
   type RegistryItem,
+  type RegistryComponentSource,
 } from "./registry-source.ts";
 import { updateRegistryOutput } from "./output.ts";
 
-export async function buildRegistry(root: string, { check = false } = {}) {
-  const context = await createContext(root);
+export interface BuildRegistryOptions {
+  check?: boolean;
+  /** Publish components from any configured set of workspace packages. */
+  packages?: readonly RegistryComponentSource[];
+}
+
+export async function buildRegistry(
+  root: string,
+  { check = false, packages }: BuildRegistryOptions = {},
+) {
+  const context = await createContext(root, packages);
   const specs = await discoverSpecs(context);
   const items: RegistryItem[] = [];
   for (const [name, spec] of [...specs].sort(([a], [b]) =>

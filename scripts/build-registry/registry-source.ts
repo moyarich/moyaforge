@@ -8,8 +8,26 @@ interface RegistryManifest {
   registryDependencies?: Record<string, string>;
 }
 
+/** A package root from which the registry can discover and install components. */
+export interface RegistryComponentSource {
+  /** Workspace-relative package directory containing package.json. */
+  packagePath: string;
+  /** Package-relative component directory; defaults to src/components. */
+  componentsPath?: string;
+  /** Optional public registry names keyed by component folder name. */
+  nameOverrides?: Readonly<Record<string, string>>;
+}
+
+interface SourceContext {
+  sourceRoot: string;
+  componentRoot: string;
+  declared: Record<string, string>;
+  nameOverrides: Readonly<Record<string, string>>;
+}
+
 interface RegistrySpec {
   entry: string;
+  source: SourceContext;
   template?: boolean;
 }
 
@@ -31,10 +49,8 @@ export interface RegistryItem {
 
 interface BuildContext {
   root: string;
-  uiSourceRoot: string;
-  uiComponentRoot: string;
+  sources: SourceContext[];
   templateRoot: string;
-  declared: Record<string, string>;
 }
 
 const byName = (a: string, b: string) => a.localeCompare(b, "en");
@@ -76,28 +92,67 @@ async function readJson<T>(path: string): Promise<T> {
   return JSON.parse(await readFile(path, "utf8")) as T;
 }
 
-export async function createContext(rawRoot: string): Promise<BuildContext> {
+export async function createContext(
+  rawRoot: string,
+  packages: readonly RegistryComponentSource[] = [
+    { packagePath: "packages/moyaforge-ui" },
+  ],
+): Promise<BuildContext> {
   const root = await realpath(rawRoot);
-  const uiSourceRoot = resolve(root, "packages/moyaforge-ui/src");
-  const manifest = await readJson<RegistryManifest>(
-    resolve(root, "packages/moyaforge/package.json"),
-  );
-  const uiManifestPath = resolve(root, "packages/moyaforge-ui/package.json");
-  const uiManifest: RegistryManifest = (await isFile(uiManifestPath))
-    ? await readJson<RegistryManifest>(uiManifestPath)
+  if (!packages.length)
+    throw Error("Registry generation requires at least one component source.");
+
+  const headlessManifestPath = resolve(root, "packages/moyaforge/package.json");
+  const headlessManifest: RegistryManifest = (await isFile(headlessManifestPath))
+    ? await readJson<RegistryManifest>(headlessManifestPath)
     : {};
+
+  const sources = await Promise.all(
+    packages.map(async ({ packagePath, componentsPath, nameOverrides }) => {
+      const packageRoot = await realpath(resolve(root, packagePath));
+      const relativePackage = relative(root, packageRoot);
+      if (
+        relativePackage === ".." ||
+        relativePackage.startsWith("../") ||
+        relativePackage.startsWith("..\\")
+      )
+        throw Error(`Registry package escapes the workspace: ${packagePath}`);
+
+      const manifest = await readJson<RegistryManifest>(
+        resolve(packageRoot, "package.json"),
+      );
+      const sourceRoot = resolve(packageRoot, "src");
+      const componentRoot = resolve(
+        packageRoot,
+        componentsPath ?? "src/components",
+      );
+      const relativeComponents = relative(sourceRoot, componentRoot);
+      if (
+        relativeComponents === ".." ||
+        relativeComponents.startsWith("../") ||
+        relativeComponents.startsWith("..\\")
+      )
+        throw Error(`Registry component directory is outside src: ${componentsPath}`);
+
+      return {
+        sourceRoot,
+        componentRoot,
+        nameOverrides: nameOverrides ?? {},
+        declared: {
+          ...headlessManifest.peerDependencies,
+          ...headlessManifest.dependencies,
+          ...manifest.peerDependencies,
+          ...manifest.dependencies,
+          ...manifest.registryDependencies,
+        },
+      };
+    }),
+  );
 
   return {
     root,
-    uiSourceRoot,
-    uiComponentRoot: resolve(uiSourceRoot, "components"),
+    sources,
     templateRoot: resolve(root, "registry/templates"),
-    // Registry components declare dependencies independently of framework peers.
-    declared: {
-      ...manifest.peerDependencies,
-      ...manifest.dependencies,
-      ...uiManifest.registryDependencies,
-    },
   };
 }
 
@@ -113,31 +168,39 @@ export async function discoverSpecs(ctx: BuildContext) {
     specs.set(name, spec);
   }
 
-  async function discoverComponents(folder: string) {
+  async function discoverComponents(folder: string, source: SourceContext) {
     const entries = (await readdir(folder, { withFileTypes: true })).sort(
       (a, b) => a.name.localeCompare(b.name, "en"),
     );
-    if (folder !== ctx.uiComponentRoot) {
+    if (folder !== source.componentRoot) {
       const entry = entries.find(
         (item) => item.isFile() && /^index\.(ts|tsx)$/.test(item.name),
       );
-      if (entry)
-        add(kebab(basename(folder)), { entry: resolve(folder, entry.name) });
+      if (entry) {
+        const folderName = basename(folder);
+        add(source.nameOverrides[folderName] ?? kebab(folderName), {
+          entry: resolve(folder, entry.name),
+          source,
+        });
+      }
     }
     for (const entry of entries)
       if (entry.isDirectory())
-        await discoverComponents(resolve(folder, entry.name));
+        await discoverComponents(resolve(folder, entry.name), source);
   }
 
-  if (await pathExists(ctx.uiComponentRoot))
-    await discoverComponents(ctx.uiComponentRoot);
+  for (const source of ctx.sources)
+    if (await pathExists(source.componentRoot))
+      await discoverComponents(source.componentRoot, source);
 
-  for (const entry of (await readdir(ctx.templateRoot)).sort())
-    if (/\.(tsx|ts)$/.test(entry))
-      add(kebab(basename(entry, extname(entry))), {
-        entry: resolve(ctx.templateRoot, entry),
-        template: true,
-      });
+  if (await pathExists(ctx.templateRoot))
+    for (const entry of (await readdir(ctx.templateRoot)).sort())
+      if (/\.(tsx|ts)$/.test(entry))
+        add(kebab(basename(entry, extname(entry))), {
+          entry: resolve(ctx.templateRoot, entry),
+          source: ctx.sources[0],
+          template: true,
+        });
 
   return specs;
 }
@@ -170,8 +233,8 @@ async function collectGraph(ctx: BuildContext, spec: RegistrySpec) {
 
   async function visit(file: string, template = false) {
     const canonical = await realpath(file);
-    if (!template && !canonical.startsWith(ctx.uiSourceRoot + "/"))
-      throw Error(`Registry file outside canonical UI source: ${file}`);
+    if (!template && !canonical.startsWith(spec.source.sourceRoot + "/"))
+      throw Error(`Registry file outside configured component source: ${file}`);
     if (files.has(file)) return;
     files.add(file);
 
@@ -180,19 +243,20 @@ async function collectGraph(ctx: BuildContext, spec: RegistrySpec) {
       if (specifier.startsWith(".")) {
         // Templates retain their installed location alongside the copied source tree.
         const base = template
-          ? resolve(ctx.uiComponentRoot, basename(file))
+          ? resolve(spec.source.componentRoot, basename(file))
           : file;
         await visit(await resolveImport(ctx, base, specifier));
       } else {
         const pkg = packageName(specifier);
-        if (!ctx.declared[pkg])
+        if (!spec.source.declared[pkg])
           throw Error(
             `Undeclared registry dependency '${pkg}' imported by ${relative(ctx.root, file)}`,
           );
-        dependencies.set(pkg, ctx.declared[pkg]);
+        dependencies.set(pkg, spec.source.declared[pkg]);
         // Installed TypeScript source also needs any declared companion types.
         const types = `@types/${pkg.replace(/^@/, "").replace("/", "__")}`;
-        if (ctx.declared[types]) dependencies.set(types, ctx.declared[types]);
+        if (spec.source.declared[types])
+          dependencies.set(types, spec.source.declared[types]);
       }
     }
   }
@@ -208,9 +272,9 @@ async function collectGraph(ctx: BuildContext, spec: RegistrySpec) {
 function installTarget(ctx: BuildContext, spec: RegistrySpec, file: string) {
   if (file === spec.entry && spec.template)
     return `~/src/components/ui/${basename(file)}`;
-  if (file.startsWith(ctx.uiComponentRoot + "/"))
-    return `~/src/components/ui/${relative(ctx.uiComponentRoot, file)}`;
-  return `~/src/components/${relative(ctx.uiSourceRoot, file)}`;
+  if (file.startsWith(spec.source.componentRoot + "/"))
+    return `~/src/components/ui/${relative(spec.source.componentRoot, file)}`;
+  return `~/src/components/${relative(spec.source.sourceRoot, file)}`;
 }
 
 export async function buildItem(
