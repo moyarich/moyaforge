@@ -78,7 +78,14 @@ These are plain JSON-compatible records with no React component imports. The exi
 
 Metadata is authored once in YAML, not in `package.json` or a required MDX JavaScript export. Older integrations can explicitly enable compiled exports with `createMdxOptions({ exportFrontmatter: true })`; they are not required.
 
-TypeScript projects that include their Vite config pick up the virtual module declarations through the `@moyarich/moyaforge-mdx/vite` import. If the config is outside your TypeScript project, add `"@moyarich/moyaforge-mdx/vite"` to the existing `compilerOptions.types` array.
+TypeScript projects opt into the virtual module declarations through the `@moyarich/moyaforge-mdx/virtual` types-only subpath. Add `"@moyarich/moyaforge-mdx/virtual"` to `compilerOptions.types` or reference it in `vite-env.d.ts`:
+
+```ts
+/// <reference types="vite/client" />
+/// <reference types="@moyarich/moyaforge-mdx/virtual" />
+```
+
+The declarations ship with the npm package and do not depend on a monorepo-relative path or the Vite plugin entry point.
 
 ## Derived navigation tree
 

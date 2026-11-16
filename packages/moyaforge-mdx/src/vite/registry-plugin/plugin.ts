@@ -1,5 +1,3 @@
-/// <reference path="../../../vite-client.d.ts" preserve="true" />
-
 import {
   createStaticPublication,
   type StaticPublicationOptions,
@@ -117,23 +115,33 @@ export function mdxRegistryPlugin({
   return {
     name: "moyaforge-mdx:registry",
     enforce: "pre",
-    resolveId(id) {
-      if (id === publicId) return resolvedId;
-      if (id === lazyPublicId) return lazyResolvedId;
-      if (id === metadataPublicId) return metadataResolvedId;
+    resolveId: {
+      filter: {
+        id: /^virtual:moyaforge-mdx\/(?:registry|lazy-registry|metadata)$/,
+      },
+      handler(id) {
+        if (id === publicId) return resolvedId;
+        if (id === lazyPublicId) return lazyResolvedId;
+        if (id === metadataPublicId) return metadataResolvedId;
+      },
     },
-    async load(id) {
-      if (id === resolvedId) return discover(false);
-      if (id === lazyResolvedId) return discover(true);
-      if (id === metadataResolvedId) {
-        const {
-          registry: pages,
-          inputs,
-          headings,
-          metadata,
-        } = await getDiscovery();
-        return `export const manifest = ${JSON.stringify(createContentManifest({ registry: pages, headings }).map(withSourcePath))};\nexport const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages.map(withSourcePath))};\nexport const routes = ${JSON.stringify(pages.routes.map(withSourcePath))};\nexport const navigation = ${JSON.stringify(pages.navigation.map(withSourcePath))};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
-      }
+    load: {
+      filter: {
+        id: /^\0virtual:moyaforge-mdx\/(?:registry|lazy-registry|metadata)$/,
+      },
+      async handler(id) {
+        if (id === resolvedId) return discover(false);
+        if (id === lazyResolvedId) return discover(true);
+        if (id === metadataResolvedId) {
+          const {
+            registry: pages,
+            inputs,
+            headings,
+            metadata,
+          } = await getDiscovery();
+          return `export const manifest = ${JSON.stringify(createContentManifest({ registry: pages, headings }).map(withSourcePath))};\nexport const sources = ${JSON.stringify(inputs)};\nexport const pages = ${JSON.stringify(pages.pages.map(withSourcePath))};\nexport const routes = ${JSON.stringify(pages.routes.map(withSourcePath))};\nexport const navigation = ${JSON.stringify(pages.navigation.map(withSourcePath))};\nexport const tree = ${JSON.stringify(pages.tree)};\nexport const headings = ${JSON.stringify(headings)};\nexport const sourceMetadata = ${JSON.stringify(metadata)};\n`;
+        }
+      },
     },
     async generateBundle() {
       if (!publication) return;

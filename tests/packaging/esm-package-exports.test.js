@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { expect, test } from "vitest";
 
 const publishablePackages = [
@@ -29,9 +30,11 @@ test.each(publishablePackages)(
 
       if (entry.import === undefined) {
         // Ambient declarations may expose types without a JavaScript module.
-        // Validate the published file through the package tarball audit.
+        // Validate every type-only target from its manifest, not a fixed filename.
         expect(subpath).not.toBe(".");
         expect(entry).not.toHaveProperty("default");
+        const typesPath = resolve(import.meta.dirname, "../../packages", name, entry.types);
+        expect(await readFile(typesPath, "utf8")).toContain("declare module");
         continue;
       }
 

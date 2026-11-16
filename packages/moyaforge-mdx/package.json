@@ -20,8 +20,8 @@
       "import": "./dist/vite/plugin.js",
       "default": "./dist/vite/plugin.js"
     },
-    "./vite-client": {
-      "types": "./vite-client.d.ts"
+    "./virtual": {
+      "types": "./dist/vite/virtual-modules.d.ts"
     },
     "./source-files": {
       "types": "./dist/content/source-files.d.ts",
@@ -41,12 +41,11 @@
   },
   "files": [
     "dist",
-    "vite-client.d.ts",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
+    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly && node -e \"require('node:fs').copyFileSync('src/vite/virtual-modules.d.ts', 'dist/vite/virtual-modules.d.ts')\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && vitest run",
     "prepack": "npm run build"
