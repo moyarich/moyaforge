@@ -24,8 +24,8 @@
     "test": "vitest run tests",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "registry:check": "node ../../bin/build-registry.ts --check",
-    "storybook": "storybook dev -p 6006 -c .storybook",
-    "test:storybook": "storybook build -c .storybook -o ../../.storybook-static",
+    "storybook": "npm run build --workspace @moyarich/moyaforge-monaco && storybook dev -p 6006 -c .storybook",
+    "test:storybook": "npm run build --workspace @moyarich/moyaforge-monaco && storybook build -c .storybook -o ../../.storybook-static",
     "prepack": "npm run build"
   },
   "license": "MIT",
