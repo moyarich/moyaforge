@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { MonacoEditorReact } from "../../packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.js";
-import { MonacoEditorTypeFox } from "../../packages/moyaforge-ui/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
+import {
+  MonacoEditorReact,
+} from "../../packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.js";
+import {
+  MonacoEditorTypeFox,
+} from "../../packages/moyaforge-ui/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
 
 const reactFiles = [
   {
@@ -12,7 +16,8 @@ const reactFiles = [
 const typefoxFiles = [
   {
     name: "TypeFoxView.tsx",
-    value: "export const TypeFoxView = () => <span>TypeFox Monaco ready</span>;",
+    value:
+      "export const TypeFoxView = () => <span>TypeFox Monaco ready</span>;",
   },
   { name: "settings.json", value: '{ "enabled": true }' },
 ];
@@ -39,7 +44,10 @@ export default function SharedMonacoFixture() {
             onMount={() => setReactReady(true)}
           />
         </section>
-        <section data-testid="typefox-editor" aria-label="TypeFox Monaco editor">
+        <section
+          data-testid="typefox-editor"
+          aria-label="TypeFox Monaco editor"
+        >
           <h2>TypeFox Monaco</h2>
           <output data-testid="typefox-ready">
             {typefoxReady ? "ready" : "loading"}

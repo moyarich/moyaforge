@@ -56,7 +56,7 @@ export function configureTypeFoxWorkers() {
   };
   if (typeof environment.MonacoEnvironment?.getWorker === "function") {
     throw new Error(
-      "Standalone Monaco workers are already configured. Initialize the shared runtime before mounting either editor.",
+      "Standalone Monaco workers are already configured. Use initializeSharedMonaco() before mounting either editor.",
     );
   }
   configureTypeScript();

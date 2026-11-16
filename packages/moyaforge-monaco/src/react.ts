@@ -27,7 +27,7 @@ export function configureReactWorkers() {
   // replace an existing VS Code-compatible worker factory.
   if (typeof environment.MonacoEnvironment?.getWorkerUrl === "function") {
     throw new Error(
-      "TypeFox workers are already configured. Initialize the shared runtime before mounting either editor.",
+      "TypeFox workers are already configured. Use initializeSharedMonaco() before mounting either editor.",
     );
   }
   loader.config({ monaco });

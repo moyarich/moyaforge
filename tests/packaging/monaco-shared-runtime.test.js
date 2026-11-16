@@ -45,9 +45,11 @@ afterEach(() => {
   delete globalThis.MonacoEnvironment;
 });
 
-test("shared initialization preserves host configuration and starts the VS Code API once", async () => {
+test("shared initialization preserves host configuration and starts once", async () => {
   globalThis.MonacoEnvironment = { extra: "preserved" };
-  const { initializeSharedMonaco } = await import("../../packages/moyaforge-monaco/src/shared.ts");
+  const { initializeSharedMonaco } = await import(
+    "../../packages/moyaforge-monaco/src/shared.ts"
+  );
 
   const first = initializeSharedMonaco();
   const second = initializeSharedMonaco();
@@ -56,24 +58,36 @@ test("shared initialization preserves host configuration and starts the VS Code 
 
   expect(globalThis.MonacoEnvironment.extra).toBe("preserved");
   expect(globalThis.MonacoEnvironment.getWorker).toBeUndefined();
-  expect(globalThis.MonacoEnvironment.getWorkerUrl("id", "typescript")).toBe("/workers/typescript.js");
-  expect(globalThis.MonacoEnvironment.getWorkerOptions("id", "typescript")).toEqual({ type: "module" });
+  expect(globalThis.MonacoEnvironment.getWorkerUrl("id", "typescript")).toBe(
+    "/workers/typescript.js",
+  );
+  expect(
+    globalThis.MonacoEnvironment.getWorkerOptions("id", "typescript"),
+  ).toEqual({ type: "module" });
   expect(mocks.typefoxSetup).toHaveBeenCalledTimes(1);
-  expect(mocks.loaderConfig).toHaveBeenCalledExactlyOnceWith({ monaco: mocks.monaco });
+  expect(mocks.loaderConfig).toHaveBeenCalledExactlyOnceWith({
+    monaco: mocks.monaco,
+  });
   expect(mocks.vscodeStart).toHaveBeenCalledTimes(1);
-  expect(mocks.vscodeConfig).toHaveBeenCalledWith(expect.objectContaining({
-    $type: "classic",
-    viewsConfig: { $type: "EditorService" },
-    monacoWorkerFactory: expect.any(Function),
-  }));
+  expect(mocks.vscodeConfig).toHaveBeenCalledWith(
+    expect.objectContaining({
+      $type: "classic",
+      viewsConfig: { $type: "EditorService" },
+      monacoWorkerFactory: expect.any(Function),
+    }),
+  );
 });
 
 test("shared initialization refuses to override a standalone worker factory", async () => {
   const worker = vi.fn();
   globalThis.MonacoEnvironment = { getWorker: worker };
-  const { initializeSharedMonaco } = await import("../../packages/moyaforge-monaco/src/shared.ts");
+  const { initializeSharedMonaco } = await import(
+    "../../packages/moyaforge-monaco/src/shared.ts"
+  );
 
-  await expect(initializeSharedMonaco()).rejects.toThrow(/Standalone Monaco workers/);
+  await expect(initializeSharedMonaco()).rejects.toThrow(
+    /Standalone Monaco workers/,
+  );
   expect(globalThis.MonacoEnvironment.getWorker).toBe(worker);
   expect(mocks.loaderConfig).not.toHaveBeenCalled();
   expect(mocks.vscodeStart).not.toHaveBeenCalled();
