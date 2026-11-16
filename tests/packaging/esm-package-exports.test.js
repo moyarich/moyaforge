@@ -31,7 +31,7 @@ test.each(publishablePackages)(
         expect(entry).toMatch(/^\.\/dist\/.*\.css$/);
         continue;
       }
-      expect(entry.types).toMatch(/^\\.\\/.*\\.d\\.ts$/);
+      expect(entry.types).toMatch(/^\.\/.*\.d\.ts$/);
       expect(entry).not.toHaveProperty("require");
 
       if (entry.import === undefined) {
