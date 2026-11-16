@@ -69,6 +69,14 @@ import { MonacoEditorTypeFox } from "@/components/ui/MonacoEditorTypeFox/MonacoE
 
 Use `onSave` to handle Save or Ctrl/Cmd+S and persist changes. Use `onFileChange` to track edits.
 
+To connect a language server, pass `languageClientConfig` with the same configuration accepted by TypeFox's `MonacoEditorReactComp` (typed as `LanguageClientConfig` from `monaco-languageclient/lcwrapper`):
+
+```tsx
+<MonacoEditorTypeFox files={files} languageClientConfig={languageClientConfig} />
+```
+
+The host must provide a running language server and its transport; MoyaForge does not start one. Initialize shared VS Code services once at application startup when mounting both Monaco integrations.
+
 ## Examples
 
 - [Editable workspace](/ui/components/monaco-editor-typefox/editable-workspace)
@@ -79,7 +87,7 @@ Use `onSave` to handle Save or Ctrl/Cmd+S and persist changes. Use `onFileChange
 
 - `activeFile` and `onActiveFileChange` control the selected file.
 - `theme` overrides the inherited light/dark appearance.
-- `options`, `vscodeApiConfig`, `onReady`, and `onError` customize TypeFox.
+- `options`, `vscodeApiConfig`, `languageClientConfig`, `onReady`, and `onError` customize TypeFox.
 - `showCopyButton` and `showFileTabs` control toolbar visibility.
 - `className` and `--mf-monaco-*` CSS variables customize styling.
 

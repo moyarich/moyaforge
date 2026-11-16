@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { TocRouterFixture } from "../fixtures/toc-router.jsx";
 import { createRoot } from "react-dom/client";
 import { createMoyaForgeSource } from "@moyarich/moyaforge";
@@ -13,6 +13,8 @@ import {
   useLocation,
 } from "react-router-dom";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
+
+const SharedMonacoFixture = lazy(() => import("../fixtures/monaco-shared.jsx"));
 
 const toc = getTableOfContents([
   { id: "overview", value: "Overview", depth: 2 },
@@ -79,6 +81,14 @@ createRoot(document.getElementById("root")).render(
       />
       <Route path="/docs/*" element={<HostDocs />} />
       <Route path="/toc-router" element={<TocRouterFixture />} />
+      <Route
+        path="/monaco-shared"
+        element={
+          <Suspense fallback={<p role="status">Loading Monaco fixture…</p>}>
+            <SharedMonacoFixture />
+          </Suspense>
+        }
+      />
       <Route
         path="*"
         element={

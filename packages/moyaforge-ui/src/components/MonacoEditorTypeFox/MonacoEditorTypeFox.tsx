@@ -22,6 +22,8 @@ export interface MonacoEditorTypeFoxProps extends Omit<
   theme?: string;
   options?: editor.IStandaloneEditorConstructionOptions;
   vscodeApiConfig?: MonacoVscodeApiConfig;
+  /** Optional TypeFox language-server connection; the host owns its transport. */
+  languageClientConfig?: MonacoEditorProps["languageClientConfig"];
   onReady?: MonacoEditorProps["onEditorStartDone"];
   onError?: MonacoEditorProps["onError"];
 }
@@ -41,6 +43,7 @@ function TypeFoxEditor({
   theme,
   options,
   vscodeApiConfig,
+  languageClientConfig,
   onReady,
   onError,
   uri,
@@ -75,6 +78,7 @@ function TypeFoxEditor({
       <MonacoEditorReactComp
         style={{ height: "100%" }}
         vscodeApiConfig={vscodeApiConfig ?? defaultApiConfig}
+        languageClientConfig={languageClientConfig}
         editorAppConfig={{
           id: uri,
           codeResources: {
@@ -127,6 +131,7 @@ export function MonacoEditorTypeFox({
   theme,
   options,
   vscodeApiConfig,
+  languageClientConfig,
   onReady,
   onError,
   ...props
@@ -157,6 +162,7 @@ export function MonacoEditorTypeFox({
             theme={resolvedTheme}
             options={options}
             vscodeApiConfig={vscodeApiConfig}
+            languageClientConfig={languageClientConfig}
             onReady={onReady}
             onError={onError}
             uri={`file:///moyaforge/${encodeURIComponent(id)}/${(state.file.path ?? state.file.name).replaceAll("\\", "/").split("/").map(encodeURIComponent).join("/")}`}
