@@ -8,23 +8,19 @@ description: Help readers avoid problems before taking a risky step.
 
 ## React Component
 
-::::code-preview[Warning callout]{react replacements="portable"}
-::code-preview-sources{files="./example.css"}
-import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
-import "./example.css";
+::::code-preview[Warning callout]{component="./Example.tsx"}
 
-<CustomBlock type="warning" title="Before you continue">
-  Save a backup before changing your settings.
-</CustomBlock>
+::code-preview-sources{files="./Example.tsx,./Example.css" replacements="portable"}
+
 ::::
 
 ## Markdown Source
 
 Place a warning before a step where readers need to take action, such as saving a backup before changing settings.
 
-::::code-preview[Warning]{component="./Example.tsx" replacements="portable"}
+::::code-preview[Warning MDX source]{code="./Example.mdx" language="mdx"}
 
-::code-preview-sources{files="./example.css" replacements="portable"}
+::code-preview-sources{files="./Example.css" replacements="portable"}
 
 ::::
 
