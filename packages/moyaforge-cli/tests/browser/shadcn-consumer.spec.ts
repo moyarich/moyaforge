@@ -8,8 +8,6 @@ import { createServer } from "node:http";
 import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
 
-test.setTimeout(300_000);
-
 const repo = resolve(import.meta.dirname, "../../../..");
 test("GitHub shadcn consumer", async () => {
   async function run(command, args, cwd) {

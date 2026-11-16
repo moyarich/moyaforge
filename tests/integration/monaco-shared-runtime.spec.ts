@@ -3,7 +3,6 @@ import { expect, test } from "@playwright/test";
 test("real React Monaco and TypeFox share VS Code workers without startup conflicts", async ({
   page,
 }) => {
-  test.setTimeout(120_000);
   const failures: string[] = [];
   page.on("pageerror", (error) => failures.push(error.message));
   page.on("console", (message) => {
@@ -18,7 +17,7 @@ test("real React Monaco and TypeFox share VS Code workers without startup confli
     }
   });
 
-  await page.goto("/app/monaco-shared", { timeout: 90_000 });
+  await page.goto("/app/monaco-shared", { timeout: 60_000 });
   await expect(page.getByRole("heading", { name: "Shared Monaco browser fixture" })).toBeVisible();
   await expect(page.getByTestId("react-ready")).toHaveText("ready", { timeout: 60_000 });
   await expect(page.getByTestId("typefox-ready")).toHaveText("ready", { timeout: 60_000 });

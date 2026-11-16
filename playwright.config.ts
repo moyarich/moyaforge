@@ -4,6 +4,8 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testMatch: "**/*.spec.ts",
   forbidOnly: Boolean(process.env.CI),
+  // Fail individual tests after one minute, including browser consumer tests.
+  timeout: 60_000,
   globalTimeout: process.env.CI ? 45 * 60_000 : undefined,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
