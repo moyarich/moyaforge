@@ -81,7 +81,7 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^26.6.6",
+    "@types/node": "^24.0.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.4"
   },
@@ -95,5 +95,20 @@
   },
   "engines": {
     "node": ">=24.11.0"
+  },
+  "author": "Moya Richards",
+  "publisher": "moyarich",
+  "keywords": [
+    "moyaforge",
+    "monaco",
+    "editor",
+    "react",
+    "typefox",
+    "vite",
+    "typescript"
+  ],
+  "homepage": "https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-monaco#readme",
+  "bugs": {
+    "url": "https://github.com/moyarich/moyaforge/issues"
   }
 }

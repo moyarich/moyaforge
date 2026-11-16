@@ -8,7 +8,7 @@ import {
   CODE_REPLACEMENTS,
 } from "../../../../src/components/CodePreview/CodePreview.tsx";
 
-import setupSource from "../../setup-react-monaco-worker.ts?raw";
+const setupSource = "import { configureReactWorkers } from \"@moyarich/moyaforge-monaco/react\";\\nconfigureReactWorkers();";
 
 import Example from "./Example.tsx";
 import editorSource from "./Example.tsx?raw";
@@ -21,7 +21,7 @@ Set `readOnly` on the editor to lock all files, or on an individual file to lock
   title="Read-only workspace"
   files={[
     { label: "Example.tsx", code: editorSource },
-    { label: "setup-react-monaco-worker.ts", code: setupSource },
+    { label: "setup.ts", code: setupSource },
   ]}
   replacements={CODE_REPLACEMENTS}
 >
