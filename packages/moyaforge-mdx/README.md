@@ -45,10 +45,11 @@ Paths use numeric prefixes for ordering; these prefixes disappear from public ro
 
 ## Optional Vite registry discovery
 
-The `mdxRegistryPlugin` reads source rules from the consuming application's `registry.config.ts` and exposes two virtual modules:
+The `mdxRegistryPlugin` reads source rules from the consuming application's `registry.config.ts` and exposes three virtual modules:
 
 - `virtual:moyaforge-mdx/registry` retains the existing eager `sources[name].pages` module map and `lazyPages` for compatibility.
 - `virtual:moyaforge-mdx/lazy-registry` exports **only** `sources[name].lazyPages`. Its page values are functions returning dynamic `import()` promises, so importing the manifest does not itself statically import the compiled page modules.
+- `virtual:moyaforge-mdx/metadata` exports page metadata, navigation, and heading records without importing page components.
 
 ```js
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
@@ -57,7 +58,7 @@ const page = await sources.docs.lazyPages["01-getting-started/page.mdx"]();
 // Render page.default using your application framework.
 ```
 
-Both modules use the same configured content roots and reload when content files are added or removed. The companion `virtual:moyaforge-mdx/metadata` module provides normalized page records, routes, navigation, and heading trees without loading page components. The eager registry remains an available public integration; use lazy loading when appropriate.
+These modules use the same configured content roots and reload when content files are added or removed. The metadata module provides normalized page records, routes, navigation, and heading trees without loading page components. The eager registry remains an available public integration; use lazy loading when appropriate.
 
 ## Build-time page metadata
 

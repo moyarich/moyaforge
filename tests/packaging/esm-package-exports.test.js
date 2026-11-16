@@ -33,7 +33,12 @@ test.each(publishablePackages)(
         // Validate every type-only target from its manifest, not a fixed filename.
         expect(subpath).not.toBe(".");
         expect(entry).not.toHaveProperty("default");
-        const typesPath = resolve(import.meta.dirname, "../../packages", name, entry.types);
+        const typesPath = resolve(
+          import.meta.dirname,
+          "../../packages",
+          name,
+          entry.types,
+        );
         expect(await readFile(typesPath, "utf8")).toContain("declare module");
         continue;
       }

@@ -2,10 +2,17 @@ declare module "virtual:moyaforge-mdx/registry" {
   import type { ComponentType } from "react";
 
   type PageModule = { default: ComponentType };
-  export const sources: Readonly<Record<string, {
-    readonly pages: Readonly<Record<string, PageModule>>;
-    readonly lazyPages: Readonly<Record<string, () => Promise<PageModule>>>;
-  }>>;
+  export const sources: Readonly<
+    Record<
+      string,
+      {
+        readonly pages: Readonly<Record<string, PageModule>>;
+        readonly lazyPages: Readonly<
+          Record<string, () => Promise<PageModule>>
+        >;
+      }
+    >
+  >;
 }
 
 declare module "virtual:moyaforge-mdx/metadata" {
@@ -40,6 +47,7 @@ declare module "virtual:moyaforge-mdx/lazy-registry" {
     >
   >;
 }
+
 declare module "virtual:moyaforge-mdx/code-preview-components" {
   const components: Record<
     string,
