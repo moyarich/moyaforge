@@ -65,12 +65,29 @@ export async function verifyPackedConsumer(fixture, index) {
     }
     const unpack = join(temp, "installer");
     await mkdir(unpack);
+    // Install the packed CLI exactly as a consumer would. Extracting the
+    // tarball alone does not install its runtime dependencies (commander).
     await run(
-      "tar",
-      ["-xzf", tarballs["@moyarich/moyaforge-cli"], "-C", unpack],
+      "npm",
+      [
+        "install",
+        "--prefix",
+        unpack,
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        tarballs["@moyarich/moyaforge-cli"],
+      ],
       repo,
     );
-    const cli = join(unpack, "package/dist/bin/moyaforge.js");
+    const cli = join(
+      unpack,
+      "node_modules/@moyarich/moyaforge-cli/dist/bin/moyaforge.js",
+    );
+    assert.match(
+      await run(process.execPath, [cli, "--help"], unpack),
+      /Usage: moyaforge/,
+    );
     browser = await chromium.launch();
     {
       const root = join(temp, `consumer-${index}`);
