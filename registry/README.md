@@ -26,12 +26,37 @@ npm exec -- build-registry --config registry.config.ts
 
 # Restrict discovery to selected packages:
 npm run registry:build -- --package packages/moyaforge-monaco
+
+# Override registry metadata, output and installation targets:
+npm run registry:build -- \
+  --name custom-registry \
+  --homepage https://example.com \
+  --output-file generated/registry.json \
+  --target-dir '~/src/components/ui'
+
+# Select shared dependency manifests or disable optional discovery:
+npm run registry:build -- \
+  --dependency-manifest packages/example/package.json \
+  --no-templates --no-docs --no-legacy-styles
 ```
 
-An explicit `--package` selection preserves that package's `nameOverrides`
-from the config. To build a different registry, pass
+The CLI reads `registry.config.ts` first. Explicit options take precedence
+without modifying the configuration file. Supported overrides are
+`--name`, `--homepage`, repeatable `--package` and
+`--dependency-manifest`, `--templates-dir`, `--docs-dir`,
+`--output-file`, `--target-dir`, `--legacy-styles-dir`,
+`--no-templates`, `--no-docs` and `--no-legacy-styles`.
+Use `--check` to validate without writing, and `--print-output` to print
+the effective output filename, including any `--output-file` override.
+
+An explicit `--package` selection preserves the corresponding package's
+`nameOverrides` from the config. To build a different registry, pass
 `--config path/to/other.registry.config.ts`; paths are resolved from
 the config file's directory, not the current shell directory.
+
+The GitHub workflow, npm scripts, shell and workspace bin all invoke
+the same Commander CLI. Workflows can pass individual overrides through
+`npm run registry:build -- --output-file ...` instead of editing the file.
 
 The generator discovers nested component folders with `index.ts` or
 `index.tsx` and follows local script and CSS imports. Undeclared dependencies
