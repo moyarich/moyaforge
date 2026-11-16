@@ -1,0 +1,4 @@
+{
+  "extends": "../../../apps/playground/tsconfig.json",
+  "include": ["**/*.ts", "**/*.tsx", "../../moyaforge-mdx/vite-client.d.ts"]
+}

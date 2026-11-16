@@ -92,6 +92,7 @@ function TypeFoxEditor({
             padding: { top: 16, bottom: 16 },
             scrollBeyondLastLine: false,
             automaticLayout: true,
+            fixedOverflowWidgets: true,
             wordWrap: "on",
             ...options,
             theme,
