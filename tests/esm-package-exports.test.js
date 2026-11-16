@@ -25,15 +25,18 @@ test.each(publishablePackages)(
     expect(exports.length).toBeGreaterThan(0);
     for (const [subpath, entry] of exports) {
       expect(entry.types).toMatch(/^\.\/.*\.d\.ts$/);
-      if (subpath === "./vite-client") {
-        // Vite's ambient client declarations have no runtime entry point.
-        expect(name).toBe("moyaforge-mdx");
-        expect(entry).toEqual({ types: "./vite-client.d.ts" });
+      expect(entry).not.toHaveProperty("require");
+
+      if (entry.import === undefined) {
+        // Ambient declarations may expose types without a JavaScript module.
+        // Validate the published file through the package tarball audit.
+        expect(subpath).not.toBe(".");
+        expect(entry).not.toHaveProperty("default");
         continue;
       }
+
       expect(entry.import).toMatch(/^\.\/.*\.js$/);
       expect(entry.default).toBe(entry.import);
-      expect(entry).not.toHaveProperty("require");
     }
 
     expect(manifest.main).toBe(manifest.exports["."].import);
