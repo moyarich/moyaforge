@@ -9,7 +9,16 @@ import {
 import "@codingame/monaco-vscode-standalone-css-language-features";
 import "@codingame/monaco-vscode-standalone-json-language-features";
 import "@codingame/monaco-vscode-standalone-html-language-features";
-import { useWorkerFactory, Worker } from "monaco-languageclient/workerFactory";
+import { useWorkerFactory } from "monaco-languageclient/workerFactory";
+
+// Delegate worker URL generation to the consuming Vite application. Library
+// builds cannot bake in /assets/*.js URLs: those files are not served from
+// the application's root by the development server.
+import EditorWorker from "@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker.js?worker";
+import TypeScriptWorker from "@codingame/monaco-vscode-standalone-typescript-language-features/worker?worker";
+import CssWorker from "@codingame/monaco-vscode-standalone-css-language-features/worker?worker";
+import JsonWorker from "@codingame/monaco-vscode-standalone-json-language-features/worker?worker";
+import HtmlWorker from "@codingame/monaco-vscode-standalone-html-language-features/worker?worker";
 
 import reactWorkerLibraries from "virtual:moyaforge-monaco/react-types";
 
@@ -61,39 +70,12 @@ export function configureTypeFoxWorkers() {
   }
   configureTypeScript();
 
-  const editorWorker = () =>
-    new Worker(
-      new URL(
-        "@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker.js",
-        import.meta.url,
-      ),
-      { type: "module" },
-    );
-  // Literal new URL() paths let Vite emit these workers as bundled assets.
-  const typescriptWorker = () =>
-    new Worker(
-      new URL(
-        "@codingame/monaco-vscode-standalone-typescript-language-features/worker",
-        import.meta.url,
-      ),
-      { type: "module" },
-    );
-  const cssWorker = () =>
-    new Worker(
-      new URL(
-        "@codingame/monaco-vscode-standalone-css-language-features/worker",
-        import.meta.url,
-      ),
-      { type: "module" },
-    );
-  const htmlWorker = () =>
-    new Worker(
-      new URL(
-        "@codingame/monaco-vscode-standalone-html-language-features/worker",
-        import.meta.url,
-      ),
-      { type: "module" },
-    );
+  // ?worker imports are resolved by Vite at the application boundary. This
+  // works for linked/workspace packages in dev and installed tarballs in builds.
+  const editorWorker = () => new EditorWorker();
+  const typescriptWorker = () => new TypeScriptWorker();
+  const cssWorker = () => new CssWorker();
+  const htmlWorker = () => new HtmlWorker();
 
   useWorkerFactory({
     workerLoaders: {
@@ -103,14 +85,7 @@ export function configureTypeFoxWorkers() {
       css: cssWorker,
       scss: cssWorker,
       less: cssWorker,
-      json: () =>
-        new Worker(
-          new URL(
-            "@codingame/monaco-vscode-standalone-json-language-features/worker",
-            import.meta.url,
-          ),
-          { type: "module" },
-        ),
+      json: () => new JsonWorker(),
       html: htmlWorker,
       handlebars: htmlWorker,
       razor: htmlWorker,
