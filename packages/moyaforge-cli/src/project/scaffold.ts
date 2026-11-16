@@ -76,7 +76,9 @@ export async function planProject({
       ? 'import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";'
       : "",
     __SEARCH_PLUGIN__: search
-      ? "sqliteSearchPlugin({ discovery, registry, root: contentRoot }),"
+      ? template === "playground"
+        ? "sqliteSearchPlugin({ discovery, registry, root: contentRoot }),"
+        : "sqliteSearchPlugin({ registry, root: import.meta.dirname }),"
       : "",
   };
 
