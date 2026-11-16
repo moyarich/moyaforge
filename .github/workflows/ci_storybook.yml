@@ -1,5 +1,12 @@
 name: CI / Storybook
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/ci_storybook.yml"
+      - "packages/moyaforge-ui/.storybook/**"
+      - "packages/moyaforge-ui/stories/**"
+      - "packages/moyaforge-ui/package.json"
+      - "packages/moyaforge-monaco/**"
   workflow_call:
     inputs:
       checkout-sha:
