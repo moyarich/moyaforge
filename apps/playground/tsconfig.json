@@ -10,7 +10,12 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["vite/client", "node"]
+    "types": [
+      "vite/client",
+      "node",
+      "@moyarich/moyaforge-mdx/vite-client",
+      "@moyarich/moyaforge-monaco/vite-client"
+    ]
   },
   "include": [
     "src",
@@ -18,7 +23,6 @@
     "registry.config.ts",
     "vite.config.ts",
     "../../packages/moyaforge-ui/docs/**/*.ts",
-    "../../packages/moyaforge-ui/docs/**/*.tsx",
-    "../../packages/moyaforge-mdx/vite-client.d.ts"
+    "../../packages/moyaforge-ui/docs/**/*.tsx"
   ]
 }

@@ -104,4 +104,3 @@ export function configureTypeFoxWorkers() {
     },
   });
 }
-configureTypeFoxWorkers();

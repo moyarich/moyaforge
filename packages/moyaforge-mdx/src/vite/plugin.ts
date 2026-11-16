@@ -7,4 +7,3 @@ export {
   resolveCodePreviewSource,
 } from "./code-preview/code-preview.js";
 
-export * from "./monaco-react-types/monaco-react-types.js";

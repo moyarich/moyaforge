@@ -27,7 +27,8 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.4",
-    "shiki": "^4.5.0"
+    "shiki": "^4.5.0",
+    "@moyarich/moyaforge-monaco": "*"
   },
   "scripts": {
     "dev": "npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite --host 0.0.0.0",

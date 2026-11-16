@@ -1,4 +1,4 @@
-import { configureTypeFoxWorkers } from "../setup-typefox-monaco-workers.js";
+import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/typefox";
 import { useState } from "react";
 import { MonacoEditorTypeFox } from "../../../../src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
 

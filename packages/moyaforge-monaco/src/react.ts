@@ -79,8 +79,6 @@ export function configureReactWorkers() {
   };
 }
 
-configureReactWorkers();
-
 loader.config({ monaco });
 
 export { monaco };

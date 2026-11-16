@@ -1,0 +1,99 @@
+{
+  "name": "@moyarich/moyaforge-monaco",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Optional Monaco worker and Vite integrations",
+  "license": "MIT",
+  "sideEffects": true,
+  "exports": {
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    },
+    "./vite-client": {
+      "types": "./vite-client.d.ts"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js"
+    },
+    "./react/auto": {
+      "types": "./dist/react-auto.d.ts",
+      "import": "./dist/react-auto.js"
+    },
+    "./typefox": {
+      "types": "./dist/typefox.d.ts",
+      "import": "./dist/typefox.js"
+    },
+    "./typefox/auto": {
+      "types": "./dist/typefox-auto.d.ts",
+      "import": "./dist/typefox-auto.js"
+    }
+  },
+  "files": [
+    "dist",
+    "vite-client.d.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "vite": "^8.0.0",
+    "monaco-editor": "^0.52.0",
+    "@monaco-editor/react": ">=4",
+    "monaco-languageclient": "~11.0.2",
+    "@codingame/monaco-vscode-standalone-languages": "^37.6.1",
+    "@codingame/monaco-vscode-standalone-typescript-language-features": "^37.6.1",
+    "@codingame/monaco-vscode-standalone-css-language-features": "^37.6.1",
+    "@codingame/monaco-vscode-standalone-json-language-features": "^37.6.1",
+    "@codingame/monaco-vscode-standalone-html-language-features": "^37.6.1"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    },
+    "monaco-editor": {
+      "optional": true
+    },
+    "@monaco-editor/react": {
+      "optional": true
+    },
+    "monaco-languageclient": {
+      "optional": true
+    },
+    "@codingame/monaco-vscode-standalone-languages": {
+      "optional": true
+    },
+    "@codingame/monaco-vscode-standalone-typescript-language-features": {
+      "optional": true
+    },
+    "@codingame/monaco-vscode-standalone-css-language-features": {
+      "optional": true
+    },
+    "@codingame/monaco-vscode-standalone-json-language-features": {
+      "optional": true
+    },
+    "@codingame/monaco-vscode-standalone-html-language-features": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyarich/moyaforge.git",
+    "directory": "packages/moyaforge-monaco"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  }
+}

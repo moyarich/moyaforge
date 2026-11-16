@@ -1,4 +1,4 @@
-import { monacoReactTypes } from "./monaco-react-types.js";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -63,7 +63,7 @@ export default defineConfig({
     alias: { "@": fileURLToPath(new URL("__SOURCE_ALIAS__/", import.meta.url)) },
   },
   plugins: [
-    monacoReactTypes(contentRoot),
+    monacoReactTypesPlugin(contentRoot),
     createCodePreviewPlugin(codePreview),
     mdxRegistryPlugin({ discovery, registry, root: contentRoot }),
     __SEARCH_PLUGIN__

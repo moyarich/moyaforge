@@ -1,4 +1,23 @@
 {
-  "extends": "../../../apps/playground/tsconfig.json",
-  "include": ["**/*.ts", "**/*.tsx", "../../moyaforge-mdx/vite-client.d.ts"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "noUncheckedSideEffectImports": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": [
+      "vite/client",
+      "@moyarich/moyaforge-mdx/vite-client",
+      "@moyarich/moyaforge-monaco/vite-client"
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
