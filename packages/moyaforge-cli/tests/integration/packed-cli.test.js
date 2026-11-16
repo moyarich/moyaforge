@@ -34,7 +34,8 @@ test("packed CLI runs init using only compiled files and packaged templates", as
       packed.files.some((file) => file.path === "dist/index.d.ts"),
     ).toBe(true);
     expect(packed.files.some(file => file.path === "templates/base/package.json")).toBe(true);
-    expect(packed.files.some(file => file.path === "templates/search/vite.config.ts")).toBe(true);
+    // Search augments the base Vite template, rather than replacing its MDX mapping.
+    expect(packed.files.some(file => file.path === "templates/search/vite.config.ts")).toBe(false);
     run("tar", ["-xzf", join(temporary, packed.filename), "-C", temporary]);
     expect(
       packed.files.some((file) => file.path === "dist/cli.js"),

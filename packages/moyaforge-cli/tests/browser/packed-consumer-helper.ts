@@ -213,12 +213,17 @@ export async function verifyPackedConsumer(fixture, index) {
           "Lucide icons render",
         );
         await page.getByRole("tab", { name: "pnpm", exact: true }).click();
+        const command = "pnpm add @moyarich/moyaforge";
+        const panel = page.locator(
+          '[data-moyaforge-code-panel]:not([hidden])',
+        );
+        assert.equal((await panel.locator("pre").textContent())?.trim(), command);
         await page
           .getByRole("button", { name: "Copy pnpm code", exact: true })
           .click();
         assert.equal(
           await page.evaluate(() => navigator.clipboard.readText()),
-          "pnpm add example",
+          command,
         );
         await page
           .locator(".mf-sidebar")

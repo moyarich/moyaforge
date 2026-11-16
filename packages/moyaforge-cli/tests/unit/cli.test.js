@@ -148,6 +148,13 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(await read(packageRoot, "vite.config.ts")).toContain(
     "sqliteSearchPlugin",
   );
+  const searchViteConfig = await read(packageRoot, "vite.config.ts");
+  expect(searchViteConfig).toContain('"code-group": {');
+  expect(searchViteConfig).toContain('childComponent: "CodeTab"');
+  expect(searchViteConfig).not.toContain("__SEARCH_PLUGIN__");
+  expect(searchViteConfig).not.toContain("__SEARCH_PLUGIN_IMPORT__");
+  expect(searchViteConfig).toContain("sqliteSearchPlugin({");
+  expect(searchViteConfig).toContain('import registry from "./registry.config"');
   expect(await read(packageRoot, "src/components/ui/docs-shell.tsx")).toContain(
     "DocsShell",
   );
