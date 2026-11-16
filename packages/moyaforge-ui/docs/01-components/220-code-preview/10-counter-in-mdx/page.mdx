@@ -9,9 +9,13 @@ description: Show a live React counter and its source files in an MDX page.
 
 Click the counter to try it. Open **Code** to see the React component and stylesheet.
 
-::::code-preview[Counter]{component="../../CounterExample.tsx"}
+::::code-preview[Counter]{react replacements="portable"}
 
-::code-preview-sources{files="./example.mdx,../../CounterExample.tsx,../../counterExample.css" replacements="portable"}
+::code-preview-sources{files="./example.mdx,../../CounterExample.tsx,../../counterExample.css"}
+
+import CounterExample from "../../CounterExample.tsx";
+
+<CounterExample />
 
 ::::
 
