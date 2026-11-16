@@ -20,3 +20,20 @@ test("MDX Vite virtual modules have a packaged declaration-only entrypoint", asy
     expect(declarations).toContain(`declare module "virtual:moyaforge-mdx/${id}"`);
   }
 });
+
+test("Monaco Vite virtual React types are namespaced and published", async () => {
+  const root = resolve(import.meta.dirname, "../../packages/moyaforge-monaco");
+  const pkg = JSON.parse(await readFile(resolve(root, "package.json"), "utf8"));
+  expect(Object.keys(pkg.exports["./virtual"])).toEqual(["types"]);
+  expect(pkg.exports["./virtual"].types).toBe("./dist/virtual-modules.d.ts");
+
+  const declarations = await readFile(resolve(root, pkg.exports["./virtual"].types), "utf8");
+  expect(declarations).toContain('declare module "virtual:moyaforge-monaco/react-types"');
+  expect(declarations).not.toContain("virtual:monaco-react-types");
+
+  for (const path of ["src/vite.ts", "src/react.ts", "src/typefox.ts"]) {
+    const source = await readFile(resolve(root, path), "utf8");
+    expect(source).toContain("virtual:moyaforge-monaco/react-types");
+    expect(source).not.toContain("virtual:monaco-react-types");
+  }
+});

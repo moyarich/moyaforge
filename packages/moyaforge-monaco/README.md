@@ -9,4 +9,4 @@ import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
 
 Import `@moyarich/moyaforge-monaco/react/auto` to configure Monaco workers, or `@moyarich/moyaforge-monaco/typefox/auto` for TypeFox. Explicit setup functions are exported by `/react` and `/typefox`. Install the appropriate optional peer dependencies. Configure only one global Monaco worker provider at a time.
 
-Add `@moyarich/moyaforge-monaco/vite-client` to the TypeScript `types` list when importing `virtual:monaco-react-types`.
+Add `@moyarich/moyaforge-monaco/virtual` to the TypeScript `types` list when importing `virtual:moyaforge-monaco/react-types`.

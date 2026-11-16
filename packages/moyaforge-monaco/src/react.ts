@@ -14,7 +14,7 @@ import CssWorker from "monaco-editor/esm/vs/language/css/css.worker.js?worker";
 import JsonWorker from "monaco-editor/esm/vs/language/json/json.worker.js?worker";
 import HtmlWorker from "monaco-editor/esm/vs/language/html/html.worker.js?worker";
 
-import reactWorkerLibraries from "virtual:monaco-react-types";
+import reactWorkerLibraries from "virtual:moyaforge-monaco/react-types";
 
 const environment = globalThis as typeof globalThis & {
   MonacoEnvironment?: monaco.Environment;

@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { Plugin } from "vite";
 
-const moduleId = "virtual:monaco-react-types";
+const moduleId = "virtual:moyaforge-monaco/react-types";
 const declarations = {
   "@types/react": ["index", "global", "jsx-runtime", "jsx-dev-runtime"],
   "@types/react-dom": ["index", "client"],

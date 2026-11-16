@@ -12,7 +12,7 @@ import "@codingame/monaco-vscode-standalone-json-language-features";
 import "@codingame/monaco-vscode-standalone-html-language-features";
 import { useWorkerFactory, Worker } from "monaco-languageclient/workerFactory";
 
-import reactWorkerLibraries from "virtual:monaco-react-types";
+import reactWorkerLibraries from "virtual:moyaforge-monaco/react-types";
 
 typescriptDefaults.setCompilerOptions({
   ...typescriptDefaults.getCompilerOptions(),
