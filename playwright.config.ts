@@ -29,7 +29,10 @@ export default defineConfig({
       name: "cli-consumer",
       testDir: "./packages/moyaforge-cli/tests/browser",
       fullyParallel: false,
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        permissions: ["clipboard-read", "clipboard-write"],
+      },
     },
   ],
   webServer: {
