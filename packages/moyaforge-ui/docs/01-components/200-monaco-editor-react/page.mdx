@@ -35,10 +35,10 @@ npx shadcn@latest add moyarich/moyaforge/monaco-editor-react
 In an existing React app, ensure these runtime dependencies are installed:
 
 ```sh
-npm install @monaco-editor/react monaco-editor lucide-react
+npm install @moyarich/moyaforge-monaco @monaco-editor/react monaco-editor lucide-react
 ```
 
-For Vite, copy `setup.ts` from the preview’s Code tab and import it before the editor. It configures local Monaco workers. Other bundlers need their own worker setup.
+For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and import `@moyarich/moyaforge-monaco/react/auto` once before rendering the editor. Other bundlers need their own worker setup.
 
 ## Usage
 
@@ -54,7 +54,7 @@ For Vite, copy `setup.ts` from the preview’s Code tab and import it before the
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 
 ```tsx
-import "./setup";
+import "@moyarich/moyaforge-monaco/react/auto";
 import { MonacoEditorReact } from "@/components/ui/MonacoEditorReact/MonacoEditorReact";
 
 <MonacoEditorReact

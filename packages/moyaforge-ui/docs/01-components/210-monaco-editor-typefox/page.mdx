@@ -35,10 +35,11 @@ npx shadcn@latest add moyarich/moyaforge/monaco-editor-type-fox
 In an existing React app, ensure these runtime dependencies are installed:
 
 ```sh
-npm install @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react
+npm install @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react
+npm install @codingame/monaco-vscode-standalone-languages@^37.6.1 @codingame/monaco-vscode-standalone-typescript-language-features@^37.6.1 @codingame/monaco-vscode-standalone-css-language-features@^37.6.1 @codingame/monaco-vscode-standalone-json-language-features@^37.6.1 @codingame/monaco-vscode-standalone-html-language-features@^37.6.1
 ```
 
-For Vite, copy `setup.ts` from the preview’s Code tab and import it before the editor. It configures local Monaco workers. Other bundlers need their own worker setup.
+For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and import `@moyarich/moyaforge-monaco/typefox/auto` once before rendering the editor. Other bundlers need their own worker setup.
 
 ## Usage
 
@@ -54,7 +55,7 @@ For Vite, copy `setup.ts` from the preview’s Code tab and import it before the
 The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
 
 ```tsx
-import "./setup";
+import "@moyarich/moyaforge-monaco/typefox/auto";
 import { MonacoEditorTypeFox } from "@/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox";
 
 <MonacoEditorTypeFox
