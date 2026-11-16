@@ -8,26 +8,31 @@
   "exports": {
     "./vite": {
       "types": "./dist/vite.d.ts",
-      "import": "./dist/vite.js"
+      "import": "./dist/vite.js",
+      "default": "./dist/vite.js"
     },
     "./vite-client": {
       "types": "./vite-client.d.ts"
     },
     "./react": {
       "types": "./dist/react.d.ts",
-      "import": "./dist/react.js"
+      "import": "./dist/react.js",
+      "default": "./dist/react.js"
     },
     "./react/auto": {
       "types": "./dist/react-auto.d.ts",
-      "import": "./dist/react-auto.js"
+      "import": "./dist/react-auto.js",
+      "default": "./dist/react-auto.js"
     },
     "./typefox": {
       "types": "./dist/typefox.d.ts",
-      "import": "./dist/typefox.js"
+      "import": "./dist/typefox.js",
+      "default": "./dist/typefox.js"
     },
     "./typefox/auto": {
       "types": "./dist/typefox-auto.d.ts",
-      "import": "./dist/typefox-auto.js"
+      "import": "./dist/typefox-auto.js",
+      "default": "./dist/typefox-auto.js"
     }
   },
   "files": [
