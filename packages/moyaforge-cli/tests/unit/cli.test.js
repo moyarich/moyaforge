@@ -369,3 +369,19 @@ test("playground init uses consumer-owned content and registry-installed compone
   expect(await read(plain, "src/SearchAdapter.tsx")).not.toContain("searchPages");
   expect(await read(plain, "vite.config.ts")).not.toContain("sqliteSearchPlugin");
 });
+
+test("Monaco integration is installed only for the playground starter", async () => {
+  const docsRoot = await project();
+  expect(run(docsRoot, "init", "--template", "docs", "--no-install").status).toBe(0);
+  const docsManifest = JSON.parse(await read(docsRoot, "package.json"));
+  expect(docsManifest.devDependencies).not.toHaveProperty("@moyarich/moyaforge-monaco");
+  const docsTsconfig = await read(docsRoot, "tsconfig.json");
+  expect(docsTsconfig).not.toContain("@moyarich/moyaforge-monaco/virtual");
+
+  const playgroundRoot = await project();
+  expect(run(playgroundRoot, "init", "--template", "playground", "--no-install").status).toBe(0);
+  const playgroundManifest = JSON.parse(await read(playgroundRoot, "package.json"));
+  expect(playgroundManifest.devDependencies["@moyarich/moyaforge-monaco"]).toBe("^0.1.0");
+  const playgroundTsconfig = await read(playgroundRoot, "tsconfig.json");
+  expect(playgroundTsconfig).toContain("@moyarich/moyaforge-monaco/virtual");
+});

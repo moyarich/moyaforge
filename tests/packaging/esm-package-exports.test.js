@@ -6,6 +6,7 @@ const publishablePackages = [
   "moyaforge",
   "moyaforge-cli",
   "moyaforge-mdx",
+  "moyaforge-monaco",
   "moyaforge-search-sqlite",
 ];
 
@@ -47,7 +48,14 @@ test.each(publishablePackages)(
       expect(entry.default).toBe(entry.import);
     }
 
-    expect(manifest.main).toBe(manifest.exports["."].import);
-    expect(manifest.types).toBe(manifest.exports["."].types);
+    // Monaco intentionally has named subpaths only; no accidental root import.
+    if (Object.hasOwn(manifest.exports, ".")) {
+      expect(manifest.main).toBe(manifest.exports["."].import);
+      expect(manifest.types).toBe(manifest.exports["."].types);
+    } else {
+      expect(manifest.main).toBeUndefined();
+      expect(manifest.types).toBeUndefined();
+      expect(exports.some(([, entry]) => "import" in entry)).toBe(true);
+    }
   },
 );

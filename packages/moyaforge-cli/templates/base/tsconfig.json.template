@@ -1,4 +1,4 @@
 {
-  "compilerOptions": {"target":"ES2022","lib":["ES2022","DOM"],"module":"ESNext","moduleResolution":"Bundler","paths":{"@/*":["__SOURCE_ALIAS__/*"]},"jsx":"react-jsx","strict":true,"skipLibCheck":true,"noEmit":true,"allowImportingTsExtensions":true,"types":["vite/client","node","@moyarich/moyaforge-mdx/virtual","@moyarich/moyaforge-monaco/virtual"]},
+  "compilerOptions": {"target":"ES2022","lib":["ES2022","DOM"],"module":"ESNext","moduleResolution":"Bundler","paths":{"@/*":["__SOURCE_ALIAS__/*"]},"jsx":"react-jsx","strict":true,"skipLibCheck":true,"noEmit":true,"allowImportingTsExtensions":true,"types":["vite/client","node","@moyarich/moyaforge-mdx/virtual"__MONACO_TYPES__]},
   "include":["src","*.ts","../src/components/ui"]
 }

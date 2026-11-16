@@ -65,6 +65,10 @@ export async function planProject({
     __UI__: uiPath.startsWith(".") ? uiPath : `./${uiPath}`,
     __SOURCE_ALIAS__: template === "existing" ? "../src" : "./src",
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
+    __MONACO_TYPES__:
+      template === "playground"
+        ? ', "@moyarich/moyaforge-monaco/virtual"'
+        : "",
     __PLAYGROUND_ENABLED__: String(
       template === "hybrid" || template === "playground",
     ),
