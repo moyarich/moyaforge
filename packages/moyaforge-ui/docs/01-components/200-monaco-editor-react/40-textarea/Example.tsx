@@ -1,4 +1,4 @@
-import { Monaco } from "../../../../src/components/MonacoEditorCore/Monaco.js";
+import { Monaco } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 const files = [
   {

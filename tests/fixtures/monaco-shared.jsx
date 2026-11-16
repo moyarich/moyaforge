@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
   MonacoEditorReact,
-} from "../../packages/moyaforge-ui/src/components/MonacoEditorReact/MonacoEditorReact.js";
+} from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 import {
   MonacoEditorTypeFox,
-} from "../../packages/moyaforge-ui/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
+} from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 
 const reactFiles = [
   {

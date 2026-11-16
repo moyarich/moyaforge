@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MonacoEditorTypeFox } from "../../../../src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
+import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 
 export default function MultiFileEditor() {
   const [saved, setSaved] = useState("");

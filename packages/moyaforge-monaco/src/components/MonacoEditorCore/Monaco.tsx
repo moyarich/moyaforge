@@ -21,7 +21,7 @@ import {
   LockKeyhole,
   Save,
 } from "lucide-react";
-import { CopyButton } from "../CopyButton/CopyButton.js";
+import { MonacoCopyButton } from "./MonacoCopyButton.js";
 import { reconcileFileDrafts } from "./drafts.js";
 
 export interface MonacoFile {
@@ -271,7 +271,7 @@ export function Monaco({
               </button>
             )}
             {showCopyButton && (
-              <CopyButton
+              <MonacoCopyButton
                 data-moyaforge-monaco-copy=""
                 className="mf-monaco-copy"
                 aria-label={`Copy ${selectedFile.name}`}
@@ -279,7 +279,7 @@ export function Monaco({
                 getValue={() => drafts[selectedFile.name] ?? selectedFile.value}
               >
                 Copy
-              </CopyButton>
+              </MonacoCopyButton>
             )}
           </div>
         </div>

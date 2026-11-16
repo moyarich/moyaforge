@@ -26,7 +26,12 @@ test.each(publishablePackages)(
     const exports = Object.entries(manifest.exports);
     expect(exports.length).toBeGreaterThan(0);
     for (const [subpath, entry] of exports) {
-      expect(entry.types).toMatch(/^\.\/.*\.d\.ts$/);
+      if (typeof entry === "string") {
+        expect(subpath).toMatch(/\.css$/);
+        expect(entry).toMatch(/^\.\/dist\/.*\.css$/);
+        continue;
+      }
+      expect(entry.types).toMatch(/^\\.\\/.*\\.d\\.ts$/);
       expect(entry).not.toHaveProperty("require");
 
       if (entry.import === undefined) {

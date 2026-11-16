@@ -1,4 +1,4 @@
-import { MonacoEditorReact } from "../../../../src/components/MonacoEditorReact/MonacoEditorReact.js";
+import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 export default function ReadOnlyEditor() {
   return (

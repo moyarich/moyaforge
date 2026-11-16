@@ -13,8 +13,8 @@ import {
 import {
   MonacoCodeGroup,
   type MonacoEditorReactProps,
-} from "../MonacoEditorReact/index.js";
-import type { MonacoFile } from "../MonacoEditorCore/Monaco.js";
+  type MonacoFile,
+} from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 export interface CodePreviewEditorProps {
   /** Label shown above the live preview. */

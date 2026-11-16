@@ -12,6 +12,7 @@ const manifests = Object.fromEntries(
       "moyaforge-mdx",
       "moyaforge-search-sqlite",
       "moyaforge-cli",
+      "moyaforge-monaco",
     ].map(async (name) => [
       name,
       JSON.parse(
@@ -74,6 +75,7 @@ test("installer ownership and optional editor peers stay outside basic UI instal
   );
   assert.deepEqual(Object.keys(manifests["moyaforge-cli"].dependencies ?? {}), ["commander"]);
   for (const name of [
+    "@moyarich/moyaforge-monaco",
     "@monaco-editor/react",
     "@typefox/monaco-editor-react",
     "monaco-languageclient",

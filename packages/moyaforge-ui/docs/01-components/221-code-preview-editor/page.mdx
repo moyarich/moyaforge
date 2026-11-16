@@ -28,7 +28,11 @@ npx shadcn@latest add moyarich/moyaforge/code-preview-editor
 </CodeTab>
 </CodeGroup>
 
-The registry item includes the Preview and Monaco source files it uses. The CLI installs its declared npm dependencies. Configure Monaco workers for your bundler before rendering the editor.
+The registry item installs the Preview source files and depends on
+`@moyarich/moyaforge-monaco` for the editor. Install
+`@monaco-editor/react` and `monaco-editor` and configure workers for
+your bundler before rendering the editor. Other MoyaForge UI components
+do not require Monaco.
 
 ## Usage
 

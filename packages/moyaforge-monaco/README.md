@@ -1,11 +1,14 @@
 # @moyarich/moyaforge-monaco
 
-Small application-level Monaco integration, independent of the MDX compiler.
+Standalone Monaco React and TypeFox editor components plus application-level worker integration, independent of the MDX compiler.
 
 ## Package entry points
 
 | Import | Purpose |
 | --- | --- |
+| `/components/MonacoEditorReact` | React Monaco editor, code group, file workspace |
+| `/components/MonacoEditorTypeFox` | TypeFox editor backed by VS Code services |
+| `/styles.css` | Combined Monaco component styles |
 | `/react` | Standalone `@monaco-editor/react` workers |
 | `/typefox` | Standalone TypeFox workers |
 | `/shared` | One VS Code-compatible runtime for React Monaco + TypeFox |
@@ -62,3 +65,15 @@ Register `monacoReactTypesPlugin(projectRoot)` from
 The plugin provides `virtual:moyaforge-monaco/react-types` with
 React, React DOM and `csstype` declarations for Monaco's TSX worker.
 Install the optional peers for the runtime strategy you choose.
+
+## Components
+
+```tsx
+import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
+import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+```
+
+Both components, their shared file workspace, loading states, and styles are
+published from this package. The separate MoyaForge UI package does not need
+Monaco to render unrelated components. If both editor engines are mounted,
+initialize the shared runtime once at the application entry point.

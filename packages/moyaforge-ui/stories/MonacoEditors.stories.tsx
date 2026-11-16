@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
-import { MonacoEditorReact } from "../src/components/MonacoEditorReact/MonacoEditorReact.js";
-import { MonacoEditorTypeFox } from "../src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.js";
+import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
+import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 
 const reactFiles = [
   {

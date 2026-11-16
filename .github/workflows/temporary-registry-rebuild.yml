@@ -1,0 +1,33 @@
+name: Temporary / Regenerate multi-package registry
+on:
+  push:
+    branches:
+      - feat/mdx-code-preview-playground
+    paths:
+      - ".github/workflows/temporary-registry-rebuild.yml"
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Generate registry from all configured component packages
+        run: npm run registry:build
+      - name: Commit generated registry if changed
+        run: |
+          if git diff --quiet registry.json; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add registry.json
+          git commit -m "chore(registry): rebuild entries from UI and Monaco packages"
+          git fetch origin feat/mdx-code-preview-playground
+          git rebase origin/feat/mdx-code-preview-playground
+          git push origin HEAD:feat/mdx-code-preview-playground

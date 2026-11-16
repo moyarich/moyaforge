@@ -4,11 +4,11 @@ label: Monaco Editor TypeFox
 description: A multi-file code editor with read-only mode and copy support.
 ---
 
-import { MonacoEditorTypeFox as LiveMonacoEditorTypeFox } from "../../../src/components/MonacoEditorTypeFox/index.js";
+import { MonacoEditorTypeFox as LiveMonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 
 # Monaco Editor TypeFox
 
-import { MonacoEditorTypeFox } from "../../../src/components/MonacoEditorTypeFox/index.js";
+import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 
 A multi-file code editor with read-only mode and copy support.
 
@@ -18,14 +18,14 @@ A multi-file code editor with read-only mode and copy support.
 <CodeTab label="MoyaForge CLI">
 
 ```sh
-npx @moyarich/moyaforge-cli@latest add monaco-editor-type-fox
+npx @moyarich/moyaforge-cli@latest add monaco-editor-typefox
 ```
 
 </CodeTab>
 <CodeTab label="shadcn">
 
 ```sh
-npx shadcn@latest add moyarich/moyaforge/monaco-editor-type-fox
+npx shadcn@latest add moyarich/moyaforge/monaco-editor-typefox
 ```
 
 </CodeTab>
@@ -59,7 +59,7 @@ configureTypeFoxWorkers();
 
 :::
 
-The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+For source installs, the `@/` path maps to your configured UI directory. Package consumers can import from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` or `/MonacoEditorTypeFox` instead.
 
 ```tsx
 import { MonacoEditorTypeFox } from "@/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox";

@@ -4,11 +4,11 @@ label: Monaco Editor React
 description: A multi-file code editor with read-only mode and copy support.
 ---
 
-import { MonacoEditorReact as LiveMonacoEditorReact } from "../../../src/components/MonacoEditorReact/index.js";
+import { MonacoEditorReact as LiveMonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 # Monaco Editor React
 
-import { MonacoEditorReact } from "../../../src/components/MonacoEditorReact/index.js";
+import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 A multi-file code editor with read-only mode and copy support.
 
@@ -58,7 +58,7 @@ configureReactWorkers();
 
 :::
 
-The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+For source installs, the `@/` path maps to your configured UI directory. Package consumers can import from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` or `/MonacoEditorTypeFox` instead.
 
 ```tsx
 import { MonacoEditorReact } from "@/components/ui/MonacoEditorReact/MonacoEditorReact";
