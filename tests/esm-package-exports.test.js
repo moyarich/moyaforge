@@ -21,10 +21,16 @@ test.each(publishablePackages)(
     expect(manifest.type).toBe("module");
     expect(manifest.engines.node).toBe(">=24.11.0");
 
-    const exports = Object.values(manifest.exports);
+    const exports = Object.entries(manifest.exports);
     expect(exports.length).toBeGreaterThan(0);
-    for (const entry of exports) {
+    for (const [subpath, entry] of exports) {
       expect(entry.types).toMatch(/^\.\/.*\.d\.ts$/);
+      if (subpath === "./vite-client") {
+        // Vite's ambient client declarations have no runtime entry point.
+        expect(name).toBe("moyaforge-mdx");
+        expect(entry).toEqual({ types: "./vite-client.d.ts" });
+        continue;
+      }
       expect(entry.import).toMatch(/^\.\/.*\.js$/);
       expect(entry.default).toBe(entry.import);
       expect(entry).not.toHaveProperty("require");
