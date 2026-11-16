@@ -118,9 +118,10 @@ export async function createContext(
       )
         throw Error(`Registry package escapes the workspace: ${packagePath}`);
 
-      const manifest = await readJson<RegistryManifest>(
-        resolve(packageRoot, "package.json"),
-      );
+      const manifestPath = resolve(packageRoot, "package.json");
+      const manifest: RegistryManifest = (await isFile(manifestPath))
+        ? await readJson<RegistryManifest>(manifestPath)
+        : {};
       const sourceRoot = resolve(packageRoot, "src");
       const componentRoot = resolve(
         packageRoot,
