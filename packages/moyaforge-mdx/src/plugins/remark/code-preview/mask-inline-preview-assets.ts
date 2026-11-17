@@ -1,10 +1,12 @@
 export interface InlinePreviewAsset {
   /** Only preview-local raw style and script elements are transformed. */
-  tag: "style";
+  tag: "style" | "script";
   /** Start offset of the opening tag in the authored MDX source. */
   offset: number;
   /** Unmodified raw body, including its original whitespace. */
   code: string;
+  /** Only trusted CSS may render; script blocks are always source-only. */
+  render: boolean;
 }
 
 declare module "vfile" {
@@ -18,7 +20,7 @@ declare module "vfile" {
  *
  * Like inline {react} imports, only the *parse copy* is masked. The original
  * source remains available for code-preview source tabs and virtual modules.
- * CSS requires explicit trusted-docs opt-in. Inline scripts are forbidden.
+ * Both style and script are preserved in source. Only reviewed CSS renders.
  * Fenced source blocks and React previews remain untouched.
  */
 export function maskInlinePreviewAssets(
@@ -32,7 +34,9 @@ export function maskInlinePreviewAssets(
   const assets: InlinePreviewAsset[] = [];
   let previewWidth: number | undefined;
   let codeFence: string | undefined;
-  let openAsset: { tag: "style"; offset: number; lines: string[] } | undefined;
+  let openAsset:
+    | { tag: InlinePreviewAsset["tag"]; offset: number; lines: string[] }
+    | undefined;
   let offset = 0;
 
   for (const [index, line] of lines.entries()) {
@@ -44,6 +48,7 @@ export function maskInlinePreviewAssets(
           tag: openAsset.tag,
           offset: openAsset.offset,
           code: openAsset.lines.join(""),
+          render: openAsset.tag === "style" && allowInlinePreviewStyles,
         });
         openAsset = undefined;
       } else {
@@ -71,26 +76,37 @@ export function maskInlinePreviewAssets(
       if (new RegExp("^ {0,3}:{" + previewWidth + ",}\\s*$").test(text)) {
         previewWidth = undefined;
       } else {
-        // A preview-local root does not isolate JavaScript from the host app.
-        if (/<script(?=[\s>])/i.test(text))
-          throw new Error(
-            "Inline <script> is disabled in code-preview. Use a sandboxed iframe on a separate origin for executable examples.",
-          );
-        if (/<style(?=[\s>])/i.test(text)) {
-          if (!allowInlinePreviewStyles)
-            throw new Error(
-              "Inline <style> in code-preview requires allowInlinePreviewStyles: true for trusted documentation.",
-            );
-          const opener = /^([ \t]*)<style>[ \t]*$/.exec(text);
+        // Preserve raw source, but never turn <script> into executable MDX.
+        // Require standalone, attribute-free script tags to avoid accidental
+        // execution by HTML/JSX while rejecting external scripts and handlers.
+        const rawScript = /<script(?=[\s/>])/i.test(text);
+        if (rawScript) {
+          const opener = /^([ \t]*)<script>[ \t]*$/.exec(text);
           if (!opener)
             throw new Error(
-              "Inline <style> must have standalone, attribute-free opening and closing tags.",
+              "Inline <script> must use standalone, attribute-free tags in code-preview; scripts are source-only and never execute.",
             );
           openAsset = {
-            tag: "style",
+            tag: "script",
             offset: offset + opener[1].length,
             lines: [],
           };
+        } else if (/<style(?=[\s/>])/i.test(text)) {
+          const opener = /^([ \t]*)<style>[ \t]*$/.exec(text);
+          // Legacy MDX JSX style expressions (e.g. <style>{...}</style>)
+          // remain supported in trusted preview pages.
+          if (!opener) {
+            if (!allowInlinePreviewStyles)
+              throw new Error(
+                "Inline <style> in code-preview requires allowInlinePreviewStyles: true for trusted documentation.",
+              );
+          } else {
+            openAsset = {
+              tag: "style",
+              offset: offset + opener[1].length,
+              lines: [],
+            };
+          }
         }
       }
     } else {
