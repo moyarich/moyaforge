@@ -26,6 +26,8 @@ test("code display classes preserve metadata and accessible tab state", () => {
   expect(group).toContain('class="mf-code-tab mf-code-tab--active"');
   expect(group).toContain('aria-selected="true"');
   expect(group).toContain('class="mf-code-panel"');
+  // Packed CLI consumers use this stable DOM hook to inspect the active tab.
+  expect(group).toContain('data-moyaforge-code-panel=""');
 
   const copy = renderToStaticMarkup(h(CopyButton, { className: "custom-copy", value: "x" }));
   expect(copy).toContain('mf-copy-button--idle');
