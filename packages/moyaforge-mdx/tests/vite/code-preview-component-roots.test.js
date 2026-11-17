@@ -82,6 +82,22 @@ test("registered component roots resolve nested files and named exports without 
       assert.match(compiled, /component-root-0\/CodeBlock\/CodeBlock\.tsx#CodeBlock/);
     }
 
+    // Explicitly registering a documentation root keeps its pre-existing
+    // sibling registry entries rather than replacing or deleting them.
+    const overlapping = createCodePreview({
+      root, sources, pages, resolutionScope: "directory",
+    });
+    createCodePreviewPlugin({
+      codePreview: overlapping, componentRoots: ["docs"],
+    });
+    assert.equal(
+      resolveCodePreviewSource({
+        context: overlapping, reference: "./Example.tsx", authoredFile: page,
+      }),
+      "docs/guide/Example.tsx",
+    );
+    assert.equal(overlapping.modules.get("docs/guide/Example.tsx"), join(docs, "Example.tsx"));
+
     const noRoots = createCodePreview({ root, sources, pages });
     createCodePreviewPlugin({ codePreview: noRoots });
     assert.equal(resolveCodePreviewSource({
