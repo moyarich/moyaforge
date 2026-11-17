@@ -124,7 +124,7 @@ Add the preview plugin to your Vite config after discovering the content registr
 
 ```ts
 import {
-  createCodePreview,
+  createCodePreviewRegistry,
   createCodePreviewPlugin,
   resolveCodePreviewSource,
 } from "@moyarich/moyaforge-mdx/vite";
@@ -135,7 +135,7 @@ import registry from "./registry.config.js";
 const contentRoot = import.meta.dirname;
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
-const codePreview = createCodePreview({
+const codePreview = createCodePreviewRegistry({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
@@ -186,10 +186,10 @@ The `component` attribute renders a registered `.tsx` or `.jsx` file. Sibling ex
 
 #### Register component roots
 
-The `createCodePreview()` context exposes `componentRoots`, containing the unique directories of discovered documentation pages. Extend those directories when configuring the Vite plugin to find React components outside the docs folders. Additional roots are absolute directories or paths relative to `root`; nested `.tsx` and `.jsx` files under those roots are registered recursively. Existing sibling examples are not rescanned.
+The `createCodePreviewRegistry()` context exposes `componentRoots`, containing the unique directories of discovered documentation pages. Extend those directories when configuring the Vite plugin to find React components outside the docs folders. Additional roots are absolute directories or paths relative to `root`; nested `.tsx` and `.jsx` files under those roots are registered recursively. Existing sibling examples are not rescanned.
 
 ```ts filename="vite.config.ts"
-const codePreview = createCodePreview({
+const codePreview = createCodePreviewRegistry({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,

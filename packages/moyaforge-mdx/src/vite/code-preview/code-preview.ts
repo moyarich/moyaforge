@@ -85,7 +85,7 @@ export interface CodePreviewContext {
 
 /** Configuration for loading the preview registry through Vite. */
 export interface CodePreviewPluginOptions {
-  /** Shared context returned by `createCodePreview()`. */
+  /** Shared context returned by `createCodePreviewRegistry()`. */
   codePreview: CodePreviewContext;
   /**
    * Directories to register for file-backed React previews.
@@ -138,7 +138,7 @@ const componentFilePattern = /\.(?:tsx|jsx)$/;
  *
  * @example
  * ```ts
- * const codePreview = createCodePreview({
+ * const codePreview = createCodePreviewRegistry({
  *   root: contentRoot,
  *   sources: registry.sources,
  *   pages: discovered.pages,
@@ -147,7 +147,7 @@ const componentFilePattern = /\.(?:tsx|jsx)$/;
  *
  * @returns Shared registry for MDX resolution and the Vite preview plugin.
  */
-export function createCodePreview({
+export function createCodePreviewRegistry({
   root,
   sources,
   pages,
@@ -310,7 +310,7 @@ export function createCodePreviewPlugin({
     return absolute;
   }))].filter((directory) => !pageDirectories.has(directory));
   // Track only entries added by this plugin; automatic page entries are owned by
-  // createCodePreview and must survive a component root refresh.
+  // createCodePreviewRegistry and must survive a component root refresh.
   const ownedComponents = new Map<string, string>();
 
   /** Symlinks are deliberately not followed into unregistered directories. */

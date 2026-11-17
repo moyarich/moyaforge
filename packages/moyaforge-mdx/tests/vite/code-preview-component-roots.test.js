@@ -6,7 +6,7 @@ import { compile } from "@mdx-js/mdx";
 import { test } from "vitest";
 import { createMdxOptions } from "../../dist/index.js";
 import {
-  createCodePreview,
+  createCodePreviewRegistry,
   createCodePreviewPlugin,
   resolveCodePreviewSource,
 } from "../../dist/vite/plugin.js";
@@ -34,7 +34,7 @@ test("registered component roots resolve nested files and named exports without 
     await symlink(hidden, join(components, "Secret.tsx"));
 
     for (const resolutionScope of ["directory", "source", "global"]) {
-      const context = createCodePreview({
+      const context = createCodePreviewRegistry({
         root,
         sources,
         pages,
@@ -94,7 +94,7 @@ test("registered component roots resolve nested files and named exports without 
 
     // Explicitly registering a documentation root keeps its pre-existing
     // sibling registry entries rather than replacing or deleting them.
-    const overlapping = createCodePreview({
+    const overlapping = createCodePreviewRegistry({
       root, sources, pages, resolutionScope: "directory",
     });
     createCodePreviewPlugin({
@@ -109,7 +109,7 @@ test("registered component roots resolve nested files and named exports without 
     );
     assert.equal(overlapping.modules.get("docs/guide/Example.tsx"), join(docs, "Example.tsx"));
 
-    const noRoots = createCodePreview({ root, sources, pages });
+    const noRoots = createCodePreviewRegistry({ root, sources, pages });
     assert.deepEqual(noRoots.componentRoots, [docs]);
     createCodePreviewPlugin({ codePreview: noRoots });
     assert.equal(noRoots.registeredComponents.size, 0);
@@ -135,7 +135,7 @@ test("component root watcher updates virtual module entries after additions and 
     const page = join(root, "docs/page.mdx");
     const added = join(root, "shared/Added.tsx");
     await writeFile(page, "# Docs");
-    const context = createCodePreview({
+    const context = createCodePreviewRegistry({
       root,
       sources,
       pages: [{ source: "docs", file: "page.mdx" }],

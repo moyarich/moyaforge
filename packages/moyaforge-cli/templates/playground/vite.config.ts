@@ -10,7 +10,7 @@ import {
   createMdxOptions,
   remarkRewriteSourceLinks,
 } from "@moyarich/moyaforge-mdx";
-import { createCodePreviewPlugin, createCodePreview, mdxRegistryPlugin, resolveCodePreviewSource } from "@moyarich/moyaforge-mdx/vite";
+import { createCodePreviewPlugin, createCodePreviewRegistry, mdxRegistryPlugin, resolveCodePreviewSource } from "@moyarich/moyaforge-mdx/vite";
 __SEARCH_PLUGIN_IMPORT__
 import registry from "./registry.config.js";
 
@@ -18,7 +18,7 @@ const contentRoot = import.meta.dirname;
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
 
-const codePreview = createCodePreview({
+const codePreview = createCodePreviewRegistry({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
