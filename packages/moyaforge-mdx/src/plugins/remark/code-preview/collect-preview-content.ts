@@ -41,13 +41,15 @@ export function collectPreviewContent(
   if (header?.component) {
     if (!/^\.\/[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)$/.test(header.component))
       throw new Error(
-        `Invalid code-preview component: ${header.component}. Use a sibling .tsx or .jsx file.`,
+        `Invalid code-preview component: ${header.component}. Use a sibling .tsx or .jsx file with a default export, or use {react} to import shared components with named exports.`,
       );
     const component =
       filePath &&
       selected.resolveCodePreviewComponent?.(header.component, filePath);
     if (!component)
-      throw new Error(`Unregistered preview component: ${header.component}`);
+      throw new Error(
+        `Unregistered preview component: ${header.component}. The Vite preview registry discovers sibling .tsx/.jsx files next to documentation pages. Check the file path and casing, or use {react} to import shared components.`,
+      );
     attributes.push({
       type: "mdxJsxAttribute",
       name: "component",

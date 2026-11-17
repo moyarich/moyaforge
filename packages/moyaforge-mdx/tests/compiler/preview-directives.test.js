@@ -266,3 +266,30 @@ test("isolates repeated import names and keeps named fences as preview sources",
   expect(result).toContain("styles.css");
   expect(result.match(/replacementPreset: "portable"/g)).toHaveLength(1);
 });
+
+test("file-backed preview errors explain why shared or missing components cannot be loaded", async () => {
+  const options = createMdxOptions({
+    componentMappings: {
+      "code-preview": {
+        component: "InlineCodePreview",
+        resolveCodePreviewComponent: () => undefined,
+      },
+    },
+  });
+  const compilePreview = (component) =>
+    compile(
+      {
+        value: `:::code-preview[Example]{component="${component}"}\n\n:::`,
+        path: "/docs/warning/page.mdx",
+      },
+      options,
+    );
+
+  await expect(
+    compilePreview("../../../../src/components/CodeBlock/CodeBlock.tsx"),
+  ).rejects.toThrow(/Use a sibling .*default export.*\{react\}/);
+
+  await expect(compilePreview("./Missing.tsx")).rejects.toThrow(
+    /Unregistered preview component.*registry discovers sibling .*\{react\}/,
+  );
+});

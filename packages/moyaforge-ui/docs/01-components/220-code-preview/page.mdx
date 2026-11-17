@@ -182,7 +182,21 @@ export default function Greeting() {
 }
 ```
 
-The `component` attribute renders a sibling `.tsx` or `.jsx` file with a default export. Use the `code` attribute to preview a source file without rendering it as a React component:
+The `component` attribute renders a **registered sibling** `.tsx` or `.jsx` file with a **default export**. It does not load arbitrary relative imports into `src/components`. For a shared component with a named export, either write a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly. For example:
+
+```mdx
+::::code-preview[Warning callout]{react}
+
+import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+
+<CustomBlock type="warning" title="Before you continue">
+  Save a backup before changing your settings.
+</CustomBlock>
+
+::::
+```
+
+Use the `code` attribute to preview a source file without rendering it as a React component:
 
 ```md
 :::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}
