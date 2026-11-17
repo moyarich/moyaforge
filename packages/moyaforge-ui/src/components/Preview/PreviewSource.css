@@ -27,7 +27,7 @@ pre.mf-preview-source > code {
 
 /* A source slot can contain a file-tab CodeGroup instead of a plain snippet. */
 .mf-preview-source:not(pre) {
-  --code-group-margin: 0;
-  --code-group-border-radius: 0;
+  --mf-code-group-margin: 0;
+  --mf-code-group-border-radius: 0;
   padding: 0;
 }

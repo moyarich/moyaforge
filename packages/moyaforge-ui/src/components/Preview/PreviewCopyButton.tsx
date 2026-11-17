@@ -18,12 +18,11 @@ export function PreviewCopyButton(
     icon = (
       <span
         className="mf-preview-copy-icons"
-        data-moyaforge-preview-copy-icons=""
         aria-hidden="true"
       >
-        <Copy size={15} data-copy-icon="idle" />
-        <Check size={15} data-copy-icon="copied" />
-        <CircleAlert size={15} data-copy-icon="error" />
+        <Copy size={15} className="mf-preview-copy-icon mf-preview-copy-icon--idle" />
+        <Check size={15} className="mf-preview-copy-icon mf-preview-copy-icon--copied" />
+        <CircleAlert size={15} className="mf-preview-copy-icon mf-preview-copy-icon--error" />
       </span>
     ),
     ...rest
@@ -31,7 +30,6 @@ export function PreviewCopyButton(
   return (
     <CopyButton
       aria-label="Copy example source"
-      data-moyaforge-preview-copy=""
       className={["mf-preview-copy", className].filter(Boolean).join(" ")}
       icon={icon}
       {...rest}

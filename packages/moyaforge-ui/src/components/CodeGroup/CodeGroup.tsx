@@ -62,9 +62,9 @@ export function CodeGroup({
       [next]?.focus();
   };
   return (
-    <div data-moyaforge-code-group="" ref={root}>
-      <div data-moyaforge-code-toolbar="">
-        <div role="tablist" aria-label={label} data-moyaforge-code-tabs="">
+    <div className="mf-code-group" ref={root}>
+      <div className="mf-code-toolbar">
+        <div role="tablist" aria-label={label} className="mf-code-tabs">
           {tabs.map((tab, index) => (
             <button
               type="button"
@@ -73,6 +73,7 @@ export function CodeGroup({
               id={`${id}-tab-${index}`}
               aria-controls={`${id}-panel-${index}`}
               aria-selected={active === index}
+              className={active === index ? "mf-code-tab mf-code-tab--active" : "mf-code-tab"}
               tabIndex={active === index ? 0 : -1}
               onClick={() => setSelected(index)}
               onKeyDown={keyDown}
@@ -105,7 +106,7 @@ export function CodeGroup({
             id={`${id}-panel-${index}`}
             aria-labelledby={`${id}-tab-${index}`}
             hidden={active !== index}
-            data-moyaforge-code-panel=""
+            className="mf-code-panel"
           >
             {tab.content}
           </div>

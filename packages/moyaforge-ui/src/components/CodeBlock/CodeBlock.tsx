@@ -24,10 +24,10 @@ export function CodeBlock({
   const label = language ?? props["data-language"];
   if (grouped) return <pre {...props} />;
   return (
-    <div data-moyaforge-code-block="">
-      {filename && <div data-moyaforge-code-filename="">{filename}</div>}
+    <div className="mf-code-block" data-moyaforge-code-block="">
+      {filename && <div className="mf-code-filename">{filename}</div>}
       {label && (
-        <span data-moyaforge-code-language="" aria-hidden="true">
+        <span className="mf-code-language" aria-hidden="true">
           {label}
         </span>
       )}

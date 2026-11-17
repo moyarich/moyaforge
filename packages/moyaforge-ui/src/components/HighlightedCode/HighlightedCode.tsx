@@ -79,7 +79,7 @@ export function HighlightedCode({
   const lineEndings = code.match(/\r\n|\r|\n/g) ?? [];
 
   return (
-    <code data-moyaforge-highlighted-code="">
+    <code className="mf-highlighted-code" data-moyaforge-highlighted-code="">
       {tokens.map((line, lineIndex) => (
         <Fragment key={lineIndex}>
           {lineIndex > 0 && lineEndings[lineIndex - 1]}

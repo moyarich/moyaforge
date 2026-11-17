@@ -22,6 +22,7 @@ export function CopyButton({
   icon,
   children = "Copy",
   onCopy,
+  className,
   ...props
 }: CopyButtonProps) {
   const [status, setStatus] = useState<"idle" | "copied" | "error">("idle");
@@ -43,8 +44,9 @@ export function CopyButton({
   return (
     <button
       type="button"
-      data-moyaforge-copy-button=""
-      data-copy-status={status}
+      className={["mf-copy-button", `mf-copy-button--${status}`, className]
+        .filter(Boolean)
+        .join(" ")}
       onClick={copy}
       {...props}
     >
