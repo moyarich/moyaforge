@@ -8,25 +8,23 @@ description: Share helpful context alongside a procedure.
 
 Use a note for information readers may want to know while following the main instructions, such as where their drafts are saved.
 
+## Minimal blue note
+
+A simple left-accented note with a subtle blue background.
+
 ::::code-preview[Minimal blue note]{react replacements="portable"}
 
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
 <div className="note-preview-blue">
   <style>{`
-    .note-preview-blue {
-      font-family: system-ui, sans-serif;
-      line-height: 1.5;
-    }
-
     .note-preview-blue .custom-block.note {
       --mf-custom-block-bg: color-mix(in srgb, #2563eb 8%, transparent);
       --mf-custom-block-border: #2563eb;
       --mf-custom-block-border-width: 4px;
       --mf-custom-block-radius: 8px;
     }
-
-`}</style>
+  `}</style>
 
   <CustomBlock type="note" title="Where drafts are saved">
     Drafts are saved in your browser.
@@ -35,32 +33,27 @@ import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
 ::::
 
----
+## Elevated purple note
 
-::::code-preview[Purple card note]{react replacements="portable"}
+A full-border card with a rounded shape and soft shadow.
+
+::::code-preview[Elevated purple note]{react replacements="portable"}
 
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
 <div className="note-preview-purple">
   <style>{`
-    .note-preview-purple {
-      font-family: system-ui, sans-serif;
-      line-height: 1.5;
-    }
-
     .note-preview-purple .custom-block.note {
       --mf-custom-block-bg: color-mix(in srgb, #804ec2 8%, transparent);
-      --mf-custom-block-border: #804ec2;
       --mf-custom-block-border-width: 0px;
       --mf-custom-block-radius: 16px;
-
-      padding: 1.5rem;
       border: 1px solid color-mix(in srgb, #804ec2 40%, transparent);
       box-shadow: 0 4px 16px color-mix(in srgb, #804ec2 12%, transparent);
+      padding: 1.5rem;
     }
 
     .note-preview-purple .custom-block-title {
-      color: #9868d8;
+      color: #804ec2;
       font-weight: 700;
     }
 
@@ -73,24 +66,24 @@ import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
 ::::
 
----
+## Markdown note with inline CSS
 
-::::code-preview[Teal Markdown note]{replacements="portable"}
+A dashed teal callout written as a Markdown directive, without a React component.
 
-<style>{`
+::::code-preview[Markdown teal note]{replacements="portable"}
+
+<style data-note-preview="teal">{`
   style[data-note-preview="teal"] + .custom-block.note {
     --mf-custom-block-bg: color-mix(in srgb, #149e92 8%, transparent);
-    --mf-custom-block-border: #149e92;
-    --mf-custom-block-border-width: 1px;
+    --mf-custom-block-border-width: 0px;
     --mf-custom-block-radius: 8px;
-
     border: 1px dashed #149e92;
     padding: 1rem 1.25rem;
   }
 
   style[data-note-preview="teal"] + .custom-block.note .custom-block-title {
+    color: #097d73;
     font-weight: 700;
-    letter-spacing: 0.01em;
   }
 `}</style>
 
