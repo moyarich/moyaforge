@@ -1,5 +1,6 @@
-import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+import Example from "./Example.mdx";
 
-<CustomBlock type="warning" title="Before you continue">
-  Save a backup before changing your settings.
-</CustomBlock>
+/** The component entry point renders the authored Markdown warning. */
+export default function WarningExample() {
+  return <Example />;
+}

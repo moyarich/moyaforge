@@ -73,10 +73,6 @@ export default defineConfig({
 
 In `src/App.tsx`, register the installed `CustomBlock` and render your MDX page inside the provider:
 
-:::: code-group React component
-
-::: tab App.tsx
-
 ```tsx filename="src/App.tsx"
 import { MDXProvider } from "@mdx-js/react";
 import { CustomBlock } from "./components/ui/CustomBlock/CustomBlock.js";
@@ -93,36 +89,14 @@ export function App() {
 }
 ```
 
-:::
-
-::: tab Guide.mdx
-
-```md filename="src/Guide.mdx"
-::: warning Before you continue
-
-Save a backup before changing your settings.
-
-:::
-```
-
-:::
-
-::: tab admonitions.css
-
-```css filename="src/admonitions.css"
-.custom-block.warning {
-  --mf-custom-block-bg: color-mix(in srgb, #c48914 12%, transparent);
-  --mf-custom-block-border: #c48914;
-}
-```
-
-:::
-
-::::
-
 ## Usage
 
-In your MDX page, start the callout with `:::`, followed by its type and heading. Leave a blank line before the message and close the callout with another `:::`.
+In your MDX page, start the callout with `:::`, followed by its type and heading.
+Leave a blank line before the message and close the callout with another `:::`.
+
+### Callout Type: Warning
+
+- [Warning](/ui/components/custom-block/warning)
 
 ```md filename="src/warning.mdx"
 ::: warning Before you continue
@@ -132,9 +106,7 @@ Save a backup before changing your settings.
 :::
 ```
 
-## Styling
-
-Notes, tips, warnings, and other common types come with a tinted background and an accent border. Custom types use a neutral style until you give them their own colors. To change the warning colors, add this to a stylesheet and import it from your app:
+To change the warning colors, add this to a stylesheet and import it from your app:
 
 ```css filename="src/admonitions.css"
 .custom-block.warning {
@@ -142,6 +114,13 @@ Notes, tips, warnings, and other common types come with a tinted background and 
   --mf-custom-block-border: #c48914;
 }
 ```
+
+## Styling
+
+Notes, tips, warnings, and other common types come with a tinted background and an accent border.
+Your Custom Block use a neutral style until you give them their own colors.
+
+---
 
 ## Examples
 

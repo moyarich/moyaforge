@@ -266,3 +266,34 @@ test("isolates repeated import names and keeps named fences as preview sources",
   expect(result).toContain("styles.css");
   expect(result.match(/replacementPreset: "portable"/g)).toHaveLength(1);
 });
+
+test("file-backed preview errors describe opt-in component root registration", async () => {
+  const options = createMdxOptions({
+    componentMappings: {
+      "code-preview": {
+        component: "InlineCodePreview",
+        resolveCodePreviewComponent: () => undefined,
+      },
+    },
+  });
+  const compilePreview = (component) =>
+    compile(
+      {
+        value: `:::code-preview[Example]{component="${component}"}\n\n:::`,
+        path: "/docs/warning/page.mdx",
+      },
+      options,
+    );
+
+  await expect(
+    compilePreview("../../../../src/components/CodeBlock/CodeBlock.tsx"),
+  ).rejects.toThrow(/Unregistered preview component.*componentRoots/);
+
+  await expect(compilePreview("./Missing.tsx")).rejects.toThrow(
+    /Unregistered preview component.*componentRoots/,
+  );
+
+  await expect(
+    compilePreview("../../../../src/components/CodeBlock/CodeBlock.tsx#Bad;Name"),
+  ).rejects.toThrow(/Invalid code-preview component/);
+});

@@ -10,9 +10,29 @@ import { CustomBlock } from "__UI__/CustomBlock/index.js";
 
 import componentModules from "virtual:moyaforge-mdx/code-preview-components";
 
-const examples = Object.fromEntries(
-  Object.entries(componentModules).map(([key, load]) => [key, lazy(load)]),
-);
+const examples = new Map<string, ReturnType<typeof lazy>>();
+
+/** Stable lazy component for the registered file and optional #NamedExport. */
+function resolvePreviewExample(reference: string) {
+  const hash = reference.lastIndexOf("#");
+  const moduleKey = hash < 0 ? reference : reference.slice(0, hash);
+  const exportName = hash < 0 ? "default" : reference.slice(hash + 1);
+  const load = componentModules[moduleKey];
+  if (!load) return undefined;
+
+  let Example = examples.get(reference);
+  if (!Example) {
+    Example = lazy(async () => {
+      const module = await load();
+      const component = module[exportName];
+      if (!component)
+        throw new Error(`Missing preview export "${exportName}" in "${moduleKey}".`);
+      return { default: component };
+    });
+    examples.set(reference, Example);
+  }
+  return Example;
+}
 
 // Use the registry's CodePreview with source collected by the MDX compiler.
 function InlineCodePreview({ title = "Example", code, sourceFiles, component, sourceOnly, replacementPreset, children }: {
@@ -26,7 +46,7 @@ function InlineCodePreview({ title = "Example", code, sourceFiles, component, so
 }) {
   const files: PreviewFile[] = sourceFiles ? JSON.parse(sourceFiles) : [];
   if (code || !files.length) files.unshift({ label: "Example.mdx", code, language: "markdown" });
-  const Example = component ? examples[component] : undefined;
+  const Example = component ? resolvePreviewExample(component) : undefined;
   if (component && !Example) throw new Error(`Unknown preview component: ${component}`);
   const source = files[0];
   const previewContent = sourceOnly && source

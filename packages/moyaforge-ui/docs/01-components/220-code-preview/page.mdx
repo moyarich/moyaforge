@@ -124,7 +124,7 @@ Add the preview plugin to your Vite config after discovering the content registr
 
 ```ts
 import {
-  createCodePreview,
+  createCodePreviewRegistry,
   createCodePreviewPlugin,
   resolveCodePreviewSource,
 } from "@moyarich/moyaforge-mdx/vite";
@@ -135,14 +135,14 @@ import registry from "./registry.config.js";
 const contentRoot = import.meta.dirname;
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
-const codePreview = createCodePreview({
+const codePreview = createCodePreviewRegistry({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
 });
 ```
 
-Add `createCodePreviewPlugin(codePreview)` to Vite’s `plugins` array. Extend the
+Add `createCodePreviewPlugin({ codePreview })` to Vite’s `plugins` array. Extend the
 `code-preview` mapping above with these options.
 
 ```ts
@@ -182,7 +182,60 @@ export default function Greeting() {
 }
 ```
 
-The `component` attribute renders a sibling `.tsx` or `.jsx` file with a default export. Use the `code` attribute to preview a source file without rendering it as a React component:
+The `component` attribute renders a registered `.tsx` or `.jsx` file. Sibling examples are discovered automatically, and shared component directories can be explicitly registered.
+
+#### Register component roots
+
+The `createCodePreviewRegistry()` context exposes `componentRoots`, containing the unique directories of discovered documentation pages. Extend those directories when configuring the Vite plugin to find React components outside the docs folders. Additional roots are absolute directories or paths relative to `root`; nested `.tsx` and `.jsx` files under those roots are registered recursively. Existing sibling examples are not rescanned.
+
+```ts filename="vite.config.ts"
+const codePreview = createCodePreviewRegistry({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+});
+
+export default defineConfig({
+  plugins: [
+    createCodePreviewPlugin({
+      codePreview,
+      componentRoots: [
+        ...codePreview.componentRoots,
+        "../../packages/moyaforge-ui/src/components",
+      ],
+    }),
+    // Your existing MDX and other plugins
+  ],
+});
+```
+
+For example, with that root registered, a Warning page can reference the shared CodeBlock source file directly:
+
+```mdx
+::::code-preview[CodeBlock]{component="../../../../src/components/CodeBlock/CodeBlock.tsx#CodeBlock"}
+
+::::
+```
+
+Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same lazy Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or `{react}` when you need configured component usage.
+
+Roots are an explicit allowlist: only files in those directories can be resolved, symlinked files are not followed, and unregistered paths are rejected. Vite watches the roots for added and deleted components. For source tabs, `code-preview-sources` still requires sibling local files.
+
+For examples that need children or props, use a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly:
+
+```mdx
+::::code-preview[Warning callout]{react}
+
+import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+
+<CustomBlock type="warning" title="Before you continue">
+  Save a backup before changing your settings.
+</CustomBlock>
+
+::::
+```
+
+Use the `code` attribute to preview a source file without rendering it as a React component:
 
 ```md
 :::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}

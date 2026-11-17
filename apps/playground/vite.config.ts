@@ -11,7 +11,7 @@ import {
 } from "@moyarich/moyaforge-mdx";
 import {
   createCodePreviewPlugin,
-  createCodePreview,
+  createCodePreviewRegistry,
   mdxRegistryPlugin,
   resolveCodePreviewSource,
 } from "@moyarich/moyaforge-mdx/vite";
@@ -22,7 +22,7 @@ import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
 const contentRoot = fileURLToPath(new URL(".", import.meta.url));
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
-const codePreview = createCodePreview({
+const codePreview = createCodePreviewRegistry({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
@@ -94,7 +94,13 @@ const compileMdx = mdx(
 export default defineConfig({
   plugins: [
     monacoReactTypesPlugin(contentRoot),
-    createCodePreviewPlugin(codePreview),
+    createCodePreviewPlugin({
+      codePreview,
+      componentRoots: [
+        ...codePreview.componentRoots,
+        fileURLToPath(new URL("../../packages/moyaforge-ui/src/components", import.meta.url)),
+      ],
+    }),
     mdxRegistryPlugin({
       discovery,
       registry,

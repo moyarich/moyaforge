@@ -39,15 +39,17 @@ export function collectPreviewContent(
       "A {react} preview takes its component and source from the directive body.",
     );
   if (header?.component) {
-    if (!/^\.\/[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)$/.test(header.component))
+    if (!/^(?:\.\/|\.\.\/)+(?:[\w-]+\/)*[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)(?:#[A-Za-z_$][\w$]*)?$/.test(header.component))
       throw new Error(
-        `Invalid code-preview component: ${header.component}. Use a sibling .tsx or .jsx file.`,
+        `Invalid code-preview component: ${header.component}. Use a relative .tsx/.jsx file under a registered component root; append #ExportName for a named export.`,
       );
     const component =
       filePath &&
       selected.resolveCodePreviewComponent?.(header.component, filePath);
     if (!component)
-      throw new Error(`Unregistered preview component: ${header.component}`);
+      throw new Error(
+        `Unregistered preview component: ${header.component}. Register its directory in createCodePreview({ componentRoots: [...] }), or use a sibling .tsx/.jsx example. Check the path and casing.`,
+      );
     attributes.push({
       type: "mdxJsxAttribute",
       name: "component",
