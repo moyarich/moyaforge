@@ -204,14 +204,14 @@ For example, with that root registered, a Warning page can reference the shared 
 ```mdx
 ::::code-preview[CodeBlock]{component="../../../../src/components/CodeBlock/CodeBlock.tsx#CodeBlock"}
 
-:::: 
+::::
 ```
 
 Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same lazy Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or `{react}` when you need configured component usage.
 
 Roots are an explicit allowlist: only files in those directories can be resolved, symlinked files are not followed, and unregistered paths are rejected. Vite watches the roots for added and deleted components. For source tabs, `code-preview-sources` still requires sibling local files.
 
- For a shared component with a named export, either write a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly. For example:
+For examples that need children or props, use a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly:
 
 ```mdx
 ::::code-preview[Warning callout]{react}
