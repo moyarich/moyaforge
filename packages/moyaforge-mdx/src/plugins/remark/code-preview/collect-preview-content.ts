@@ -141,7 +141,7 @@ export function collectPreviewContent(
     }
   }
   const assets = file.data.inlinePreviewAssets ?? [];
-  return content.map((child) => {
+  return content.flatMap((child): Node[] => {
     // The parser restores positions to offsets in the unmodified MDX source.
     const asset = assets.find(
       (entry) =>
@@ -149,15 +149,17 @@ export function collectPreviewContent(
         child.name === entry.tag &&
         child.position?.start.offset === entry.offset,
     );
-    if (!asset) return child;
+    if (!asset) return [child];
+    // The raw code stays in the source tab, but cannot run in the preview.
+    if (!asset.render) return [];
     if (!filePath || !selected.registerInlineReact)
       throw new Error(
         "Inline <" + asset.tag + "> in code-preview requires the Vite code-preview plugin (registerInlineReact).",
       );
-    return importInlineReactExample(
+    return [importInlineReactExample(
       file,
       selected.registerInlineReact(inlineAssetModule(asset), filePath),
-    );
+    )];
   });
 }
 
