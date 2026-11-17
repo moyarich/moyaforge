@@ -225,9 +225,9 @@ The dashboard will be unavailable for approximately 15 minutes tonight.
 
 ::::
 
-## Dismissible notification — Markdown with a script
+## Expandable notification — script source only
 
-Place a raw script in the preview to attach an interaction. The script receives a preview-local root element. Returning a function removes its event listeners when the preview unmounts. Scripts are compiled with the documentation; only use trusted, locally authored JavaScript.
+The raw `<script>` is visible in the Source tab, but it does not execute in the preview. The native `<details>` element below supplies a working interaction without JavaScript.
 
 ::::code-preview[Dismissible notification]
 
@@ -244,45 +244,31 @@ Place a raw script in the preview to attach an interaction. The script receives 
 .custom-block.ui-dismissible .custom-block-title {
   color: #5140a3;
 }
-.custom-block.ui-dismissible .ui-dismiss-button {
-  position: absolute;
-  inset-inline-end: 0.8rem;
-  top: 0.65rem;
-  width: 2rem;
-  height: 2rem;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
+.custom-block.ui-dismissible .ui-notification-details summary {
   color: #5140a3;
-  font-size: 1.25rem;
+  font-weight: 600;
   cursor: pointer;
 }
-.custom-block.ui-dismissible .ui-dismiss-button:hover,
-.custom-block.ui-dismissible .ui-dismiss-button:focus-visible {
-  background: #dcd9ff;
+.custom-block.ui-dismissible .ui-notification-details[open] summary {
+  margin-bottom: 0.5rem;
 }
 </style>
 
 ::: ui-dismissible Your download is ready
 
-Your file has been prepared and is ready to download.
-
-<button type="button" className="ui-dismiss-button" aria-label="Dismiss notification">×</button>
+<details className="ui-notification-details">
+  <summary>Show download information</summary>
+  Your file has been prepared and is ready to download.
+</details>
 
 :::
 
 <script>
-const alert = root.querySelector(".custom-block.ui-dismissible");
-const button = alert?.querySelector(".ui-dismiss-button");
-
-if (alert && button) {
-  const dismiss = () => {
-    alert.hidden = true;
-  };
-  button.addEventListener("click", dismiss);
-
-  return () => button.removeEventListener("click", dismiss);
-}
+// Visible in Source; this code is never executed in the preview.
+const details = root.querySelector(".ui-notification-details");
+details?.addEventListener("toggle", () => {
+  console.log("Disclosure open:", details.open);
+});
 </script>
 
 ::::
