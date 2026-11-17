@@ -26,6 +26,10 @@ const codePreview = createCodePreview({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
+  // Explicitly allow previews to resolve UI source components outside docs/.
+  componentRoots: [
+    fileURLToPath(new URL("../../packages/moyaforge-ui/src/components", import.meta.url)),
+  ],
   resolutionScope: "global",
   outOfRoot: "allow",
 });
