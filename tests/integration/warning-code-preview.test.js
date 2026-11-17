@@ -6,8 +6,6 @@ const directory = resolve(
   import.meta.dirname,
   "../../packages/moyaforge-ui/docs/01-components/01-custom-block/01-warning",
 );
-const page = resolve(directory, "page.mdx");
-
 test("the file-backed component renders the Markdown source and matches the CSS casing", async () => {
   const wrapper = await readFile(resolve(directory, "Example.tsx"), "utf8");
   const example = await readFile(resolve(directory, "Example.mdx"), "utf8");
