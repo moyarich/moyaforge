@@ -64,7 +64,7 @@ export default defineConfig({
   },
   plugins: [
     monacoReactTypesPlugin(contentRoot),
-    createCodePreviewPlugin(codePreview),
+    createCodePreviewPlugin({ codePreview }),
     mdxRegistryPlugin({ discovery, registry, root: contentRoot }),
     __SEARCH_PLUGIN__
     {

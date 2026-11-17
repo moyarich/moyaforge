@@ -38,8 +38,11 @@ test("registered component roots resolve nested files and named exports without 
         root,
         sources,
         pages,
-        componentRoots: ["ui/components"],
         resolutionScope,
+      });
+      const plugin = createCodePreviewPlugin({
+        codePreview: context,
+        componentRoots: ["ui/components"],
       });
       const resolveComponent = (reference) =>
         resolveCodePreviewSource({ context, reference, authoredFile: page });
@@ -57,7 +60,6 @@ test("registered component roots resolve nested files and named exports without 
       assert.equal(resolveComponent("../../ui/components/Secret.tsx"), undefined);
       assert.equal(resolveComponent("../../ui/components/CodeBlock/CodeBlock.tsx#Bad;Name"), undefined);
 
-      const plugin = createCodePreviewPlugin(context);
       const componentId = plugin.resolveId("virtual:moyaforge-mdx/code-preview-components");
       const code = await plugin.load.handler(componentId);
       assert.match(code, /component-root-0\/CodeBlock\/CodeBlock\.tsx/);
@@ -81,13 +83,14 @@ test("registered component roots resolve nested files and named exports without 
     }
 
     const noRoots = createCodePreview({ root, sources, pages });
+    createCodePreviewPlugin({ codePreview: noRoots });
     assert.equal(resolveCodePreviewSource({
       context: noRoots,
       reference: "../../ui/components/CodeBlock/CodeBlock.tsx",
       authoredFile: page,
     }), undefined);
     assert.throws(
-      () => createCodePreview({ root, sources, pages, componentRoots: ["missing"] }),
+      () => createCodePreviewPlugin({ codePreview: noRoots, componentRoots: ["missing"] }),
       /Invalid code-preview component root/,
     );
   } finally {
@@ -107,9 +110,11 @@ test("component root watcher updates virtual module entries after additions and 
       root,
       sources,
       pages: [{ source: "docs", file: "page.mdx" }],
+    });
+    const plugin = createCodePreviewPlugin({
+      codePreview: context,
       componentRoots: ["shared"],
     });
-    const plugin = createCodePreviewPlugin(context);
     const listeners = new Map();
     const invalidations = [];
     const messages = [];

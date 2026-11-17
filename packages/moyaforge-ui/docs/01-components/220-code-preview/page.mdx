@@ -142,7 +142,7 @@ const codePreview = createCodePreview({
 });
 ```
 
-Add `createCodePreviewPlugin(codePreview)` to Vite’s `plugins` array. Extend the
+Add `createCodePreviewPlugin({ codePreview })` to Vite’s `plugins` array. Extend the
 `code-preview` mapping above with these options.
 
 ```ts
@@ -186,15 +186,24 @@ The `component` attribute renders a registered `.tsx` or `.jsx` file. Sibling ex
 
 #### Register component roots
 
-Add `componentRoots` to `createCodePreview` when your React components are outside the docs directories. Entries are absolute directories or paths relative to `root`; all nested `.tsx` and `.jsx` files are discovered recursively.
+Pass `componentRoots` to `createCodePreviewPlugin({ ... })` when your React components are outside the docs directories. Entries are absolute directories or paths relative to `root`; all nested `.tsx` and `.jsx` files are discovered recursively.
 
 ```ts filename="vite.config.ts"
 const codePreview = createCodePreview({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
-  componentRoots: [
-    "../../packages/moyaforge-ui/src/components",
+});
+
+export default defineConfig({
+  plugins: [
+    createCodePreviewPlugin({
+      codePreview,
+      componentRoots: [
+        "../../packages/moyaforge-ui/src/components",
+      ],
+    }),
+    // Your existing MDX and other plugins
   ],
 });
 ```

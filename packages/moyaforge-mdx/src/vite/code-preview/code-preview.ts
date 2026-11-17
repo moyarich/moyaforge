@@ -24,30 +24,33 @@ export interface CodePreviewOptions {
   root: string;
   sources: Readonly<Record<string, CodePreviewSource>>;
   pages: readonly CodePreviewPage[];
-  /** Opt-in component directories, absolute or relative to root; searched recursively. */
-  componentRoots?: readonly string[];
   resolutionScope?: "global" | "source" | "directory";
   outOfRoot?: "allow" | "skip" | "throw";
 }
 
 export interface CodePreviewContext {
+  /** Base directory for resolving documentation and plugin component roots. */
+  root: string;
   inlineReact: ReturnType<typeof createInlineReactModules>;
   /** Registry key -> absolute file path */
-  modules: ReadonlyMap<string, string>;
+  modules: Map<string, string>;
 
   /** Absolute file path -> registry key */
-  keysByPath: ReadonlyMap<string, string>;
+  keysByPath: Map<string, string>;
 
   /** Absolute file path -> source root */
-  basesByPath: ReadonlyMap<string, string>;
+  basesByPath: Map<string, string>;
 
   resolutionScope: NonNullable<CodePreviewOptions["resolutionScope"]>;
-  /** Additional component roots explicitly trusted by the host. */
-  componentRoots: readonly string[];
-  /** Absolute paths of discovered opt-in components. */
-  registeredComponents: ReadonlyMap<string, string>;
-  /** Rescan configured component roots when files are added or removed. */
-  refreshComponentRoots: () => void;
+  /** Absolute paths of components explicitly registered by the Vite plugin. */
+  registeredComponents: Map<string, string>;
+}
+
+/** Vite-only component registration, separate from documentation discovery. */
+export interface CodePreviewPluginOptions {
+  codePreview: CodePreviewContext;
+  /** Absolute directories or paths relative to codePreview.root, searched recursively. */
+  componentRoots?: readonly string[];
 }
 
 export interface ResolveCodePreviewSourceOptions {
@@ -74,7 +77,6 @@ export function createCodePreview({
   root,
   sources,
   pages,
-  componentRoots = [],
   resolutionScope = "global",
   outOfRoot = "skip",
 }: CodePreviewOptions): CodePreviewContext {
@@ -89,6 +91,101 @@ export function createCodePreview({
   const keysByPath = new Map<string, string>();
   const basesByPath = new Map<string, string>();
   const registeredComponents = new Map<string, string>();
+  for (const page of pages) {
+    const base = roots.get(page.source);
+    if (!base) continue;
+
+    const authoredFile = resolve(base, page.file);
+    const directory = dirname(authoredFile);
+    const directoryPath = relative(base, directory);
+
+    const outsideRoot =
+      directoryPath === ".." ||
+      directoryPath.startsWith(`..${sep}`) ||
+      isAbsolute(directoryPath);
+
+    if (outsideRoot) {
+      if (outOfRoot === "throw") {
+        throw new Error(
+          `Documentation directory "${directory}" is outside source root "${base}"`,
+        );
+      }
+
+      if (outOfRoot === "skip") continue;
+    }
+
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      if (!entry.isFile() || !sourceFilePattern.test(entry.name)) {
+        continue;
+      }
+
+      const path = join(directory, entry.name);
+
+      if (path === authoredFile) continue;
+
+      const key = `${page.source}/${normalizePath(relative(base, path))}`;
+
+      modules.set(key, path);
+      keysByPath.set(path, key);
+      basesByPath.set(path, base);
+    }
+  }
+
+  return {
+    root,
+    inlineReact: createInlineReactModules(),
+    modules,
+    keysByPath,
+    basesByPath,
+    resolutionScope,
+    registeredComponents,
+  };
+}
+
+export function resolveCodePreviewSource({
+  context: { keysByPath, basesByPath, resolutionScope, registeredComponents },
+  reference,
+  authoredFile,
+}: ResolveCodePreviewSourceOptions): string | undefined {
+  const hash = reference.indexOf("#");
+  const pathReference = hash < 0 ? reference : reference.slice(0, hash);
+  const namedExport = hash < 0 ? undefined : reference.slice(hash + 1);
+  if (namedExport !== undefined && !/^[A-Za-z_$][\w$]*$/.test(namedExport))
+    return;
+  if (!sourceFilePattern.test(basename(pathReference))) return;
+
+  const authored = resolve(authoredFile);
+  const candidate = resolve(dirname(authored), pathReference);
+  const key = keysByPath.get(candidate);
+  if (!key) return;
+
+  // The host explicitly allowed these directories, regardless of docs scope.
+  if (!registeredComponents.has(candidate)) {
+    if (resolutionScope === "directory" && dirname(candidate) !== dirname(authored))
+      return;
+    if (resolutionScope === "source") {
+      const base = basesByPath.get(candidate);
+      if (!base) return;
+      const path = relative(base, authored);
+      if (path === ".." || path.startsWith(`..${sep}`) || isAbsolute(path))
+        return;
+    }
+  }
+
+  return namedExport ? `${key}#${namedExport}` : key;
+}
+
+export function createCodePreviewPlugin({
+  codePreview: {
+    root,
+    modules,
+    inlineReact,
+    keysByPath,
+    basesByPath,
+    registeredComponents,
+  },
+  componentRoots = [],
+}: CodePreviewPluginOptions): Plugin {
   const directories = componentRoots.map((directory) => {
     const absolute = resolve(root, directory);
     if (!existsSync(absolute) || !statSync(absolute).isDirectory())
@@ -130,99 +227,8 @@ export function createCodePreview({
     });
   }
 
-  for (const page of pages) {
-    const base = roots.get(page.source);
-    if (!base) continue;
-
-    const authoredFile = resolve(base, page.file);
-    const directory = dirname(authoredFile);
-    const directoryPath = relative(base, directory);
-
-    const outsideRoot =
-      directoryPath === ".." ||
-      directoryPath.startsWith(`..${sep}`) ||
-      isAbsolute(directoryPath);
-
-    if (outsideRoot) {
-      if (outOfRoot === "throw") {
-        throw new Error(
-          `Documentation directory "${directory}" is outside source root "${base}"`,
-        );
-      }
-
-      if (outOfRoot === "skip") continue;
-    }
-
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
-      if (!entry.isFile() || !sourceFilePattern.test(entry.name)) {
-        continue;
-      }
-
-      const path = join(directory, entry.name);
-
-      if (path === authoredFile) continue;
-
-      const key = `${page.source}/${normalizePath(relative(base, path))}`;
-
-      modules.set(key, path);
-      keysByPath.set(path, key);
-      basesByPath.set(path, base);
-    }
-  }
-
   refreshComponentRoots();
 
-  return {
-    inlineReact: createInlineReactModules(),
-    modules,
-    keysByPath,
-    basesByPath,
-    resolutionScope,
-    componentRoots: directories,
-    registeredComponents,
-    refreshComponentRoots,
-  };
-}
-
-export function resolveCodePreviewSource({
-  context: { keysByPath, basesByPath, resolutionScope, registeredComponents },
-  reference,
-  authoredFile,
-}: ResolveCodePreviewSourceOptions): string | undefined {
-  const hash = reference.indexOf("#");
-  const pathReference = hash < 0 ? reference : reference.slice(0, hash);
-  const namedExport = hash < 0 ? undefined : reference.slice(hash + 1);
-  if (namedExport !== undefined && !/^[A-Za-z_$][\w$]*$/.test(namedExport))
-    return;
-  if (!sourceFilePattern.test(basename(pathReference))) return;
-
-  const authored = resolve(authoredFile);
-  const candidate = resolve(dirname(authored), pathReference);
-  const key = keysByPath.get(candidate);
-  if (!key) return;
-
-  // The host explicitly allowed these directories, regardless of docs scope.
-  if (!registeredComponents.has(candidate)) {
-    if (resolutionScope === "directory" && dirname(candidate) !== dirname(authored))
-      return;
-    if (resolutionScope === "source") {
-      const base = basesByPath.get(candidate);
-      if (!base) return;
-      const path = relative(base, authored);
-      if (path === ".." || path.startsWith(`..${sep}`) || isAbsolute(path))
-        return;
-    }
-  }
-
-  return namedExport ? `${key}#${namedExport}` : key;
-}
-
-export function createCodePreviewPlugin({
-  modules,
-  inlineReact,
-  componentRoots,
-  refreshComponentRoots,
-}: CodePreviewContext): Plugin {
   return {
     name: codePreviewPluginName,
 

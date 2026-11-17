@@ -26,10 +26,6 @@ const codePreview = createCodePreview({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
-  // Explicitly allow previews to resolve UI source components outside docs/.
-  componentRoots: [
-    fileURLToPath(new URL("../../packages/moyaforge-ui/src/components", import.meta.url)),
-  ],
   resolutionScope: "global",
   outOfRoot: "allow",
 });
@@ -98,7 +94,12 @@ const compileMdx = mdx(
 export default defineConfig({
   plugins: [
     monacoReactTypesPlugin(contentRoot),
-    createCodePreviewPlugin(codePreview),
+    createCodePreviewPlugin({
+      codePreview,
+      componentRoots: [
+        fileURLToPath(new URL("../../packages/moyaforge-ui/src/components", import.meta.url)),
+      ],
+    }),
     mdxRegistryPlugin({
       discovery,
       registry,
