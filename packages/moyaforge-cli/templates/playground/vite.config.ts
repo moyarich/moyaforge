@@ -27,6 +27,8 @@ const codePreview = createCodePreviewRegistry({
 });
 
 const compileMdx = mdx(createMdxOptions({
+  // Only repository-controlled docs may use raw CSS previews.
+  allowInlinePreviewStyles: true,
   additionalRemarkPlugins: [[remarkRewriteSourceLinks, {
     config: registry,
     root: contentRoot,

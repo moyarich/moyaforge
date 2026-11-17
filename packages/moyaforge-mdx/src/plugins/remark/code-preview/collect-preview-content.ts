@@ -161,28 +161,8 @@ export function collectPreviewContent(
   });
 }
 
-/** Build-time-compiled, preview-local effects (never runtime eval). */
+/** Compile reviewed CSS as text; never emit executable raw script modules. */
 function inlineAssetModule(asset: InlinePreviewAsset): string {
-  if (asset.tag === "style") {
-    return "<style>{" + JSON.stringify(asset.code) + "}</style>";
-  }
-  // root is the stage enclosing this preview, not document/global selectors.
-  // Cleanup returned by the authored script is invoked on unmount.
-  return [
-    'import { useEffect, useRef } from "react";',
-    "export function PreviewInlineScript() {",
-    "  const anchor = useRef(null);",
-    "  useEffect(() => {",
-    '    const root = anchor.current?.closest(".mf-preview-stage");',
-    "    if (!root) return;",
-    "    const setup = (root) => {",
-    asset.code,
-    "    };",
-    "    return setup(root);",
-    "  }, []);",
-    '  return <span ref={anchor} hidden aria-hidden="true" />;',
-    "}",
-    "", // MDX needs a blank line between module exports and Markdown JSX.
-    "<PreviewInlineScript />",
-  ].join("\n");
+  // Reviewed CSS is compiled as text, never as executable JavaScript.
+  return "<style>{" + JSON.stringify(asset.code) + "}</style>";
 }
