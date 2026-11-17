@@ -1,5 +1,5 @@
 import { createInlineReactModules } from "./inline-react-modules.js";
-import { readdirSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import {
   basename,
   dirname,
@@ -24,6 +24,8 @@ export interface CodePreviewOptions {
   root: string;
   sources: Readonly<Record<string, CodePreviewSource>>;
   pages: readonly CodePreviewPage[];
+  /** Opt-in component directories, absolute or relative to root; searched recursively. */
+  componentRoots?: readonly string[];
   resolutionScope?: "global" | "source" | "directory";
   outOfRoot?: "allow" | "skip" | "throw";
 }
@@ -40,6 +42,12 @@ export interface CodePreviewContext {
   basesByPath: ReadonlyMap<string, string>;
 
   resolutionScope: NonNullable<CodePreviewOptions["resolutionScope"]>;
+  /** Additional component roots explicitly trusted by the host. */
+  componentRoots: readonly string[];
+  /** Absolute paths of discovered opt-in components. */
+  registeredComponents: ReadonlyMap<string, string>;
+  /** Rescan configured component roots when files are added or removed. */
+  refreshComponentRoots: () => void;
 }
 
 export interface ResolveCodePreviewSourceOptions {
@@ -59,13 +67,14 @@ export const codePreviewPluginName = "moyaforge-mdx:code-preview";
 const componentModuleId = `\0${codePreviewComponentVirtualModuleId}`;
 const sourceModuleId = `\0${codePreviewSourceVirtualModuleId}`;
 
-const sourceFilePattern = /^[\w-]+\.(?:tsx|jsx|ts|js|md|mdx|css)$/;
+const sourceFilePattern = /^[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx|ts|js|md|mdx|css)$/;
 const componentFilePattern = /\.(?:tsx|jsx)$/;
 
 export function createCodePreview({
   root,
   sources,
   pages,
+  componentRoots = [],
   resolutionScope = "global",
   outOfRoot = "skip",
 }: CodePreviewOptions): CodePreviewContext {
@@ -79,6 +88,47 @@ export function createCodePreview({
   const modules = new Map<string, string>();
   const keysByPath = new Map<string, string>();
   const basesByPath = new Map<string, string>();
+  const registeredComponents = new Map<string, string>();
+  const directories = componentRoots.map((directory) => {
+    const absolute = resolve(root, directory);
+    if (!existsSync(absolute) || !statSync(absolute).isDirectory())
+      throw new Error(`Invalid code-preview component root: ${directory}. Expected an existing directory.`);
+    return absolute;
+  });
+
+  /** Symlinks are deliberately not followed into unregistered directories. */
+  function registerComponentDirectory(directory: string, base: string, index: number) {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        if (entry.name.startsWith(".") || entry.name === "node_modules") continue;
+        registerComponentDirectory(join(directory, entry.name), base, index);
+        continue;
+      }
+      if (!entry.isFile() || !componentFilePattern.test(entry.name)) continue;
+      const path = join(directory, entry.name);
+      if (keysByPath.has(path)) continue;
+      const key = `component-root-${index}/${normalizePath(relative(base, path))}`;
+      modules.set(key, path);
+      keysByPath.set(path, key);
+      basesByPath.set(path, base);
+      registeredComponents.set(path, key);
+    }
+  }
+
+  function refreshComponentRoots() {
+    for (const [path, key] of registeredComponents) {
+      modules.delete(key);
+      if (keysByPath.get(path) === key) {
+        keysByPath.delete(path);
+        basesByPath.delete(path);
+      }
+    }
+    registeredComponents.clear();
+    directories.forEach((directory, index) => {
+      if (existsSync(directory))
+        registerComponentDirectory(directory, directory, index);
+    });
+  }
 
   for (const page of pages) {
     const base = roots.get(page.source);
@@ -120,52 +170,82 @@ export function createCodePreview({
     }
   }
 
+  refreshComponentRoots();
+
   return {
     inlineReact: createInlineReactModules(),
     modules,
     keysByPath,
     basesByPath,
     resolutionScope,
+    componentRoots: directories,
+    registeredComponents,
+    refreshComponentRoots,
   };
 }
 
 export function resolveCodePreviewSource({
-  context: { keysByPath, basesByPath, resolutionScope },
+  context: { keysByPath, basesByPath, resolutionScope, registeredComponents },
   reference,
   authoredFile,
 }: ResolveCodePreviewSourceOptions): string | undefined {
-  if (!sourceFilePattern.test(basename(reference))) return;
+  const hash = reference.indexOf("#");
+  const pathReference = hash < 0 ? reference : reference.slice(0, hash);
+  const namedExport = hash < 0 ? undefined : reference.slice(hash + 1);
+  if (namedExport !== undefined && !/^[A-Za-z_$][\w$]*$/.test(namedExport))
+    return;
+  if (!sourceFilePattern.test(basename(pathReference))) return;
 
   const authored = resolve(authoredFile);
-  const candidate = resolve(dirname(authored), reference);
+  const candidate = resolve(dirname(authored), pathReference);
   const key = keysByPath.get(candidate);
-
   if (!key) return;
 
-  if (resolutionScope === "directory") {
-    return dirname(candidate) === dirname(authored) ? key : undefined;
-  }
-
-  if (resolutionScope === "source") {
-    const base = basesByPath.get(candidate);
-    if (!base) return;
-
-    const path = relative(base, authored);
-
-    if (path === ".." || path.startsWith(`..${sep}`) || isAbsolute(path)) {
+  // The host explicitly allowed these directories, regardless of docs scope.
+  if (!registeredComponents.has(candidate)) {
+    if (resolutionScope === "directory" && dirname(candidate) !== dirname(authored))
       return;
+    if (resolutionScope === "source") {
+      const base = basesByPath.get(candidate);
+      if (!base) return;
+      const path = relative(base, authored);
+      if (path === ".." || path.startsWith(`..${sep}`) || isAbsolute(path))
+        return;
     }
   }
 
-  return key;
+  return namedExport ? `${key}#${namedExport}` : key;
 }
 
 export function createCodePreviewPlugin({
   modules,
   inlineReact,
+  componentRoots,
+  refreshComponentRoots,
 }: CodePreviewContext): Plugin {
   return {
     name: codePreviewPluginName,
+
+    configureServer(server) {
+      if (!componentRoots.length) return;
+      server.watcher.add(componentRoots);
+      const refresh = (path: string) => {
+        const filename = resolve(path);
+        if (!componentFilePattern.test(filename)) return;
+        if (!componentRoots.some((base) => {
+          const inside = relative(base, filename);
+          return inside !== ".." && !inside.startsWith(`..${sep}`) && !isAbsolute(inside);
+        })) return;
+        refreshComponentRoots();
+        for (const id of [componentModuleId, sourceModuleId]) {
+          const module = server.moduleGraph.getModuleById(id);
+          if (module) server.moduleGraph.invalidateModule(module);
+        }
+        server.ws.send({ type: "full-reload" });
+      };
+      server.watcher.on("add", refresh);
+      server.watcher.on("unlink", refresh);
+    },
 
     resolveId(id, importer) {
       const inlineId = inlineReact.resolve(id);
