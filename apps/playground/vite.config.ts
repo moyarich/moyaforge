@@ -97,6 +97,7 @@ export default defineConfig({
     createCodePreviewPlugin({
       codePreview,
       componentRoots: [
+        ...codePreview.componentRoots,
         fileURLToPath(new URL("../../packages/moyaforge-ui/src/components", import.meta.url)),
       ],
     }),

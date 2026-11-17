@@ -186,7 +186,7 @@ The `component` attribute renders a registered `.tsx` or `.jsx` file. Sibling ex
 
 #### Register component roots
 
-Pass `componentRoots` to `createCodePreviewPlugin({ ... })` when your React components are outside the docs directories. Entries are absolute directories or paths relative to `root`; all nested `.tsx` and `.jsx` files are discovered recursively.
+The `createCodePreview()` context exposes `componentRoots`, containing the unique directories of discovered documentation pages. Extend those directories when configuring the Vite plugin to find React components outside the docs folders. Additional roots are absolute directories or paths relative to `root`; nested `.tsx` and `.jsx` files under those roots are registered recursively. Existing sibling examples are not rescanned.
 
 ```ts filename="vite.config.ts"
 const codePreview = createCodePreview({
@@ -200,6 +200,7 @@ export default defineConfig({
     createCodePreviewPlugin({
       codePreview,
       componentRoots: [
+        ...codePreview.componentRoots,
         "../../packages/moyaforge-ui/src/components",
       ],
     }),

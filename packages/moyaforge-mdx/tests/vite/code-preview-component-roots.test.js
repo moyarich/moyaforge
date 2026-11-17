@@ -40,10 +40,20 @@ test("registered component roots resolve nested files and named exports without 
         pages,
         resolutionScope,
       });
+      assert.deepEqual(context.componentRoots, [docs]);
       const plugin = createCodePreviewPlugin({
         codePreview: context,
-        componentRoots: ["ui/components"],
+        componentRoots: [...context.componentRoots, "ui/components"],
       });
+      assert.equal(
+        context.keysByPath.get(shared),
+        "component-root-0/CodeBlock/CodeBlock.tsx",
+      );
+      assert.equal(context.basesByPath.get(shared), components);
+      assert.equal(
+        context.modules.get("component-root-0/CodeBlock/CodeBlock.tsx"),
+        shared,
+      );
       const resolveComponent = (reference) =>
         resolveCodePreviewSource({ context, reference, authoredFile: page });
 
@@ -88,7 +98,8 @@ test("registered component roots resolve nested files and named exports without 
       root, sources, pages, resolutionScope: "directory",
     });
     createCodePreviewPlugin({
-      codePreview: overlapping, componentRoots: ["docs"],
+      codePreview: overlapping,
+      componentRoots: [...overlapping.componentRoots, "docs"],
     });
     assert.equal(
       resolveCodePreviewSource({
@@ -99,7 +110,9 @@ test("registered component roots resolve nested files and named exports without 
     assert.equal(overlapping.modules.get("docs/guide/Example.tsx"), join(docs, "Example.tsx"));
 
     const noRoots = createCodePreview({ root, sources, pages });
+    assert.deepEqual(noRoots.componentRoots, [docs]);
     createCodePreviewPlugin({ codePreview: noRoots });
+    assert.equal(noRoots.registeredComponents.size, 0);
     assert.equal(resolveCodePreviewSource({
       context: noRoots,
       reference: "../../ui/components/CodeBlock/CodeBlock.tsx",
@@ -129,7 +142,7 @@ test("component root watcher updates virtual module entries after additions and 
     });
     const plugin = createCodePreviewPlugin({
       codePreview: context,
-      componentRoots: ["shared"],
+      componentRoots: [...context.componentRoots, "shared"],
     });
     const listeners = new Map();
     const invalidations = [];
