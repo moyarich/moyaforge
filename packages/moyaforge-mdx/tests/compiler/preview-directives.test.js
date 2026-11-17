@@ -267,7 +267,7 @@ test("isolates repeated import names and keeps named fences as preview sources",
   expect(result.match(/replacementPreset: "portable"/g)).toHaveLength(1);
 });
 
-test("file-backed preview errors explain why shared or missing components cannot be loaded", async () => {
+test("file-backed preview errors describe opt-in component root registration", async () => {
   const options = createMdxOptions({
     componentMappings: {
       "code-preview": {
@@ -287,9 +287,13 @@ test("file-backed preview errors explain why shared or missing components cannot
 
   await expect(
     compilePreview("../../../../src/components/CodeBlock/CodeBlock.tsx"),
-  ).rejects.toThrow(/Use a sibling .*default export.*\{react\}/);
+  ).rejects.toThrow(/Unregistered preview component.*componentRoots/);
 
   await expect(compilePreview("./Missing.tsx")).rejects.toThrow(
-    /Unregistered preview component.*registry discovers sibling .*\{react\}/,
+    /Unregistered preview component.*componentRoots/,
   );
+
+  await expect(
+    compilePreview("../../../../src/components/CodeBlock/CodeBlock.tsx#Bad;Name"),
+  ).rejects.toThrow(/Invalid code-preview component/);
 });
