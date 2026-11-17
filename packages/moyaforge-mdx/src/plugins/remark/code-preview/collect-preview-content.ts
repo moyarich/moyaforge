@@ -182,6 +182,7 @@ function inlineAssetModule(asset: InlinePreviewAsset): string {
     "  }, []);",
     '  return <span ref={anchor} hidden aria-hidden="true" />;',
     "}",
+    "", // MDX needs a blank line between module exports and Markdown JSX.
     "<PreviewInlineScript />",
   ].join("\n");
 }
