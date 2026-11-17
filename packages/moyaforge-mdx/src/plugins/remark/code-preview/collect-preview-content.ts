@@ -1,4 +1,5 @@
 import { importInlineReactExample } from "./inline-react-module.js";
+import type { InlinePreviewAsset } from "./mask-inline-preview-assets.js";
 import { namedCodeBlock } from "../code-block/named-code-block.js";
 import type { VFile } from "vfile";
 import {
@@ -139,5 +140,48 @@ export function collectPreviewContent(
       ];
     }
   }
-  return content;
+  const assets = file.data.inlinePreviewAssets ?? [];
+  return content.map((child) => {
+    // The parser restores positions to offsets in the unmodified MDX source.
+    const asset = assets.find(
+      (entry) =>
+        child.type === "mdxJsxFlowElement" &&
+        child.name === entry.tag &&
+        child.position?.start.offset === entry.offset,
+    );
+    if (!asset) return child;
+    if (!filePath || !selected.registerInlineReact)
+      throw new Error(
+        "Inline <" + asset.tag + "> in code-preview requires the Vite code-preview plugin (registerInlineReact).",
+      );
+    return importInlineReactExample(
+      file,
+      selected.registerInlineReact(inlineAssetModule(asset), filePath),
+    );
+  });
+}
+
+/** Build-time-compiled, preview-local effects (never runtime eval). */
+function inlineAssetModule(asset: InlinePreviewAsset): string {
+  if (asset.tag === "style") {
+    return "<style>{" + JSON.stringify(asset.code) + "}</style>";
+  }
+  // root is the stage enclosing this preview, not document/global selectors.
+  // Cleanup returned by the authored script is invoked on unmount.
+  return [
+    'import { useEffect, useRef } from "react";',
+    "export function PreviewInlineScript() {",
+    "  const anchor = useRef(null);",
+    "  useEffect(() => {",
+    '    const root = anchor.current?.closest(".mf-preview-stage");',
+    "    if (!root) return;",
+    "    const setup = (root) => {",
+    asset.code,
+    "    };",
+    "    return setup(root);",
+    "  }, []);",
+    '  return <span ref={anchor} hidden aria-hidden="true" />;',
+    "}",
+    "<PreviewInlineScript />",
+  ].join("\n");
 }
