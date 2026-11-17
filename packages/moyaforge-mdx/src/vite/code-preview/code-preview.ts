@@ -192,6 +192,9 @@ export function createCodePreviewPlugin({
       throw new Error(`Invalid code-preview component root: ${directory}. Expected an existing directory.`);
     return absolute;
   });
+  // Track only entries added by this plugin; automatic page entries are owned by
+  // createCodePreview and must survive a component root refresh.
+  const ownedComponents = new Map<string, string>();
 
   /** Symlinks are deliberately not followed into unregistered directories. */
   function registerComponentDirectory(directory: string, base: string, index: number) {
@@ -203,23 +206,27 @@ export function createCodePreviewPlugin({
       }
       if (!entry.isFile() || !componentFilePattern.test(entry.name)) continue;
       const path = join(directory, entry.name);
-      if (keysByPath.has(path)) continue;
+      const existingKey = keysByPath.get(path);
+      if (existingKey) {
+        registeredComponents.set(path, existingKey);
+        continue;
+      }
       const key = `component-root-${index}/${normalizePath(relative(base, path))}`;
       modules.set(key, path);
       keysByPath.set(path, key);
       basesByPath.set(path, base);
+      ownedComponents.set(path, key);
       registeredComponents.set(path, key);
     }
   }
 
   function refreshComponentRoots() {
-    for (const [path, key] of registeredComponents) {
+    for (const [path, key] of ownedComponents) {
       modules.delete(key);
-      if (keysByPath.get(path) === key) {
-        keysByPath.delete(path);
-        basesByPath.delete(path);
-      }
+      keysByPath.delete(path);
+      basesByPath.delete(path);
     }
+    ownedComponents.clear();
     registeredComponents.clear();
     directories.forEach((directory, index) => {
       if (existsSync(directory))
@@ -233,12 +240,12 @@ export function createCodePreviewPlugin({
     name: codePreviewPluginName,
 
     configureServer(server) {
-      if (!componentRoots.length) return;
-      server.watcher.add(componentRoots);
+      if (!directories.length) return;
+      server.watcher.add(directories);
       const refresh = (path: string) => {
         const filename = resolve(path);
         if (!componentFilePattern.test(filename)) return;
-        if (!componentRoots.some((base) => {
+        if (!directories.some((base) => {
           const inside = relative(base, filename);
           return inside !== ".." && !inside.startsWith(`..${sep}`) && !isAbsolute(inside);
         })) return;
