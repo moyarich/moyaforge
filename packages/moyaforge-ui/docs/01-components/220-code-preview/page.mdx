@@ -244,9 +244,29 @@ Use the `code` attribute to preview a source file without rendering it as a Reac
 
 The source file is shown in the preview area and remains available in the **Code** view.
 
-## Inline Markdown styles and scripts
+## Inline Markdown CSS and script source
 
-A Markdown code preview can include standalone raw CSS and JavaScript tags without JSX expression wrappers. The Markdown directives still render as callouts, and the Code view preserves the original tags and content.
+A Markdown code preview can include standalone, attribute-free `<style>` and `<script>` blocks. Both are **preserved verbatim in the Code/Source tab**, even when neither is allowed to run.
+
+**Security defaults:**
+
+- Inline JavaScript is **source-only** and never executes in the live preview.
+- Inline CSS is also **source-only by default**. For reviewed repository-controlled documentation, set `allowInlinePreviewStyles: true` in `createMdxOptions` to render that CSS.
+- Both tags must open and close on their own lines. Scripts with attributes or external sources are rejected.
+- This does **not** sandbox arbitrary MDX, `{react}` previews, or file-backed React components. Compile those only when their authors are trusted; run untrusted interactive content in a separately hosted sandbox.
+
+```ts
+createMdxOptions({
+  allowInlinePreviewStyles: true, // Only for trusted, reviewed documentation.
+  componentMappings: {
+    "code-preview": {
+      component: "InlineCodePreview",
+      sourceProp: "code",
+      registerInlineReact: codePreview.inlineReact.register,
+    },
+  },
+});
+```
 
 ~~~~mdx
 ::::code-preview[Styled notification]
@@ -264,23 +284,16 @@ Your report is available to download.
 
 :::
 
+<script>
+console.log("Visible in Source, but never executed.");
+</script>
+
 ::::
 ~~~~
 
-Raw style and script blocks must use a standalone opening and closing tag on their own lines. Do not add attributes to these tags. This feature requires the Vite code-preview plugin and the same registerInlineReact setting used for React previews.
+The live preview shows the Markdown callout and, when CSS is enabled, the corresponding styles. The Source tab shows the complete `<style>` and `<script>` blocks, including their original CSS and JavaScript. Use native HTML controls for interactions that need no script.
 
-For optional interactions, a raw script can use the local root variable to find elements *inside that preview*. Return a cleanup function when adding listeners:
-
-~~~~mdx
-<script>
-const button = root.querySelector(".dismiss-button");
-const handleClick = () => button?.closest(".custom-block")?.remove();
-button?.addEventListener("click", handleClick);
-return () => button?.removeEventListener("click", handleClick);
-</script>
-~~~~
-
-Scripts are compiled as trusted documentation code, not evaluated from strings in the browser or isolated in a security sandbox. Do not embed untrusted or externally supplied scripts. See the [custom callout gallery](/ui/components/custom-block/custom-admonition) for English success, information, warning, error, dark, and dismissible examples.
+See the [custom callout gallery](/ui/components/custom-block/custom-admonition) for English notification examples.
 
 ## Inline React imports
 
