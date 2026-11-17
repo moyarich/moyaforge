@@ -1,20 +1,289 @@
 ---
 title: Custom admonition
 label: Custom admonition
-description: Create a named callout for recurring messages such as release notes.
+description: Create distinctive Markdown alerts and notifications with inline CSS and optional scripts.
 ---
-
-import Example from "./Example.mdx";
 
 # Custom admonition
 
-Create a callout for a recurring message, such as announcing a new feature. After [registering admonitions](/ui/components/custom-block#register-admonitions), use `release-note` as the callout type and style it in your CSS.
+Custom callouts use the same Markdown directive syntax as notes and warnings. Choose any callout type, then customize its CSS. These English examples use soft colors, clear headings, and simple status icons inspired by [Sharia Design's Alerts + Notifications](https://dribbble.com/shots/14440808-UI-Compontents-Alerts-Notifications).
 
-::::code-preview[Custom admonition]
+Each example is written as Markdown with a raw inline CSS block. The Code view shows the original Markdown, CSS, and JavaScript rather than generated React. Use a unique type name to keep its styling separate from other callouts.
 
-::code-preview-sources{files="./Example.mdx,./Example.css"}
+## Success — mint notification
 
-<Example />
+::::code-preview[Success alert]
+
+<style>
+.custom-block.ui-success {
+  --mf-custom-block-bg: #e9f9f1;
+  --mf-custom-block-border-width: 0;
+  --mf-custom-block-padding: 1rem 1.25rem 1rem 3.35rem;
+  --mf-custom-block-radius: 14px;
+  position: relative;
+  border: 1px solid #b5ecd0;
+  color: #145739;
+  box-shadow: 0 4px 16px #0b81541a;
+}
+.custom-block.ui-success::before {
+  content: "✓";
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: 1.05rem;
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: #19a56b;
+  color: white;
+  font-weight: 800;
+}
+.custom-block.ui-success .custom-block-title {
+  color: #12643e;
+  font-size: 0.95rem;
+}
+</style>
+
+::: ui-success Changes saved
+
+Your settings have been updated successfully.
+
+:::
+
+::::
+
+## Information — soft blue notification
+
+::::code-preview[Information alert]
+
+<style>
+.custom-block.ui-information {
+  --mf-custom-block-bg: #ebf3f8;
+  --mf-custom-block-border-width: 0;
+  --mf-custom-block-padding: 1rem 1.25rem 1rem 3.35rem;
+  --mf-custom-block-radius: 14px;
+  position: relative;
+  border: 1px solid #b9cee3;
+  color: #315577;
+}
+.custom-block.ui-information::before {
+  content: "i";
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: 1.05rem;
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border: 2px solid #437aa9;
+  border-radius: 50%;
+  color: #437aa9;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.custom-block.ui-information .custom-block-title {
+  color: #285a87;
+  font-size: 0.95rem;
+}
+</style>
+
+::: ui-information New feature available
+
+You can now export your reports as CSV files.
+
+:::
+
+::::
+
+## Warning — warm yellow notification
+
+::::code-preview[Warning alert]
+
+<style>
+.custom-block.ui-warning {
+  --mf-custom-block-bg: #fff8d8;
+  --mf-custom-block-border-width: 0;
+  --mf-custom-block-padding: 1rem 1.25rem 1rem 3.35rem;
+  --mf-custom-block-radius: 14px;
+  position: relative;
+  border: 1px solid #fbea88;
+  color: #765709;
+}
+.custom-block.ui-warning::before {
+  content: "!";
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: 1.05rem;
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: #e8a80e;
+  color: #fff;
+  font-weight: 800;
+}
+.custom-block.ui-warning .custom-block-title {
+  color: #7b5200;
+  font-size: 0.95rem;
+}
+</style>
+
+::: ui-warning Storage almost full
+
+You have less than 10% of your storage remaining.
+
+:::
+
+::::
+
+## Error — blush notification
+
+::::code-preview[Error alert]
+
+<style>
+.custom-block.ui-error {
+  --mf-custom-block-bg: #fff0f2;
+  --mf-custom-block-border-width: 0;
+  --mf-custom-block-padding: 1rem 1.25rem 1rem 3.35rem;
+  --mf-custom-block-radius: 14px;
+  position: relative;
+  border: 1px solid #faa7b7;
+  color: #92344d;
+}
+.custom-block.ui-error::before {
+  content: "×";
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: 1.05rem;
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: #df4969;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.custom-block.ui-error .custom-block-title {
+  color: #9c2c4b;
+  font-size: 0.95rem;
+}
+</style>
+
+::: ui-error Upload failed
+
+We could not upload your file. Check your connection and try again.
+
+:::
+
+::::
+
+## Dark — high-contrast alert
+
+::::code-preview[Dark notification]
+
+<style>
+.custom-block.ui-dark-alert {
+  --mf-custom-block-bg: #1d1f2c;
+  --mf-custom-block-border-width: 0;
+  --mf-custom-block-padding: 1rem 1.3rem 1rem 3.35rem;
+  --mf-custom-block-radius: 14px;
+  position: relative;
+  border: 1px solid #404458;
+  color: #cbd5e1;
+  box-shadow: 0 8px 24px #17192830;
+}
+.custom-block.ui-dark-alert::before {
+  content: "•";
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: 1.05rem;
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: #627be6;
+  color: white;
+  font-size: 1.5rem;
+}
+.custom-block.ui-dark-alert .custom-block-title {
+  color: #fff;
+  font-size: 0.95rem;
+}
+</style>
+
+::: ui-dark-alert Scheduled maintenance
+
+The dashboard will be unavailable for approximately 15 minutes tonight.
+
+:::
+
+::::
+
+## Dismissible notification — Markdown with a script
+
+Place a raw script in the preview to attach an interaction. The script receives a preview-local root element. Returning a function removes its event listeners when the preview unmounts. Scripts are compiled with the documentation; only use trusted, locally authored JavaScript.
+
+::::code-preview[Dismissible notification]
+
+<style>
+.custom-block.ui-dismissible {
+  --mf-custom-block-bg: #eef0ff;
+  --mf-custom-block-border-width: 0;
+  --mf-custom-block-padding: 1rem 3rem 1rem 1.25rem;
+  --mf-custom-block-radius: 14px;
+  position: relative;
+  border: 1px solid #c9c7ff;
+  color: #51468c;
+}
+.custom-block.ui-dismissible .custom-block-title {
+  color: #5140a3;
+}
+.custom-block.ui-dismissible .ui-dismiss-button {
+  position: absolute;
+  inset-inline-end: 0.8rem;
+  top: 0.65rem;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #5140a3;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.custom-block.ui-dismissible .ui-dismiss-button:hover,
+.custom-block.ui-dismissible .ui-dismiss-button:focus-visible {
+  background: #dcd9ff;
+}
+</style>
+
+::: ui-dismissible Your download is ready
+
+Your file has been prepared and is ready to download.
+
+<button type="button" className="ui-dismiss-button" aria-label="Dismiss notification">×</button>
+
+:::
+
+<script>
+const alert = root.querySelector(".custom-block.ui-dismissible");
+const button = alert?.querySelector(".ui-dismiss-button");
+
+if (alert && button) {
+  const dismiss = () => {
+    alert.hidden = true;
+  };
+  button.addEventListener("click", dismiss);
+
+  return () => button.removeEventListener("click", dismiss);
+}
+</script>
 
 ::::
 

@@ -244,6 +244,44 @@ Use the `code` attribute to preview a source file without rendering it as a Reac
 
 The source file is shown in the preview area and remains available in the **Code** view.
 
+## Inline Markdown styles and scripts
+
+A Markdown code preview can include standalone raw CSS and JavaScript tags without JSX expression wrappers. The Markdown directives still render as callouts, and the Code view preserves the original tags and content.
+
+~~~~mdx
+::::code-preview[Styled notification]
+
+<style>
+.custom-block.ui-notice {
+  --mf-custom-block-bg: #ebf3f8;
+  --mf-custom-block-border: #6292c4;
+}
+</style>
+
+::: ui-notice Good to know
+
+Your report is available to download.
+
+:::
+
+::::
+~~~~
+
+Raw style and script blocks must use a standalone opening and closing tag on their own lines. Do not add attributes to these tags. This feature requires the Vite code-preview plugin and the same registerInlineReact setting used for React previews.
+
+For optional interactions, a raw script can use the local root variable to find elements *inside that preview*. Return a cleanup function when adding listeners:
+
+~~~~mdx
+<script>
+const button = root.querySelector(".dismiss-button");
+const handleClick = () => button?.closest(".custom-block")?.remove();
+button?.addEventListener("click", handleClick);
+return () => button?.removeEventListener("click", handleClick);
+</script>
+~~~~
+
+Scripts are compiled as trusted documentation code, not evaluated from strings in the browser or isolated in a security sandbox. Do not embed untrusted or externally supplied scripts. See the [custom callout gallery](/ui/components/custom-block/custom-admonition) for English success, information, warning, error, dark, and dismissible examples.
+
 ## Inline React imports
 
 Use `:::code-preview[Title]{react}` in an MDX page to compile imports and JSX in a

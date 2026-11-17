@@ -1,4 +1,5 @@
 import { maskInlineReactImports } from "../code-preview/mask-inline-react-imports.js";
+import { maskInlinePreviewAssets } from "../code-preview/mask-inline-preview-assets.js";
 import type { Root } from "mdast";
 import type { Processor } from "unified";
 
@@ -19,11 +20,14 @@ export function remarkDirectiveParser(
   this.parser = (source, file) => {
     const headers = new Map<string, DirectiveHeader>();
     const lines = source.split(/(?<=\n)/);
+    const inlineAssets = maskInlinePreviewAssets(lines);
+    file.data.inlinePreviewAssets = inlineAssets.assets;
     const stack: number[] = [];
     let reactFenceWidth: number | undefined;
     const reactBodies: { start: number; code: string[] }[] = [];
     let codeFence: string | undefined;
-    const normalized = lines.map((line, index) => {
+    const normalized = lines.map((_originalLine, index) => {
+      let line = inlineAssets.lines[index];
       const fence = /^ {0,3}(`{3,}|~{3,})(.*)/.exec(line);
       if (reactFenceWidth !== undefined && (fence || codeFence))
         reactBodies.at(-1)?.code.push(line.replace(/[^\r\n]/g, " "));

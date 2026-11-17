@@ -34,10 +34,15 @@ describe("component documentation examples", () => {
         missing.push(page);
         continue;
       }
-      // React blocks capture their body automatically. File-backed previews
-      // must explicitly attach authored files to the Code tab.
+      // React and inline Markdown (including raw style/script tags) capture
+      // their authored body automatically. File-backed previews must attach
+      // their source files explicitly.
+      const hasInlineMarkdown = /:{3,4}code-preview\[[^\]\n]+\][^\n]*\r?\n\s*\r?\n\s*<(?:style|script)>/.test(
+        source,
+      );
       if (
         !/\{react(?:\s|\})/.test(source) &&
+        !hasInlineMarkdown &&
         !/::code-preview-sources\{files=/.test(source)
       ) {
         missing.push(page);
