@@ -1,0 +1,149 @@
+import assert from "node:assert/strict";
+import { mkdtemp, mkdir, writeFile, rm, symlink } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { compile } from "@mdx-js/mdx";
+import { test } from "vitest";
+import { createMdxOptions } from "../../dist/index.js";
+import {
+  createCodePreview,
+  createCodePreviewPlugin,
+  resolveCodePreviewSource,
+} from "../../dist/vite/plugin.js";
+
+const sources = { docs: { base: "docs" } };
+const pages = [{ source: "docs", file: "guide/page.mdx" }];
+
+test("registered component roots resolve nested files and named exports without weakening docs scoping", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-preview-roots-"));
+  try {
+    const docs = join(root, "docs/guide");
+    const components = join(root, "ui/components");
+    await mkdir(docs, { recursive: true });
+    await mkdir(join(components, "CodeBlock"), { recursive: true });
+    await mkdir(join(components, "nested"), { recursive: true });
+    await mkdir(join(root, "private"), { recursive: true });
+    const page = join(docs, "page.mdx");
+    const shared = join(components, "CodeBlock/CodeBlock.tsx");
+    const hidden = join(root, "private/Hidden.tsx");
+    await writeFile(page, "# Guide");
+    await writeFile(join(docs, "Example.tsx"), "export default function Example() { return null; }");
+    await writeFile(shared, "export function CodeBlock() { return null; }");
+    await writeFile(join(components, "nested/Greeting.tsx"), "export default function Greeting() { return null; }");
+    await writeFile(hidden, "export default function Hidden() { return null; }");
+    await symlink(hidden, join(components, "Secret.tsx"));
+
+    for (const resolutionScope of ["directory", "source", "global"]) {
+      const context = createCodePreview({
+        root,
+        sources,
+        pages,
+        componentRoots: ["ui/components"],
+        resolutionScope,
+      });
+      const resolveComponent = (reference) =>
+        resolveCodePreviewSource({ context, reference, authoredFile: page });
+
+      assert.equal(
+        resolveComponent("../../ui/components/CodeBlock/CodeBlock.tsx#CodeBlock"),
+        "component-root-0/CodeBlock/CodeBlock.tsx#CodeBlock",
+      );
+      assert.equal(
+        resolveComponent("../../ui/components/nested/Greeting.tsx"),
+        "component-root-0/nested/Greeting.tsx",
+      );
+      assert.equal(resolveComponent("./Example.tsx"), "docs/guide/Example.tsx");
+      assert.equal(resolveComponent("../../private/Hidden.tsx"), undefined);
+      assert.equal(resolveComponent("../../ui/components/Secret.tsx"), undefined);
+      assert.equal(resolveComponent("../../ui/components/CodeBlock/CodeBlock.tsx#Bad;Name"), undefined);
+
+      const plugin = createCodePreviewPlugin(context);
+      const componentId = plugin.resolveId("virtual:moyaforge-mdx/code-preview-components");
+      const code = await plugin.load.handler(componentId);
+      assert.match(code, /component-root-0\/CodeBlock\/CodeBlock\.tsx/);
+      assert.doesNotMatch(code, /Hidden\.tsx|Secret\.tsx/);
+
+      const compiled = String(
+        await compile(
+          { path: page, value: '::::code-preview[Shared]{component="../../ui/components/CodeBlock/CodeBlock.tsx#CodeBlock"}\n\n::::' },
+          createMdxOptions({
+            componentMappings: {
+              "code-preview": {
+                component: "InlineCodePreview",
+                resolveCodePreviewComponent: (reference, authoredFile) =>
+                  resolveCodePreviewSource({ context, reference, authoredFile }),
+              },
+            },
+          }),
+        ),
+      );
+      assert.match(compiled, /component-root-0\/CodeBlock\/CodeBlock\.tsx#CodeBlock/);
+    }
+
+    const noRoots = createCodePreview({ root, sources, pages });
+    assert.equal(resolveCodePreviewSource({
+      context: noRoots,
+      reference: "../../ui/components/CodeBlock/CodeBlock.tsx",
+      authoredFile: page,
+    }), undefined);
+    assert.throws(
+      () => createCodePreview({ root, sources, pages, componentRoots: ["missing"] }),
+      /Invalid code-preview component root/,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("component root watcher updates virtual module entries after additions and removals", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-preview-watch-"));
+  try {
+    await mkdir(join(root, "docs"), { recursive: true });
+    await mkdir(join(root, "shared"), { recursive: true });
+    const page = join(root, "docs/page.mdx");
+    const added = join(root, "shared/Added.tsx");
+    await writeFile(page, "# Docs");
+    const context = createCodePreview({
+      root,
+      sources,
+      pages: [{ source: "docs", file: "page.mdx" }],
+      componentRoots: ["shared"],
+    });
+    const plugin = createCodePreviewPlugin(context);
+    const listeners = new Map();
+    const invalidations = [];
+    const messages = [];
+    const watched = [];
+    plugin.configureServer({
+      watcher: {
+        add(paths) { watched.push(...paths); },
+        on(event, listener) { listeners.set(event, listener); },
+      },
+      moduleGraph: {
+        getModuleById(id) { return { id }; },
+        invalidateModule(module) { invalidations.push(module.id); },
+      },
+      ws: { send(message) { messages.push(message); } },
+    });
+    assert.deepEqual(watched, [join(root, "shared")]);
+
+    const resolveAdded = () => resolveCodePreviewSource({
+      context, authoredFile: page, reference: "../shared/Added.tsx",
+    });
+    assert.equal(resolveAdded(), undefined);
+    await writeFile(added, "export default () => null;");
+    listeners.get("add")(added);
+    assert.equal(resolveAdded(), "component-root-0/Added.tsx");
+
+    const moduleId = plugin.resolveId("virtual:moyaforge-mdx/code-preview-components");
+    assert.match(await plugin.load.handler(moduleId), /Added\.tsx/);
+    await rm(added);
+    listeners.get("unlink")(added);
+    assert.equal(resolveAdded(), undefined);
+    assert.doesNotMatch(await plugin.load.handler(moduleId), /Added\.tsx/);
+    assert.equal(invalidations.length, 4);
+    assert.deepEqual(messages, [{ type: "full-reload" }, { type: "full-reload" }]);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

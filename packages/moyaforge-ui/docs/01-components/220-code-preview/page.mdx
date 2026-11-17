@@ -182,7 +182,36 @@ export default function Greeting() {
 }
 ```
 
-The `component` attribute renders a **registered sibling** `.tsx` or `.jsx` file with a **default export**. It does not load arbitrary relative imports into `src/components`. For a shared component with a named export, either write a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly. For example:
+The `component` attribute renders a registered `.tsx` or `.jsx` file. Sibling examples are discovered automatically, and shared component directories can be explicitly registered.
+
+#### Register component roots
+
+Add `componentRoots` to `createCodePreview` when your React components are outside the docs directories. Entries are absolute directories or paths relative to `root`; all nested `.tsx` and `.jsx` files are discovered recursively.
+
+```ts filename="vite.config.ts"
+const codePreview = createCodePreview({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+  componentRoots: [
+    "../../packages/moyaforge-ui/src/components",
+  ],
+});
+```
+
+For example, with that root registered, a Warning page can reference the shared CodeBlock source file directly:
+
+```mdx
+::::code-preview[CodeBlock]{component="../../../../src/components/CodeBlock/CodeBlock.tsx#CodeBlock"}
+
+:::: 
+```
+
+Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same lazy Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or `{react}` when you need configured component usage.
+
+Roots are an explicit allowlist: only files in those directories can be resolved, symlinked files are not followed, and unregistered paths are rejected. Vite watches the roots for added and deleted components. For source tabs, `code-preview-sources` still requires sibling local files.
+
+ For a shared component with a named export, either write a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly. For example:
 
 ```mdx
 ::::code-preview[Warning callout]{react}
