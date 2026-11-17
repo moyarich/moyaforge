@@ -1,6 +1,6 @@
-[data-moyaforge-highlighted-code] > span {
+.mf-highlighted-code > span {
   --_mf-preview-syntax-color: var(
-    --preview-syntax-color,
+    --mf-preview-syntax-color,
     light-dark(var(--shiki-light, inherit), var(--shiki-dark, inherit))
   );
   color: var(--_mf-preview-syntax-color);

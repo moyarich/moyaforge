@@ -1,11 +1,11 @@
 .mf-preview-copy-icons {
   display: inline-flex;
 }
-.mf-preview-copy-icons [data-copy-icon] {
+.mf-preview-copy-icons .mf-preview-copy-icon {
   display: none;
 }
-.mf-preview-copy[data-copy-status="idle"] [data-copy-icon="idle"],
-.mf-preview-copy[data-copy-status="copied"] [data-copy-icon="copied"],
-.mf-preview-copy[data-copy-status="error"] [data-copy-icon="error"] {
+.mf-preview-copy.mf-copy-button--idle .mf-preview-copy-icon--idle,
+.mf-preview-copy.mf-copy-button--copied .mf-preview-copy-icon--copied,
+.mf-preview-copy.mf-copy-button--error .mf-preview-copy-icon--error {
   display: block;
 }

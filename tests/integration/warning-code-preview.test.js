@@ -45,7 +45,7 @@ test("Warning previews accept a source directive before inline React imports and
   expect(registered).toHaveLength(1);
   expect(registered[0].authoredFile).toBe(page);
   expect(registered[0].source).toContain('import "./example.css";');
-  expect(registered[0].source).toContain('<CustomBlock className="warning-example"');
+  expect(registered[0].source).toMatch(/<CustomBlock\s+className="warning-example"/);
   expect(registered[0].source).not.toContain("code-preview-sources");
   expect(resolved).toEqual([{ reference: "./Example.tsx", authoredFile: page }]);
   expect(output).toContain("virtual:moyaforge-mdx/react-preview/warning");
