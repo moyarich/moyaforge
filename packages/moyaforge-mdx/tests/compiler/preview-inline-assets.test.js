@@ -27,7 +27,7 @@ const preview = [
   "::::",
 ].join("\n");
 
-test("raw CSS and JavaScript in Markdown previews are compiled as isolated preview modules", async () => {
+test("trusted Markdown CSS renders while script source stays visible without execution", async () => {
   const modules = createInlineReactModules();
   const registered = [];
   const page = "/docs/custom-callout/page.mdx";
@@ -35,6 +35,7 @@ test("raw CSS and JavaScript in Markdown previews are compiled as isolated previ
     await compile(
       { value: preview, path: page },
       createMdxOptions({
+        allowInlinePreviewStyles: true,
         componentMappings: {
           "code-preview": {
             component: "InlineCodePreview",
@@ -52,17 +53,19 @@ test("raw CSS and JavaScript in Markdown previews are compiled as isolated previ
     ),
   );
 
-  expect(registered).toHaveLength(2);
+  expect(registered).toHaveLength(1);
   expect(registered.every((item) => item.authoredFile === page)).toBe(true);
   expect(registered[0].source).toContain("<style>{");
   expect(registered[0].source).toContain("--mf-custom-block-bg");
-  expect(registered[1].source).toContain('const root = anchor.current?.closest(".mf-preview-stage");');
-  expect(registered[1].source).toContain('root.querySelector(".custom-block.ui-success")');
   expect(output).toContain("MoyaForgeReactPreview0");
-  expect(output).toContain("MoyaForgeReactPreview1");
+  expect(output).not.toContain("MoyaForgeReactPreview1");
   expect(output).toContain('type: "ui-success"');
   expect(output).toContain("--mf-custom-block-bg");
   expect(output).toContain('const alert = root.querySelector');
+  expect(output).toContain("<script>");
+  expect(output).toContain("</script>");
+  expect(output).toContain("<style>");
+  expect(output).toContain("</style>");
 
   // The generated virtual modules must also be valid, compilable MDX.
   for (const { id } of registered) {
@@ -70,6 +73,90 @@ test("raw CSS and JavaScript in Markdown previews are compiled as isolated previ
     expect(resolved).toBeTruthy();
     const generated = await modules.load(resolved);
     expect(generated).toContain("function _createMdxContent");
+  }
+});
+
+test("untrusted previews preserve CSS and JavaScript source, without rendering either", async () => {
+  const registered = [];
+  const output = String(
+    await compile(
+      { value: preview, path: "/docs/untrusted/page.mdx" },
+      createMdxOptions({
+        componentMappings: {
+          "code-preview": {
+            component: "InlineCodePreview",
+            titleProp: "title",
+            sourceProp: "code",
+            registerInlineReact(source) {
+              registered.push(source);
+              return "virtual:unsafe-preview";
+            },
+          },
+          "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
+        },
+      }),
+    ),
+  );
+
+  expect(registered).toEqual([]);
+  expect(output).toContain("<script>");
+  expect(output).toContain("</script>");
+  expect(output).toContain("<style>");
+  expect(output).toContain("--mf-custom-block-bg: #e9f9f1");
+  expect(output).toContain("root.querySelector");
+  expect(output).not.toContain("virtual:unsafe-preview");
+  expect(output).not.toContain("MoyaForgeReactPreview");
+});
+
+test("script source never becomes executable even when CSS is trusted", async () => {
+  const registrations = [];
+  const source = [
+    ":::code-preview[Unsafe]",
+    "",
+    "<script>",
+    'window.__PWNED__ = document.cookie;',
+    "</script>",
+    "",
+    "<p>Example</p>",
+    "",
+    ":::",
+  ].join("\n");
+  const output = String(
+    await compile(
+      { value: source, path: "/docs/unsafe.mdx" },
+      createMdxOptions({
+        allowInlinePreviewStyles: true,
+        componentMappings: {
+          "code-preview": {
+            component: "InlineCodePreview",
+            sourceProp: "code",
+            registerInlineReact(source) {
+              registrations.push(source);
+              return "virtual:unsafe";
+            },
+          },
+        },
+      }),
+    ),
+  );
+  expect(registrations).toEqual([]);
+  expect(output).toContain("window.__PWNED__ = document.cookie");
+  expect(output).not.toContain("virtual:unsafe");
+});
+
+test("external and attributed scripts cannot bypass the source-only policy", async () => {
+  for (const open of [
+    '<script src="https://evil.example/x.js">',
+    '<script onload="alert(1)">',
+    "<script>alert(1)</script>",
+    "<SCRIPT>",
+  ]) {
+    await expect(
+      compile(
+        { value: ":::code-preview[Unsafe]\n\n" + open + "\n\n:::", path: "page.mdx" },
+        createMdxOptions({ allowInlinePreviewStyles: true }),
+      ),
+    ).rejects.toThrow(/standalone, attribute-free/);
   }
 });
 
