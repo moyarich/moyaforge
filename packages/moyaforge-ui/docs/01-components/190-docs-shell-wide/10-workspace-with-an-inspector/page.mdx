@@ -3,25 +3,13 @@ title: Workspace with an inspector
 label: Workspace with an inspector
 ---
 
-import {
-  CodePreview,
-  CODE_REPLACEMENTS,
-} from "../../../../src/components/CodePreview/index.js";
-import Example from "./Example.tsx";
-import exampleSource from "./Example.tsx?raw";
-import exampleStyles from "./Example.css?raw";
 
 # Docs Shell Wide · Workspace with an inspector
 
-<CodePreview
-  title="Docs Shell Wide"
-  files={[
-    { label: "Example.tsx", code: exampleSource },
-    { label: "Example.css", code: exampleStyles },
-  ]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+::::code-preview[Docs Shell Wide]{component="./Example.tsx"}
+
+::code-preview-sources{files="./Example.tsx,./Example.css" replacements="portable"}
+
+::::
 
 [Component documentation](/ui/components/docs-shell-wide)

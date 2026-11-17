@@ -3,25 +3,13 @@ title: Sidebar with page links
 label: Sidebar with page links
 ---
 
-import {
-  CodePreview,
-  CODE_REPLACEMENTS,
-} from "../../../../src/components/CodePreview/index.js";
-import Example from "./Example.tsx";
-import exampleSource from "./Example.tsx?raw";
-import exampleStyles from "./Example.css?raw";
 
 # Sidebar V1 · Sidebar with page links
 
-<CodePreview
-  title="Sidebar V1"
-  files={[
-    { label: "Example.tsx", code: exampleSource },
-    { label: "Example.css", code: exampleStyles },
-  ]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+::::code-preview[Sidebar V1]{component="./Example.tsx"}
+
+::code-preview-sources{files="./Example.tsx,./Example.css" replacements="portable"}
+
+::::
 
 [Component documentation](/ui/components/sidebar-v1)

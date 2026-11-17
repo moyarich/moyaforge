@@ -3,27 +3,15 @@ title: Textarea
 label: Textarea
 ---
 
-import {
-  CodePreview,
-  CODE_REPLACEMENTS,
-} from "../../../../src/components/CodePreview/CodePreview.tsx";
 
-export const setupSource = "import { configureReactWorkers } from \"@moyarich/moyaforge-monaco/react\";\\nconfigureReactWorkers();";
 
-import Example from "./Example.tsx";
-import editorSource from "./Example.tsx?raw";
 
 # Render Editor in Textarea
 
-<CodePreview
-  title="Textarea"
-  files={[
-    { label: "Example.tsx", code: editorSource },
-    { label: "setup.ts", code: setupSource },
-  ]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+::::code-preview[Textarea]{component="./Example.tsx"}
+
+::code-preview-sources{files="./Example.tsx,./setup.ts" replacements="portable"}
+
+::::
 
 [Component installation and usage](../)

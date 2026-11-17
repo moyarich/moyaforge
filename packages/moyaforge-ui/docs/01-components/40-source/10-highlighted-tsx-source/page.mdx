@@ -3,21 +3,13 @@ title: Highlighted TSX source
 label: Highlighted TSX source
 ---
 
-import {
-  CodePreview,
-  CODE_REPLACEMENTS,
-} from "../../../../src/components/CodePreview/index.js";
-import Example from "./Example.tsx";
-import exampleSource from "./Example.tsx?raw";
 
 # Source · Highlighted TSX source
 
-<CodePreview
-  title="Source"
-  files={[{ label: "Example.tsx", code: exampleSource }]}
-  replacements={CODE_REPLACEMENTS}
->
-  <Example />
-</CodePreview>
+::::code-preview[Source]{component="./Example.tsx"}
+
+::code-preview-sources{files="./Example.tsx" replacements="portable"}
+
+::::
 
 [Component documentation](/ui/components/source)
