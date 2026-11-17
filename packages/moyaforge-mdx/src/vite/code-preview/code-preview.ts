@@ -31,6 +31,8 @@ export interface CodePreviewOptions {
 export interface CodePreviewContext {
   /** Base directory for resolving documentation and plugin component roots. */
   root: string;
+  /** Unique documentation directories containing automatically discovered preview files. */
+  componentRoots: readonly string[];
   inlineReact: ReturnType<typeof createInlineReactModules>;
   /** Registry key -> absolute file path */
   modules: Map<string, string>;
@@ -49,7 +51,7 @@ export interface CodePreviewContext {
 /** Vite-only component registration, separate from documentation discovery. */
 export interface CodePreviewPluginOptions {
   codePreview: CodePreviewContext;
-  /** Absolute directories or paths relative to codePreview.root, searched recursively. */
+  /** Extend codePreview.componentRoots with extra directories for recursive component discovery. */
   componentRoots?: readonly string[];
 }
 
@@ -91,6 +93,7 @@ export function createCodePreview({
   const keysByPath = new Map<string, string>();
   const basesByPath = new Map<string, string>();
   const registeredComponents = new Map<string, string>();
+  const componentRoots = new Set<string>();
   for (const page of pages) {
     const base = roots.get(page.source);
     if (!base) continue;
@@ -114,6 +117,7 @@ export function createCodePreview({
       if (outOfRoot === "skip") continue;
     }
 
+    componentRoots.add(directory);
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
       if (!entry.isFile() || !sourceFilePattern.test(entry.name)) {
         continue;
@@ -133,6 +137,7 @@ export function createCodePreview({
 
   return {
     root,
+    componentRoots: [...componentRoots],
     inlineReact: createInlineReactModules(),
     modules,
     keysByPath,
@@ -176,22 +181,24 @@ export function resolveCodePreviewSource({
 }
 
 export function createCodePreviewPlugin({
-  codePreview: {
+  codePreview,
+  componentRoots = codePreview.componentRoots,
+}: CodePreviewPluginOptions): Plugin {
+  const {
     root,
     modules,
     inlineReact,
     keysByPath,
     basesByPath,
     registeredComponents,
-  },
-  componentRoots = [],
-}: CodePreviewPluginOptions): Plugin {
-  const directories = componentRoots.map((directory) => {
+  } = codePreview;
+  const pageDirectories = new Set(codePreview.componentRoots);
+  const directories = [...new Set(componentRoots.map((directory) => {
     const absolute = resolve(root, directory);
     if (!existsSync(absolute) || !statSync(absolute).isDirectory())
       throw new Error(`Invalid code-preview component root: ${directory}. Expected an existing directory.`);
     return absolute;
-  });
+  }))].filter((directory) => !pageDirectories.has(directory));
   // Track only entries added by this plugin; automatic page entries are owned by
   // createCodePreview and must survive a component root refresh.
   const ownedComponents = new Map<string, string>();
