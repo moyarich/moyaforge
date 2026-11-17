@@ -8,19 +8,90 @@ description: Share helpful context alongside a procedure.
 
 Use a note for information readers may want to know while following the main instructions, such as where their drafts are saved.
 
-::::code-preview[Note callout]{react}
+## Minimal blue note
 
-import "./Example.css";
+A simple left-accented note with a subtle blue background.
+
+::::code-preview[Minimal blue note]{react replacements="portable"}
+
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
-<div className="note-example">
+<div className="note-preview-blue">
+  <style>{`
+    .note-preview-blue .custom-block.note {
+      --mf-custom-block-bg: color-mix(in srgb, #2563eb 8%, transparent);
+      --mf-custom-block-border: #2563eb;
+      --mf-custom-block-border-width: 4px;
+      --mf-custom-block-radius: 8px;
+    }
+  `}</style>
+
   <CustomBlock type="note" title="Where drafts are saved">
     Drafts are saved in your browser.
   </CustomBlock>
 </div>
 
-::code-preview-sources{files="./Example.css" replacements="portable"}
+::::
+
+## Elevated purple note
+
+A full-border card with a rounded shape and soft shadow.
+
+::::code-preview[Elevated purple note]{react replacements="portable"}
+
+import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+
+<div className="note-preview-purple">
+  <style>{`
+    .note-preview-purple .custom-block.note {
+      --mf-custom-block-bg: color-mix(in srgb, #804ec2 8%, transparent);
+      --mf-custom-block-border-width: 0px;
+      --mf-custom-block-radius: 16px;
+      border: 1px solid color-mix(in srgb, #804ec2 40%, transparent);
+      box-shadow: 0 4px 16px color-mix(in srgb, #804ec2 12%, transparent);
+      padding: 1.5rem;
+    }
+
+    .note-preview-purple .custom-block-title {
+      color: #804ec2;
+      font-weight: 700;
+    }
+  `}</style>
+
+  <CustomBlock type="note" title="Before you continue">
+    Save a backup before changing your settings.
+  </CustomBlock>
+</div>
 
 ::::
 
-[Component documentation](/ui/components/custom-block)
+## Markdown note with inline CSS
+
+A dashed teal callout written as a Markdown directive, without a React component.
+
+::::code-preview[Markdown teal note]{replacements="portable"}
+
+<style data-note-preview="teal">{`
+  style[data-note-preview="teal"] + .custom-block.note {
+    --mf-custom-block-bg: color-mix(in srgb, #149e92 8%, transparent);
+    --mf-custom-block-border-width: 0px;
+    --mf-custom-block-radius: 8px;
+    border: 1px dashed #149e92;
+    padding: 1rem 1.25rem;
+  }
+
+  style[data-note-preview="teal"] + .custom-block.note .custom-block-title {
+    color: #097d73;
+    font-weight: 700;
+  }
+`}</style>
+
+::: note Remember
+
+Your changes are saved automatically.
+
+:::
+
+::::
+
+[Component documentation](../)
