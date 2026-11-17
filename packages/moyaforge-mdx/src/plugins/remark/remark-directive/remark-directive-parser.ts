@@ -14,13 +14,14 @@ export type DirectiveHeaderRule = (
 export function remarkDirectiveParser(
   this: Processor,
   rules: readonly DirectiveHeaderRule[],
+  options: { allowInlinePreviewStyles?: boolean } = {},
 ) {
   const parse = this.parser;
   if (!parse) return;
   this.parser = (source, file) => {
     const headers = new Map<string, DirectiveHeader>();
     const lines = source.split(/(?<=\n)/);
-    const inlineAssets = maskInlinePreviewAssets(lines);
+    const inlineAssets = maskInlinePreviewAssets(lines, options);
     file.data.inlinePreviewAssets = inlineAssets.assets;
     const stack: number[] = [];
     let reactFenceWidth: number | undefined;
