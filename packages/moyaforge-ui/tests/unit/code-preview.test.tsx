@@ -205,3 +205,23 @@ test("ordinary CSS files keep the CSS grammar without Markdown segmentation", ()
   renderToStaticMarkup(h(HighlightedCode, { code, language: "css", highlighter }));
   expect(languages).toEqual(["css"]);
 });
+
+
+test("real Shiki highlighter assigns distinct CSS token colors inside MDX style blocks", () => {
+  const source = [
+    "<style>",
+    ".custom-block.ui-success {",
+    "  --mf-custom-block-bg: #e9f9f1;",
+    "  background-color: red;",
+    "}",
+    "</style>",
+  ].join("\n");
+  const html = renderToStaticMarkup(h(HighlightedCode, { code: source, language: "mdx" }));
+  const cssSegment = html.split(".custom-block")[1]?.split("&lt;/style&gt;")[0] ?? "";
+  const colors = new Set(
+    [...cssSegment.matchAll(/--shiki-light:([^;"]+)/g)].map((match) => match[1]),
+  );
+  expect(colors.size).toBeGreaterThan(1);
+  expect(html).toContain("color");
+  expect(html).toContain("&lt;style&gt;");
+});
