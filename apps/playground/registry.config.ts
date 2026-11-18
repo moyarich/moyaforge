@@ -7,6 +7,8 @@ export default {
       base: "../../docs",
       include: ["**/*.md", "**/*.mdx"],
       pageFiles: "all",
+      // Keep standalone developer .md pages, but not repository README files.
+      exclude: ["**/README.md", "**/readme.md", "**/README.mdx", "**/readme.mdx"],
       navigation: { label: "Guide", order: 1 },
     },
     ui: {
@@ -17,7 +19,8 @@ export default {
     },
     packages: {
       base: "../../packages",
-      include: ["*/README.md", "**/page.md", "**/page.mdx"],
+      // Package README files remain available on GitHub/npm, not as docs routes.
+      include: ["**/page.md", "**/page.mdx"],
       pageFiles: "all",
       exclude: [
         "**/node_modules/**",

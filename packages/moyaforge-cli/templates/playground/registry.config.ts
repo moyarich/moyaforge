@@ -7,6 +7,7 @@ export default {
       base: "docs",
       include: ["**/*.md", "**/*.mdx"],
       pageFiles: "all",
+      exclude: ["**/README.md", "**/readme.md", "**/README.mdx", "**/readme.mdx"],
       navigation: { label: "Guide", order: 1 },
     },
   },
