@@ -40,6 +40,8 @@ npm install @codingame/monaco-vscode-standalone-languages@^37.6.1 @codingame/mon
 
 For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and call `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/typefox` once at application startup. If using React Monaco too, call `initializeSharedMonaco()` from `/shared` instead. Other bundlers need their own worker setup.
 
+For editor worker architecture and shared initialization details, see [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx).
+
 The editor setup belongs in your application's `main.tsx`, **not** inside the component. For standalone TypeFox applications:
 
 ```ts

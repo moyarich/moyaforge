@@ -10,6 +10,18 @@ This section describes **maintainer workflows**, not public package release capa
 
 For the full compiler-to-browser implementation, see [Code preview internals](./10-code-preview-internals/page.mdx). It covers MDX directives, raw CSS/script policy, Vite modules, syntax highlighting, and regression tests.
 
+## Developer architecture guides
+
+These pages preserve the internal details needed to maintain MoyaForge without turning npm/GitHub README files into documentation routes.
+
+- [Content registry internals](./20-content-registry/page.mdx) — source discovery, README exclusion, metadata, navigation, TOC and links.
+- [Monaco runtime](./30-monaco-runtime/page.mdx) — React/TypeFox worker strategies, shared VS Code services and Vite types.
+- [SQLite search internals](./40-sqlite-search/page.mdx) — canonical indexing, generated assets and HMR.
+- [Package boundaries and scaffolding](./50-packages-and-scaffolding/page.mdx) — workspace ownership, public entry points, CLI templates and releases.
+
+The playground registry selects authored `page.md`/`page.mdx` pages and, for general docs, explicitly excludes `README.md`/`README.mdx` even when `pageFiles: "all"`. Package README files remain in the repository and npm tarballs; their maintainer-relevant content is summarized in the linked guides.
+
+
 ## Requirements
 
 Use Node.js 24 and npm from the repository root.
