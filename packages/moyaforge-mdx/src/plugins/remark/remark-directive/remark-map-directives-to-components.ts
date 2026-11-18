@@ -30,6 +30,8 @@ export type DirectiveContentTransform<Mapping extends DirectiveComponent> = (
   source: string,
   attributes: Attribute[],
   filePath?: string,
+  /** Original source container, used to capture complete authored preview text. */
+  container?: Node,
 ) => Node[];
 
 export type NestedComponentResolver<Mapping extends DirectiveComponent> = (
@@ -103,6 +105,7 @@ function transform<Mapping extends DirectiveComponent>(
           source,
           attributes,
           filePath,
+          node,
         )
       : children;
     return jsx(
