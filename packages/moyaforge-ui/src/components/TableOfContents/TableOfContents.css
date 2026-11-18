@@ -1,19 +1,19 @@
-[data-moyaforge-toc] {
-  --_toc-color: var(--toc-color, inherit);
-  --_toc-gap: var(--toc-gap, 0.25rem);
-  --_toc-indent: var(--toc-indent, 1rem);
+.mf-toc {
+  --_mf-toc-color: var(--mf-toc-color, inherit);
+  --_mf-toc-gap: var(--mf-toc-gap, 0.25rem);
+  --_mf-toc-indent: var(--mf-toc-indent, 1rem);
 
-  color: var(--_toc-color);
+  color: var(--_mf-toc-color);
 }
 
-[data-moyaforge-toc] ul {
+.mf-toc ul {
   display: grid;
-  gap: var(--_toc-gap);
+  gap: var(--_mf-toc-gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-[data-moyaforge-toc] [data-level="3"] {
-  margin-left: var(--_toc-indent);
+.mf-toc .mf-level-3 {
+  margin-left: var(--_mf-toc-indent);
 }
