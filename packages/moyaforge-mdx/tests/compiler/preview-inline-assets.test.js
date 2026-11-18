@@ -256,9 +256,9 @@ test("custom-admonition examples expose complete authored Markdown, CSS and scri
       }),
     ),
   );
-  const codeTabs = [...compiled.matchAll(/\bcode: ("(?:\\.|[^"\\])*")/g)].map(
-    (match) => JSON.parse(match[1]),
-  );
+  const codeTabs = [...compiled.matchAll(/\bcode: ("(?:\\.|[^"\\])*")/g)]
+    .map((match) => JSON.parse(match[1]))
+    .filter((value) => value.startsWith("<style>"));
   const variants = [
     "ui-success",
     "ui-information",
