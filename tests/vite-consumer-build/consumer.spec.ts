@@ -167,3 +167,20 @@ test("embedded HashRouter preserves host routes, deep links, and history", async
     page.getByRole("heading", { name: "Host dashboard" }),
   ).toBeVisible();
 });
+
+
+test("Code tab applies real CSS token colors inside Markdown style blocks", async ({
+  page,
+}) => {
+  await page.goto("/app/syntax");
+  const preview = page.getByTestId("embedded-css-preview");
+  await expect(preview).toContainText("--mf-custom-block-bg: #e9f9f1;");
+  const colors = await preview.locator("code span").evaluateAll((spans) =>
+    [...new Set(
+      spans
+        .filter((span) => span.textContent?.trim())
+        .map((span) => getComputedStyle(span).color),
+    )],
+  );
+  expect(colors.length).toBeGreaterThan(1);
+});
