@@ -224,5 +224,11 @@ test("real Shiki highlighter assigns distinct CSS token colors inside MDX style 
   );
   expect(colors.size).toBeGreaterThan(1);
   expect(html).toContain("color");
-  expect(html).toContain("&lt;style&gt;");
+  const displayed = html
+    .replace(/<[^>]+>/g, "")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&amp;", "&");
+  expect(displayed).toBe(source);
 });
