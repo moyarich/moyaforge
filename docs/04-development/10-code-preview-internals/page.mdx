@@ -1,14 +1,27 @@
 ---
 title: Code preview internals
 label: Code preview internals
-description: How MoyaForge compiles Markdown previews, preserves source, renders styles, highlights embedded languages, and enforces security defaults.
+description: Developer guide to the Markdown preview pipeline, from MDX source to secure React rendering.
 ---
 
 # Code preview internals
 
-This is a **developer and maintainer guide** to the `:::code-preview` feature in MoyaForge. For the public authoring API and runnable examples, see [CodePreview](../../../packages/moyaforge-ui/docs/01-components/220-code-preview/page.mdx) and the [custom callout gallery](../../../packages/moyaforge-ui/docs/01-components/01-custom-block/40-custom-admonition/page.mdx).
+**Developer guide:** MoyaForge uses `@mdx-js/mdx` to compile Markdown/MDX; its remark plugins add `:::code-preview` support. Vite resolves component modules, while React renders the live preview and its original source in separate views.
 
-The key distinction: **the Code tab is a display of authored source, while the Preview tab is compiled React output**. Showing a `<script>` in the Code tab does not grant permission to execute it.
+The **Code tab shows authored Markdown, CSS, and JavaScript**. The **Preview tab renders only permitted content**; raw `<script>` blocks never execute.
+
+For usage examples, see [CodePreview](../../../packages/moyaforge-ui/docs/01-components/220-code-preview/page.mdx) and [custom callouts](../../../packages/moyaforge-ui/docs/01-components/01-custom-block/40-custom-admonition/page.mdx).
+
+## Find the right guide
+
+| Task | Developer guide |
+| --- | --- |
+| Write Markdown/MDX examples; avoid hydration errors | [Authoring and valid HTML](./10-authoring/page.mdx) |
+| Understand remark plugins, source offsets, and Code-tab extraction | [Compiler and source capture](./20-compiler/page.mdx) |
+| Control which CSS and scripts may run | [CSS and JavaScript security](./30-security/page.mdx) |
+| Register components and resolve virtual modules | [Vite and file-backed previews](./40-vite/page.mdx) |
+| Understand React rendering and embedded-language coloring | [Rendering and highlighting](./50-rendering/page.mdx) |
+| Find files, run tests, and debug failures | [Testing and troubleshooting](./60-testing/page.mdx) |
 
 ## Ownership and data flow
 
@@ -42,227 +55,8 @@ Compiled MDX / Vite loaders ---> InlineCodePreview / CodePreview
 
 The parsing, source extraction, Vite module registration, and rendering phases are intentionally separate. Changing how code is displayed must **not** change which authored code can execute.
 
-## 1. Author a Markdown preview
+## Where to start
 
-An ordinary Markdown callout is parsed with the same `:::` directive syntax used elsewhere in the docs. A preview uses a wider fence to contain a nested callout:
+If you're changing **what appears in the Code tab**, start with [compiler and source capture](./20-compiler/page.mdx). If you're changing **what runs in the preview**, read the [security policy](./30-security/page.mdx) first. If CSS is not visibly colored, see [rendering and highlighting](./50-rendering/page.mdx).
 
-~~~~mdx
-::::code-preview[Success notification]
-
-<style>
-.custom-block.ui-success {
-  --mf-custom-block-bg: #e9f9f1;
-  --mf-custom-block-border: #2d9160;
-}
-</style>
-
-::: ui-success Changes saved
-
-Your changes have been saved.
-
-:::
-
-<script>
-// Shown in the Code tab only. Never run by the preview compiler.
-console.log("This example contains source-only JavaScript.");
-</script>
-
-::::
-~~~~
-
-The outer `::::code-preview` creates the preview. The inner `::: ui-success` maps to `CustomBlock` via the configured `"*"` component mapping. Both use the normal MDX compile pipeline.
-
-Standalone, attribute-free `<style>` and `<script>` opening and closing tags must each occupy their own line. Do not put authored CSS or JavaScript outside their tags or inside arbitrary JSX and expect the raw-asset mask to process it. Triple-backtick/tilde fenced code blocks remain examples of **text**, not preview-local styles or scripts.
-
-### Supported forms
-
-| Form | Live preview | Code tab |
-| --- | --- | --- |
-| `:::code-preview[Title]` with Markdown/JSX body | Compiled Markdown/JSX | Original body |
-| `<style>` in a Markdown preview | CSS only with trusted opt-in | Original CSS and tags |
-| `<script>` in a Markdown preview | Never runs | Original JavaScript and tags |
-| `{react}` flag with imports and JSX | Separately compiled React module | Authored React source |
-| `{component="./Example.tsx"}` | Registered TSX/JSX component | Source files as configured |
-| `{code="./Example.tsx" language="typescript"}` | Highlighted source, not component execution | Source file |
-| `::code-preview-sources{files="./Example.tsx,./example.css"}` | Does not itself import or apply the files | Extra file tabs |
-
-`{react}`, file-backed component previews, and arbitrary JSX are **trusted executable code**; they do not inherit the raw `<script>` restriction.
-
-## 2. Parse directives without losing authored code
-
-The shared options are assembled in `packages/moyaforge-mdx/src/mdx/mdx-tooling-options.ts`.
-
-1. `remarkNormalizeDirectiveHeaders` installs `remarkDirectiveParser` around the normal parser. It recognizes supported directive headers and stores their metadata.
-2. `maskInlinePreviewAssets` scans Markdown preview bodies, records standalone raw CSS/JS blocks in `file.data.inlinePreviewAssets`, and replaces their **body characters only in the parse copy** with spaces. Newlines and source offsets are preserved. This prevents CSS braces and arbitrary JavaScript syntax from being misread as MDX expressions.
-3. `maskInlineReactImports` similarly protects page parsing from imports belonging to `{react}` examples.
-4. `remark-directive` and the container plugins build the Markdown AST. MoyaForge maps configured directives to MDX JSX components.
-5. `collectPreviewContent` reads the **original page source** using the enclosing directive's offsets (not merely the surviving child-node offsets). It excludes the outer opening/closing fences and trims surrounding blank lines. This is why CSS and source-only scripts survive in the Code tab even though their parsed nodes may be removed or replaced in the live preview.
-
-When a preview includes separate named fences or `code-preview-sources`, the collector uses the appropriate child ranges rather than folding every extra file into one inline source tab. The `sourceFiles` prop carries labeled file contents to the UI.
-
-**Invariants to preserve when editing the compiler:** Do not shift offsets while masking. Do not strip raw source just because a node cannot render. Do not accidentally add the closing `::::` fence to the Code tab. Do not treat `<script>` as a React effect or browser script.
-
-## 3. Decide which content may render
-
-The parser assigns each raw asset a tag, original offset, original code, and `render` flag. `collectPreviewContent` applies that decision:
-
-- **Script:** always `render: false`. It is dropped from the **preview children**, but its bytes remain in the **Code tab source string**. It does not become a compiled React module or execute.
-- **Style, default:** `render: false`. Its source remains visible; it does not style the preview.
-- **Style, trusted opt-in:** with `allowInlinePreviewStyles: true`, its CSS becomes a virtual MDX module that renders a `<style>` element containing text; it is **not JavaScript evaluation**.
-
-The trusted CSS option is passed into `createMdxOptions`, which configures the remark parser:
-
-~~~~ts
-const compileMdx = mdx(
-  createMdxOptions({
-    // Enable only for reviewed, repository-controlled documentation.
-    allowInlinePreviewStyles: true,
-    componentMappings: {
-      "code-preview": {
-        component: "InlineCodePreview",
-        titleProp: "title",
-        sourceProp: "code",
-        filesProp: "sourceFiles",
-        localSources: true,
-        registerInlineReact: codePreview.inlineReact.register,
-        resolveCodePreviewComponent: (reference, authoredFile) =>
-          resolveCodePreviewSource({
-            context: codePreview,
-            reference,
-            authoredFile,
-          }),
-      },
-      "*": {
-        component: "CustomBlock",
-        typeProp: "type",
-        titleProp: "title",
-      },
-    },
-  }),
-);
-~~~~
-
-If `allowInlinePreviewStyles` is omitted, raw CSS stays **source-only**. This option is **not** a sandbox. Authored CSS can affect elements outside the preview because normal browser style sheets are global. Authors should scope selectors to a class unique to the example; use actual origin isolation for untrusted content.
-
-### Security boundary
-
-Only compile executable MDX, `{react}` examples, and registered React components from **trusted sources**. In particular, do not compile untrusted user-submitted Markdown as executable MDX in the host application. A preview-local element or React effect does not restrict `window`, `document`, cookies, or authenticated requests. For untrusted interactive content, use a separately hosted sandboxed iframe with a restrictive CSP; merely wrapping an example in `<div>` is not isolation.
-
-Raw scripts with attributes, external sources, or unsupported tag formatting are rejected instead of being run as JSX. These checks protect the **raw Markdown preview path**, not the general MDX/React execution surface.
-
-## 4. Resolve file-backed previews through Vite
-
-The host first discovers documentation pages and builds a shared registry. Pass the **same context** to the MDX mapping and Vite plugin:
-
-~~~~ts
-import {
-  createCodePreviewRegistry,
-  createCodePreviewPlugin,
-  resolveCodePreviewSource,
-} from "@moyarich/moyaforge-mdx/vite";
-
-const codePreview = createCodePreviewRegistry({
-  root: contentRoot,
-  sources: registry.sources,
-  pages: discovered.pages,
-});
-
-export default defineConfig({
-  plugins: [
-    createCodePreviewPlugin({
-      codePreview,
-      componentRoots: [
-        ...codePreview.componentRoots,
-        "../../packages/moyaforge-ui/src/components",
-      ],
-    }),
-    // ...your MDX and React plugins
-  ],
-});
-~~~~
-
-`createCodePreviewRegistry` registers eligible sibling files and exposes `componentRoots`, `modules`, `keysByPath`, and `basesByPath`. `createCodePreviewPlugin` may extend those maps with explicitly allowed React component roots. `resolveCodePreviewSource` validates relative references against the registered file inventory and optional `#NamedExport` suffix.
-
-The plugin exposes lazy component and raw-source loader maps:
-
-- `virtual:moyaforge-mdx/code-preview-components` for registered React components;
-- `virtual:moyaforge-mdx/code-preview-sources` for raw file text (`?raw`);
-- `virtual:moyaforge-mdx/react-preview/...` for inline compiled modules, including trusted CSS.
-
-Inline `{react}` modules are compiled by `@mdx-js/mdx` **at build time**, not with browser `eval`. Relative imports resolve from the authored page's location. Vite watches registered component roots for changes; missing or unregistered components fail with a diagnostic.
-
-See the working [playground Vite configuration](../../../apps/playground/vite.config.ts) and [component registry tests](../../../packages/moyaforge-mdx/tests/vite/code-preview-component-roots.test.js). The CLI playground template also wires the same features.
-
-## 5. Render source and highlight embedded languages
-
-The MDX provider supplies `InlineCodePreview`. It assembles the inline `Example.mdx` source tab plus any file tabs, then renders `CodePreview` and the shared `Preview` components.
-
-- `PreviewContent` owns the live React example.
-- `PreviewSource` owns the Code view; `CodeGroup` handles multiple files.
-- `HighlightedCode` renders escaped **text nodes** inside token spans, not executable HTML. Copying source uses the same source string.
-- `CodePreview` applies optional portable import-path replacements to displayed file strings only.
-
-There are **two Shiki paths**. The host's `rehypeShiki` highlights ordinary fenced prose at compile time. The **Code tab** uses the `HighlightedCode` React component, which tokenizes source for its selected grammar at render time.
-
-An inline Markdown example uses the MDX grammar, but `HighlightedCode` recognizes standalone `<style>` and `<script>` blocks: the tags and surrounding Markdown use the MDX grammar, the **CSS body uses the CSS grammar**, and the **script body uses JavaScript**. This is highlighting only; it never executes script text. Original line endings, including CRLF, must survive segmentation. Light and dark token colors are exposed as `--shiki-light` and `--shiki-dark`; the public `--mf-preview-syntax-color` property can override them.
-
-When you debug a report that the `<style>` tag is colored but CSS is not, verify **computed token colors inside the CSS body**, not just the tag's color, the existence of token spans, or the selected grammar.
-
-## 6. Keep authored HTML valid
-
-The compiled preview is React; browser DOM nesting rules still apply. Markdown parsers can wrap lines in `<p>` even when the author intended children of a raw HTML element.
-
-For example, a `<summary>` **must be a direct child of `<details>`**, never a descendant of `<p>`. In mixed Markdown/MDX previews, use an unambiguous JSX grouping:
-
-~~~~mdx
-::: ui-dismissible Your download is ready
-
-<details className="ui-notification-details"><summary>Show download information</summary><p>Your file is ready to download.</p></details>
-
-:::
-~~~~
-
-Avoid splitting that fragment into loose indented lines if your parser would turn the `<summary>` line into a Markdown paragraph. A browser console hydration warning can signal invalid nesting even when the Code tab shows the correct source.
-
-## 7. Files to change and regression checks
-
-| Responsibility | Source |
-| --- | --- |
-| Shared MDX options and plugin order | `packages/moyaforge-mdx/src/mdx/mdx-tooling-options.ts` |
-| Header normalization and parsing | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-directive-parser.ts` |
-| Raw CSS/JS masking and render policy | `packages/moyaforge-mdx/src/plugins/remark/code-preview/mask-inline-preview-assets.ts` |
-| Original Code-tab source extraction | `packages/moyaforge-mdx/src/plugins/remark/code-preview/collect-preview-content.ts` |
-| Directive-to-component AST mapping | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-map-directives-to-components.ts` |
-| Local file sources | `packages/moyaforge-mdx/src/plugins/remark/code-preview-sources/read-preview-sources.ts` |
-| Vite discovery, roots, virtual modules | `packages/moyaforge-mdx/src/vite/code-preview/code-preview.ts` |
-| Inline virtual module compiler | `packages/moyaforge-mdx/src/vite/code-preview/inline-react-modules.ts` |
-| React preview and Code tab | `packages/moyaforge-ui/src/components/CodePreview/` and `Preview/` |
-| Source tokenization and colors | `packages/moyaforge-ui/src/components/HighlightedCode/` |
-
-Run these commands from the repository root:
-
-~~~~sh
-npm run build --workspace @moyarich/moyaforge-mdx
-npm exec --workspace @moyarich/moyaforge-mdx -- vitest run tests/compiler/preview-inline-assets.test.js tests/compiler/preview-directives.test.js
-npm exec --workspace @moyarich/moyaforge-ui -- vitest run tests/unit/code-preview.test.tsx
-npm run typecheck
-npm run test:e2e
-~~~~
-
-The MDX compiler tests cover original source strings, safe script handling, the custom-admonition gallery, and the `<summary>` nesting regression. UI tests cover tokenization and source rendering. Playwright's Vite-consumer browser test verifies **computed CSS token colors** in the CSS body.
-
-### Troubleshooting
-
-| Symptom | Check first |
-| --- | --- |
-| Code tab empty or missing `<style>`/`<script>` | Original directive positions and `collectPreviewContent` source slicing |
-| CSS appears in Code but does not style Preview | `allowInlinePreviewStyles`, Vite `registerInlineReact`, and stylesheet selectors |
-| Script appears in Code but does not run | **Expected**: raw script is source-only |
-| CSS text is monochrome | `HighlightedCode` embedded CSS grammar and computed token colors |
-| React preview cannot resolve a file | `createCodePreviewPlugin({ componentRoots })`, filename casing, allowed scope |
-| `<summary>` hydration warning | Valid direct `<details><summary>` structure in compiled React |
-| `<style>` or `<script>` unclosed | Standalone, attribute-free tags and a closing tag on its own line |
-
-Keep tests at the **correct layer**: compiler tests assert generated source and JSX structure; UI tests assert escaped text and token colors; browser tests assert the actual computed styles and valid DOM. A passing compiler test alone cannot prove that code is visibly highlighted in a browser.
-
-For contributor setup and other repository commands, return to [Development](../page.mdx).
+[Development overview](../page.mdx)

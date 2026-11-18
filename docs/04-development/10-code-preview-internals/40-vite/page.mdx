@@ -1,0 +1,50 @@
+---
+title: Preview Vite integration
+label: Vite integration
+description: Component roots, source resolution, the shared registry context, and Vite virtual module loaders.
+---
+
+# Vite and file-backed previews
+
+The host first discovers documentation pages and builds a shared registry. Pass the **same context** to the MDX mapping and Vite plugin:
+
+~~~~ts
+import {
+  createCodePreviewRegistry,
+  createCodePreviewPlugin,
+  resolveCodePreviewSource,
+} from "@moyarich/moyaforge-mdx/vite";
+
+const codePreview = createCodePreviewRegistry({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+});
+
+export default defineConfig({
+  plugins: [
+    createCodePreviewPlugin({
+      codePreview,
+      componentRoots: [
+        ...codePreview.componentRoots,
+        "../../packages/moyaforge-ui/src/components",
+      ],
+    }),
+    // ...your MDX and React plugins
+  ],
+});
+~~~~
+
+`createCodePreviewRegistry` registers eligible sibling files and exposes `componentRoots`, `modules`, `keysByPath`, and `basesByPath`. `createCodePreviewPlugin` may extend those maps with explicitly allowed React component roots. `resolveCodePreviewSource` validates relative references against the registered file inventory and optional `#NamedExport` suffix.
+
+The plugin exposes lazy component and raw-source loader maps:
+
+- `virtual:moyaforge-mdx/code-preview-components` for registered React components;
+- `virtual:moyaforge-mdx/code-preview-sources` for raw file text (`?raw`);
+- `virtual:moyaforge-mdx/react-preview/...` for inline compiled modules, including trusted CSS.
+
+Inline `{react}` modules are compiled by `@mdx-js/mdx` **at build time**, not with browser `eval`. Relative imports resolve from the authored page's location. Vite watches registered component roots for changes; missing or unregistered components fail with a diagnostic.
+
+See the working [playground Vite configuration](../../../../apps/playground/vite.config.ts) and [component registry tests](../../../../packages/moyaforge-mdx/tests/vite/code-preview-component-roots.test.js). The CLI playground template also wires the same features.
+
+**Next:** [Rendering and highlighting](../50-rendering/page.mdx) · [Overview](../page.mdx)

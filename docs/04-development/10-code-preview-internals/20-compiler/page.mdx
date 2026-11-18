@@ -1,0 +1,33 @@
+---
+title: Preview compiler and source capture
+label: Compiler and source
+description: Internal MDX parsing, directive normalization, raw asset masking, and reliable Code-tab source extraction.
+---
+
+# Compiler and source capture
+
+The shared options are assembled in `packages/moyaforge-mdx/src/mdx/mdx-tooling-options.ts`.
+
+1. `remarkNormalizeDirectiveHeaders` installs `remarkDirectiveParser` around the normal parser. It recognizes supported directive headers and stores their metadata.
+2. `maskInlinePreviewAssets` scans Markdown preview bodies, records standalone raw CSS/JS blocks in `file.data.inlinePreviewAssets`, and replaces their **body characters only in the parse copy** with spaces. Newlines and source offsets are preserved. This prevents CSS braces and arbitrary JavaScript syntax from being misread as MDX expressions.
+3. `maskInlineReactImports` similarly protects page parsing from imports belonging to `{react}` examples.
+4. `remark-directive` and the container plugins build the Markdown AST. MoyaForge maps configured directives to MDX JSX components.
+5. `collectPreviewContent` reads the **original page source** using the enclosing directive's offsets (not merely the surviving child-node offsets). It excludes the outer opening/closing fences and trims surrounding blank lines. This is why CSS and source-only scripts survive in the Code tab even though their parsed nodes may be removed or replaced in the live preview.
+
+When a preview includes separate named fences or `code-preview-sources`, the collector uses the appropriate child ranges rather than folding every extra file into one inline source tab. The `sourceFiles` prop carries labeled file contents to the UI.
+
+**Invariants to preserve when editing the compiler:** Do not shift offsets while masking. Do not strip raw source just because a node cannot render. Do not accidentally add the closing `::::` fence to the Code tab. Do not treat `<script>` as a React effect or browser script.
+
+## Key implementation paths
+
+| Stage | Source |
+| --- | --- |
+| Plugin order and compiler options | `packages/moyaforge-mdx/src/mdx/mdx-tooling-options.ts` |
+| Header rewrite and offset restoration | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-directive-parser.ts` |
+| Raw CSS/script masking | `packages/moyaforge-mdx/src/plugins/remark/code-preview/mask-inline-preview-assets.ts` |
+| Directive component mapping | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-map-directives-to-components.ts` |
+| Code-tab extraction and preview child filtering | `packages/moyaforge-mdx/src/plugins/remark/code-preview/collect-preview-content.ts` |
+
+The `collectPreviewContent` transform produces **two independent results**: a `code` prop containing the authored text and compiled child nodes for the preview. Masked `<style>` or `<script>` bodies must not disappear from the former when absent from the latter.
+
+**Next:** [CSS and JavaScript security](../30-security/page.mdx) · [Overview](../page.mdx)
