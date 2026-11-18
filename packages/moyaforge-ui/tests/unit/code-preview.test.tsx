@@ -182,6 +182,7 @@ test("MDX source tabs highlight raw style and script bodies using their language
   expect(calls[1].code).toContain("--mf-custom-block-bg");
   expect(calls[3].code).toContain('console.log("Source only");');
   expect(html).toContain("--shiki-light:#123456");
+  expect(html).toContain("color:var(--mf-preview-syntax-color");
   expect(
     html.replace(/<[^>]+>/g, "")
       .replaceAll("&lt;", "<")
