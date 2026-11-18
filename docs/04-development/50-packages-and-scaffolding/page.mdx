@@ -1,0 +1,47 @@
+---
+title: Package boundaries and scaffolding
+label: Packages and scaffolding
+description: What each workspace owns, CLI templates, published package boundaries, and source-of-truth documentation.
+---
+
+# Package boundaries and scaffolding
+
+MoyaForge is a workspace of separate capabilities. **Repository README files are still shipped to npm and shown on GitHub**; the playground does not treat them as authored documentation routes.
+
+| Workspace | Responsibility |
+| --- | --- |
+| `@moyarich/moyaforge` | Headless React framework helpers, route components, documentation links and public config |
+| `@moyarich/moyaforge-mdx` | Content discovery, MDX compilation, page registry and virtual modules |
+| `@moyarich/moyaforge-ui` | Source-installable documentation UI and examples |
+| `@moyarich/moyaforge-monaco` | Optional editor components, workers and Vite types |
+| `@moyarich/moyaforge-search-sqlite` | Optional SQLite indexing and search adapter |
+| `@moyarich/moyaforge-cli` | App scaffolding and editable component installation |
+| `apps/playground` | Private consumer that renders the documentation; not a published package |
+
+## Package entry points and host ownership
+
+`@moyarich/moyaforge/headless` exposes routing and documentation-link helpers. `@moyarich/moyaforge/registry-routes` renders registry-discovered pages through `RegistryRoutes`. The host owns its React Router, MDX provider, branding, and runtime configuration.
+
+The MDX package provides `@moyarich/moyaforge-mdx/vite` for registry and code-preview plugins and `/virtual` for TypeScript declarations. The Monaco package exposes `/react`, `/typefox`, `/shared`, `/vite`, `/virtual`, and separately importable editor components. Avoid reintroducing removed legacy framework export paths for convenience.
+
+## CLI templates and component installation
+
+The [CLI documentation](../../../packages/moyaforge-cli/docs/page.mdx) covers `init`, `list`, `add`, `dev` and `preview`. Generated app content and `registry.config.ts` belong to the consumer, not to `apps/playground`.
+
+The CLI `add` command installs editable canonical component source. Styles are owned by their components, and user edits are preserved unless overwrite is explicitly requested. For a local consumer verification, use the scripts on the [Development](../page.mdx) page.
+
+The generated Vite aliases map `@/` to the project's configured `src/` directory. Package users can alternatively import published component entry points instead of source-installing them.
+
+## Source ownership and release discipline
+
+- General and maintainer docs: `docs/` and its `04-development/` pages.
+- UI examples: `packages/moyaforge-ui/docs/` beside the UI package.
+- CLI command docs: `packages/moyaforge-cli/docs/`.
+- README files: package-level GitHub/npm references; **not** documentation registry routes.
+- Installable registry: generated root `registry.json` from `packages/moyaforge-ui/src/components/` and `registry/templates/`.
+- Authored content registry: `apps/playground/registry.config.ts`, which discovers Markdown/MDX page sources and their navigation.
+- Package public APIs and `CHANGELOG.md`: user-visible releases; CI/process notes belong in Development docs instead.
+
+Never treat the generated component `registry.json` as the MDX page registry. See [Content registry internals](../20-content-registry/page.mdx), [Code preview internals](../10-code-preview-internals/page.mdx) and the [Development](../page.mdx) maintainer workflow guide.
+
+[Development overview](../page.mdx)

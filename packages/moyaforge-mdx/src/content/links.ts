@@ -53,7 +53,7 @@ export function validateInternalLinks(
       .use(remarkGfm)
       .use(remarkMdx)
       .use(remarkDirective)
-      .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules)
+      .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules, { allowInlinePreviewStyles: true })
       .parse(document.content);
     const visit = (node: any) => {
       const mdxAnchor =

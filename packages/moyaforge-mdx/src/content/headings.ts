@@ -26,7 +26,7 @@ export async function extractPageHeadings(
     .use(remarkGfm)
     .use(remarkMdx)
     .use(remarkDirective)
-    .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules)
+    .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules, { allowInlinePreviewStyles: true })
     .use(remarkRehype)
     .use(rehypeSlug)
     .use(rehypeExtractToc);

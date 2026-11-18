@@ -32,6 +32,8 @@ const codePreview = createCodePreviewRegistry({
 
 const compileMdx = mdx(
   createMdxOptions({
+    // Only published, repository-reviewed docs may use raw CSS previews.
+    allowInlinePreviewStyles: true,
     additionalRemarkPlugins: [
       [
         remarkRewriteSourceLinks,

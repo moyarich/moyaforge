@@ -1,0 +1,59 @@
+---
+title: Source discovery and README exclusion
+label: Source files
+description: Configure registered page files and prevent README files from becoming routes.
+---
+
+# Source discovery and README exclusion
+
+The `sources` in `registry.config.ts` define filesystem roots and glob patterns. The compiler does not treat the root installable-component `registry.config.ts` as a documentation registry; that separate file generates `registry.json`.
+
+## Canonical pages versus all Markdown
+
+- `pageFiles: "canonical"` (also the default) registers only files named `page.md` or `page.mdx`, even when `include` is broad.
+- `pageFiles: "all"` registers every matching `.md`/`.mdx` file, including `README.md` **unless you exclude it**.
+- `exclude` accepts glob patterns, applied before page discovery. Other authored `.md` content, such as `docs/mdx-conventions.md`, can remain routable.
+- Directory names with numeric prefixes provide ordering, while normalized public routes omit those prefixes. A source directory must exist; an empty one is valid.
+
+Use this pattern for a docs tree that intentionally exposes ordinary Markdown:
+
+~~~ts
+const docs = {
+  base: "../../docs",
+  include: ["**/*.md", "**/*.mdx"],
+  pageFiles: "all",
+  exclude: [
+    "**/README.md",
+    "**/readme.md",
+    "**/README.mdx",
+    "**/readme.mdx",
+  ],
+};
+~~~
+
+Use an explicit canonical glob for package-owned documentation instead of `*/README.md`:
+
+~~~ts
+const packages = {
+  base: "../../packages",
+  include: ["**/page.md", "**/page.mdx"],
+  pageFiles: "all",
+  exclude: [
+    "**/node_modules/**",
+    "**/dist/**",
+    "moyaforge-ui/docs/**",
+    "moyaforge-cli/templates/**",
+  ],
+  metadata: ["*/package.json"],
+};
+~~~
+
+The package JSON files supply **source metadata**, not extra documentation routes. Package README files are still published to npm and available on GitHub. CLI-generated registries also exclude README files explicitly.
+
+## Regression contract
+
+`packages/moyaforge-mdx/tests/content/content.test.js` exercises the real playground and CLI template source rules against a temporary tree containing `page.mdx`, `notes.md`, and several README variants. The routes must include the first two and exclude all READMEs.
+
+When changing registry globs, verify that source pages, UI component examples, package CLI docs, and metadata still load. Avoid changing `isContentPageFile` globally merely to fix a particular application's configuration: other consumers may intentionally choose different source policies.
+
+[Content registry overview](../page.mdx) · [Metadata and navigation](../20-metadata-navigation/page.mdx)

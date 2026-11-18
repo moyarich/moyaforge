@@ -31,6 +31,8 @@ export interface MdxToolingOptions {
   /** Transform file-backed ::: preview references into host-resolved PreviewDirective components. */
   filePreviewOptions?: boolean | FilePreviewOptions;
   additionalRehypePlugins?: PluggableList;
+  /** Enable raw CSS in code-preview only for reviewed, repository-controlled MDX. Defaults to false. Never enables scripts. */
+  allowInlinePreviewStyles?: boolean;
   /** Opt into a compiled MDX frontmatter export for older module consumers. YAML registry metadata does not require it. */
   exportFrontmatter?: boolean;
   /** Optional build-time Shiki rehype plugin, supplied by the host for static code blocks. */
@@ -49,6 +51,7 @@ export function createMdxOptions({
   additionalRehypePlugins = [],
   componentMappings,
   filePreviewOptions,
+  allowInlinePreviewStyles = false,
   exportFrontmatter,
   highlightingPlugin,
 }: MdxToolingOptions = {}) {
@@ -56,7 +59,7 @@ export function createMdxOptions({
     remarkFrontmatter,
     remarkGfm,
     remarkDirective,
-    [remarkNormalizeDirectiveHeaders, directiveHeaderRules],
+    [remarkNormalizeDirectiveHeaders, directiveHeaderRules, { allowInlinePreviewStyles }],
     [remarkFlexibleContainers, customBlockOptions],
     remarkNormalizeDirectiveNodes,
   ];

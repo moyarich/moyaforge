@@ -1,0 +1,62 @@
+---
+title: Code preview internals
+label: Code preview internals
+description: Developer guide to the Markdown preview pipeline, from MDX source to secure React rendering.
+---
+
+# Code preview internals
+
+**Developer guide:** MoyaForge uses `@mdx-js/mdx` to compile Markdown/MDX; its remark plugins add `:::code-preview` support. Vite resolves component modules, while React renders the live preview and its original source in separate views.
+
+The **Code tab shows authored Markdown, CSS, and JavaScript**. The **Preview tab renders only permitted content**; raw `<script>` blocks never execute.
+
+For usage examples, see [CodePreview](../../../packages/moyaforge-ui/docs/01-components/220-code-preview/page.mdx) and [custom callouts](../../../packages/moyaforge-ui/docs/01-components/01-custom-block/40-custom-admonition/page.mdx).
+
+## Find the right guide
+
+| Task | Developer guide |
+| --- | --- |
+| Write Markdown/MDX examples; avoid hydration errors | [Authoring and valid HTML](./10-authoring/page.mdx) |
+| Understand remark plugins, source offsets, and Code-tab extraction | [Compiler and source capture](./20-compiler/page.mdx) |
+| Control which CSS and scripts may run | [CSS and JavaScript security](./30-security/page.mdx) |
+| Register components and resolve virtual modules | [Vite and file-backed previews](./40-vite/page.mdx) |
+| Understand React rendering and embedded-language coloring | [Rendering and highlighting](./50-rendering/page.mdx) |
+| Find files, run tests, and debug failures | [Testing and troubleshooting](./60-testing/page.mdx) |
+
+## Ownership and data flow
+
+MoyaForge **does not implement a second Markdown compiler**. `@mdx-js/mdx` provides MDX parsing and compilation. `remark-directive`, `remark-flexible-containers`, and MoyaForge remark plugins interpret the extra `:::` syntax. The host's Vite plugin provides discoverable component files and generated preview modules. React components in `@moyarich/moyaforge-ui` render the result.
+
+~~~~text
+Authored .md / .mdx page
+    |
+    v
+@mdx-js/mdx + remark plugins
+    |  normalize directives; mask raw preview bodies in a parse-only copy
+    |  retain original page text and source offsets
+    v
+Mapped :::code-preview node
+    |                               |
+    |                              Code/Source data
+    |                              (original Markdown/CSS/JS)
+    v                               |
+Preview content                     |
+    |  Markdown/JSX nodes           |
+    |  trusted CSS module          |
+    |  {react} module OR           |
+    |  registered component        |
+    v                               v
+Compiled MDX / Vite loaders ---> InlineCodePreview / CodePreview
+                                  |                  |
+                                  v                  v
+                           PreviewContent       PreviewSource
+                           (live React)         (HighlightedCode)
+~~~~
+
+The parsing, source extraction, Vite module registration, and rendering phases are intentionally separate. Changing how code is displayed must **not** change which authored code can execute.
+
+## Where to start
+
+If you're changing **what appears in the Code tab**, start with [compiler and source capture](./20-compiler/page.mdx). If you're changing **what runs in the preview**, read the [security policy](./30-security/page.mdx) first. If CSS is not visibly colored, see [rendering and highlighting](./50-rendering/page.mdx).
+
+[Development overview](../page.mdx)

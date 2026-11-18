@@ -44,6 +44,8 @@ export default defineConfig({
 
 The plugin serves the index during development and writes a SQLite asset when you build the site.
 
+Developers: see [SQLite search internals](../04-development/40-sqlite-search/page.mdx) for the canonical page indexing policy, Vite virtual database URL, and HMR cache lifecycle.
+
 ## Connect the documentation search
 
 [DocumentationSite](/ui/components/documentation-site) is the UI shell that renders the search field. Its `onSearch` prop takes an async function. The shell calls it with the current query, and the function returns matching pages. In this example, `findMatchingPages` maps SQLite result keys to page links. `RegistryRoutes` supplies the page content, and React Router handles navigation when someone selects a result.

@@ -1,0 +1,66 @@
+---
+title: SQLite search implementation
+label: Search internals
+description: Optional SQLite indexing, source discovery, Vite assets, HMR, and browser cache lifecycle.
+---
+
+# SQLite search implementation
+
+`@moyarich/moyaforge-search-sqlite` provides independent search database building and querying. The core API needs SQL.js but **not** React or Vite; the optional Vite adapter owns discovery, static assets, and development updates. The host application owns search UI and routing.
+
+## Index lifecycle
+
+~~~text
+Registered content sources
+    |
+    v
+sqliteSearchPlugin (build and dev)
+    |  canonical page.md / page.mdx only
+    |  YAML frontmatter, visibility checks
+    v
+SQLite bytes -> dev endpoint / production hashed asset
+    |
+    v
+virtual:moyaforge-search/database -> databaseUrl
+    |
+    v
+searchPages(query) -> page keys -> createContentRouting(routes)
+~~~
+
+The SQLite adapter indexes canonical `page.md`/`page.mdx` files even if the **documentation registry** opts into all Markdown. As a result, standalone `notes.md` docs can be routable without necessarily appearing in search; adding an all-Markdown page policy does not change the search index policy.
+
+`navigation: disabled` pages are excluded from the index, while hidden pages remain searchable. Invalid or duplicate YAML keys produce source-path errors. A search result key must still resolve through the host's route inventory before it becomes a clickable result.
+
+## Vite and HMR
+
+~~~ts
+import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
+
+sqliteSearchPlugin({ registry, root: contentRoot });
+~~~
+
+Import `databaseUrl` from `virtual:moyaforge-search/database`: it points to the development database endpoint or to a production content-hashed asset under the Vite base path. Do not hardcode `/assets/search.sqlite`.
+
+The Vite plugin emits the `moyaforge-search:updated` event when content changes. `searchPages` and `reloadSearch` from `@moyarich/moyaforge-search-sqlite/client` lazily load SQL.js and the index on the first nonempty query and refresh cached data when needed.
+
+## Without Vite
+
+~~~ts
+import initSqlJs from "sql.js";
+import { buildSearchDatabase, querySearchDatabase } from "@moyarich/moyaforge-search-sqlite";
+
+const SQL = await initSqlJs();
+const bytes = buildSearchDatabase(SQL, [
+  { key: "/guide", title: "Guide", description: "Overview", body: "Hello search" },
+]);
+const db = new SQL.Database(bytes);
+try {
+  const results = querySearchDatabase(db, "guide");
+} finally {
+  db.close();
+}
+~~~
+
+See [SQLite search](../../03-search/page.mdx) for the end-user React and Vite setup and [Content registry internals](../20-content-registry/page.mdx) for routing metadata.
+
+[Development overview](../page.mdx)

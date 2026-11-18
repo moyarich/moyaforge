@@ -107,6 +107,7 @@ export function CodeGroup({
             aria-labelledby={`${id}-tab-${index}`}
             hidden={active !== index}
             className="mf-code-panel"
+            data-moyaforge-code-panel=""
           >
             {tab.content}
           </div>

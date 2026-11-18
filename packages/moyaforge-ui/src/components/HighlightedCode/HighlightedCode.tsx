@@ -53,6 +53,49 @@ function resolveLanguage(language: string): string {
   return LANGUAGE_ALIASES[requested] ?? requested;
 }
 
+type HighlightSegment = { lang: string; code: string };
+
+/**
+ * For Markdown/MDX source tabs, use CSS and JavaScript grammars inside raw
+ * style/script blocks. This is presentation-only and never executes source.
+ */
+function sourceSegments(code: string, lang: string): HighlightSegment[] {
+  if (lang !== "mdx" && lang !== "markdown") return [{ code, lang }];
+
+  const segments: HighlightSegment[] = [];
+  const lines = code.match(/[^\r\n]*(?:\r\n|\r|\n|$)/g)?.filter(Boolean) ?? [];
+  let embedded: "css" | "javascript" | undefined;
+
+  const append = (part: string, language: string) => {
+    const previous = segments.at(-1);
+    if (previous?.lang === language) previous.code += part;
+    else segments.push({ code: part, lang: language });
+  };
+
+  for (const line of lines) {
+    const withoutNewline = line.replace(/(?:\r\n|\r|\n)$/, "");
+    const open = /^[ \t]*<(style|script)>[ \t]*$/i.exec(withoutNewline);
+    const close = /^[ \t]*<\/(style|script)>[ \t]*$/i.exec(withoutNewline);
+
+    if (!embedded && open) {
+      append(line, lang);
+      embedded = open[1].toLowerCase() === "style" ? "css" : "javascript";
+    } else if (
+      embedded &&
+      close &&
+      ((embedded === "css" && close[1].toLowerCase() === "style") ||
+        (embedded === "javascript" && close[1].toLowerCase() === "script"))
+    ) {
+      append(line, lang);
+      embedded = undefined;
+    } else {
+      append(line, embedded ?? lang);
+    }
+  }
+
+  return segments;
+}
+
 export interface HighlightedCodeProps {
   code: string;
   language?: string;
@@ -72,30 +115,49 @@ export function HighlightedCode({
     return <code>{code}</code>;
   }
 
-  const { tokens } = highlighter.codeToTokens(code, { lang, themes: THEMES });
+  const highlighted = sourceSegments(code, lang).map((segment) => {
+    const language = highlighter.getLoadedLanguages().includes(segment.lang)
+      ? segment.lang
+      : lang;
+    const { tokens } = highlighter.codeToTokens(segment.code, {
+      lang: language,
+      themes: THEMES,
+    });
 
-  // Shiki splits on line breaks; re-insert the original separators so the
-  // rendered text matches `code` exactly (including \r\n).
-  const lineEndings = code.match(/\r\n|\r|\n/g) ?? [];
+    // Shiki removes line endings from tokens. Restore the exact separators,
+    // including CRLF and a trailing newline before the next language segment.
+    const lineEndings = segment.code.match(/\r\n|\r|\n/g) ?? [];
+    return { tokens, lineEndings };
+  });
 
   return (
     <code className="mf-highlighted-code" data-moyaforge-highlighted-code="">
-      {tokens.map((line, lineIndex) => (
-        <Fragment key={lineIndex}>
-          {lineIndex > 0 && lineEndings[lineIndex - 1]}
-          {line.map((token, tokenIndex) => (
-            <span
-              key={tokenIndex}
-              style={
-                {
-                  "--shiki-light": token.htmlStyle?.color,
-                  "--shiki-dark": token.htmlStyle?.["--shiki-dark"],
-                } as CSSProperties
-              }
-            >
-              {token.content}
-            </span>
+      {highlighted.map(({ tokens, lineEndings }, segmentIndex) => (
+        <Fragment key={segmentIndex}>
+          {tokens.map((line, lineIndex) => (
+            <Fragment key={lineIndex}>
+              {lineIndex > 0 && lineEndings[lineIndex - 1]}
+              {line.map((token, tokenIndex) => (
+                <span
+                  key={tokenIndex}
+                  style={
+                    {
+                      "--shiki-light": token.htmlStyle?.color,
+                      "--shiki-dark": token.htmlStyle?.["--shiki-dark"],
+                      // Apply token colors directly so host documentation
+                      // code styles cannot override embedded CSS/JS grammar.
+                      // The public CSS token still takes precedence.
+                      color:
+                        "var(--mf-preview-syntax-color, light-dark(var(--shiki-light, inherit), var(--shiki-dark, inherit)))",
+                    } as CSSProperties
+                  }
+                >
+                  {token.content}
+                </span>
+              ))}
+            </Fragment>
           ))}
+          {lineEndings.slice(Math.max(0, tokens.length - 1)).join("")}
         </Fragment>
       ))}
     </code>

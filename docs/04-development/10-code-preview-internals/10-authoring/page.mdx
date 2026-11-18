@@ -1,0 +1,71 @@
+---
+title: Code preview authoring
+label: Authoring
+description: How to write nested Markdown previews, source files, and valid HTML that hydrates correctly.
+---
+
+# Authoring a Markdown preview
+
+An ordinary Markdown callout is parsed with the same `:::` directive syntax used elsewhere in the docs. A preview uses a wider fence to contain a nested callout:
+
+~~~~mdx
+::::code-preview[Success notification]
+
+<style>
+.custom-block.ui-success {
+  --mf-custom-block-bg: #e9f9f1;
+  --mf-custom-block-border: #2d9160;
+}
+</style>
+
+::: ui-success Changes saved
+
+Your changes have been saved.
+
+:::
+
+<script>
+// Shown in the Code tab only. Never run by the preview compiler.
+console.log("This example contains source-only JavaScript.");
+</script>
+
+::::
+~~~~
+
+The outer `::::code-preview` creates the preview. The inner `::: ui-success` maps to `CustomBlock` via the configured `"*"` component mapping. Both use the normal MDX compile pipeline.
+
+Standalone, attribute-free `<style>` and `<script>` opening and closing tags must each occupy their own line. Do not put authored CSS or JavaScript outside their tags or inside arbitrary JSX and expect the raw-asset mask to process it. Triple-backtick/tilde fenced code blocks remain examples of **text**, not preview-local styles or scripts.
+
+## Supported forms
+
+| Form | Live preview | Code tab |
+| --- | --- | --- |
+| `:::code-preview[Title]` with Markdown/JSX body | Compiled Markdown/JSX | Original body |
+| `<style>` in a Markdown preview | CSS only with trusted opt-in | Original CSS and tags |
+| `<script>` in a Markdown preview | Never runs | Original JavaScript and tags |
+| `{react}` flag with imports and JSX | Separately compiled React module | Authored React source |
+| `{component="./Example.tsx"}` | Registered TSX/JSX component | Source files as configured |
+| `{code="./Example.tsx" language="typescript"}` | Highlighted source, not component execution | Source file |
+| `::code-preview-sources{files="./Example.tsx,./example.css"}` | Does not itself import or apply the files | Extra file tabs |
+
+`{react}`, file-backed component previews, and arbitrary JSX are **trusted executable code**; they do not inherit the raw `<script>` restriction.
+
+## Valid HTML and hydration
+
+The compiled preview is React; browser DOM nesting rules still apply. Markdown parsers can wrap lines in `<p>` even when the author intended children of a raw HTML element.
+
+For example, a `<summary>` **must be a direct child of `<details>`**, never a descendant of `<p>`. In mixed Markdown/MDX previews, use an unambiguous JSX grouping:
+
+~~~~mdx
+::: ui-dismissible Your download is ready
+
+<details className="ui-notification-details"><summary>Show download information</summary><p>Your file is ready to download.</p></details>
+
+:::
+~~~~
+
+Avoid splitting that fragment into loose indented lines if your parser would turn the `<summary>` line into a Markdown paragraph. A browser console hydration warning can signal invalid nesting even when the Code tab shows the correct source.
+
+For the public component API and more examples, see [CodePreview](../../../../packages/moyaforge-ui/docs/01-components/220-code-preview/page.mdx) and the [custom callout gallery](../../../../packages/moyaforge-ui/docs/01-components/01-custom-block/40-custom-admonition/page.mdx).
+
+**Next:** [Compiler and source capture](../20-compiler/page.mdx) · [Overview](../page.mdx)

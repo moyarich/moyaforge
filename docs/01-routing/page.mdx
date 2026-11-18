@@ -49,4 +49,6 @@ See [Development](/docs/development) for configuration, GitHub source-viewer beh
 
 Use React Router's `Link` or `NavLink` for links. For search results, use `createContentRouting(routes).searchResultPages(keys)` to resolve indexed document keys to pages. See the [SQLite search guide](/docs/search) for the full setup.
 
+For the underlying navigation trees, heading extraction, sidebar metadata, and link validation, see [Registry metadata and navigation](../04-development/20-content-registry/20-metadata-navigation/page.mdx).
+
 Disabled pages are excluded from routing. Hidden pages remain routable but stay out of the sidebar. Use the `notFound` prop to choose what appears at an unknown URL.

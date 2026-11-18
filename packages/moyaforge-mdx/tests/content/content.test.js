@@ -2,6 +2,9 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { join } from "node:path";
+import playgroundRegistry from "../../../../apps/playground/registry.config.ts";
+import baseTemplateRegistry from "../../../../packages/moyaforge-cli/templates/base/registry.config.ts";
+import playgroundTemplateRegistry from "../../../../packages/moyaforge-cli/templates/playground/registry.config.ts";
 import { tmpdir } from "node:os";
 import {
   parsePageFrontmatter,
@@ -187,6 +190,59 @@ test("configured package identity JSON is separate from page navigation metadata
       discoverContent(config, root),
       /invalid JSON source metadata/,
     );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("documentation registries exclude README files without dropping ordinary Markdown", async () => {
+  const root = await mkdtemp(join(tmpdir(), "moyaforge-readme-routes-"));
+  try {
+    await mkdir(join(root, "docs", "guides"), { recursive: true });
+    for (const [file, source] of [
+      ["page.mdx", "# Docs"],
+      ["notes.md", "# Notes"],
+      ["README.md", "# README should never be routed"],
+      ["readme.md", "# lowercase readme"],
+      ["guides/README.mdx", "# nested MDX README"],
+      ["guides/page.mdx", "# Guide"],
+    ]) {
+      await writeFile(join(root, "docs", file), source);
+    }
+    for (const [label, source] of [
+      ["playground", playgroundRegistry.sources.docs],
+      ["base CLI template", baseTemplateRegistry.sources.docs],
+      ["playground CLI template", playgroundTemplateRegistry.sources.docs],
+    ]) {
+      const config = {
+        sources: {
+          docs: { ...source, base: "docs" },
+        },
+      };
+      const result = await discoverContent(config, root);
+      assert.deepEqual(
+        result.inputs.docs.map((page) => page.file).sort(),
+        ["guides/page.mdx", "notes.md", "page.mdx"].sort(),
+        label,
+      );
+      assert.equal(result.registry.routes.some((page) => /readme/i.test(page.file)), false, label);
+    }
+
+    await mkdir(join(root, "packages", "moyaforge-mdx", "docs"), {
+      recursive: true,
+    });
+    await writeFile(join(root, "packages", "moyaforge-mdx", "README.md"), "# Package README");
+    await writeFile(join(root, "packages", "moyaforge-mdx", "docs", "page.mdx"), "# Package docs");
+
+    const packages = await discoverContent({
+      sources: {
+        packages: { ...playgroundRegistry.sources.packages, base: "packages" },
+      },
+    }, root);
+    assert.deepEqual(packages.inputs.packages.map((page) => page.file), [
+      "moyaforge-mdx/docs/page.mdx",
+    ]);
+    assert.equal(packages.registry.routes.some((page) => /README/i.test(page.file)), false);
   } finally {
     await rm(root, { recursive: true, force: true });
   }

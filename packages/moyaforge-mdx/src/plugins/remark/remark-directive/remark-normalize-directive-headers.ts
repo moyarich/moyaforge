@@ -7,6 +7,7 @@ import {
 export function remarkNormalizeDirectiveHeaders(
   this: Processor,
   headerRules: readonly DirectiveHeaderRule[] = [],
+  options: { allowInlinePreviewStyles?: boolean } = {},
 ) {
-  remarkDirectiveParser.call(this, headerRules);
+  remarkDirectiveParser.call(this, headerRules, options);
 }

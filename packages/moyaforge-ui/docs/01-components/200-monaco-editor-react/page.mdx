@@ -39,6 +39,8 @@ npm install @moyarich/moyaforge-monaco @monaco-editor/react monaco-editor lucide
 
 For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and call `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react` once at application startup. If using TypeFox too, call `initializeSharedMonaco()` from `/shared` instead. Other bundlers need their own worker setup.
 
+For editor worker architecture and shared initialization details, see [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx).
+
 The editor setup belongs in your application's `main.tsx`, **not** inside the component. For standalone React Monaco applications:
 
 ```ts

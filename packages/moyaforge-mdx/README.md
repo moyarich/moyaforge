@@ -21,7 +21,7 @@ Shared defaults cover GFM, YAML frontmatter parsing in the compiler, heading slu
 
 ## Registry authoring and source discovery
 
-The consuming application's `registry.config.ts` owns source roots and globs. Each source is ordinary content: docs, blogs, examples, and workspace packages follow the same `page.md`/`page.mdx` convention. Broad globs do not turn other Markdown files (such as `README.md`) into pages.
+The consuming application's `registry.config.ts` owns source roots and globs. Each source is ordinary content: docs, blogs, examples, and workspace packages follow the same `page.md`/`page.mdx` convention. By default (`pageFiles: "canonical"`), only `page.md` and `page.mdx` become pages. With `pageFiles: "all"`, every matching `.md`/`.mdx` file becomes a route, so exclude package and directory README files explicitly.
 
 ```ts
 export default {
@@ -30,6 +30,8 @@ export default {
     docs: {
       base: "../../docs",
       include: ["**/*.md", "**/*.mdx"],
+      pageFiles: "all",
+      exclude: ["**/README.md", "**/readme.md", "**/README.mdx", "**/readme.mdx"],
       navigation: { label: "Docs", order: 1 },
     },
     packages: {
