@@ -8,7 +8,7 @@ export function SidebarContent({
 }: PolymorphicProps) {
   return createElement(
     as,
-    { "data-moyaforge-sidebar-content": "", ...props },
+    { ...props, className: ["mf-sidebar-content", typeof props.className === "string" ? props.className : ""].filter(Boolean).join(" ") },
     children,
   );
 }
