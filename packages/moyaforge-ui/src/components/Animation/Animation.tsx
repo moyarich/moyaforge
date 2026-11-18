@@ -310,8 +310,7 @@ function ExpandingEntry({
   const reducedMotion = useReducedMotion();
   return (
     <div
-      className="mf-animation-expanding-entry"
-      data-expanded={active >= index || !!reducedMotion}
+      className={["mf-animation-expanding-entry", active >= index || !!reducedMotion ? "is-expanded" : ""].filter(Boolean).join(" ")}
     >
       <div>{children}</div>
     </div>

@@ -90,7 +90,7 @@ export function DocOutline({
   return (
     <aside
       data-moyaforge-doc-outline=""
-      className={className}
+      className={["mf-doc-outline", className].filter(Boolean).join(" ")}
       aria-label={title}
     >
       {collapsible ? (
@@ -102,13 +102,13 @@ export function DocOutline({
           {title}
         </button>
       ) : (
-        <p data-moyaforge-doc-outline-title="">{title}</p>
+        <p className="mf-doc-outline-title">{title}</p>
       )}
       {(!collapsible || open) && (
         <nav aria-label={title}>
           <ul>
             {visibleItems.map((item) => (
-              <li key={item.id} data-level={item.level}>
+              <li key={item.id} className={item.level === 3 ? "mf-level-3" : undefined}>
                 {renderLink ? (
                   renderLink(item, active === item.id)
                 ) : (

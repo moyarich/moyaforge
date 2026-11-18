@@ -21,10 +21,11 @@ export function Search({
   icon,
   inputProps,
   children,
+  className,
   ...props
 }: SearchProps) {
   return (
-    <label data-moyaforge-search="" {...props}>
+    <label {...props} data-moyaforge-search="" className={["mf-search-control", className].filter(Boolean).join(" ")}>
       {icon}
       <input type="search" value={value} onChange={onChange} {...inputProps} />
       {children}

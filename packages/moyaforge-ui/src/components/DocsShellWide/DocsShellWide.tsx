@@ -41,24 +41,24 @@ export function DocsShellWide({
     navigation === undefined ? defaultNavigation : navigation;
 
   return (
-    <div data-moyaforge-shell-wide="">
+    <div className="mf-shell-wide">
       {resolvedHeader != null ? (
-        <header data-moyaforge-wide-header="">{resolvedHeader}</header>
+        <header className="mf-wide-header">{resolvedHeader}</header>
       ) : null}
       {toolbar != null ? (
-        <div data-moyaforge-wide-toolbar="">{toolbar}</div>
+        <div className="mf-wide-toolbar">{toolbar}</div>
       ) : null}
-      <div data-moyaforge-wide-grid="">
+      <div className="mf-wide-grid">
         {resolvedNavigation != null ? (
-          <aside data-moyaforge-wide-navigation="">{resolvedNavigation}</aside>
+          <aside className="mf-wide-navigation">{resolvedNavigation}</aside>
         ) : null}
-        <main data-moyaforge-wide-content="">{children}</main>
+        <main className="mf-wide-content">{children}</main>
         {inspector != null ? (
-          <aside data-moyaforge-wide-inspector="">{inspector}</aside>
+          <aside className="mf-wide-inspector">{inspector}</aside>
         ) : null}
       </div>
       {footer != null ? (
-        <footer data-moyaforge-wide-footer="">{footer}</footer>
+        <footer className="mf-wide-footer">{footer}</footer>
       ) : null}
     </div>
   );

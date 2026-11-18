@@ -7,10 +7,10 @@ export interface SourceProps extends ComponentPropsWithoutRef<"pre"> {
   language?: string;
 }
 
-export function Source({ code, language, children, ...props }: SourceProps) {
+export function Source({ code, language, children, className, ...props }: SourceProps) {
   const content = children ?? code;
   return (
-    <pre data-moyaforge-source="" data-language={language} {...props}>
+    <pre {...props} className={["mf-source", className].filter(Boolean).join(" ")} data-language={language}>
       {typeof content === "string" ? (
         <HighlightedCode code={content} language={language ?? "text"} />
       ) : (
