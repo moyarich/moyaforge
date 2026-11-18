@@ -175,12 +175,28 @@ test("Code tab applies real CSS token colors inside Markdown style blocks", asyn
   await page.goto("/app/syntax");
   const preview = page.getByTestId("embedded-css-preview");
   await expect(preview).toContainText("--mf-custom-block-bg: #e9f9f1;");
-  const colors = await preview.locator("code span").evaluateAll((spans) =>
-    [...new Set(
-      spans
-        .filter((span) => span.textContent?.trim())
-        .map((span) => getComputedStyle(span).color),
-    )],
-  );
+  const colors = await preview.locator("code").evaluate((element) => {
+    const source = element.textContent ?? "";
+    const firstCSS = source.indexOf("\n") + 1;
+    const lastCSS = source.indexOf("</style>");
+    const treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    const colors = new Set<string>();
+    let offset = 0;
+    while (treeWalker.nextNode()) {
+      const node = treeWalker.currentNode;
+      const start = offset;
+      const end = start + (node.textContent?.length ?? 0);
+      offset = end;
+      if (
+        start < lastCSS &&
+        end > firstCSS &&
+        node.textContent?.trim() &&
+        node.parentElement instanceof HTMLElement &&
+        node.parentElement.tagName === "SPAN"
+      )
+        colors.add(getComputedStyle(node.parentElement).color);
+    }
+    return [...colors];
+  });
   expect(colors.length).toBeGreaterThan(1);
 });
