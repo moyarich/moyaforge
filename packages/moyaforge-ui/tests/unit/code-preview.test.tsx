@@ -123,7 +123,7 @@ test("inline callout preview Code tab displays Markdown, CSS and source-only scr
     /<pre[^>]*data-moyaforge-preview-source=""[^>]*>([\s\S]*?)<\/pre>/,
   )?.[1];
   expect(sourcePanel).toBeDefined();
-  const sourceText = sourcePanel
+  const sourceText = (sourcePanel ?? "")
     .replace(/<[^>]+>/g, "")
     .replaceAll("&lt;", "<")
     .replaceAll("&gt;", ">")
