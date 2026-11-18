@@ -16,9 +16,9 @@ pre {
   margin-bottom: 28px;
 }
 .playground-feedback {
-  --_feedback-color: var(--feedback-color, var(--_mf-muted, #73737c));
-  --_feedback-accent: var(--feedback-accent, var(--_mf-accent, #e35454));
-  color: var(--_feedback-color);
+  --_mf-feedback-color: var(--mf-feedback-color, var(--_mf-muted, #73737c));
+  --_mf-feedback-accent: var(--mf-feedback-accent, var(--_mf-accent, #e35454));
+  color: var(--_mf-feedback-color);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -29,7 +29,7 @@ pre {
   margin: 8px 0;
 }
 .playground-feedback a {
-  color: var(--_feedback-accent);
+  color: var(--_mf-feedback-accent);
 }
 
 .playground-loading {
