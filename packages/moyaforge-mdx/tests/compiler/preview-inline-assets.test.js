@@ -278,6 +278,14 @@ test("custom-admonition examples expose complete authored Markdown, CSS and scri
     expect(code).not.toContain("::::code-preview[");
     expect(code).not.toMatch(/\n::::\s*$/);
   }
+  // <summary> must be a direct child of <details>, never inside an
+  // auto-generated Markdown paragraph (which causes React hydration errors).
+  expect(compiled).toMatch(
+    /_jsxs\("details",\s*\{\s*className: "ui-notification-details",\s*children: \[\s*_jsx\("summary",/,
+  );
+  expect(compiled).not.toMatch(
+    /_jsx\("p",\s*\{\s*children: _jsx\("summary",/,
+  );
   expect(codeTabs[5]).toContain("<script>");
   expect(codeTabs[5]).toContain("</script>");
   expect(codeTabs[5]).toContain('root.querySelector(".ui-notification-details")');
