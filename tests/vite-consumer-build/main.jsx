@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { createMoyaForgeSource } from "@moyarich/moyaforge";
 import { HeadlessDocsRoutes } from "@moyarich/moyaforge/headless";
 import { DocsLayout } from "../../packages/moyaforge-ui/src/components/Layout/DocsLayout/index.ts";
+import { HighlightedCode } from "../../packages/moyaforge-ui/src/components/HighlightedCode/index.ts";
 import {
   BrowserRouter,
   HashRouter,
@@ -86,6 +87,28 @@ createRoot(document.getElementById("root")).render(
         }
       />
       <Route path="/docs/*" element={<HostDocs />} />
+      <Route
+        path="/syntax"
+        element={
+          <main className="mf-docs">
+            <article className="mf-article">
+              <pre data-testid="embedded-css-preview">
+                <HighlightedCode
+                  language="mdx"
+                  code={[
+                    "<style>",
+                    ".custom-block.ui-success {",
+                    "  --mf-custom-block-bg: #e9f9f1;",
+                    "  background-color: red;",
+                    "}",
+                    "</style>",
+                  ].join("\n")}
+                />
+              </pre>
+            </article>
+          </main>
+        }
+      />
       <Route path="/toc-router" element={<TocRouterFixture />} />
       <Route
         path="/monaco-shared"
