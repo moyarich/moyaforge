@@ -193,7 +193,7 @@ export function DocsLayout({
         {outlineLinks}
       </details>
     ) : (
-      <div data-moyaforge-docs-outline-content="">
+      <div className="mf-docs-outline-content">
         <strong>{outlineLabel}</strong>
         {outlineLinks}
       </div>
@@ -221,7 +221,7 @@ export function DocsLayout({
       : undefined;
 
   return (
-    <div data-moyaforge-docs-layout="" className="mf-docs-layout">
+    <div className="mf-docs-layout">
       <header data-moyaforge-docs-header="" className="mf-docs-header">
         {header !== undefined ? (
           header
@@ -229,7 +229,7 @@ export function DocsLayout({
           <a href={visiblePages[0]?.url ?? "/"}>{title}</a>
         )}
       </header>
-      <div data-moyaforge-docs-columns="" className="mf-docs-columns">
+      <div className="mf-docs-columns">
         {sidebar !== undefined ? (
           sidebar
         ) : (
@@ -242,7 +242,7 @@ export function DocsLayout({
           {placement === "inline" ? configuredOutline : null}
           {children}
           {editHref ? (
-            <footer data-moyaforge-docs-page-footer="" className="mf-docs-page-footer">
+            <footer className="mf-docs-page-footer">
               <a href={editHref}>Edit this page</a>
             </footer>
           ) : null}
