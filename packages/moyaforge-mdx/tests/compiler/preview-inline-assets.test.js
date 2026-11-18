@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { expect, test } from "vitest";
 import { compile } from "@mdx-js/mdx";
 import { createMdxOptions } from "../../dist/index.js";
@@ -225,3 +227,60 @@ test("plain Markdown and React previews keep their existing parsing", async () =
   ]);
   expect(output).toContain("virtual:react-demo");
 });
+
+test("custom-admonition examples expose complete authored Markdown, CSS and script in the Code tab", async () => {
+  const page = resolve(
+    import.meta.dirname,
+    "../../../moyaforge-ui/docs/01-components/01-custom-block/40-custom-admonition/page.mdx",
+  );
+  const document = await readFile(page, "utf8");
+  const modules = [];
+  const compiled = String(
+    await compile(
+      { value: document, path: page },
+      createMdxOptions({
+        allowInlinePreviewStyles: true,
+        componentMappings: {
+          "code-preview": {
+            component: "InlineCodePreview",
+            titleProp: "title",
+            sourceProp: "code",
+            filesProp: "sourceFiles",
+            registerInlineReact(source) {
+              modules.push(source);
+              return "virtual:preview/" + modules.length;
+            },
+          },
+          "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
+        },
+      }),
+    ),
+  );
+  const codeTabs = [...compiled.matchAll(/\bcode: ("(?:\\.|[^"\\])*")/g)].map(
+    (match) => JSON.parse(match[1]),
+  );
+  const variants = [
+    "ui-success",
+    "ui-information",
+    "ui-warning",
+    "ui-error",
+    "ui-dark-alert",
+    "ui-dismissible",
+  ];
+  expect(codeTabs).toHaveLength(variants.length);
+  expect(modules).toHaveLength(variants.length); // CSS only; scripts are never registered.
+  for (const [index, variant] of variants.entries()) {
+    const code = codeTabs[index];
+    expect(code).toContain("<style>");
+    expect(code).toContain("</style>");
+    expect(code).toContain("::: " + variant + " ");
+    expect(code).toContain("--mf-custom-block-bg");
+    expect(code).not.toContain("::::code-preview[");
+    expect(code).not.toMatch(/\n::::\s*$/);
+  }
+  expect(codeTabs[5]).toContain("<script>");
+  expect(codeTabs[5]).toContain("</script>");
+  expect(codeTabs[5]).toContain('root.querySelector(".ui-notification-details")');
+  expect(modules.join("\n")).not.toContain("root.querySelector");
+});
+
