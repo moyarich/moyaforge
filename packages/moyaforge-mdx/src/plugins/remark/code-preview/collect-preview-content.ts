@@ -33,6 +33,7 @@ export function collectPreviewContent(
   source: string,
   attributes: Attribute[],
   filePath?: string,
+  container?: Node,
 ) {
   const inlineReact = header?.flags.includes("react");
   if (inlineReact && (header?.component || header?.code))
@@ -110,15 +111,25 @@ export function collectPreviewContent(
         group = [];
       }
     }
-    const body = groups
-      .map((nodes) => {
-        const start = nodes[0]?.position?.start.offset;
-        const end = nodes.at(-1)?.position?.end.offset;
-        return start === undefined || end === undefined
-          ? ""
-          : source.slice(start, end);
-      })
-      .join("\n\n");
+    // Capture the complete authored source, including raw <style>/<script>
+    // content that the MDX parser masks or omits from child positions.
+    // File-backed source directives and named source fences continue to
+    // use the filtered child ranges, so extra source tabs stay separate.
+    const fromContainer =
+      !inlineReact && content.length === children.length
+        ? sourceFromPreviewContainer(source, container)
+        : undefined;
+    const body =
+      fromContainer ??
+      groups
+        .map((nodes) => {
+          const start = nodes[0]?.position?.start.offset;
+          const end = nodes.at(-1)?.position?.end.offset;
+          return start === undefined || end === undefined
+            ? ""
+            : source.slice(start, end);
+        })
+        .join("\n\n");
     if (selected.sourceProp)
       attributes.push({
         type: "mdxJsxAttribute",
@@ -167,4 +178,33 @@ export function collectPreviewContent(
 function inlineAssetModule(asset: InlinePreviewAsset): string {
   // Reviewed CSS is compiled as text, never as executable JavaScript.
   return "<style>{" + JSON.stringify(asset.code) + "}</style>";
+}
+
+/**
+ * Slice the Markdown directive body from the original authored text.
+ *
+ * Its child AST positions can omit masked raw CSS/JS or be absent after
+ * directive normalization, but the outer container retains the full range.
+ * The opening and closing :::/:::: fences are not part of the source tab.
+ */
+function sourceFromPreviewContainer(
+  source: string,
+  container?: Node,
+): string | undefined {
+  const start = container?.position?.start.offset;
+  const end = container?.position?.end.offset;
+  if (start === undefined || end === undefined || end <= start)
+    return undefined;
+
+  const openerEnd = source.indexOf("\n", start);
+  if (openerEnd < 0 || openerEnd >= end) return undefined;
+
+  const closerStart = source.lastIndexOf("\n", end - 1) + 1;
+  if (closerStart <= openerEnd || !/^:{3,}\s*$/.test(source.slice(closerStart, end)))
+    return undefined;
+
+  return source
+    .slice(openerEnd + 1, closerStart)
+    .replace(/^(?:[ \t]*\r?\n)+/, "")
+    .replace(/(?:\r?\n[ \t]*)+$/, "");
 }
