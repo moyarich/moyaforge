@@ -1,53 +1,53 @@
-[data-moyaforge-shell-wide] {
-  --_wide-panel-width: var(--wide-panel-width, 16rem);
+.mf-shell-wide {
+  --_mf-wide-panel-width: var(--mf-wide-panel-width, 16rem);
   container: mf-shell-wide / inline-size;
-  min-height: var(--wide-min-height, 100vh);
+  min-height: var(--mf-wide-min-height, 100vh);
 }
-[data-moyaforge-wide-header],
-[data-moyaforge-wide-toolbar],
-[data-moyaforge-wide-footer] {
+.mf-wide-header,
+.mf-wide-toolbar,
+.mf-wide-footer {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--wide-border, #e5e7eb);
+  border-bottom: 1px solid var(--mf-wide-border, #e5e7eb);
 }
-[data-moyaforge-wide-grid] {
+.mf-wide-grid {
   display: grid;
   grid-template-columns:
-    var(--_wide-navigation-track, 0px)
-    minmax(0, 1fr) var(--_wide-inspector-track, 0px);
-  min-height: var(--wide-content-min-height, 60vh);
+    var(--_mf-wide-navigation-track, 0px)
+    minmax(0, 1fr) var(--_mf-wide-inspector-track, 0px);
+  min-height: var(--mf-wide-content-min-height, 60vh);
 }
-[data-moyaforge-wide-grid]:has(> [data-moyaforge-wide-navigation]) {
-  --_wide-navigation-track: minmax(0, min(25%, var(--_wide-panel-width)));
+.mf-wide-grid:has(> .mf-wide-navigation) {
+  --_mf-wide-navigation-track: minmax(0, min(25%, var(--_mf-wide-panel-width)));
 }
-[data-moyaforge-wide-grid]:has(> [data-moyaforge-wide-inspector]) {
-  --_wide-inspector-track: minmax(0, min(25%, var(--_wide-panel-width)));
+.mf-wide-grid:has(> .mf-wide-inspector) {
+  --_mf-wide-inspector-track: minmax(0, min(25%, var(--_mf-wide-panel-width)));
 }
-[data-moyaforge-wide-navigation],
-[data-moyaforge-wide-inspector] {
+.mf-wide-navigation,
+.mf-wide-inspector {
   padding: 1rem;
-  border-inline-end: 1px solid var(--wide-border, #e5e7eb);
+  border-inline-end: 1px solid var(--mf-wide-border, #e5e7eb);
   min-width: 0;
 }
-[data-moyaforge-wide-navigation] {
+.mf-wide-navigation {
   grid-column: 1;
 }
-[data-moyaforge-wide-inspector] {
+.mf-wide-inspector {
   grid-column: 3;
   border-inline-end: 0;
-  border-inline-start: 1px solid var(--wide-border, #e5e7eb);
+  border-inline-start: 1px solid var(--mf-wide-border, #e5e7eb);
 }
-[data-moyaforge-wide-content] {
+.mf-wide-content {
   grid-column: 2;
   padding: clamp(1rem, 3vw, 2.5rem);
   min-width: 0;
 }
 @container mf-shell-wide (max-width: 30rem) {
-  [data-moyaforge-wide-grid] {
+  .mf-wide-grid {
     display: block;
   }
-  [data-moyaforge-wide-navigation],
-  [data-moyaforge-wide-inspector] {
+  .mf-wide-navigation,
+  .mf-wide-inspector {
     border: 0;
-    border-bottom: 1px solid var(--wide-border, #e5e7eb);
+    border-bottom: 1px solid var(--mf-wide-border, #e5e7eb);
   }
 }
