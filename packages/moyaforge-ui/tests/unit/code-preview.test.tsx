@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { InlineCodePreview } from "../../src/components/CodePreview/InlineCodePreview.js";
+import { HighlightedCode } from "../../src/components/HighlightedCode/HighlightedCode.js";
 import {
   CodePreview,
   CODE_REPLACEMENTS,
@@ -135,4 +136,72 @@ test("inline callout preview Code tab displays Markdown, CSS and source-only scr
   expect(sourceText).toContain("<script>");
   expect(sourceText).toContain("window.__shouldNeverRun = true;");
   expect(html).not.toContain("<script>");
+});
+
+
+test("MDX source tabs highlight raw style and script bodies using their language grammars", () => {
+  const calls: { lang: string; code: string }[] = [];
+  const highlighter = {
+    getLoadedLanguages: () => ["mdx", "markdown", "css", "javascript"],
+    codeToTokens: (code: string, options: { lang: string }) => {
+      calls.push({ lang: options.lang, code });
+      return {
+        tokens: code.split(/\r\n|\r|\n/).map((line) => [
+          {
+            content: line,
+            htmlStyle: { color: options.lang === "css" ? "#123456" : "#654321" },
+          },
+        ]),
+      };
+    },
+  } as unknown as NonNullable<Parameters<typeof HighlightedCode>[0]["highlighter"]>;
+
+  const code = [
+    "<style>",
+    ".custom-block.ui-success {",
+    "  --mf-custom-block-bg: #e9f9f1;",
+    "}",
+    "</style>",
+    "",
+    "::: ui-success Changes saved",
+    "",
+    "Your changes were saved.",
+    "",
+    ":::",
+    "",
+    "<script>",
+    'console.log("Source only");',
+    "</script>",
+  ].join("\r\n");
+  const html = renderToStaticMarkup(
+    h(HighlightedCode, { code, language: "mdx", highlighter }),
+  );
+  expect(calls.map(({ lang }) => lang)).toEqual([
+    "mdx", "css", "mdx", "javascript", "mdx",
+  ]);
+  expect(calls[1].code).toContain("--mf-custom-block-bg");
+  expect(calls[3].code).toContain('console.log("Source only");');
+  expect(html).toContain("--shiki-light:#123456");
+  expect(
+    html.replace(/<[^>]+>/g, "")
+      .replaceAll("&lt;", "<")
+      .replaceAll("&gt;", ">")
+      .replaceAll("&quot;", '"')
+      .replaceAll("&amp;", "&"),
+  ).toBe(code);
+});
+
+test("ordinary CSS files keep the CSS grammar without Markdown segmentation", () => {
+  const languages: string[] = [];
+  const highlighter = {
+    getLoadedLanguages: () => ["css"],
+    codeToTokens: (code: string, options: { lang: string }) => {
+      languages.push(options.lang);
+      return { tokens: [[{ content: code, htmlStyle: { color: "#123456" } }]] };
+    },
+  } as unknown as NonNullable<Parameters<typeof HighlightedCode>[0]["highlighter"]>;
+
+  const code = "<style>\n.foo { color: red; }\n</style>";
+  renderToStaticMarkup(h(HighlightedCode, { code, language: "css", highlighter }));
+  expect(languages).toEqual(["css"]);
 });
