@@ -144,6 +144,11 @@ export function HighlightedCode({
                     {
                       "--shiki-light": token.htmlStyle?.color,
                       "--shiki-dark": token.htmlStyle?.["--shiki-dark"],
+                      // Apply token colors directly so host documentation
+                      // code styles cannot override embedded CSS/JS grammar.
+                      // The public CSS token still takes precedence.
+                      color:
+                        "var(--mf-preview-syntax-color, light-dark(var(--shiki-light, inherit), var(--shiki-dark, inherit)))",
                     } as CSSProperties
                   }
                 >
