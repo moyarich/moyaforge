@@ -1,18 +1,6 @@
 .mf-tabs-list {
-  display: flex;
-  align-items: stretch;
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
-.mf-tabs[data-variant="workspace"] .mf-tabs-list {
+  display: flex; align-items: stretch; min-width: 0; overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: thin; padding-inline: var(--mf-tabs-list-padding, 0);
   background: var(--_mf-tabs-strip);
-  overflow-y: hidden;
-  scrollbar-width: none;
-  padding-inline: .75rem;
-}
-
-.mf-tabs[data-variant="workspace"] .mf-tabs-list::-webkit-scrollbar {
-  display: none;
+  border-bottom: var(--mf-tabs-list-border-width, 0px) solid var(--_mf-tabs-border);
 }

@@ -32,7 +32,8 @@ export interface CodePreviewEditorProps {
   usageFileName?: string;
   height?: number | string;
   options?: MonacoEditorReactProps["options"];
-  tabVariant?: "default" | "workspace";
+  /** Enable the composable editor layout; appearance uses CSS variables. */
+  workspaceTabs?: boolean;
   tools?: ReactNode;
   showBreadcrumbs?: boolean;
   renderBreadcrumbs?: (file: MonacoFile) => ReactNode;
@@ -51,7 +52,7 @@ export function CodePreviewEditor({
   usageFileName = "CodePreviewEditor.tsx",
   height = 320,
   options,
-  tabVariant = "default",
+  workspaceTabs = false,
   tools,
   showBreadcrumbs = false,
   renderBreadcrumbs,
@@ -113,9 +114,9 @@ export function CodePreviewEditor({
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-code-preview-editor-source">
-          {tabVariant === "workspace" && selectedFile ? (
+          {workspaceTabs && selectedFile ? (
             <EditorContainer>
-              <Tabs value={selectedFile.name} onValueChange={setActiveFile} variant="workspace">
+              <Tabs value={selectedFile.name} onValueChange={setActiveFile} >
                 <EditorToolbar>
                   <TabsList aria-label="Source files">
                     {editorFiles.map(file => (
