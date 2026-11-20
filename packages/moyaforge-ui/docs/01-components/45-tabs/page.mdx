@@ -1,0 +1,27 @@
+---
+title: Tabs
+label: Tabs
+description: Composable tabs with default and curved workspace variants.
+---
+
+# Tabs
+
+Use `default` for ordinary navigation or `workspace` for curved editor-style tabs.
+
+```tsx
+import { FileCode2 } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@moyarich/moyaforge-ui/components/Tabs";
+
+<Tabs defaultValue="app" variant="workspace">
+  <TabsList aria-label="Open files">
+    <TabsTrigger value="app" icon={<FileCode2 size={16} />}>App.tsx</TabsTrigger>
+    <TabsTrigger value="main" icon={<FileCode2 size={16} />}>main.tsx</TabsTrigger>
+  </TabsList>
+  <TabsContent value="app">Application source</TabsContent>
+  <TabsContent value="main">Entry point source</TabsContent>
+</Tabs>
+```
+
+For controlled selection use `value` and `onValueChange`. Optional `onClose` delegates file removal to the parent. Content is unmounted when inactive unless `forceMount` is set. Tabs support arrow keys, Home and End, RTL, and focus indication.
+
+Customize `--mf-tabs-surface` and `--mf-tabs-strip` to match an editor surface.
