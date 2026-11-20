@@ -16,7 +16,7 @@ export interface DiscoveredSourceFile {
 /** Shared source discovery for compatibility adapters that require a synchronous Vite load hook. */
 export function discoverSourceFilesSync(
   base: string,
-  include: readonly string[] = ["**/page.md", "**/page.mdx"],
+  include: readonly string[] = ["**/page.{md,mdx}"],
   exclude: readonly string[] = [],
 ): DiscoveredSourceFile[] {
   const directory = resolve(base);

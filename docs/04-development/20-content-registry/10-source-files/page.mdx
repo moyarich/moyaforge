@@ -12,7 +12,7 @@ The `sources` in `registry.config.ts` define filesystem roots and glob patterns.
 
 - `pageFiles: "canonical"` (also the default) registers only files named `page.md` or `page.mdx`, even when `include` is broad.
 - `pageFiles: "all"` registers every matching `.md`/`.mdx` file, including `README.md` **unless you exclude it**.
-- `exclude` accepts glob patterns, applied before page discovery. Other authored `.md` content, such as `docs/mdx-conventions.md`, can remain routable.
+- `exclude` accepts tinyglobby patterns, including brace expansion such as `**/{README,readme}.{md,mdx}`, applied before page discovery. Other authored `.md` content, such as `docs/mdx-conventions.md`, can remain routable.
 - Directory names with numeric prefixes provide ordering, while normalized public routes omit those prefixes. A source directory must exist; an empty one is valid.
 
 Use this pattern for a docs tree that intentionally exposes ordinary Markdown:
@@ -20,14 +20,9 @@ Use this pattern for a docs tree that intentionally exposes ordinary Markdown:
 ~~~ts
 const docs = {
   base: "../../docs",
-  include: ["**/*.md", "**/*.mdx"],
+  include: ["**/*.{md,mdx}"],
   pageFiles: "all",
-  exclude: [
-    "**/README.md",
-    "**/readme.md",
-    "**/README.mdx",
-    "**/readme.mdx",
-  ],
+  exclude: ["**/{README,readme}.{md,mdx}"],
 };
 ~~~
 
@@ -36,7 +31,7 @@ Use an explicit canonical glob for package-owned documentation instead of `*/REA
 ~~~ts
 const packages = {
   base: "../../packages",
-  include: ["**/page.md", "**/page.mdx"],
+  include: ["**/page.{md,mdx}"],
   pageFiles: "all",
   exclude: [
     "**/node_modules/**",

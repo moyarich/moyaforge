@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test } from "vitest";
-import { isContentPageFile } from "../../dist/content/source-files.js";
+import { isContentPageFile, discoverSourceFilesSync } from "../../dist/content/source-files.js";
 
 test("canonical page matching works across nested Unix and Windows paths", () => {
   for (const file of [
@@ -20,5 +23,21 @@ test("canonical page matching works across nested Unix and Windows paths", () =>
     "docs/page.mdx.js",
   ]) {
     assert.equal(isContentPageFile(file), false, file);
+  }
+});
+
+test("canonical source discovery matches Markdown and MDX through one brace glob", () => {
+  const root = mkdtempSync(join(tmpdir(), "moyaforge-brace-pages-"));
+  try {
+    mkdirSync(join(root, "guides"));
+    writeFileSync(join(root, "page.md"), "# Home");
+    writeFileSync(join(root, "guides", "page.mdx"), "# Guide");
+    writeFileSync(join(root, "README.md"), "# Not a canonical page");
+    assert.deepEqual(
+      discoverSourceFilesSync(root).map(({ relative }) => relative).sort(),
+      ["guides/page.mdx", "page.md"],
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });

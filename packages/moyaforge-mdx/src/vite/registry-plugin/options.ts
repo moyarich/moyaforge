@@ -6,9 +6,11 @@ import type {
 
 export interface RegistrySource {
   base: string;
+  /** Tinyglobby patterns; supports brace expansion. */
   include: readonly string[];
   /** Include ordinary Markdown files in addition to directory landing pages. */
   pageFiles?: "canonical" | "all";
+  /** Tinyglobby ignore patterns; supports brace expansion. */
   exclude?: readonly string[];
   navigation?: { label?: string; order?: number };
   metadata?: readonly string[];

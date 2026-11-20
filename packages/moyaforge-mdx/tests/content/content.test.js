@@ -203,8 +203,13 @@ test("documentation registries exclude README files without dropping ordinary Ma
       ["page.mdx", "# Docs"],
       ["notes.md", "# Notes"],
       ["README.md", "# README should never be routed"],
+      ["README.mdx", "# MDX README should never be routed"],
       ["readme.md", "# lowercase readme"],
+      ["readme.mdx", "# lowercase MDX readme"],
+      ["guides/README.md", "# nested Markdown README"],
       ["guides/README.mdx", "# nested MDX README"],
+      ["guides/readme.md", "# nested lowercase Markdown readme"],
+      ["guides/readme.mdx", "# nested lowercase MDX readme"],
       ["guides/page.mdx", "# Guide"],
     ]) {
       await writeFile(join(root, "docs", file), source);
