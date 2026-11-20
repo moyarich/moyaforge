@@ -30,7 +30,7 @@ describe("editor chrome stylesheet boundaries", () => {
     expect(trigger).toContain(".mf-tabs-item--active::before");
     expect(panel).toContain("var(--mf-tabs-content-padding, 0)");
     for (const css of [container, tabs, trigger, panel])
-      expect(css).not.toMatch(/\\[[^\\]\\r\\n]*\\bdata-[\\w-]+[^\\]\\r\\n]*\\]/);
+      expect(css).not.toContain("[data-");
   });
 
   test("does not restore Monaco-owned chrome styles", async () => {
