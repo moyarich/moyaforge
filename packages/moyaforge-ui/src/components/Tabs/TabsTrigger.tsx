@@ -1,5 +1,8 @@
+import "./TabsTrigger.css";
+import { X } from "lucide-react";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import { useTabs } from "./TabsContext.js";
+
 export interface TabsTriggerProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
   value: string;
   icon?: ReactNode;
@@ -16,6 +19,8 @@ export function TabsTrigger({ value, icon, onClose, children, className, onClick
       onClick={event => { onClick?.(event); if (!event.defaultPrevented) tabs.select(value); }}>
       {icon}<span>{children}</span>
     </button>
-    {onClose && <button type="button" className="mf-tabs-close" aria-label={`Close ${value}`} onClick={onClose}>×</button>}
+    {onClose && <button type="button" className="mf-tabs-close" aria-label={`Close ${value}`} onClick={onClose}>
+      <X size={15} aria-hidden="true" />
+    </button>}
   </div>;
 }

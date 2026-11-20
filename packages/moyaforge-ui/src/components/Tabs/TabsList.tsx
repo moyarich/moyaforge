@@ -1,3 +1,4 @@
+import "./TabsList.css";
 import { type HTMLAttributes, type KeyboardEvent } from "react";
 import { useTabs } from "./TabsContext.js";
 

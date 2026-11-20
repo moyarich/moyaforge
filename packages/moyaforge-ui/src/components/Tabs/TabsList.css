@@ -1,0 +1,18 @@
+.mf-tabs-list {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.mf-tabs[data-variant="workspace"] .mf-tabs-list {
+  background: var(--_mf-tabs-strip);
+  overflow-y: hidden;
+  scrollbar-width: none;
+  padding-inline: .75rem;
+}
+
+.mf-tabs[data-variant="workspace"] .mf-tabs-list::-webkit-scrollbar {
+  display: none;
+}

@@ -1,3 +1,4 @@
+import "./TabsContent.css";
 import { type HTMLAttributes } from "react";
 import { useTabs } from "./TabsContext.js";
 export interface TabsContentProps extends HTMLAttributes<HTMLDivElement> {
