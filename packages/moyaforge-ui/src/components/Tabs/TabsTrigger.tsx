@@ -12,7 +12,7 @@ export function TabsTrigger({ value, icon, onClose, children, className, onClick
   const tabs = useTabs();
   const active = value === tabs.value;
   const key = encodeURIComponent(value);
-  return <div className="mf-tabs-item" data-active={active || undefined}>
+  return <div className={["mf-tabs-item", active && "mf-tabs-item--active"].filter(Boolean).join(" ")}>
     <button {...props} type="button" role="tab" data-value={value} id={`${tabs.id}-tab-${key}`}
       aria-controls={`${tabs.id}-panel-${key}`} aria-selected={active} tabIndex={active ? 0 : -1}
       className={["mf-tabs-trigger", className].filter(Boolean).join(" ")}

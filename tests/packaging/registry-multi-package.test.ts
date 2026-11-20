@@ -136,7 +136,8 @@ test("Monaco registry entries remain installable without coupling ordinary UI co
   expect(preview.dependencies).toContain(
     "@moyarich/moyaforge-monaco@^0.1.0",
   );
-  expect(preview.files.some((file) => file.path.includes("MonacoEditor"))).toBe(
-    false,
-  );
+  // CodePreviewEditor can include the UI-owned MonacoEditorWorkspace adapter,
+  // but must not bundle the editor engine from moyaforge-monaco.
+  expect(preview.files.some(file => file.path.startsWith("packages/moyaforge-monaco/"))).toBe(false);
+  expect(preview.files.some(file => file.path.includes("MonacoEditorWorkspace/"))).toBe(true);
 });
