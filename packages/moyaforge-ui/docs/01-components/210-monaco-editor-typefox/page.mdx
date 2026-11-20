@@ -14,18 +14,18 @@ The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and 
 
 ## Installation
 
-<CodeGroup label="Install Monaco Editor TypeFox">
+<CodeGroup label="Install TypeFox editor workspace">
 <CodeTab label="MoyaForge CLI">
 
 ```sh
-npx @moyarich/moyaforge-cli@latest add monaco-editor-typefox
+npx @moyarich/moyaforge-cli@latest add type-fox-editor-workspace
 ```
 
 </CodeTab>
 <CodeTab label="shadcn">
 
 ```sh
-npx shadcn@latest add moyarich/moyaforge/monaco-editor-typefox
+npx shadcn@latest add moyarich/moyaforge/type-fox-editor-workspace
 ```
 
 </CodeTab>
@@ -61,7 +61,7 @@ configureTypeFoxWorkers();
 
 :::
 
-The interactive workspace comes from `moyaforge-ui`; the headless runtime remains available from `moyaforge-monaco` for custom shells.
+The interactive workspace comes from `moyaforge-ui`; the headless `MonacoEditorTypeFox` runtime remains available from `moyaforge-monaco` for custom shells. To install only the runtime source, use `add monaco-editor-typefox`.
 
 ```tsx
 import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";

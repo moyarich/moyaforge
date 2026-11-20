@@ -14,18 +14,18 @@ The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and 
 
 ## Installation
 
-<CodeGroup label="Install Monaco Editor React">
+<CodeGroup label="Install React Monaco workspace">
 <CodeTab label="MoyaForge CLI">
 
 ```sh
-npx @moyarich/moyaforge-cli@latest add monaco-editor-react
+npx @moyarich/moyaforge-cli@latest add monaco-editor-workspace
 ```
 
 </CodeTab>
 <CodeTab label="shadcn">
 
 ```sh
-npx shadcn@latest add moyarich/moyaforge/monaco-editor-react
+npx shadcn@latest add moyarich/moyaforge/monaco-editor-workspace
 ```
 
 </CodeTab>
@@ -60,7 +60,7 @@ configureReactWorkers();
 
 :::
 
-The interactive workspace comes from `moyaforge-ui`; the headless runtime remains available from `moyaforge-monaco` for custom shells.
+The interactive workspace comes from `moyaforge-ui`; the headless `MonacoEditorReact` runtime remains available from `moyaforge-monaco` for custom shells. To install only the runtime source, use `add monaco-editor-react`.
 
 ```tsx
 import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
