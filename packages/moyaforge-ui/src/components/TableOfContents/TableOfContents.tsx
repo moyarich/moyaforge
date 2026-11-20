@@ -21,6 +21,7 @@ export function TableOfContents({
   root = typeof document === "undefined" ? null : document,
   selector = "h2[id], h3[id]",
   renderLink,
+  className,
   ...props
 }: TableOfContentsProps) {
   const headings =
@@ -36,12 +37,12 @@ export function TableOfContents({
       : []);
 
   return (
-    <nav data-moyaforge-toc="" aria-label="Table of contents" {...props}>
+    <nav {...props} aria-label="Table of contents" className={["mf-toc", className].filter(Boolean).join(" ")}>
       <ul>
         {headings.map((heading) => {
           const item = heading;
           return (
-            <li key={item.id} data-level={item.level}>
+            <li key={item.id} data-level={item.level} className={item.level === 3 ? "mf-level-3" : undefined}>
               {renderLink ? (
                 renderLink(item)
               ) : (

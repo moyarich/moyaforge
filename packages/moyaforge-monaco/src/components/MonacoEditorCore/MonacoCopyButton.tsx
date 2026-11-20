@@ -22,6 +22,7 @@ export function MonacoCopyButton({
   icon,
   children = "Copy",
   onCopy,
+  className,
   ...props
 }: MonacoCopyButtonProps) {
   const [status, setStatus] = useState<"idle" | "copied" | "error">("idle");
@@ -43,7 +44,7 @@ export function MonacoCopyButton({
   return (
     <button
       type="button"
-      data-moyaforge-copy-button=""
+      className={["mf-monaco-copy-button", className].filter(Boolean).join(" ")}
       data-copy-status={status}
       onClick={copy}
       {...props}

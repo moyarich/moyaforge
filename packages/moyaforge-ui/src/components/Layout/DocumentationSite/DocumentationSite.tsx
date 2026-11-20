@@ -129,10 +129,12 @@ export function DocumentationSite({
         </nav>
       </header>
       <div
-        className="mf-docs-grid"
-        data-menu-open={menu}
-        data-sidebar={sidebar === null ? "none" : undefined}
-        data-outline={outline === null ? "none" : undefined}
+        className={[
+          "mf-docs-grid",
+          menu && "is-menu-open",
+          sidebar === null && "mf-no-sidebar",
+          outline === null && "mf-no-outline",
+        ].filter(Boolean).join(" ")}
       >
         {sidebar !== undefined ? (
           sidebar

@@ -9,7 +9,7 @@
   transition: grid-template-rows 200ms ease-out;
 }
 
-.mf-animation-expanding-entry[data-expanded="true"] {
+.mf-animation-expanding-entry.is-expanded {
   grid-template-rows: 1fr;
 }
 

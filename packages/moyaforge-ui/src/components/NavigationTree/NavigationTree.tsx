@@ -29,7 +29,7 @@ export function NavigationTree({
   itemProps,
 }: NavigationTreeProps) {
   return (
-    <ul data-moyaforge-navigation-tree="" {...listProps}>
+    <ul {...listProps} className={["mf-navigation-tree", listProps?.className].filter(Boolean).join(" ")}>
       {items.map((item) => (
         <li key={item.page?.id ?? item.label} {...itemProps}>
           {item.page && renderLink ? renderLink(item.page, item) : item.label}

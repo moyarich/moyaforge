@@ -1,11 +1,11 @@
-[data-moyaforge-demo] {
-  --_demo-background: var(--demo-background, transparent);
-  --_demo-color: var(--demo-color, inherit);
-  --_demo-padding: var(--demo-padding, 0);
-  --_demo-border-radius: var(--demo-border-radius, 0);
+.mf-demo {
+  --_mf-demo-background: var(--mf-demo-background, transparent);
+  --_mf-demo-color: var(--mf-demo-color, inherit);
+  --_mf-demo-padding: var(--mf-demo-padding, 0);
+  --_mf-demo-border-radius: var(--mf-demo-border-radius, 0);
 
-  padding: var(--_demo-padding);
-  border-radius: var(--_demo-border-radius);
-  background: var(--_demo-background);
-  color: var(--_demo-color);
+  padding: var(--_mf-demo-padding);
+  border-radius: var(--_mf-demo-border-radius);
+  background: var(--_mf-demo-background);
+  color: var(--_mf-demo-color);
 }

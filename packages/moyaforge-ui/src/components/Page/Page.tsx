@@ -8,5 +8,5 @@ export interface PolymorphicProps {
 }
 
 export function Page({ as = "main", children, ...props }: PolymorphicProps) {
-  return createElement(as, { "data-moyaforge-page": "", ...props }, children);
+  return createElement(as, { ...props, className: ["mf-page", typeof props.className === "string" ? props.className : ""].filter(Boolean).join(" ") }, children);
 }

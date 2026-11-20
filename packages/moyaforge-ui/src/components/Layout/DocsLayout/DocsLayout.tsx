@@ -188,12 +188,12 @@ export function DocsLayout({
   );
   const configuredOutline = headings.length ? (
     toc && toc.collapsible ? (
-      <details data-moyaforge-docs-disclosure="" open={toc.defaultOpen ?? true}>
+      <details className="mf-docs-disclosure" open={toc.defaultOpen ?? true}>
         <summary>{outlineLabel}</summary>
         {outlineLinks}
       </details>
     ) : (
-      <div data-moyaforge-docs-outline-content="">
+      <div className="mf-docs-outline-content">
         <strong>{outlineLabel}</strong>
         {outlineLinks}
       </div>
@@ -221,28 +221,28 @@ export function DocsLayout({
       : undefined;
 
   return (
-    <div data-moyaforge-docs-layout="">
-      <header data-moyaforge-docs-header="">
+    <div className="mf-docs-layout">
+      <header data-moyaforge-docs-header="" className="mf-docs-header">
         {header !== undefined ? (
           header
         ) : (
           <a href={visiblePages[0]?.url ?? "/"}>{title}</a>
         )}
       </header>
-      <div data-moyaforge-docs-columns="">
+      <div className="mf-docs-columns">
         {sidebar !== undefined ? (
           sidebar
         ) : (
-          <aside data-moyaforge-docs-sidebar="">
+          <aside data-moyaforge-docs-sidebar="" className="mf-docs-sidebar">
             {sidebarContent}
             {placement === "sidebar" ? configuredOutline : null}
           </aside>
         )}
-        <main data-moyaforge-docs-article="">
+        <main data-moyaforge-docs-article="" className="mf-docs-article">
           {placement === "inline" ? configuredOutline : null}
           {children}
           {editHref ? (
-            <footer data-moyaforge-docs-page-footer="">
+            <footer className="mf-docs-page-footer">
               <a href={editHref}>Edit this page</a>
             </footer>
           ) : null}
@@ -251,7 +251,7 @@ export function DocsLayout({
         {outline !== undefined ? (
           outline
         ) : placement === "right" && configuredOutline ? (
-          <aside data-moyaforge-doc-outline="">{configuredOutline}</aside>
+          <aside data-moyaforge-doc-outline="" className="mf-doc-outline">{configuredOutline}</aside>
         ) : null}
       </div>
     </div>

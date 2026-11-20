@@ -1,21 +1,21 @@
-[data-moyaforge-sidebar] {
-  --_sidebar-color: var(--sidebar-color, inherit);
-  --_sidebar-background: var(--sidebar-background, transparent);
-  --_sidebar-border-color: var(--sidebar-border-color, currentColor);
-  --_sidebar-gap: var(--sidebar-gap, 0.5rem);
-  --_sidebar-padding: var(--sidebar-padding, 0.625rem);
+.mf-sidebar-v2 {
+  --_mf-sidebar-color: var(--mf-sidebar-color, inherit);
+  --_mf-sidebar-background: var(--mf-sidebar-background, transparent);
+  --_mf-sidebar-border-color: var(--mf-sidebar-border-color, currentColor);
+  --_mf-sidebar-gap: var(--mf-sidebar-gap, 0.5rem);
+  --_mf-sidebar-padding: var(--mf-sidebar-padding, 0.625rem);
 
-  color: var(--_sidebar-color);
-  background: var(--_sidebar-background);
+  color: var(--_mf-sidebar-color);
+  background: var(--_mf-sidebar-background);
 }
 
-[data-moyaforge-sidebar-header],
-[data-moyaforge-sidebar-content],
-[data-moyaforge-sidebar-footer] {
-  padding: var(--_sidebar-padding);
+.mf-sidebar-header,
+.mf-sidebar-content,
+.mf-sidebar-footer {
+  padding: var(--_mf-sidebar-padding);
 }
 
-[data-moyaforge-sidebar-content] {
+.mf-sidebar-content {
   display: grid;
-  gap: var(--_sidebar-gap);
+  gap: var(--_mf-sidebar-gap);
 }

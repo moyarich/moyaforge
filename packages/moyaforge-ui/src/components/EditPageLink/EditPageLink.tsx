@@ -15,6 +15,7 @@ export function EditPageLink({
   path,
   branch = "main",
   label = "Edit this page ↗",
+  className,
   ...props
 }: EditPageLinkProps) {
   const cleanRepository = repository
@@ -30,7 +31,7 @@ export function EditPageLink({
   const href = `https://github.com/${cleanRepository}/edit/${encodeURIComponent(branch)}/${cleanPath.split("/").map(encodeURIComponent).join("/")}`;
   return (
     <a
-      data-moyaforge-edit-page=""
+      className={["mf-edit-page", className].filter(Boolean).join(" ")}
       href={href}
       target="_blank"
       rel="noopener noreferrer"

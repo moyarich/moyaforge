@@ -36,19 +36,19 @@ export function DocsShellFocused({
   const defaultNavigation = backHref ? <a href={backHref}>← Back</a> : null;
 
   return (
-    <div data-moyaforge-shell-focused="">
+    <div className="mf-shell-focused">
       {(header === undefined ? defaultHeader : header) !== null ||
       (navigation === undefined ? defaultNavigation : navigation) !== null ||
       articleActions != null ? (
-        <header data-moyaforge-focused-header="">
+        <header className="mf-focused-header">
           {navigation === undefined ? defaultNavigation : navigation}
           {header === undefined ? defaultHeader : header}
           {articleActions}
         </header>
       ) : null}
-      <main data-moyaforge-focused-article="">{children}</main>
+      <main className="mf-focused-article">{children}</main>
       {footer != null ? (
-        <footer data-moyaforge-focused-footer="">{footer}</footer>
+        <footer className="mf-focused-footer">{footer}</footer>
       ) : null}
     </div>
   );

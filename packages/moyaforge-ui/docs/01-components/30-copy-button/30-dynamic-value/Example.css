@@ -7,17 +7,17 @@
   max-width: 100%;
 }
 .mf-copy-button-input-example input {
-  --_copy-input-border: var(
-    --copy-input-border,
+  --_mf-copy-input-border: var(
+    --mf-copy-input-border,
     color-mix(in srgb, currentColor 14%, transparent)
   );
-  --_copy-input-radius: var(--copy-input-radius, 0.5rem);
-  --_copy-input-background: var(--copy-input-background, transparent);
+  --_mf-copy-input-radius: var(--mf-copy-input-radius, 0.5rem);
+  --_mf-copy-input-background: var(--mf-copy-input-background, transparent);
   width: min(17rem, 100%);
   min-width: 0;
-  border: 1px solid var(--_copy-input-border);
-  border-radius: var(--_copy-input-radius);
-  background: var(--_copy-input-background);
+  border: 1px solid var(--_mf-copy-input-border);
+  border-radius: var(--_mf-copy-input-radius);
+  background: var(--_mf-copy-input-background);
   color: inherit;
   font: inherit;
   padding: 0.5rem 0.75rem;

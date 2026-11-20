@@ -1,13 +1,13 @@
-[data-moyaforge-source] {
-  --_source-background: var(--source-background, transparent);
-  --_source-color: var(--source-color, inherit);
-  --_source-padding: var(--source-padding, 1rem);
-  --_source-border-radius: var(--source-border-radius, 0);
+.mf-source {
+  --_mf-source-background: var(--mf-source-background, transparent);
+  --_mf-source-color: var(--mf-source-color, inherit);
+  --_mf-source-padding: var(--mf-source-padding, 1rem);
+  --_mf-source-border-radius: var(--mf-source-border-radius, 0);
 
   margin: 0;
-  padding: var(--_source-padding);
-  border-radius: var(--_source-border-radius);
-  background: var(--_source-background);
-  color: var(--_source-color);
+  padding: var(--_mf-source-padding);
+  border-radius: var(--_mf-source-border-radius);
+  background: var(--_mf-source-background);
+  color: var(--_mf-source-color);
   overflow: auto;
 }

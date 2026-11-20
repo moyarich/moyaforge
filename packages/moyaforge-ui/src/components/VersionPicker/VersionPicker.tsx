@@ -23,7 +23,7 @@ export function VersionPicker({
   onChange,
 }: VersionPickerProps) {
   return (
-    <label data-moyaforge-version-picker="" className={className}>
+    <label className={["mf-version-picker", className].filter(Boolean).join(" ")}>
       <span>{label}</span>
       <select
         aria-label={selectLabel}

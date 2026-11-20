@@ -16,7 +16,7 @@ export function DocOutlineShell({
     <aside className={className} {...props}>
       {header && <div data-moyaforge-outline-header="">{header}</div>}
       {children}
-      {footer && <div data-moyaforge-outline-footer="">{footer}</div>}
+      {footer && <div className="mf-outline-footer">{footer}</div>}
     </aside>
   );
 }

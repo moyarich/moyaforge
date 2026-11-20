@@ -68,7 +68,7 @@ export function DocumentationSearch({
   }, [query, search]);
 
   return (
-    <div className="mf-search" data-results-position={resultsPosition}>
+    <div className={["mf-search", resultsPosition === "inline" && "is-inline"].filter(Boolean).join(" ")}>
       <label>
         <span aria-hidden="true">⌕</span>
         <input

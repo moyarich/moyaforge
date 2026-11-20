@@ -275,14 +275,14 @@
   padding: 48px 22px;
   font-size: var(--_mf-small-font-size);
 }
-.mf-outline [data-moyaforge-outline-footer] {
+.mf-outline .mf-outline-footer {
   border-top: 1px solid var(--_mf-line);
   padding-top: 22px;
   margin-top: 28px;
   color: var(--_mf-muted);
   font-size: var(--_mf-caption-font-size);
 }
-.mf-outline [data-moyaforge-doc-outline] {
+.mf-outline .mf-doc-outline {
   border: 0;
   background: none;
   padding: 0;
@@ -399,7 +399,7 @@
     box-shadow: 12px 0 30px var(--_mf-shadow);
   }
   .mf-sidebar.is-open,
-  .mf-docs-grid[data-menu-open="true"] > .mf-sidebar {
+  .mf-docs-grid.is-menu-open > .mf-sidebar {
     display: block;
   }
   .mf-article {
@@ -439,40 +439,40 @@
 /* Shiki emits light colors inline and dark colors as custom properties. */
 .mf-docs-dark .mf-article .shiki,
 .mf-docs-dark .mf-article .shiki span {
-  --_shiki-color: var(--shiki-dark, inherit);
-  --_shiki-background: var(--shiki-dark-bg, transparent);
-  --_shiki-font-style: var(--shiki-dark-font-style, normal);
-  --_shiki-font-weight: var(--shiki-dark-font-weight, inherit);
-  --_shiki-text-decoration: var(--shiki-dark-text-decoration, none);
-  color: var(--_shiki-color) !important;
-  background-color: var(--_shiki-background) !important;
-  font-style: var(--_shiki-font-style) !important;
-  font-weight: var(--_shiki-font-weight) !important;
-  text-decoration: var(--_shiki-text-decoration) !important;
+  --_mf-shiki-color: var(--shiki-dark, inherit);
+  --_mf-shiki-background: var(--shiki-dark-bg, transparent);
+  --_mf-shiki-font-style: var(--shiki-dark-font-style, normal);
+  --_mf-shiki-font-weight: var(--shiki-dark-font-weight, inherit);
+  --_mf-shiki-text-decoration: var(--shiki-dark-text-decoration, none);
+  color: var(--_mf-shiki-color) !important;
+  background-color: var(--_mf-shiki-background) !important;
+  font-style: var(--_mf-shiki-font-style) !important;
+  font-weight: var(--_mf-shiki-font-weight) !important;
+  text-decoration: var(--_mf-shiki-text-decoration) !important;
 }
 .mf-article .shiki code {
   color: inherit;
 }
 
 .mf-outline {
-  --_doc-outline-title-font-size: var(
-    --doc-outline-title-font-size,
+  --_mf-doc-outline-title-font-size: var(
+    --mf-doc-outline-title-font-size,
     var(--_mf-small-font-size)
   );
 }
 @media (min-width: 1101px) {
-  .mf-docs-grid[data-outline="none"] {
+  .mf-docs-grid.mf-no-outline {
     grid-template-columns: 264px minmax(0, 1000px);
   }
-  .mf-docs-grid[data-sidebar="none"] {
+  .mf-docs-grid.mf-no-sidebar {
     grid-template-columns: minmax(0, 1044px) 220px;
   }
-  .mf-docs-grid[data-sidebar="none"][data-outline="none"] {
+  .mf-docs-grid.mf-no-sidebar.mf-no-outline {
     grid-template-columns: minmax(0, 1200px);
   }
 }
 @media (min-width: 721px) and (max-width: 1100px) {
-  .mf-docs-grid[data-sidebar="none"] {
+  .mf-docs-grid.mf-no-sidebar {
     grid-template-columns: minmax(0, 1fr);
   }
 }

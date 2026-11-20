@@ -1,22 +1,22 @@
-[data-moyaforge-version-picker] {
-  --_version-color: var(--version-picker-color, var(--_mf-text, #303038));
-  --_version-background: var(--version-picker-background, var(--_mf-bg, #fff));
-  --_version-border: var(
-    --version-picker-border-color,
+.mf-version-picker {
+  --_mf-version-color: var(--mf-version-picker-color, var(--_mf-text, #303038));
+  --_mf-version-background: var(--mf-version-picker-background, var(--_mf-bg, #fff));
+  --_mf-version-border: var(
+    --mf-version-picker-border-color,
     var(--_mf-line, #e9e9ed)
   );
   display: grid;
   gap: 8px;
-  color: var(--_version-color);
+  color: var(--_mf-version-color);
   font-size: 13px;
 }
-[data-moyaforge-version-picker] select {
+.mf-version-picker select {
   width: 100%;
-  border: 1px solid var(--_version-border);
+  border: 1px solid var(--_mf-version-border);
   border-radius: 6px;
   padding: 8px 10px;
   font: inherit;
-  color: var(--_version-color);
-  background: var(--_version-background);
+  color: var(--_mf-version-color);
+  background: var(--_mf-version-background);
   opacity: 1;
 }
