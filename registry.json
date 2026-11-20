@@ -8,7 +8,11 @@
       "type": "registry:component",
       "title": "Animation",
       "description": "Editable MoyaForge animation source. Components import their own CSS.",
-      "dependencies": ["clsx@^2.1.1", "motion@^14.14.0", "react@>=18"],
+      "dependencies": [
+        "clsx@^2.1.1",
+        "motion@^14.14.0",
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Animation/Animation.css",
@@ -37,7 +41,9 @@
       "type": "registry:component",
       "title": "Code Block",
       "description": "Editable MoyaForge code-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -76,7 +82,9 @@
       "type": "registry:component",
       "title": "Code Group",
       "description": "Editable MoyaForge code-group source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -102,6 +110,16 @@
           "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroupTabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroupTabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeTab.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeTab.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
@@ -125,7 +143,11 @@
       "type": "registry:component",
       "title": "Code Preview",
       "description": "Editable MoyaForge code-preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -151,6 +173,16 @@
           "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroupTabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroupTabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeTab.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeTab.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
@@ -327,6 +359,41 @@
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
           "type": "registry:file",
           "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
@@ -335,6 +402,16 @@
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorWorkspace/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
@@ -430,6 +507,56 @@
           "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/index.ts"
         }
       ]
     },
@@ -438,7 +565,9 @@
       "type": "registry:component",
       "title": "Copy Button",
       "description": "Editable MoyaForge copy-button source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -462,7 +591,9 @@
       "type": "registry:component",
       "title": "Custom Block",
       "description": "Editable MoyaForge custom-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.css",
@@ -486,7 +617,9 @@
       "type": "registry:component",
       "title": "Demo",
       "description": "Editable MoyaForge demo source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Demo/Demo.css",
@@ -510,7 +643,9 @@
       "type": "registry:component",
       "title": "Doc Outline",
       "description": "Editable MoyaForge doc-outline source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
@@ -554,7 +689,9 @@
       "type": "registry:component",
       "title": "Docs Layout",
       "description": "Editable MoyaForge docs-layout source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
@@ -583,7 +720,9 @@
       "type": "registry:block",
       "title": "Docs Shell",
       "description": "Editable MoyaForge docs-shell source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
@@ -612,7 +751,9 @@
       "type": "registry:component",
       "title": "Docs Shell Focused",
       "description": "Editable MoyaForge docs-shell-focused source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellFocused/DocsShellFocused.css",
@@ -636,7 +777,9 @@
       "type": "registry:component",
       "title": "Docs Shell Wide",
       "description": "Editable MoyaForge docs-shell-wide source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellWide/DocsShellWide.css",
@@ -698,7 +841,9 @@
       "type": "registry:component",
       "title": "Edit Page Link",
       "description": "Editable MoyaForge edit-page-link source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
@@ -718,11 +863,146 @@
       ]
     },
     {
+      "name": "editor-container",
+      "type": "registry:component",
+      "title": "Editor Container",
+      "description": "Editable MoyaForge editor-container source. Components import their own CSS.",
+      "dependencies": [
+        "react@>=18"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "editor-workspace",
+      "type": "registry:component",
+      "title": "Editor Workspace",
+      "description": "Editable MoyaForge editor-workspace source. Components import their own CSS.",
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/index.ts"
+        }
+      ]
+    },
+    {
       "name": "empty-state",
       "type": "registry:component",
       "title": "Empty State",
       "description": "Editable MoyaForge empty-state source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EmptyState/EmptyState.tsx",
@@ -741,7 +1021,10 @@
       "type": "registry:component",
       "title": "Highlighted Code",
       "description": "Editable MoyaForge highlighted-code source. Components import their own CSS.",
-      "dependencies": ["react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
@@ -768,7 +1051,6 @@
       "docs": "## MonacoEditorReact setup\n\nUse MonacoEditorReact inside a React application. If dependencies were not installed\nby your component installer (for example, `--no-install`), run:\n\n```sh\nnpm install @monaco-editor/react monaco-editor lucide-react\n```\n\nYour application also needs `react` and `react-dom`. With TypeScript, install\n`@types/react` and `@types/react-dom` as development dependencies.\n\nImport the real editor directly from the installed source:\n\n```tsx\nimport { MonacoEditorReact } from \"@moyarich/moyaforge-monaco/components/MonacoEditorReact\";\n```\n\nAdjust the import for your component destination and path aliases. Component CSS\nis imported automatically. Configure standalone Monaco workers once in the application entry point using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react`. If TypeFox is also used, initialize the shared runtime using `initializeSharedMonaco()` from `/shared`. Worker configuration belongs to the host application:\nthe Vite example on the Monaco documentation page provides a complete `setup.ts`\nusing local workers and `loader.config({ monaco })`. Other bundlers need their\nown worker configuration; importing the component does not configure workers.\n\nThe lightweight `Monaco` shell with a textarea renderer does not need an editor\nengine. `MonacoEditorTypeFox` is a separate full editor and additionally needs\n`@typefox/monaco-editor-react` and `monaco-languageclient`; these are not needed\nby the direct MonacoEditorReact implementation.\n\nGuide and complete worker setup:\nhttps://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react\n",
       "dependencies": [
         "@monaco-editor/react@>=4",
-        "lucide-react@^1.56.0",
         "monaco-editor@^0.52.0",
         "react@>=18"
       ],
@@ -784,39 +1066,9 @@
           "target": "~/src/components/ui/MonacoEditorCore/Monaco.tsx"
         },
         {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoActions.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoActions.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoEditor.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoEditor.css"
-        },
-        {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoLoading.css",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoTabs.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoTabs.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoToolbar.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoToolbar.css"
         },
         {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/drafts.ts",
@@ -832,11 +1084,6 @@
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/useEditorTheme.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorCore/useEditorTheme.ts"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/MonacoCodeGroup.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorReact/MonacoCodeGroup.tsx"
         },
         {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
@@ -880,39 +1127,9 @@
           "target": "~/src/components/ui/MonacoEditorCore/Monaco.tsx"
         },
         {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoActions.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoActions.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoCopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoCopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoEditor.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoEditor.css"
-        },
-        {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoLoading.css",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoTabs.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoTabs.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoToolbar.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoToolbar.css"
         },
         {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/drafts.ts",
@@ -942,11 +1159,131 @@
       ]
     },
     {
+      "name": "monaco-editor-workspace",
+      "type": "registry:component",
+      "title": "Monaco Editor Workspace",
+      "description": "Editable MoyaForge monaco-editor-workspace source. Components import their own CSS.",
+      "dependencies": [
+        "@moyarich/moyaforge-monaco@^0.1.0",
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorWorkspace/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/index.ts"
+        }
+      ]
+    },
+    {
       "name": "navigation-tree",
       "type": "registry:component",
       "title": "Navigation Tree",
       "description": "Editable MoyaForge navigation-tree source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.css",
@@ -970,7 +1307,9 @@
       "type": "registry:component",
       "title": "Page",
       "description": "Editable MoyaForge page source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -994,7 +1333,11 @@
       "type": "registry:component",
       "title": "Preview",
       "description": "Editable MoyaForge preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -1189,7 +1532,9 @@
       "type": "registry:component",
       "title": "Sidebar V2",
       "description": "Editable MoyaForge sidebar-v2 source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -1263,7 +1608,10 @@
       "type": "registry:component",
       "title": "Source",
       "description": "Editable MoyaForge source source. Components import their own CSS.",
-      "dependencies": ["react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
@@ -1297,7 +1645,9 @@
       "type": "registry:component",
       "title": "Table Of Contents",
       "description": "Editable MoyaForge table-of-contents source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
@@ -1313,6 +1663,186 @@
           "path": "packages/moyaforge-ui/src/components/TableOfContents/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/TableOfContents/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:component",
+      "title": "Tabs",
+      "description": "Editable MoyaForge tabs source. Components import their own CSS.",
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "type-fox-editor-workspace",
+      "type": "registry:component",
+      "title": "Type Fox Editor Workspace",
+      "description": "Editable MoyaForge type-fox-editor-workspace source. Components import their own CSS.",
+      "dependencies": [
+        "@moyarich/moyaforge-monaco@^0.1.0",
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/TypeFoxEditorWorkspace/TypeFoxEditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/TypeFoxEditorWorkspace/TypeFoxEditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/TypeFoxEditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/TypeFoxEditorWorkspace/index.ts"
         }
       ]
     },
