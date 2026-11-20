@@ -52,3 +52,41 @@ import { EditorWorkspace } from "@moyarich/moyaforge-ui/components/EditorWorkspa
 ## Theme customization
 
 Use public `--mf-tabs-*` and `--mf-editor-*` CSS variables to change the tab strip, active-tab curves, toolbar and panel surfaces. Components use `--_mf-*` only for private resolved values.
+
+
+## CSS themes
+
+The default editor layout preserves the bordered, understated styling used before the editor-runtime split: a divided toolbar, flat file tabs with an active underline, and a padded source panel. Change the tab and panel appearance entirely with CSS variables; no React `variant` prop is involved.
+
+For curved workspace tabs and a contrasting panel:
+
+```css
+.curved-editor {
+  --mf-editor-toolbar-background: #e9edf2;
+  --mf-editor-surface: #fff;
+  --mf-tabs-corner-size: 0.75rem;
+  --mf-tabs-radius: 0.65rem 0.65rem 0 0;
+  --mf-tabs-active-background: #fff;
+  --mf-tabs-indicator-size: 0px;
+  --mf-tabs-trigger-padding: 0.75rem 1rem;
+}
+```
+
+```tsx
+<MonacoEditorWorkspace className="curved-editor" files={files} height={320} />
+```
+
+To customize the original underline style instead:
+
+```css
+.classic-editor {
+  --mf-editor-toolbar-background: color-mix(in srgb, currentColor 2%, transparent);
+  --mf-editor-surface: transparent;
+  --mf-tabs-accent: rebeccapurple;
+  --mf-tabs-indicator-size: 2px;
+  --mf-tabs-panel-border-width: 0px;
+  --mf-tabs-content-padding: 0;
+}
+```
+
+These CSS tokens also work with `TypeFoxEditorWorkspace`, `EditorWorkspace`, and the composable `Tabs` components. Shared/public tokens begin with `--mf-`; implementation-private tokens begin with `--_mf-`.
