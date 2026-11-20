@@ -59,7 +59,7 @@
     var(--_mf-editor-toolbar-border);
 }
 
-.mf-editor-toolbar > .mf-tabs-list {
+.mf-editor-toolbar > .mf-tabs-list-container {
   flex: 1;
   min-width: 0;
 }

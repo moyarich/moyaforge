@@ -18,6 +18,18 @@ description: Composable tab panels with CSS-variable theming.
 
 Switch between the existing tab style, curved workspace tabs, and a Fluent-inspired tab panel based on the [DevExpress HtmlEditor demo](https://js.devexpress.com/React/Demos/WidgetsGallery/Demo/HtmlEditor/Overview/FluentBlueLight/).
 
+## Overflow navigation
+
+When the tab strip is wider than its container, it shows **left/right navigation arrows** and **faded edges** to indicate more tabs are available. Arrows disappear at the corresponding scroll boundary. Mouse wheel or trackpad scrolling and keyboard selection remain supported.
+
+::::code-preview[Overflowing file tabs]{component="./OverflowExample.tsx"}
+
+::code-preview-sources{files="./OverflowExample.tsx,./OverflowExample.css" replacements="portable"}
+
+::::
+
+You can customize the controls from your own CSS with `--mf-tabs-scroll-fade-width`, `--mf-tabs-scroll-button-width`, `--mf-tabs-scroll-button-background`, `--mf-tabs-scroll-button-color`, and `--mf-tabs-scroll-button-hover-background`. The buttons and fades appear only when the tabs overflow.
+
 ## Usage
 
 ```tsx

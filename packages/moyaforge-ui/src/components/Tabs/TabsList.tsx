@@ -1,13 +1,89 @@
 import "./TabsList.css";
-import { type HTMLAttributes, type KeyboardEvent } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type HTMLAttributes,
+  type KeyboardEvent,
+} from "react";
 import { useTabs } from "./TabsContext.js";
 
-export function TabsList({ children, className, onKeyDown, ...props }: HTMLAttributes<HTMLDivElement>) {
-  const { select } = useTabs();
+export function TabsList({
+  children,
+  className,
+  onKeyDown,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  const { select, value } = useTabs();
+  const scroller = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+
+  useEffect(() => {
+    const element = scroller.current;
+    if (!element) return;
+
+    const update = () => {
+      const overflow = Math.max(0, element.scrollWidth - element.clientWidth);
+      const position = element.scrollLeft;
+      const rtl = getComputedStyle(element).direction === "rtl";
+      setEdges({
+        left: rtl ? position > -overflow + 1 : position > 1,
+        right: rtl ? position < -1 : position < overflow - 1,
+      });
+    };
+
+    update();
+    element.addEventListener("scroll", update, { passive: true });
+    const observer = typeof ResizeObserver === "undefined"
+      ? undefined
+      : new ResizeObserver(update);
+    observer?.observe(element);
+    for (const child of element.children) observer?.observe(child);
+    window.addEventListener("resize", update);
+
+    return () => {
+      element.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      observer?.disconnect();
+    };
+  }, [children]);
+
+  useEffect(() => {
+    const element = scroller.current;
+    const selected = Array.from(
+      element?.querySelectorAll<HTMLElement>('[role="tab"]') ?? [],
+    ).find(tab => tab.getAttribute("aria-selected") === "true");
+    if (!element || !selected) return;
+
+    const viewport = element.getBoundingClientRect();
+    const tab = selected.getBoundingClientRect();
+    const delta = tab.left < viewport.left
+      ? tab.left - viewport.left
+      : tab.right > viewport.right
+        ? tab.right - viewport.right
+        : 0;
+    if (delta !== 0) element.scrollBy({ left: delta, behavior: "auto" });
+  }, [value]);
+
+  const scroll = (direction: -1 | 1) => {
+    const element = scroller.current;
+    if (!element) return;
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    element.scrollBy({
+      left: direction * Math.max(120, element.clientWidth * 0.7),
+      behavior: reducedMotion ? "instant" : "smooth",
+    });
+  };
+
   function handleKeys(event: KeyboardEvent<HTMLDivElement>) {
     onKeyDown?.(event);
     if (event.defaultPrevented) return;
-    const tabs = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]:not(:disabled)'));
+    const tabs = Array.from(
+      event.currentTarget.querySelectorAll<HTMLButtonElement>(
+        '[role="tab"]:not(:disabled)',
+      ),
+    );
     const index = tabs.indexOf(document.activeElement as HTMLButtonElement);
     if (index < 0) return;
     const direction = getComputedStyle(event.currentTarget).direction === "rtl" ? -1 : 1;
@@ -20,5 +96,35 @@ export function TabsList({ children, className, onKeyDown, ...props }: HTMLAttri
     tabs[next].focus();
     select(tabs[next].dataset.value ?? "");
   }
-  return <div {...props} role="tablist" className={["mf-tabs-list", className].filter(Boolean).join(" ")} onKeyDown={handleKeys}>{children}</div>;
+
+  return (
+    <div className="mf-tabs-list-container">
+      <div
+        {...props}
+        ref={scroller}
+        role="tablist"
+        className={[
+          "mf-tabs-list",
+          edges.left && "mf-tabs-list--fade-left",
+          edges.right && "mf-tabs-list--fade-right",
+          className,
+        ].filter(Boolean).join(" ")}
+        onKeyDown={handleKeys}
+      >
+        {children}
+      </div>
+      {edges.left && (
+        <button type="button" className="mf-tabs-scroll-button mf-tabs-scroll-button--left"
+          aria-label="Scroll tabs left" onClick={() => scroll(-1)}>
+          <ChevronLeft size={16} aria-hidden="true" />
+        </button>
+      )}
+      {edges.right && (
+        <button type="button" className="mf-tabs-scroll-button mf-tabs-scroll-button--right"
+          aria-label="Scroll tabs right" onClick={() => scroll(1)}>
+          <ChevronRight size={16} aria-hidden="true" />
+        </button>
+      )}
+    </div>
+  );
 }
