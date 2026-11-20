@@ -9,19 +9,28 @@ import {
 } from "react";
 import { useTabs } from "./TabsContext.js";
 
+/** Opt-in overflow controls for a tab strip. */
+export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
+  tabsScroll?: boolean;
+}
+
 export function TabsList({
   children,
   className,
   onKeyDown,
+  tabsScroll = false,
   ...props
-}: HTMLAttributes<HTMLDivElement>) {
+}: TabsListProps) {
   const { select, value } = useTabs();
   const scroller = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ left: false, right: false });
 
   useEffect(() => {
     const element = scroller.current;
-    if (!element) return;
+    if (!element || !tabsScroll) {
+      setEdges({ left: false, right: false });
+      return;
+    }
 
     const update = () => {
       const overflow = Math.max(0, element.scrollWidth - element.clientWidth);
@@ -47,14 +56,14 @@ export function TabsList({
       window.removeEventListener("resize", update);
       observer?.disconnect();
     };
-  }, [children]);
+  }, [children, tabsScroll]);
 
   useEffect(() => {
     const element = scroller.current;
     const selected = Array.from(
       element?.querySelectorAll<HTMLElement>('[role="tab"]') ?? [],
     ).find(tab => tab.getAttribute("aria-selected") === "true");
-    if (!element || !selected) return;
+    if (!tabsScroll || !element || !selected) return;
 
     const viewport = element.getBoundingClientRect();
     const tab = selected.getBoundingClientRect();
@@ -64,7 +73,7 @@ export function TabsList({
         ? tab.right - viewport.right
         : 0;
     if (delta !== 0) element.scrollBy({ left: delta, behavior: "auto" });
-  }, [value]);
+  }, [value, tabsScroll]);
 
   const scroll = (direction: -1 | 1) => {
     const element = scroller.current;
@@ -98,28 +107,28 @@ export function TabsList({
   }
 
   return (
-    <div className="mf-tabs-list-container">
+    <div className={["mf-tabs-list-container", tabsScroll && "mf-tabs-scroll"].filter(Boolean).join(" ")}>
       <div
         {...props}
         ref={scroller}
         role="tablist"
         className={[
           "mf-tabs-list",
-          edges.left && "mf-tabs-list--fade-left",
-          edges.right && "mf-tabs-list--fade-right",
+          tabsScroll && edges.left && "mf-tabs-list--fade-left",
+          tabsScroll && edges.right && "mf-tabs-list--fade-right",
           className,
         ].filter(Boolean).join(" ")}
         onKeyDown={handleKeys}
       >
         {children}
       </div>
-      {edges.left && (
+      {tabsScroll && edges.left && (
         <button type="button" className="mf-tabs-scroll-button mf-tabs-scroll-button--left"
           aria-label="Scroll tabs left" onClick={() => scroll(-1)}>
           <ChevronLeft size={16} aria-hidden="true" />
         </button>
       )}
-      {edges.right && (
+      {tabsScroll && edges.right && (
         <button type="button" className="mf-tabs-scroll-button mf-tabs-scroll-button--right"
           aria-label="Scroll tabs right" onClick={() => scroll(1)}>
           <ChevronRight size={16} aria-hidden="true" />

@@ -23,6 +23,16 @@ test("scroll navigation preserves tablist accessibility and tab selection", () =
   expect(markup).toContain('aria-selected="true"');
   expect(markup).toContain("mf-tabs-list-container");
   expect(markup).not.toContain("Scroll tabs right");
+  expect(markup).not.toContain("mf-tabs-scroll\"");
+
+  const enabled = renderToStaticMarkup(
+    h(Tabs, { defaultValue: "one" },
+      h(TabsList, { tabsScroll: true, "aria-label": "Open files" },
+        h(TabsTrigger, { value: "one" }, "One"),
+      ),
+    ),
+  );
+  expect(enabled).toContain("mf-tabs-scroll");
 });
 
 test("tab overflow styling provides scroll-position arrows and CSS-themed fades", async () => {
@@ -34,8 +44,9 @@ test("tab overflow styling provides scroll-position arrows and CSS-themed fades"
   expect(script).toContain('element.addEventListener("scroll", update');
   expect(script).toContain('aria-label="Scroll tabs left"');
   expect(script).toContain('aria-label="Scroll tabs right"');
-  expect(css).toContain(".mf-tabs-list--fade-left");
-  expect(css).toContain(".mf-tabs-list--fade-right");
+  expect(css).toContain(".mf-tabs-scroll .mf-tabs-list--fade-left");
+  expect(css).toContain(".mf-tabs-scroll .mf-tabs-list--fade-right");
   expect(css).toContain("var(--mf-tabs-scroll-fade-width, 2.5rem)");
   expect(css).toContain("var(--mf-tabs-scroll-button-width, 1.75rem)");
+  expect(css).toContain(".mf-tabs-scroll .mf-tabs-scroll-button");
 });

@@ -16,7 +16,7 @@ const files = [
 export default function OverflowExample() {
   return (
     <Tabs className="tabs-overflow-example" defaultValue={files[0]}>
-      <TabsList aria-label="Open files">
+      <TabsList tabsScroll aria-label="Open files">
         {files.map(file => (
           <TabsTrigger key={file} value={file}>{file}</TabsTrigger>
         ))}

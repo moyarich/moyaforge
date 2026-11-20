@@ -23,15 +23,15 @@
   display: none;
 }
 
-.mf-tabs-list--fade-left {
+.mf-tabs-scroll .mf-tabs-list--fade-left {
   mask-image: linear-gradient(to right, transparent, black var(--mf-tabs-scroll-fade-width, 2.5rem));
 }
 
-.mf-tabs-list--fade-right {
+.mf-tabs-scroll .mf-tabs-list--fade-right {
   mask-image: linear-gradient(to left, transparent, black var(--mf-tabs-scroll-fade-width, 2.5rem));
 }
 
-.mf-tabs-list--fade-left.mf-tabs-list--fade-right {
+.mf-tabs-scroll .mf-tabs-list--fade-left.mf-tabs-list--fade-right {
   mask-image: linear-gradient(
     to right,
     transparent,
@@ -41,7 +41,7 @@
   );
 }
 
-.mf-tabs-scroll-button {
+.mf-tabs-scroll .mf-tabs-scroll-button {
   position: absolute;
   z-index: 2;
   top: 0;
@@ -58,14 +58,14 @@
   cursor: pointer;
 }
 
-.mf-tabs-scroll-button--left { left: 0; }
-.mf-tabs-scroll-button--right { right: 0; }
+.mf-tabs-scroll .mf-tabs-scroll-button--left { left: 0; }
+.mf-tabs-scroll .mf-tabs-scroll-button--right { right: 0; }
 
-.mf-tabs-scroll-button:hover {
+.mf-tabs-scroll .mf-tabs-scroll-button:hover {
   background: var(--mf-tabs-scroll-button-hover-background, color-mix(in srgb, currentColor 7%, var(--_mf-tabs-strip)));
 }
 
-.mf-tabs-scroll-button:focus-visible {
+.mf-tabs-scroll .mf-tabs-scroll-button:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -2px;
 }

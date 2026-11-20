@@ -89,7 +89,7 @@ export function EditorWorkspace<T extends EditorWorkspaceFile>({
     }}>
       <Tabs value={selected.name} onValueChange={select}>
         <EditorToolbar>
-          <TabsList aria-label="Open editor files">
+          <TabsList tabsScroll aria-label="Open editor files">
             {currentFiles.map(file => (
               <TabsTrigger value={file.name} key={file.name}
                 icon={<FileCode2 size={15} aria-hidden="true" />}>{file.name}</TabsTrigger>
