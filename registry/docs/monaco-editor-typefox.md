@@ -1,15 +1,24 @@
 # MonacoEditorTypeFox
 
-Multi-file editor using `@typefox/monaco-editor-react` and VS Code services.
+Headless TypeFox Monaco runtime using VS Code services. Tabs, Save/Copy actions, breadcrumbs and visual editor layout are provided by `moyaforge-ui`, not by the runtime.
 
-The CLI and shadcn install runtime dependencies. In an existing React app:
+Install both the UI and the TypeFox runtime dependencies in your React application:
 
 ```sh
-npm install @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react
+npm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1
 ```
 
-Configure workers once in the application entry point with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/typefox`. For applications using both editors, call `initializeSharedMonaco()` from `/shared` instead. Install compatible standalone language features.
+```tsx
+import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
 
-Import `MonacoEditorTypeFox` from `@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox` (or from the installed CLI component source). Pass `files` with unique names, optional per-file `readOnly`, and `onSave` to persist changes. `readOnly` locks the workspace. `vscodeApiConfig` customizes host services; all instances share the application's VS Code service initialization.
+<TypeFoxEditorWorkspace
+  files={files}
+  onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}
+  height={320}
+  showBreadcrumbs
+/>;
+```
 
-`languageClientConfig` forwards the optional TypeFox `LanguageClientConfig` unchanged to the underlying editor for Language Server Protocol (LSP) integration. The host must provide a reachable language server and transport; this component does not start a server. If both Monaco integrations are used, initialize shared services once before mounting either editor.
+For a fully custom shell, use the headless `MonacoEditorTypeFox` from `@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox`. Its `languageClientConfig` forwards the optional `LanguageClientConfig` to the underlying editor. The host must provide the language server and transport.
+
+Configure workers with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/typefox`, or `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/shared` when using both editor integrations.

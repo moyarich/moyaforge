@@ -1,0 +1,54 @@
+---
+title: Editor Workspace
+label: Editor Workspace
+description: Editor-agnostic tabs, toolbar and panels with Monaco or TypeFox runtimes.
+---
+
+# Editor Workspace
+
+The UI components own tabs, Copy/Save buttons, breadcrumbs and CSS themes. The engine packages only render editable content. Use `EditorWorkspace` to integrate any renderer, or choose `MonacoEditorWorkspace` / `TypeFoxEditorWorkspace` for ready-made runtime adapters.
+
+## React Monaco
+
+```tsx
+import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+
+const [files, setFiles] = useState([
+  { name: "App.tsx", path: "src/App.tsx", value: "export const answer = 42;" },
+  { name: "styles.css", value: "body { margin: 0; }" },
+]);
+
+<MonacoEditorWorkspace
+  files={files}
+  height={320}
+  showBreadcrumbs
+  onFileChange={(name, value) =>
+    setFiles(current => current.map(file =>
+      file.name === name ? { ...file, value } : file,
+    ))
+  }
+  onSave={(name, value) => saveFile(name, value)}
+/>;
+```
+
+## Custom editor
+
+```tsx
+import { EditorWorkspace } from "@moyarich/moyaforge-ui/components/EditorWorkspace";
+
+<EditorWorkspace
+  files={files}
+  onFileChange={updateFile}
+  renderEditor={({ activeFile, onFileChange, readOnly }) => (
+    <textarea
+      value={activeFile.value}
+      readOnly={readOnly || activeFile.readOnly}
+      onChange={event => onFileChange(activeFile.name, event.target.value)}
+    />
+  )}
+/>
+```
+
+## Theme customization
+
+Use public `--mf-tabs-*` and `--mf-editor-*` CSS variables to change the tab strip, active-tab curves, toolbar and panel surfaces. Components use `--_mf-*` only for private resolved values.

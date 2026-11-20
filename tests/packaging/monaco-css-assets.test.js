@@ -7,7 +7,6 @@ const root = resolve(import.meta.dirname, "../../packages/moyaforge-monaco");
 test.each([
   "components/MonacoEditorCore/Monaco.css",
   "components/MonacoEditorCore/MonacoLoading.css",
-  "components/MonacoEditorCore/MonacoCopyButton.css",
 ])("Monaco publishes CSS imports and resolvable asset declarations: %s", async (path) => {
   const css = resolve(root, "dist", path);
   expect((await stat(css)).isFile()).toBe(true);

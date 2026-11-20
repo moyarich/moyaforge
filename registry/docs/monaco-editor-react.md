@@ -1,31 +1,27 @@
 ## MonacoEditorReact setup
 
-Use MonacoEditorReact inside a React application. If dependencies were not installed
-by your component installer (for example, `--no-install`), run:
+`MonacoEditorReact` is a headless React Monaco runtime. It owns editor models, file drafts, worker integrations, language inference and read-only behavior, but it **does not render tabs, Copy, Save or toolbar controls**.
+
+Install the Monaco runtime and optional UI workspace:
 
 ```sh
-npm install @monaco-editor/react monaco-editor lucide-react
+npm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/react monaco-editor
 ```
 
-Your application also needs `react` and `react-dom`. With TypeScript, install
-`@types/react` and `@types/react-dom` as development dependencies.
-
-Import the real editor directly from the installed source:
+Import the visual workspace from `moyaforge-ui`:
 
 ```tsx
-import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
+import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+
+<MonacoEditorWorkspace
+  files={files}
+  onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}
+  height={320}
+/>;
 ```
 
-Adjust the import for your component destination and path aliases. Component CSS
-is imported automatically. Configure standalone Monaco workers once in the application entry point using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react`. If TypeFox is also used, initialize the shared runtime using `initializeSharedMonaco()` from `/shared`. Worker configuration belongs to the host application:
-the Vite example on the Monaco documentation page provides a complete `setup.ts`
-using local workers and `loader.config({ monaco })`. Other bundlers need their
-own worker configuration; importing the component does not configure workers.
+For a custom shell, import `MonacoEditorReact` from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` and pass an active file. The runtime does not take `onSave`, `showFileTabs`, or `showCopyButton`.
 
-The lightweight `Monaco` shell with a textarea renderer does not need an editor
-engine. `MonacoEditorTypeFox` is a separate full editor and additionally needs
-`@typefox/monaco-editor-react` and `monaco-languageclient`; these are not needed
-by the direct MonacoEditorReact implementation.
+Configure workers once using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react`. When using TypeFox too, initialize the shared VS Code-compatible runtime via `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/shared` instead.
 
-Guide and complete worker setup:
-https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react
+Guide and worker setup: https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react
