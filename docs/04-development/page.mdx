@@ -34,7 +34,9 @@ npm ci
 npm run dev
 ```
 
-`npm run dev` launches the private `apps/playground` workspace, building local workspace packages first.
+`npm run dev` launches the private `apps/playground` workspace, building local workspace packages first. The playground defaults to port **5174**, leaving the usual Vite port 5173 available to another local application (including Docker-published web services). Visit `http://localhost:5174/` or use the URL Vite prints.
+
+To choose a different port, use `npm run dev --workspace @moyarich/moyaforge-playground -- --port 5180`. Vite can detect occupied ports only within its own network namespace; when Docker Desktop/WSL publishes another port on the host, use different explicit ports to avoid misleading `localhost` behavior.
 
 ## Test the CLI with local packages
 

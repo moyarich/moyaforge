@@ -123,6 +123,10 @@ export default defineConfig({
     },
     react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
   ],
+  // Other local Vite/Docker apps frequently use 5173. Vite still moves to
+  // another available port if 5174 is occupied in this network namespace;
+  // an explicit `--port` flag takes precedence over this default.
+  server: { port: 5174 },
   worker: { format: "es" },
   base: process.env.VITE_BASE_PATH || process.env.PAGES_BASE_PATH || "/",
   build: { outDir: "dist", emptyOutDir: true },
