@@ -5,9 +5,9 @@ export default {
   sources: {
     docs: {
       base: "docs",
-      include: ["**/*.md", "**/*.mdx"],
+      include: ["**/*.{md,mdx}"],
       pageFiles: "all",
-      exclude: ["**/README.md", "**/readme.md", "**/README.mdx", "**/readme.mdx"],
+      exclude: ["**/{README,readme}.{md,mdx}"],
       navigation: { label: "Guide", order: 1 },
     },
   },

@@ -5,22 +5,22 @@ export default {
   sources: {
     docs: {
       base: "../../docs",
-      include: ["**/*.md", "**/*.mdx"],
+      include: ["**/*.{md,mdx}"],
       pageFiles: "all",
       // Keep standalone developer .md pages, but not repository README files.
-      exclude: ["**/README.md", "**/readme.md", "**/README.mdx", "**/readme.mdx"],
+      exclude: ["**/{README,readme}.{md,mdx}"],
       navigation: { label: "Guide", order: 1 },
     },
     ui: {
       base: "../../packages/moyaforge-ui/docs",
-      include: ["**/page.mdx", "**/page.md"],
+      include: ["**/page.{md,mdx}"],
       pageFiles: "all",
       navigation: { label: "UI Components", order: 2 },
     },
     packages: {
       base: "../../packages",
       // Package README files remain available on GitHub/npm, not as docs routes.
-      include: ["**/page.md", "**/page.mdx"],
+      include: ["**/page.{md,mdx}"],
       pageFiles: "all",
       exclude: [
         "**/node_modules/**",

@@ -15,9 +15,11 @@ import {
 
 export interface ContentSource {
   base: string;
+  /** Tinyglobby patterns, including brace expansion for file extensions. */
   include: readonly string[];
   /** Include ordinary Markdown files in addition to directory landing pages. */
   pageFiles?: "canonical" | "all";
+  /** Tinyglobby ignore patterns; brace expansion can group filename variants. */
   exclude?: readonly string[];
   metadata?: readonly string[];
   navigation?: { label?: string; order?: number };
