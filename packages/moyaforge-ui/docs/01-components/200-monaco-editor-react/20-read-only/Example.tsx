@@ -1,4 +1,4 @@
-import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+import { MonacoEditorWorkspace } from "../../../../src/components/MonacoEditorWorkspace/index.js";
 
 export default function ReadOnlyEditor() {
   return (

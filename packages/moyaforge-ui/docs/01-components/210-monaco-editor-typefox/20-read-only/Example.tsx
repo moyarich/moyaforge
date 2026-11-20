@@ -1,4 +1,4 @@
-import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
+import { TypeFoxEditorWorkspace } from "../../../../src/components/TypeFoxEditorWorkspace/index.js";
 
 export default function ReadOnlyEditor() {
   return (

@@ -1,5 +1,5 @@
-import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
-import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
+import { MonacoEditorWorkspace } from "../../../../src/components/MonacoEditorWorkspace/index.js";
+import { TypeFoxEditorWorkspace } from "../../../../src/components/TypeFoxEditorWorkspace/index.js";
 
 const reactFiles = [{ name: "react.tsx", value: "export const reactEditor = true;" }];
 const typefoxFiles = [{ name: "typefox.tsx", value: "export const typefoxEditor = true;" }];

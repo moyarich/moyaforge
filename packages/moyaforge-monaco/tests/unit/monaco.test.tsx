@@ -29,7 +29,7 @@ test("Monaco core renders the selected file without owning UI chrome", () => {
 });
 
 test("Monaco core respects file locks and empty workspaces", () => {
-  expect(render({ readOnly: true })).toContain('readonly=""');
-  expect(render({ files: [{ name: "private.ts", value: "", readOnly: true }] })).toContain('readonly=""');
+  expect(render({ readOnly: true })).toContain('readOnly=""');
+  expect(render({ files: [{ name: "private.ts", value: "", readOnly: true }] })).toContain('readOnly=""');
   expect(render({ files: [] })).toBe("");
 });

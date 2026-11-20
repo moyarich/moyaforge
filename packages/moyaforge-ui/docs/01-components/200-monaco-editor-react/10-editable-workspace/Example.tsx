@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+import { MonacoEditorWorkspace } from "../../../../src/components/MonacoEditorWorkspace/index.js";
 
 export default function MultiFileEditor() {
   const [saved, setSaved] = useState("");

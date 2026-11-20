@@ -23,13 +23,13 @@ test("real editor infers language and enforces workspace, file and options read-
   const render = (props = {}) =>
     renderToStaticMarkup(h(MonacoEditorReact, { files, ...props }));
   expect(render()).toContain('data-language="typescript"');
-  expect(render()).not.toContain('readonly=""');
-  expect(render({ readOnly: true })).toContain('readonly=""');
-  expect(render({ options: { readOnly: true } })).toContain('readonly=""');
+  expect(render()).not.toContain('readOnly=""');
+  expect(render({ readOnly: true })).toContain('readOnly=""');
+  expect(render({ options: { readOnly: true } })).toContain('readOnly=""');
   expect(
     render({ options: { readOnly: true }, readOnly: false }),
-  ).not.toContain('readonly=""');
-  expect(render({ activeFile: "locked.json" })).toContain('readonly=""');
+  ).not.toContain('readOnly=""');
+  expect(render({ activeFile: "locked.json" })).toContain('readOnly=""');
   expect(render({ activeFile: "locked.json" })).toContain(
     'data-language="json"',
   );
