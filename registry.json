@@ -359,11 +359,6 @@
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/index.ts"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
           "type": "registry:file",
           "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
@@ -909,11 +904,6 @@
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/index.ts"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
           "type": "registry:file",
           "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
@@ -1179,11 +1169,6 @@
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
@@ -1749,11 +1734,6 @@
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",

@@ -58,7 +58,13 @@ export function EditorWorkspace<T extends EditorWorkspaceFile>({
     onFileChange?.(name, value, file);
   };
   return (
-    <EditorContainer className={className}>
+    <EditorContainer className={className} onKeyDownCapture={event => {
+      if (onSave && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!locked) onSave(selected.name, selected.value, selected);
+      }
+    }}>
       <Tabs value={selected.name} onValueChange={select}>
         <EditorToolbar>
           <TabsList aria-label="Open editor files">
