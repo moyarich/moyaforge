@@ -1,5 +1,5 @@
 import "./EditorWorkspace.css";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ChevronRight, Copy, FileCode2, LockKeyhole, Save } from "lucide-react";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../Tabs/index.js";
@@ -40,21 +40,43 @@ export function EditorWorkspace<T extends EditorWorkspaceFile>({
   renderBreadcrumbs, tools, renderEditor, className,
 }: EditorWorkspaceProps<T>) {
   const [uncontrolled, setUncontrolled] = useState(defaultActiveFile ?? files[0]?.name ?? "");
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const previousValues = useRef(new Map(files.map(file => [file.name, file.value])));
+
+  useEffect(() => {
+    const previous = previousValues.current;
+    setDrafts(current => Object.fromEntries(files.map(file => [
+      file.name,
+      previous.get(file.name) !== file.value
+        ? file.value
+        : (current[file.name] ?? file.value),
+    ])));
+    previousValues.current = new Map(files.map(file => [file.name, file.value]));
+  }, [files]);
+
+  const currentFiles = useMemo(
+    () => files.map(file => ({
+      ...file,
+      value: drafts[file.name] ?? file.value,
+    }) as T),
+    [files, drafts],
+  );
   const selected = useMemo(
-    () => files.find(file => file.name === (activeFile ?? uncontrolled)) ?? files[0],
-    [files, activeFile, uncontrolled],
+    () => currentFiles.find(file => file.name === (activeFile ?? uncontrolled)) ?? currentFiles[0],
+    [currentFiles, activeFile, uncontrolled],
   );
   if (!selected) return null;
   const locked = readOnly || selected.readOnly === true;
   const select = (name: string) => {
-    const file = files.find(item => item.name === name);
+    const file = currentFiles.find(item => item.name === name);
     if (!file) return;
     if (activeFile === undefined) setUncontrolled(name);
     onActiveFileChange?.(name, file);
   };
   const update = (name: string, value: string) => {
-    const file = files.find(item => item.name === name);
+    const file = currentFiles.find(item => item.name === name);
     if (!file || readOnly || file.readOnly) return;
+    setDrafts(current => ({ ...current, [name]: value }));
     onFileChange?.(name, value, file);
   };
   return (
@@ -68,7 +90,7 @@ export function EditorWorkspace<T extends EditorWorkspaceFile>({
       <Tabs value={selected.name} onValueChange={select}>
         <EditorToolbar>
           <TabsList aria-label="Open editor files">
-            {files.map(file => (
+            {currentFiles.map(file => (
               <TabsTrigger value={file.name} key={file.name}
                 icon={<FileCode2 size={15} aria-hidden="true" />}>{file.name}</TabsTrigger>
             ))}
@@ -92,7 +114,7 @@ export function EditorWorkspace<T extends EditorWorkspaceFile>({
         </EditorBreadcrumbs>}
         <EditorContent>
           <TabsContent value={selected.name} forceMount>
-            {renderEditor({ files, activeFile: selected, onFileChange: update, readOnly })}
+            {renderEditor({ files: currentFiles, activeFile: selected, onFileChange: update, readOnly })}
           </TabsContent>
         </EditorContent>
       </Tabs>

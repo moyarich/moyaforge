@@ -23,9 +23,9 @@ export function TypeFoxEditorWorkspace({
 }: TypeFoxEditorWorkspaceProps) {
   return (
     <EditorWorkspace {...props} files={files}
-      renderEditor={({ activeFile, onFileChange, readOnly }) => (
+      renderEditor={({ files: currentFiles, activeFile, onFileChange, readOnly }) => (
         <MonacoEditorTypeFox
-          files={files} activeFile={activeFile.name} onFileChange={onFileChange}
+          files={currentFiles} activeFile={activeFile.name} onFileChange={onFileChange}
           readOnly={readOnly} height={height} width={width} theme={theme} options={options}
           vscodeApiConfig={vscodeApiConfig} languageClientConfig={languageClientConfig}
           onReady={onReady} onError={onError}

@@ -27,9 +27,9 @@ export function MonacoEditorWorkspace({
     <EditorWorkspace
       {...props}
       files={files}
-      renderEditor={({ activeFile, onFileChange, readOnly }) => (
+      renderEditor={({ files: currentFiles, activeFile, onFileChange, readOnly }) => (
         <MonacoEditorReact
-          files={files}
+          files={currentFiles}
           activeFile={activeFile.name}
           onFileChange={onFileChange}
           readOnly={readOnly}
