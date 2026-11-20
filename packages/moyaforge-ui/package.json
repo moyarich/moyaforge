@@ -23,7 +23,6 @@
     "build": "npm run build --workspace @moyarich/moyaforge-monaco && vite build && tsc -p tsconfig.json",
     "test": "vitest run tests",
     "typecheck": "npm run build --workspace @moyarich/moyaforge-monaco && tsc -p tsconfig.json --noEmit",
-    "registry:check": "node ../../bin/build-registry.ts --check",
     "storybook": "npm run build --workspace @moyarich/moyaforge-monaco && storybook dev -p 6006 -c .storybook",
     "test:storybook": "npm run build --workspace @moyarich/moyaforge-monaco && storybook build -c .storybook -o ../../.storybook-static",
     "prepack": "npm run build"

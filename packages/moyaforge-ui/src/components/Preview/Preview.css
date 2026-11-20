@@ -8,6 +8,9 @@
     var(--_mf-line, color-mix(in srgb, currentColor 22%, transparent))
   );
   --_mf-preview-margin: var(--mf-preview-margin, 1.25rem 0 2rem);
+  --_mf-preview-min-width: var(--mf-preview-min-width, 0);
+  --_mf-preview-width: var(--mf-preview-width, 100%);
+  --_mf-preview-height: var(--mf-preview-height, auto);
   --_mf-preview-radius: var(--mf-preview-radius, 0.75rem);
   --_mf-preview-padding: var(--mf-preview-padding, 2rem);
   --_mf-preview-toolbar-background: var(
@@ -38,6 +41,8 @@
   border-radius: var(--_mf-preview-radius);
   background: var(--_mf-preview-background);
   overflow: hidden;
-  min-width: 0;
+  min-width: var(--_mf-preview-min-width);
   margin: var(--_mf-preview-margin);
+  width: var(--_mf-preview-width);
+  height: var(--_mf-preview-height);
 }
