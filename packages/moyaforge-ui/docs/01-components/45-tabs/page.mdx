@@ -40,3 +40,35 @@ Public CSS tokens start with `--mf-`. Supported customization points include `--
 Resolved component-private variables start with `--_mf-`. You can override public tokens on any parent element or through a className.
 
 For controlled selection, use `value` and `onValueChange`. Tabs support arrow keys and Home/End, optional close callbacks, and `forceMount` for panel persistence.
+
+## Style tabs from your own CSS
+
+Import your stylesheet alongside the component that renders `Tabs`. The `className` scopes the CSS-variable overrides to this tab group:
+
+```tsx
+import "./tabs.css";
+
+<Tabs defaultValue="preview" className="project-tabs">
+  <TabsList aria-label="Views">
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="source">Source</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">Preview panel</TabsContent>
+  <TabsContent value="source">Source panel</TabsContent>
+</Tabs>
+```
+
+```css
+/* tabs.css — your application's stylesheet */
+.project-tabs {
+  --mf-tabs-strip: #f1f5f9;
+  --mf-tabs-surface: #fff;
+  --mf-tabs-border: #cbd5e1;
+  --mf-tabs-accent: #2563eb;
+  --mf-tabs-list-border-width: 1px;
+  --mf-tabs-indicator-size: 3px;
+  --mf-tabs-content-padding: 1rem;
+}
+```
+
+These variables customize **both the tab strip and the content panel**. No theme prop is required. Keep `--_mf-*` implementation variables out of user stylesheets.

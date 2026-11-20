@@ -97,3 +97,32 @@ The installed `components/MonacoEditorReact/README.md` includes additional depen
 ## Styling
 
 Customize the workspace using `className`, `--mf-tabs-*`, and `--mf-editor-*` CSS variables. The underlying Monaco runtime is UI-free.
+
+## Customize styling with your CSS
+
+Create `editor.css` **in your application**, import it into your React component, and pass a scoped class to `MonacoEditorWorkspace`:
+
+```tsx
+import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+import "./editor.css";
+
+<MonacoEditorWorkspace
+  className="react-monaco-editor"
+  files={files}
+  height={320}
+/>
+```
+
+```css
+/* editor.css — user-owned, not a MoyaForge internal stylesheet */
+.react-monaco-editor {
+  --mf-editor-border: #cbd5e1;
+  --mf-editor-toolbar-background: #f1f5f9;
+  --mf-editor-surface: #fff;
+  --mf-tabs-accent: #2563eb;
+  --mf-tabs-indicator-size: 3px;
+  --mf-tabs-active-color: #1d4ed8;
+}
+```
+
+You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. The CSS variables style the **editor UI**, not the underlying Monaco syntax theme. See [Editor Workspace](/ui/components/editor-workspace) for an editable, stateful example and curved-tab CSS preset.
