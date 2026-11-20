@@ -70,3 +70,11 @@ export const workerSource = 'import { configureReactWorkers } from "@moyarich/mo
 ## Styling
 
 The example styles live alongside its TSX source; use the `--mf-preview-*` variables for the outer preview frame.
+
+## Workspace tabs
+
+Use `tabVariant="workspace"` to opt into reusable curved Tabs. `showBreadcrumbs` enables the file path, `renderBreadcrumbs` customizes it, and `tools` accepts app-provided React buttons. `onCloseFile` is an optional host-managed close callback. The original Monaco tabs remain the default.
+
+```tsx
+<CodePreviewEditor title="Editor" files={files} tabVariant="workspace" showBreadcrumbs tools={<button onClick={openSearch}>Search</button>} renderPreview={renderPreview} />
+```

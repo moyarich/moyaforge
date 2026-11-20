@@ -1,5 +1,8 @@
 import "./CodePreviewEditor.css";
 import { useState, type ReactNode } from "react";
+import { ChevronRight, FileCode2, FileText } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../Tabs/index.js";
+import { EditorContainer, EditorToolbar, EditorTools, EditorBreadcrumbs, EditorContent } from "../EditorContainer/index.js";
 import { RotateCcw } from "lucide-react";
 import {
   Preview,
@@ -29,6 +32,11 @@ export interface CodePreviewEditorProps {
   usageFileName?: string;
   height?: number | string;
   options?: MonacoEditorReactProps["options"];
+  tabVariant?: "default" | "workspace";
+  tools?: ReactNode;
+  showBreadcrumbs?: boolean;
+  renderBreadcrumbs?: (file: MonacoFile) => ReactNode;
+  onCloseFile?: (name: string, file: MonacoFile) => void;
 }
 
 /**
@@ -43,12 +51,18 @@ export function CodePreviewEditor({
   usageFileName = "CodePreviewEditor.tsx",
   height = 320,
   options,
+  tabVariant = "default",
+  tools,
+  showBreadcrumbs = false,
+  renderBreadcrumbs,
+  onCloseFile,
 }: CodePreviewEditorProps) {
   const [initialFiles] = useState(() => files.map((file) => ({ ...file })));
   const [currentFiles, setCurrentFiles] = useState(() =>
     files.map((file) => ({ ...file })),
   );
 
+  const [activeFile, setActiveFile] = useState<string | undefined>();
   const editorFiles = usageSource
     ? [
         {
@@ -60,6 +74,8 @@ export function CodePreviewEditor({
         ...currentFiles,
       ]
     : currentFiles;
+
+  const selectedFile = editorFiles.find(file => file.name === activeFile) ?? editorFiles.find(file => !file.readOnly) ?? editorFiles[0];
 
   const unchanged =
     currentFiles.length === initialFiles.length &&
@@ -97,6 +113,53 @@ export function CodePreviewEditor({
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-code-preview-editor-source">
+          {tabVariant === "workspace" && selectedFile ? (
+            <EditorContainer>
+              <Tabs value={selectedFile.name} onValueChange={setActiveFile} variant="workspace">
+                <EditorToolbar>
+                  <TabsList aria-label="Source files">
+                    {editorFiles.map(file => (
+                      <TabsTrigger key={file.name} value={file.name}
+                        icon={/\.mdx?$/i.test(file.name) ? <FileText size={16} /> : <FileCode2 size={16} />}
+                        onClose={onCloseFile ? () => onCloseFile(file.name, file) : undefined}>
+                        {file.name}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                  {tools && <EditorTools>{tools}</EditorTools>}
+                </EditorToolbar>
+                {showBreadcrumbs && <EditorBreadcrumbs>
+                  {renderBreadcrumbs ? renderBreadcrumbs(selectedFile) :
+                    (selectedFile.path ?? selectedFile.name).replaceAll("\\", "/").split("/").filter(Boolean).map((part, index) => (
+                      <span key={index} style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                        {index > 0 && <ChevronRight size={14} aria-hidden="true" />}{part}
+                      </span>
+                    ))}
+                </EditorBreadcrumbs>}
+                <EditorContent>
+                  <TabsContent value={selectedFile.name} forceMount>
+          <MonacoCodeGroup
+            files={editorFiles}
+            activeFile={selectedFile?.name}
+            onActiveFileChange={setActiveFile}
+            showFileTabs={false}
+            showCopyButton={false}
+            editable
+            height={height}
+            options={{ fixedOverflowWidgets: true, ...options }}
+            onFileChange={(name, value) => {
+              setCurrentFiles((current) =>
+                current.map((file) =>
+                  file.name === name ? { ...file, value } : file,
+                ),
+              );
+            }}
+          />
+                  </TabsContent>
+                </EditorContent>
+              </Tabs>
+            </EditorContainer>
+          ) : (
           <MonacoCodeGroup
             files={editorFiles}
             defaultActiveFile={currentFiles.find((file) => !file.readOnly)?.name}
@@ -111,6 +174,7 @@ export function CodePreviewEditor({
               );
             }}
           />
+          )}
         </div>
       </PreviewSource>
     </Preview>
