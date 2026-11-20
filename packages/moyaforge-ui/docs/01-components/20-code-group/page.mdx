@@ -54,4 +54,4 @@ import { CodeGroup, CodeTab } from "@/components/ui/CodeGroup/CodeGroup";
 
 ## Styling
 
-Set `--code-group-active-color` for the selected tab, `--code-group-tabs-gap` for the space between labels, and `--code-group-background` for the group surface.
+`CodeGroup` now uses the shared `Tabs`, `TabsList`, `TabsTrigger`, and `TabsContent` primitives. Set `--mf-code-group-active-color` for the active tab, `--mf-code-group-tabs-gap` for label spacing, and `--mf-code-group-background` for the code surface. You can also override the shared public `--mf-tabs-*` properties to change the tab strip and panel styling, without a React theme prop.
