@@ -242,7 +242,7 @@ test("monaco installation reports setup notes without copying README files", asy
   expect(dry.stdout).toContain("@monaco-editor/react");
   expect(dry.stdout).toContain("monaco-editor");
   expect(dry.stdout).toContain(
-    "npm install @monaco-editor/react monaco-editor lucide-react",
+    "npm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/react monaco-editor",
   );
   expect(dry.stdout).toContain("Monaco workers");
   await expect(
