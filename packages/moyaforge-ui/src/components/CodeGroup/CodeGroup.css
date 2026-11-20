@@ -21,15 +21,23 @@
   );
   --_mf-code-group-toolbar-height: var(--mf-code-group-toolbar-height, 48px);
 }
-.mf-code-group {
-  /* Forward existing public CodeGroup tokens to shared Tabs. */
-  --mf-tabs-surface: var(--mf-code-group-background, var(--_mf-soft, #f6f6f7));
-  --mf-tabs-accent: var(--mf-code-group-active-color, var(--_mf-accent, #d94f56));
-  --mf-tabs-text-color: var(--mf-code-group-muted-color, var(--_mf-muted, #73737c));
-  --mf-tabs-active-color: var(--mf-code-group-active-color, var(--_mf-accent, #d94f56));
-  --mf-tabs-indicator-size: 2px;
+
+/*
+ * Keep the original CodeGroup look when migrating its implementation to Tabs.
+ * Explicit --mf-tabs-* overrides can still customize the group.
+ */
+.mf-code-group .mf-code-group-tabs {
+  --_mf-tabs-surface: var(--mf-tabs-surface, var(--_mf-code-background));
+  --_mf-tabs-strip: var(--mf-tabs-strip, transparent);
+  --_mf-tabs-accent: var(--mf-tabs-accent, var(--_mf-code-group-active-color));
+  --_mf-tabs-border: var(--mf-tabs-border, var(--_mf-code-border));
+  --_mf-tabs-active-background: var(--mf-tabs-active-background, transparent);
+  --_mf-tabs-corner-size: var(--mf-tabs-corner-size, 0px);
+  --_mf-tabs-indicator-size: var(--mf-tabs-indicator-size, 2px);
   --mf-tabs-trigger-padding: var(--mf-code-group-tab-padding, 13px 2px 11px);
-  --mf-tabs-content-padding: 0;
+  --mf-tabs-text-color: var(--mf-code-group-muted-color, var(--_mf-code-muted));
+  --mf-tabs-active-color: var(--mf-code-group-active-color, var(--_mf-code-group-active-color));
+  --mf-tabs-active-font-weight: 650;
 }
 .mf-code-toolbar {
   display: flex;
@@ -54,6 +62,7 @@
 }
 .mf-code-tabs .mf-code-tab:hover {
   color: var(--_mf-code-color);
+  background: transparent;
 }
 .mf-code-tabs .mf-code-tab[aria-selected="true"] {
   font-weight: 650;
