@@ -14,7 +14,6 @@ vi.mock(
   }),
 );
 import { MonacoEditorReact } from "../../src/components/MonacoEditorReact/MonacoEditorReact.js";
-import { MonacoCodeGroup } from "../../src/components/MonacoEditorReact/MonacoCodeGroup.js";
 import { languageForPath } from "../../src/components/MonacoEditorCore/languages.js";
 const files = [
   { name: "App.tsx", value: "const app = true;" },
@@ -34,12 +33,7 @@ test("real editor infers language and enforces workspace, file and options read-
   expect(render({ activeFile: "locked.json" })).toContain(
     'data-language="json"',
   );
-  expect(renderToStaticMarkup(h(MonacoCodeGroup, { files }))).toContain(
-    'readonly=""',
-  );
-  expect(
-    renderToStaticMarkup(h(MonacoCodeGroup, { files, editable: true })),
-  ).not.toContain('readonly=""');
+  expect(render()).not.toContain('role="tablist"');
 });
 test("separate editor instances isolate identical filenames", () => {
   const html = renderToStaticMarkup(
