@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FileCode2, FileText, Settings2 } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../../../src/components/Tabs/index.js";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../../src/components/Tabs/index.js";
 import "./Example.css";
 
 type Theme = "default" | "workspace" | "fluent";
