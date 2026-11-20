@@ -1,8 +1,8 @@
-import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
+import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
 
 export default function ReadOnlyEditor() {
   return (
-    <MonacoEditorReact
+    <MonacoEditorWorkspace
       readOnly
       height={220}
       files={[

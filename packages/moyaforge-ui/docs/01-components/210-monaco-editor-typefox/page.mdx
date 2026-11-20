@@ -1,16 +1,16 @@
 ---
 title: Monaco Editor TypeFox
 label: Monaco Editor TypeFox
-description: A multi-file code editor with read-only mode and copy support.
+description: The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and editor layout are provided by `moyaforge-ui`.
 ---
 
-import { MonacoEditorTypeFox as LiveMonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+import { TypeFoxEditorWorkspace as LiveMonacoEditorTypeFox } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
 
 # Monaco Editor TypeFox
 
-import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
 
-A multi-file code editor with read-only mode and copy support.
+The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and editor layout are provided by `moyaforge-ui`.
 
 ## Installation
 
@@ -34,7 +34,7 @@ npx shadcn@latest add moyarich/moyaforge/monaco-editor-typefox
 In an existing React app, ensure these runtime dependencies are installed:
 
 ```sh
-npm install @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react
+npm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react
 npm install @codingame/monaco-vscode-standalone-languages@^37.6.1 @codingame/monaco-vscode-standalone-typescript-language-features@^37.6.1 @codingame/monaco-vscode-standalone-css-language-features@^37.6.1 @codingame/monaco-vscode-standalone-json-language-features@^37.6.1 @codingame/monaco-vscode-standalone-html-language-features@^37.6.1
 ```
 
@@ -61,12 +61,12 @@ configureTypeFoxWorkers();
 
 :::
 
-For source installs, the `@/` path maps to your configured UI directory. Package consumers can import from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` or `/MonacoEditorTypeFox` instead.
+The interactive workspace comes from `moyaforge-ui`; the headless runtime remains available from `moyaforge-monaco` for custom shells.
 
 ```tsx
-import { MonacoEditorTypeFox } from "@/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox";
+import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
 
-<MonacoEditorTypeFox
+<TypeFoxEditorWorkspace
   files={[
     { name: "index.ts", value: "const answer = 42;" },
     { name: "styles.css", value: "body { margin: 0; }" },
@@ -75,12 +75,12 @@ import { MonacoEditorTypeFox } from "@/components/ui/MonacoEditorTypeFox/MonacoE
 />;
 ```
 
-Use `onSave` to handle Save or Ctrl/Cmd+S and persist changes. Use `onFileChange` to track edits.
+The UI workspace owns tabs, Save, and Copy actions. Keep files in React state via `onFileChange`; `onSave` receives the active file's latest value.
 
 To connect a language server, pass `languageClientConfig` with the same configuration accepted by TypeFox's `MonacoEditorReactComp` (typed as `LanguageClientConfig` from `monaco-languageclient/lcwrapper`):
 
 ```tsx
-<MonacoEditorTypeFox files={files} languageClientConfig={languageClientConfig} />
+<TypeFoxEditorWorkspace files={files} languageClientConfig={languageClientConfig} />
 ```
 
 The host must provide a running language server and its transport; MoyaForge does not start one. Initialize shared VS Code services once at application startup when mounting both Monaco integrations.
@@ -96,8 +96,8 @@ The host must provide a running language server and its transport; MoyaForge doe
 - `activeFile` and `onActiveFileChange` control the selected file.
 - `theme` overrides the inherited light/dark appearance.
 - `options`, `vscodeApiConfig`, `languageClientConfig`, `onReady`, and `onError` customize TypeFox.
-- `showCopyButton` and `showFileTabs` control toolbar visibility.
-- `className` and `--mf-monaco-*` CSS variables customize styling.
+- `showCopyButton`, `showBreadcrumbs`, `tools`, and `renderBreadcrumbs` customize the UI-owned workspace.
+- `className` and `--mf-tabs-*` / `--mf-editor-*` CSS variables customize the UI.
 
 The installed `components/MonacoEditorTypeFox/README.md` includes additional dependency and setup guidance.
 
@@ -105,4 +105,4 @@ The installed `components/MonacoEditorTypeFox/README.md` includes additional dep
 
 ## Styling
 
-Customize the editor using `className` and the public `--mf-monaco-*` CSS variables described in Advanced options.
+Customize the workspace using `className`, `--mf-tabs-*`, and `--mf-editor-*` CSS variables. The underlying Monaco runtime is UI-free.

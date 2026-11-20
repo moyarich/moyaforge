@@ -73,8 +73,8 @@ The example styles live alongside its TSX source; use the `--mf-preview-*` varia
 
 ## Workspace tabs
 
-Use `workspaceTabs` to opt into the composable tabbed editor layout. Style tabs and their panels using `--mf-tabs-*` CSS variables. `showBreadcrumbs` enables the file path, `renderBreadcrumbs` customizes it, and `tools` accepts app-provided React buttons. `onCloseFile` is an optional host-managed close callback. The original Monaco tabs remain the default.
+`CodePreviewEditor` always uses the UI-owned editor workspace. Style tabs and their panels using `--mf-tabs-*` CSS variables. `showBreadcrumbs` enables the file path, `renderBreadcrumbs` customizes it, and `tools` accepts app-provided React buttons. `onCloseFile` is an optional host-managed close callback. 
 
 ```tsx
-<CodePreviewEditor title="Editor" files={files} workspaceTabs showBreadcrumbs tools={<button onClick={openSearch}>Search</button>} renderPreview={renderPreview} />
+<CodePreviewEditor title="Editor" files={files}  showBreadcrumbs tools={<button onClick={openSearch}>Search</button>} renderPreview={renderPreview} />
 ```

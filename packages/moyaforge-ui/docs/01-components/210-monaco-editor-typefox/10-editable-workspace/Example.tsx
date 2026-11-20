@@ -1,24 +1,18 @@
 import { useState } from "react";
-import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
 
 export default function MultiFileEditor() {
   const [saved, setSaved] = useState("");
+  const [files, setFiles] = useState([
+    { name: "App.tsx", value: "export default function App() {\\n  return <h1>Hello, MoyaForge!</h1>;\\n}\\n" },
+    { name: "styles.css", value: "h1 {\\n  color: royalblue;\\n}\\n" },
+    { name: "package.json", value: '{\\n  "name": "my-app",\\n  "private": true\\n}\\n', readOnly: true },
+  ]);
   return (
     <div>
-      <MonacoEditorTypeFox
-        files={[
-          {
-            name: "App.tsx",
-            value:
-              "export default function App() {\n  return <h1>Hello, MoyaForge!</h1>;\n}\n",
-          },
-          { name: "styles.css", value: "h1 {\n  color: royalblue;\n}\n" },
-          {
-            name: "package.json",
-            value: '{\n  "name": "my-app",\n  "private": true\n}\n',
-            readOnly: true,
-          },
-        ]}
+      <TypeFoxEditorWorkspace
+        files={files}
+        onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}
         height={320}
         onSave={(name, value) =>
           setSaved(
