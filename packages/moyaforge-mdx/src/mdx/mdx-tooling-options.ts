@@ -1,3 +1,6 @@
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import type { DirectiveNode } from "../plugins/remark/remark-directive/directive-node.js";
 import { directiveHeaderRules } from "../plugins/remark/directive-header-rules.js";
 import remarkDirective from "remark-directive";
 import { remarkNormalizeDirectiveNodes } from "../plugins/remark/custom-block/remark-normalize-directive-nodes.js";
@@ -59,7 +62,11 @@ export function createMdxOptions({
     remarkFrontmatter,
     remarkGfm,
     remarkDirective,
-    [remarkNormalizeDirectiveHeaders, directiveHeaderRules, { allowInlinePreviewStyles }],
+    [
+      remarkNormalizeDirectiveHeaders,
+      directiveHeaderRules,
+      { allowInlinePreviewStyles },
+    ],
     [remarkFlexibleContainers, customBlockOptions],
     remarkNormalizeDirectiveNodes,
   ];
@@ -69,8 +76,31 @@ export function createMdxOptions({
       filePreviewOptions === true ? {} : filePreviewOptions,
     ]);
   }
-  if (componentMappings) {
-    remarkPlugins.push([remarkMapDirectivesToComponents, componentMappings]);
+  const previewMappings =
+    componentMappings &&
+    Object.fromEntries(
+      Object.entries(componentMappings).map(([name, mapping]) => [
+        name,
+        {
+          ...mapping,
+          renderPreviewMarkdown(source: string, authoredFile?: string) {
+            const processor = unified().use(remarkParse).use(remarkPlugins);
+            const file = { value: source, path: authoredFile };
+            return (
+              processor.runSync(processor.parse(file), file) as unknown as {
+                children: DirectiveNode[];
+              }
+            ).children;
+          },
+          previewMdxOptions: {
+            providerImportSource: "@mdx-js/react",
+            remarkPlugins,
+          } as import("@mdx-js/mdx").CompileOptions,
+        },
+      ]),
+    );
+  if (previewMappings) {
+    remarkPlugins.push([remarkMapDirectivesToComponents, previewMappings]);
   }
   remarkPlugins.push(...additionalRemarkPlugins);
   if (exportFrontmatter) {
@@ -85,6 +115,10 @@ export function createMdxOptions({
   ];
   if (highlightingPlugin) rehypePlugins.push(highlightingPlugin);
   rehypePlugins.push(...additionalRehypePlugins);
+
+  for (const mapping of Object.values(previewMappings ?? {})) {
+    mapping.previewMdxOptions.rehypePlugins = rehypePlugins;
+  }
 
   return {
     providerImportSource: "@mdx-js/react",

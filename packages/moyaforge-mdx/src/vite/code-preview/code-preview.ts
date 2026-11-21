@@ -378,6 +378,8 @@ export function createCodePreviewPlugin({
     },
 
     resolveId(id, importer) {
+      const siblingId = inlineReact.resolveImport(id, importer);
+      if (siblingId) return siblingId;
       const inlineId = inlineReact.resolve(id);
       if (inlineId) return inlineId;
       const authoredFile = inlineReact.importer(importer);

@@ -4,8 +4,6 @@ label: Warning
 description: Help readers avoid problems before taking a risky step.
 ---
 
-import MarkdownWarning from "./Example.mdx";
-
 # Warning
 
 ## React Component
@@ -14,47 +12,28 @@ import MarkdownWarning from "./Example.mdx";
 
 ::code-preview-sources{files="./example.css"}
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
-import "./example.css";
 
-<CustomBlock
-  className="warning-example"
-  type="warning"
-  title="Before you continue"
->
-  Save a backup before changing your settings.
-</CustomBlock>
+export default function WarningExample() {
+  return (
+    <CustomBlock
+      className="warning-example"
+      type="warning"
+      title="Before you continue"
+    >
+      Save me
+    </CustomBlock>
+  );
+}
 
 ::::
 
 ---
 
-### MDX Source
-
-Place a warning before a step where readers need to take action, such as saving a backup before changing settings.
-
-::::code-preview[Warning]
-
-::code-preview-sources{files="./Example.mdx,./example.css"}
-
-<div className="warning-example">
-  <MarkdownWarning />
-</div>
-
-::::
-
 ## Markdown Source
 
 Write the warning directly in Markdown. The title follows `warning`, and the body supports Markdown formatting.
 
-::::code-preview[Inline Markdown warning]{preview="example.md"}
-
-```css filename="example.css"
-.custom-block.warning.warning-example,
-.warning-example .custom-block.warning {
-  --mf-custom-block-bg: color-mix(in srgb, #b45309 12%, transparent);
-  --mf-custom-block-border: #b45309;
-}
-```
+::::code-preview[Inline Markdown warning]{preview="example.md,example.css,example.tsx"}
 
 ```md filename="example.md"
 ::: warning Before you continue
@@ -69,7 +48,29 @@ Read the [component documentation](../) before continuing.
 :::
 ```
 
-::::
+```css filename="example.css"
+.custom-block.warning {
+  --mf-custom-block-bg: color-mix(in srgb, #b45309 12%, transparent);
+  --mf-custom-block-border: #27bd10;
+}
+```
 
+```tsx filename="example.tsx"
+import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+
+export default function WarningExample() {
+  return (
+    <CustomBlock
+      className="warning-example"
+      type="warning"
+      title="Before you continue"
+    >
+      Save me
+    </CustomBlock>
+  );
+}
+```
+
+::::
 
 [Component documentation](../)

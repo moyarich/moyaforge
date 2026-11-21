@@ -1,3 +1,6 @@
+import { parseImportsExports } from "parse-imports-exports";
+import type { InlinePreviewOptions } from "./inline-preview-options.js";
+import { renderPreviewStyles } from "./render-preview-styles.js";
 import { renderMarkdownFence } from "./render-markdown-fence.js";
 import { importInlineReactExample } from "./inline-react-module.js";
 import type { InlinePreviewAsset } from "./mask-inline-preview-assets.js";
@@ -19,7 +22,15 @@ export interface PreviewComponentOptions {
   sourceProp?: string;
   filesProp?: string;
   localSources?: boolean;
-  registerInlineReact?: (source: string, authoredFile: string) => string;
+  registerInlineReact?: (
+    source: string,
+    authoredFile: string,
+    options?: InlinePreviewOptions,
+  ) => string;
+  /** Parse selected Markdown through the host's configured remark plugins. */
+  renderPreviewMarkdown?: (source: string, authoredFile?: string) => Node[];
+  /** Compiler configuration for isolated MDX fences. */
+  previewMdxOptions?: InlinePreviewOptions["mdxOptions"];
   resolveCodePreviewComponent?: (
     reference: string,
     authoredFile: string,
@@ -99,17 +110,109 @@ export function collectPreviewContent(
     return false;
   });
   if (header?.preview) {
-    const matches = fences.filter((fence) => fence.label === header.preview);
-    if (matches.length !== 1)
+    const names = header.preview.split(",").map((name) => name.trim());
+    if (names.some((name) => !name) || new Set(names).size !== names.length)
       throw new Error(
-        `code-preview preview="${header.preview}" must match exactly one named code fence.`,
+        "code-preview preview requires distinct, nonempty fence filenames.",
       );
-    const fence = matches[0];
-    if (!/^(md|markdown)$/.test(fence.language ?? ""))
-      throw new Error(
-        "code-preview preview currently supports md or markdown fences.",
-      );
-    content.splice(0, content.length, ...renderMarkdownFence(fence.code));
+    const selectedFences = names.map((name) => {
+      const matches = fences.filter((fence) => fence.label === name);
+      if (matches.length !== 1)
+        throw new Error(
+          `code-preview preview="${name}" must match exactly one named code fence.`,
+        );
+      return matches[0];
+    });
+    const styles = selectedFences.filter(
+      (fence) => previewLanguage(fence) === "css",
+    );
+    const entries = selectedFences.filter(
+      (fence) => previewLanguage(fence) !== "css",
+    );
+    const rendered = entries.flatMap((fence) => {
+      const language = previewLanguage(fence);
+      if (language === "md" || language === "markdown")
+        return (selected.renderPreviewMarkdown ?? renderMarkdownFence)(
+          fence.code,
+          filePath,
+        );
+      if (language === "html") {
+        const value = JSON.stringify(fence.code);
+        return [
+          {
+            type: "mdxJsxFlowElement",
+            name: "div",
+            attributes: [
+              {
+                type: "mdxJsxAttribute",
+                name: "dangerouslySetInnerHTML",
+                value: {
+                  type: "mdxJsxAttributeValueExpression",
+                  value: `{__html: ${value}}`,
+                  data: {
+                    estree: {
+                      type: "Program",
+                      sourceType: "module",
+                      body: [
+                        {
+                          type: "ExpressionStatement",
+                          expression: {
+                            type: "ObjectExpression",
+                            properties: [
+                              {
+                                type: "Property",
+                                kind: "init",
+                                method: false,
+                                shorthand: false,
+                                computed: false,
+                                key: { type: "Identifier", name: "__html" },
+                                value: { type: "Literal", value: fence.code },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            ],
+            children: [],
+          } as unknown as Node,
+        ];
+      }
+      if (["mdx", "jsx", "tsx", "js", "ts"].includes(language)) {
+        if (!filePath || !selected.registerInlineReact)
+          throw new Error(
+            `Rendering ${language} fences requires the Vite code-preview plugin.`,
+          );
+        return [
+          importInlineReactExample(
+            file,
+            selected.registerInlineReact(fence.code, filePath, {
+              format: language as InlinePreviewOptions["format"],
+              filename: fence.label,
+              files,
+              mdxOptions: selected.previewMdxOptions,
+            }),
+          ),
+        ];
+      }
+      // Source languages without a component runtime render as highlighted code.
+      return [{ type: "code", lang: language, value: fence.code } as Node];
+    });
+    content.splice(
+      0,
+      content.length,
+      ...(styles.length
+        ? [
+            renderPreviewStyles(
+              rendered,
+              styles.map((fence) => fence.code).join("\n\n"),
+            ),
+          ]
+        : rendered),
+    );
   }
   if (selected.filesProp && files.length) {
     attributes.push({
@@ -170,7 +273,16 @@ export function collectPreviewContent(
       return [
         importInlineReactExample(
           file,
-          selected.registerInlineReact(body, filePath),
+          selected.registerInlineReact(
+            body,
+            filePath,
+            parseImportsExports(body, {
+              ignoreDynamicImports: true,
+              ignoreRequires: true,
+            }).defaultExport
+              ? { format: "tsx", filename: "preview.tsx", files }
+              : undefined,
+          ),
         ),
       ];
     }
@@ -238,4 +350,20 @@ function sourceFromPreviewContainer(
     .slice(openerEnd + 1, closerStart)
     .replace(/^(?:[ \t]*\r?\n)+/, "")
     .replace(/(?:\r?\n[ \t]*)+$/, "");
+}
+
+function previewLanguage(file: PreviewFile): string {
+  const language = (
+    file.language ??
+    file.label.split(".").at(-1) ??
+    ""
+  ).toLowerCase();
+  return (
+    (
+      { javascript: "js", typescript: "ts", react: "jsx" } as Record<
+        string,
+        string
+      >
+    )[language] ?? language
+  );
 }

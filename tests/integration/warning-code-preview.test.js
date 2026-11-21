@@ -46,9 +46,14 @@ test("Warning previews accept a source directive before inline React imports and
     ),
   );
 
-  expect(registered).toHaveLength(1);
+  expect(registered).toHaveLength(2);
+  expect(registered[1].source).toContain(
+    "export default function WarningExample",
+  );
   expect(registered[0].authoredFile).toBe(page);
-  expect(registered[0].source).toContain('import "./example.css";');
+  expect(registered[0].source).toContain(
+    "export default function WarningExample",
+  );
   expect(registered[0].source).toMatch(
     /<CustomBlock\s+className="warning-example"/,
   );
@@ -57,21 +62,24 @@ test("Warning previews accept a source directive before inline React imports and
   expect(output).toContain("virtual:moyaforge-mdx/react-preview/warning");
   expect(output).toContain("example.md");
   expect(output).toContain("_components.strong");
-  expect(output).toContain("Example.mdx");
+  expect(output).toContain("@scope (.mf-preview-fence-");
   expect(output).toContain("example.css");
   expect(output.match(/replacementPreset: "portable"/g)).toHaveLength(1);
-  expect(output).toContain("Save a backup before changing your settings.");
+  expect(output).toContain("Save me");
 });
 
-test("Markdown source stays free of documentation wrappers and the page supplies its styling", async () => {
-  const example = await readFile(resolve(directory, "Example.mdx"), "utf8");
+test("Markdown and CSS are authored inline without a React or documentation wrapper", async () => {
   const value = await readFile(page, "utf8");
-  const styles = await readFile(resolve(directory, "example.css"), "utf8");
-
-  expect(example).toContain("::: warning Before you continue");
-  expect(example).not.toContain("code-preview");
-  expect(example).not.toContain("import ");
-  expect(value).toContain('preview="example.md"');
-  expect(value).toContain('filename="example.css"');
-  expect(styles).toContain(".warning-example .custom-block.warning");
+  const markdown = /```md filename="example.md"\n([\s\S]*?)\n```/.exec(
+    value,
+  )?.[1];
+  const css = /```css filename="example.css"\n([\s\S]*?)\n```/.exec(value)?.[1];
+  expect(markdown).toContain("::: warning Before you continue");
+  expect(markdown).not.toContain("code-preview");
+  expect(markdown).not.toContain("import ");
+  expect(value).toMatch(
+    /preview="example\.md,example\.css(?:,example\.(?:sh|tsx))?"/,
+  );
+  expect(css).toContain(".custom-block.warning");
+  expect(css).toContain("--mf-custom-block-border");
 });

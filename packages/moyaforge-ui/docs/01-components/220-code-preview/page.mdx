@@ -343,12 +343,12 @@ Set `--mf-preview-border`, `--mf-preview-radius`, or `--mf-preview-padding` on a
 
 For a custom toolbar or source panel, use the individual [Preview slots](/ui/components/preview) and install them with `add preview`.
 
-## Render a named Markdown fence
+## Render selected source fences
 
-Use `preview="example.md"` to select the named Markdown fence rendered in the preview. Every named fence stays available in the source tabs. CSS fences remain source files; selecting Markdown does not execute JavaScript or automatically apply CSS.
+Use `preview="example.md,example.css"` to render a named Markdown fence with selected CSS fences. Styles are scoped to the preview. Every named fence stays available in the source tabs. Selecting only `preview="example.md"` renders the Markdown without applying CSS fences.
 
 `````md
-::::code-preview[Warning]{preview="example.md"}
+::::code-preview[Warning]{preview="example.md,example.css"}
 
 ```css filename="example.css"
 .custom-block.warning { --mf-custom-block-border: #b45309; }
@@ -365,4 +365,23 @@ Save a **backup** before changing your settings.
 ::::
 `````
 
-The selected fence must use `md` or `markdown` and its filename must match exactly once. Combine this with source fences as needed. Use one preview selection mechanism per directive: `preview`, `component`, `code`, or `react`.
+Select one or more filenames, separated by commas. Each filename must match exactly one named fence. Content renders in the selected order:
+
+| Fence language | Preview behavior |
+| --- | --- |
+| `md`, `markdown` | Parse with your configured remark plugins, including custom directives. |
+| `mdx` | Compile an isolated MDX component with your configured remark and rehype plugins. |
+| `jsx`, `tsx`, `js`, `ts` | Compile a React module with a default component export. |
+| `html` | Render HTML markup. |
+| `css` | Apply styles scoped to the preview. |
+| Other languages | Render a highlighted code block. |
+
+React and MDX entry fences can import sibling named fences, including TypeScript, JavaScript, JSON, CSS, and other component files. Relative imports that do not match an inline file resolve from the authored documentation file. React and MDX previews require the Vite code-preview plugin.
+
+For example, `preview="App.tsx,styles.css"` renders a React entry with scoped CSS; `preview="intro.md,example.sh"` renders Markdown followed by a shell code block.
+
+ The CSS is contained with native CSS `@scope`. Combine this with source fences as needed. Use one preview selection mechanism per directive: `preview`, `component`, `code`, or `react`.
+
+### Full React modules
+
+A `{react}` body can contain imports and a complete JSX/TSX module with a default component export. The module compiles independently of the surrounding MDX page, so function bodies and TypeScript annotations stay out of the MDX expression parser. Bodies containing imports followed by JSX also continue to work.

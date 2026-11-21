@@ -6,6 +6,20 @@ export function maskInlineReactImports(source: string, code: string): string {
     ignoreDynamicImports: true,
     ignoreRequires: true,
   });
+  if (imports.defaultExport) {
+    // Fenced source tabs were blanked in code by the directive parser. Preserve
+    // those and source directives, but hide the complete module from MDX.
+    const codeLines = code.split(/(?<=\n)/);
+    return source
+      .split(/(?<=\n)/)
+      .map((line, index) => {
+        const moduleLine = codeLines[index] ?? "";
+        return !moduleLine.trim() || /^\s*:{2,}/.test(moduleLine)
+          ? line
+          : line.replace(/\S/g, "x");
+      })
+      .join("");
+  }
   const groups: (
     Record<string, { start: number; end: number }[]> | undefined
   )[] = [
