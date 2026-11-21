@@ -1,8 +1,8 @@
-import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+import { TypeFoxEditorWorkspace } from "../../../../src/components/TypeFoxEditorWorkspace/index.js";
 
 export default function ReadOnlyEditor() {
   return (
-    <MonacoEditorTypeFox
+    <TypeFoxEditorWorkspace
       readOnly
       height={220}
       files={[

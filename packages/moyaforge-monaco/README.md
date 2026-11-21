@@ -1,13 +1,13 @@
 # @moyarich/moyaforge-monaco
 
-Standalone Monaco React and TypeFox editor components plus application-level worker integration, independent of the MDX compiler.
+Headless Monaco React and TypeFox editor runtimes, with models and application-level worker integration. Reusable tabs, toolbar, breadcrumbs and actions live in `@moyarich/moyaforge-ui`.
 
 ## Package entry points
 
 | Import | Purpose |
 | --- | --- |
-| `/components/MonacoEditorReact` | React Monaco editor, code group, file workspace |
-| `/components/MonacoEditorTypeFox` | TypeFox editor backed by VS Code services |
+| `/components/MonacoEditorReact` | Headless React Monaco editor runtime |
+| `/components/MonacoEditorTypeFox` | Headless TypeFox editor runtime backed by VS Code services |
 | `/styles.css` | Combined Monaco component styles |
 | `/react` | Standalone `@monaco-editor/react` workers |
 | `/typefox` | Standalone TypeFox workers |
@@ -73,7 +73,19 @@ import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoE
 import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 ```
 
-Both components, their shared file workspace, loading states, and styles are
-published from this package. The separate MoyaForge UI package does not need
-Monaco to render unrelated components. If both editor engines are mounted,
-initialize the shared runtime once at the application entry point.
+These components render editor content only; they do not provide tabs, a toolbar, Save or Copy controls. Mount them inside `EditorWorkspace` from `moyaforge-ui`, or import the ready-to-compose `MonacoEditorWorkspace` and `TypeFoxEditorWorkspace` wrappers from that package. File selection is controlled with `activeFile`; external updates arrive through the `files` prop and edits through `onFileChange`.
+
+For example:
+
+```tsx
+import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+
+<MonacoEditorWorkspace
+  files={files}
+  onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}
+  height={320}
+  showBreadcrumbs
+/>;
+```
+
+This intentionally replaces the former Monaco-owned tabs, actions and `MonacoCodeGroup` API. When mounting both editor engines, initialize their shared runtime once at the application entry point.

@@ -1,0 +1,7 @@
+.mf-tabs-content {
+  background: var(--_mf-tabs-surface); color: var(--mf-tabs-content-color, inherit);
+  padding: var(--mf-tabs-content-padding, 0);
+  border: var(--mf-tabs-panel-border-width, 0px) solid var(--_mf-tabs-border); border-top: 0;
+  min-height: var(--mf-tabs-panel-min-height, 0);
+}
+.mf-tabs-content[hidden] { display: none; }

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
-import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
-import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+import { MonacoEditorWorkspace } from "../src/components/MonacoEditorWorkspace/index.js";
+import { TypeFoxEditorWorkspace } from "../src/components/TypeFoxEditorWorkspace/index.js";
 
 const reactFiles = [
   {
@@ -58,7 +58,7 @@ type Story = StoryObj<typeof meta>;
 export const ReactMonaco: Story = {
   render: () => (
     <div style={{ maxWidth: 880 }}>
-      <MonacoEditorReact files={reactFiles} height={340} />
+      <MonacoEditorWorkspace files={reactFiles} height={340} />
     </div>
   ),
 };
@@ -66,7 +66,7 @@ export const ReactMonaco: Story = {
 export const TypeFoxMonaco: Story = {
   render: () => (
     <div style={{ maxWidth: 880 }}>
-      <MonacoEditorTypeFox files={typefoxFiles} height={340} />
+      <TypeFoxEditorWorkspace files={typefoxFiles} height={340} />
     </div>
   ),
 };
@@ -83,11 +83,11 @@ export const SideBySide: Story = {
     >
       <section aria-label="React Monaco editor">
         <h3>React Monaco</h3>
-        <MonacoEditorReact files={reactFiles} height={340} />
+        <MonacoEditorWorkspace files={reactFiles} height={340} />
       </section>
       <section aria-label="TypeFox Monaco editor">
         <h3>TypeFox</h3>
-        <MonacoEditorTypeFox files={typefoxFiles} height={340} />
+        <TypeFoxEditorWorkspace files={typefoxFiles} height={340} />
       </section>
     </div>
   ),

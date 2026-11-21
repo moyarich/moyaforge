@@ -1,0 +1,108 @@
+---
+title: moyaforge init
+label: init
+---
+
+# `moyaforge init`
+
+Use `init` to configure MoyaForge in an existing project or scaffold a complete React/Vite/MDX documentation application.
+
+## Configure an existing project
+
+Run this command from the root of your project:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init
+```
+
+Without a template, `init` creates `moyaforge.components.json`, which stores the component registry and installation directory used by `moyaforge add`. Use `--template` when you want to generate an application as well.
+
+## Generate a documentation project
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template docs
+npm run dev
+```
+
+The `docs` template generates an application with React, Vite, MDX, and starter pages in `docs/`. It installs editable `docs-shell` and `code-group` components from the component registry into `src/components/ui/`.
+
+## Choose a template
+
+| Template     | Use it for                                                           |
+| ------------ | -------------------------------------------------------------------- |
+| `docs`       | A documentation site with a docs shell and grouped code blocks.      |
+| `hybrid`     | Documentation with a separate interactive playground route.          |
+| `playground` | A documentation playground with registry-based UI and code previews. |
+| `existing`   | A separate documentation entry inside your existing React project.   |
+
+Start each new site in its own empty directory:
+
+```sh
+mkdir my-docs
+cd my-docs
+npx @moyarich/moyaforge-cli@latest init --template docs
+npm run dev
+```
+
+### Enable search
+
+Choose search when you scaffold the project:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template playground --search
+```
+
+### Add documentation to an existing app
+
+From your application's root directory, run:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template existing
+npm run docs:dev
+```
+
+The `playground` template uses consumer-owned `registry.config.ts` and `docs/` content, MDX directives, source links, Shiki highlighting, and components installed via the same registry mechanism as `moyaforge add`. SQLite search is optional, and `--search` enables its Vite plugin and search UI. It does not depend on the MoyaForge monorepo's `apps/playground` paths.
+
+The `existing` template puts its entry under `moyaforge/` and adds `docs:*` scripts without replacing the host application's existing scripts or dependency versions.
+
+## Common flags
+
+- `--template docs|hybrid|playground|existing` chooses the generated site.
+- `--mode source|package` selects whether the framework is installed as a package.
+- `--search` enables SQLite-backed documentation search.
+- `--cwd <path>` chooses the destination project.
+- `--registry <source>` selects a registry directory, `registry.json` file, or URL.
+- `--directory <path>` selects where editable UI components are installed.
+- `--dry-run --diff` previews file changes without writing.
+- `--no-install` skips npm installation.
+- `--overwrite` permits replacing existing files.
+
+Generated components remain editable, and existing files are preserved unless `--overwrite` is supplied.
+
+## Inspect changes before applying them
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template docs --dry-run --diff
+npx @moyarich/moyaforge-cli@latest init --template docs
+```
+
+The first command prints the planned changes. The second writes them and installs dependencies. Review existing files before using `--overwrite`.
+
+## Install dependencies separately
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template docs --no-install
+npm install
+npm run dev
+```
+
+## Target another directory
+
+Create the destination first. `--cwd` selects an existing directory:
+
+```sh
+mkdir my-docs
+npx @moyarich/moyaforge-cli@latest init --cwd ./my-docs --template docs
+cd my-docs
+npm run dev
+```

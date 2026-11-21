@@ -1,0 +1,31 @@
+.tab-theme-demo { display: grid; gap: 1rem; width: 100%; max-width: 50rem; margin-inline: auto; }
+.tab-theme-picker { display: flex; align-items: center; gap: .75rem; font-size: .875rem; }
+.tab-theme-picker select { border: 1px solid currentColor; border-radius: .375rem; color: inherit; background: transparent; padding: .375rem .625rem; }
+.tab-theme-example { border: 1px solid color-mix(in srgb, currentColor 15%, transparent); border-radius: .5rem; overflow: hidden; }
+.tab-theme-panel { padding: 1rem; line-height: 1.6; }
+.tab-theme-panel h3 { margin: 0 0 .5rem; font-size: 1rem; }
+.tab-theme-panel p { margin: 0 0 .75rem; }
+.tab-theme-panel pre { overflow: auto; }
+.tab-theme--workspace {
+  --mf-tabs-surface: #fff;
+  --mf-tabs-strip: #e8e8e8;
+  --mf-tabs-active-background: #fff;
+  --mf-tabs-list-padding: 0 .75rem;
+  --mf-tabs-radius: .65rem .65rem 0 0;
+  --mf-tabs-corner-size: .75rem;
+  --mf-tabs-indicator-size: 0px;
+}
+.tab-theme--fluent {
+  --mf-tabs-surface: #fff;
+  --mf-tabs-strip: #fff;
+  --mf-tabs-border: #e0e0e0;
+  --mf-tabs-accent: #0f6cbd;
+  --mf-tabs-list-border-width: 1px;
+  --mf-tabs-indicator-size: 3px;
+  --mf-tabs-indicator-inset: .75rem;
+  --mf-tabs-indicator-bottom: -1px;
+  --mf-tabs-indicator-radius: 3px;
+  --mf-tabs-active-font-weight: 600;
+  --mf-tabs-text-color: #616161;
+  --mf-tabs-active-color: #242424;
+}

@@ -70,3 +70,11 @@ export const workerSource = 'import { configureReactWorkers } from "@moyarich/mo
 ## Styling
 
 The example styles live alongside its TSX source; use the `--mf-preview-*` variables for the outer preview frame.
+
+## Workspace tabs
+
+`CodePreviewEditor` always uses the UI-owned editor workspace. Style tabs and their panels using `--mf-tabs-*` CSS variables. `showBreadcrumbs` enables the file path, `renderBreadcrumbs` customizes it, and `tools` accepts app-provided React buttons. 
+
+```tsx
+<CodePreviewEditor title="Editor" files={files} showBreadcrumbs tools={<button onClick={openSearch}>Search</button>} renderPreview={renderPreview} />
+```

@@ -7,9 +7,7 @@
 
 .mf-code-preview-editor-source {
   min-inline-size: 0;
-  --mf-monaco-border-radius: 0;
-}
-
-.mf-code-preview-editor-source .mf-monaco {
-  border: 0;
+  /* The preview already owns the frame; keep the tab and panel styling. */
+  --mf-editor-radius: 0;
+  --mf-editor-border: transparent;
 }

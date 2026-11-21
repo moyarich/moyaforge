@@ -1,0 +1,10 @@
+.mf-tabs {
+  min-width: 0;
+  --_mf-tabs-surface: var(--mf-tabs-surface, transparent);
+  --_mf-tabs-strip: var(--mf-tabs-strip, transparent);
+  --_mf-tabs-border: var(--mf-tabs-border, transparent);
+  --_mf-tabs-accent: var(--mf-tabs-accent, currentColor);
+  --_mf-tabs-active-background: var(--mf-tabs-active-background, transparent);
+  --_mf-tabs-corner-size: var(--mf-tabs-corner-size, 0px);
+  --_mf-tabs-indicator-size: var(--mf-tabs-indicator-size, 2px);
+}

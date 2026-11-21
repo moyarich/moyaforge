@@ -18,6 +18,7 @@ export function Navigation({ groups, onNavigate }: NavigationProps) {
             className="mf-navigation-row"
             end
             to={node.page.path}
+            title={node.page.label}
             onClick={() => onNavigate?.()}
           >
             <MenuIcon name={node.page.icon} />
@@ -66,13 +67,14 @@ function NavigationGroup({
   const collapsible = group.collapsible && group.nodes.length > 0;
   const Chevron = open ? ChevronDown : ChevronRight;
   return (
-    <section>
+    <section className="mf-navigation-group">
       <div className="title mf-navigation-group-title">
         {group.page ? (
           <NavLink
             className="mf-navigation-row"
             end
             to={group.page.path}
+            title={group.label}
             onClick={() => onNavigate?.()}
           >
             <MenuIcon name={group.page.icon} />
@@ -96,7 +98,11 @@ function NavigationGroup({
           </button>
         )}
       </div>
-      <ul id={id} hidden={Boolean(collapsible && !open)}>
+      <ul
+        className="mf-navigation-group-items"
+        id={id}
+        hidden={Boolean(collapsible && !open)}
+      >
         {children}
       </ul>
     </section>

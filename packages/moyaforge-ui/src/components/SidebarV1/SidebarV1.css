@@ -1,0 +1,98 @@
+:root {
+  --mf-sidebar-scrollbar: light-dark(#c4c4c4, #555555);
+  --mf-sidebar-scrollbar-hover: light-dark(#a3a3a3, #737373);
+}
+
+.mf-sidebar.mf-sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 16px 0 0;
+}
+.mf-sidebar-panel > :not(.mf-sidebar-scroll) {
+  flex-shrink: 0;
+  margin-inline: 12px;
+}
+.mf-sidebar-scroll {
+  --_mf-sidebar-scrollbar: var(--mf-sidebar-scrollbar);
+  --_mf-sidebar-scrollbar-hover: var(--mf-sidebar-scrollbar-hover);
+  --_mf-sidebar-fade-top: 0px;
+  --_mf-sidebar-fade-bottom: 0px;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--_mf-sidebar-scrollbar) transparent;
+  overscroll-behavior: contain;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--_mf-sidebar-fade-top),
+    #000 calc(100% - var(--_mf-sidebar-fade-bottom)),
+    transparent
+  );
+}
+.mf-sidebar-fade-top {
+  --_mf-sidebar-fade-top: 18px;
+}
+.mf-sidebar-fade-bottom {
+  --_mf-sidebar-fade-bottom: 18px;
+}
+.mf-sidebar-scroll-content {
+  padding: 0 16px 12px;
+}
+.mf-sidebar-panel nav a,
+.mf-sidebar-panel .mf-navigation-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mf-sidebar-wrap-navigation nav a,
+.mf-sidebar-wrap-navigation .mf-navigation-label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.mf-sidebar-panel .mf-sidebar-footer {
+  margin-top: 1rem;
+}
+@media (max-width: 720px) {
+  .mf-docs .mf-sidebar.mf-sidebar-panel {
+    display: none;
+  }
+  .mf-docs .mf-sidebar.mf-sidebar-panel.is-open,
+  .mf-docs .is-menu-open .mf-sidebar.mf-sidebar-panel {
+    display: flex;
+  }
+}
+
+.mf-sidebar-scroll:hover {
+  scrollbar-color: var(--_mf-sidebar-scrollbar-hover) transparent;
+}
+.mf-sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.mf-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.mf-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--_mf-sidebar-scrollbar);
+  border-radius: 999px;
+}
+.mf-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--_mf-sidebar-scrollbar-hover);
+}
+.mf-sidebar-panel > .mf-version {
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+}
+.mf-sidebar-panel
+  .mf-navigation-group:first-child
+  > .mf-navigation-group-title {
+  margin-top: 12px;
+}
+.mf-sidebar-panel > .mf-sidebar-footer {
+  margin-bottom: 12px;
+}

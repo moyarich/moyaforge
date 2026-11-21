@@ -342,3 +342,27 @@ strong {
 Set `--mf-preview-border`, `--mf-preview-radius`, or `--mf-preview-padding` on a containing element to style the preview frame.
 
 For a custom toolbar or source panel, use the individual [Preview slots](/ui/components/preview) and install them with `add preview`.
+
+## Render a named Markdown fence
+
+Use `preview="example.md"` to select the named Markdown fence rendered in the preview. Every named fence stays available in the source tabs. CSS fences remain source files; selecting Markdown does not execute JavaScript or automatically apply CSS.
+
+`````md
+::::code-preview[Warning]{preview="example.md"}
+
+```css filename="example.css"
+.custom-block.warning { --mf-custom-block-border: #b45309; }
+```
+
+```md filename="example.md"
+::: warning Before you continue
+
+Save a **backup** before changing your settings.
+
+:::
+```
+
+::::
+`````
+
+The selected fence must use `md` or `markdown` and its filename must match exactly once. Combine this with source fences as needed. Use one preview selection mechanism per directive: `preview`, `component`, `code`, or `react`.

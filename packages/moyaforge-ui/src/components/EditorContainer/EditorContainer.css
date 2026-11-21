@@ -1,0 +1,184 @@
+.mf-editor-container {
+  --_mf-editor-border: var(
+    --mf-editor-border,
+    color-mix(in srgb, currentColor 14%, transparent)
+  );
+  --_mf-editor-radius: var(--mf-editor-radius, 0.75rem);
+  --_mf-editor-surface: var(--mf-editor-surface, transparent);
+  --_mf-editor-toolbar-background: var(
+    --mf-editor-toolbar-background,
+    color-mix(in srgb, currentColor 2%, transparent)
+  );
+  --_mf-editor-toolbar-border: var(
+    --mf-editor-toolbar-border-color,
+    var(--_mf-editor-border)
+  );
+  --_mf-editor-hover: var(
+    --mf-editor-hover-background,
+    color-mix(in srgb, currentColor 5%, transparent)
+  );
+  --_mf-editor-focus: var(
+    --mf-editor-focus-color,
+    color-mix(in srgb, currentColor 40%, transparent)
+  );
+
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--_mf-editor-border);
+  border-radius: var(--_mf-editor-radius);
+  background: var(--_mf-editor-surface);
+  font-size: var(--mf-editor-font-size, 0.8125rem);
+}
+
+/*
+ * Match the editor shell from PR #254 by default: quiet toolbar, divided
+ * strip, flat tabs with a 2px active underline. All exposed tab/panel
+ * variables are still owned by Tabs and may be overridden on any ancestor.
+ * Curved tabs opt in by setting --mf-tabs-corner-size and
+ * --mf-tabs-active-background, without a React variant.
+ */
+.mf-editor-container .mf-tabs {
+  --_mf-tabs-surface: var(--mf-tabs-surface, var(--_mf-editor-surface));
+  --_mf-tabs-strip: var(--mf-tabs-strip, var(--_mf-editor-toolbar-background));
+  --_mf-tabs-border: var(--mf-tabs-border, var(--_mf-editor-toolbar-border));
+  --_mf-tabs-active-background: var(--mf-tabs-active-background, transparent);
+  --_mf-tabs-corner-size: var(--mf-tabs-corner-size, 0px);
+  --_mf-tabs-indicator-size: var(--mf-tabs-indicator-size, 2px);
+}
+
+.mf-editor-toolbar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: var(--mf-editor-toolbar-min-height, 3rem);
+  padding-inline: var(--mf-editor-toolbar-padding-inline, 0.375rem);
+  background: var(--mf-tabs-strip, var(--_mf-editor-toolbar-background));
+  border-bottom: var(--mf-editor-toolbar-border-width, 1px) solid
+    var(--_mf-editor-toolbar-border);
+}
+
+.mf-editor-toolbar > .mf-tabs-list-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.mf-editor-toolbar .mf-tabs-list {
+  gap: var(--mf-tabs-gap, 0.25rem);
+  background: transparent;
+  border-bottom: 0;
+}
+
+.mf-editor-toolbar .mf-tabs-trigger {
+  padding: var(--mf-tabs-trigger-padding, 0.75rem 0.875rem);
+  line-height: var(--mf-tabs-trigger-line-height, 1.5);
+}
+
+.mf-editor-toolbar .mf-tabs-trigger[aria-selected="true"] {
+  font-weight: var(--mf-tabs-active-font-weight, 600);
+}
+
+.mf-editor-toolbar .mf-tabs-trigger:focus-visible {
+  outline-color: var(--_mf-editor-focus);
+}
+
+.mf-editor-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex: none;
+}
+
+.mf-editor-tools button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border: 1px solid var(--mf-editor-action-border-color, var(--_mf-editor-border));
+  border-radius: var(--mf-editor-action-radius, 0.5rem);
+  padding: var(--mf-editor-action-padding, 0.375rem 0.625rem);
+  background: var(--mf-editor-action-background, transparent);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mf-editor-tools button:hover:not(:disabled) {
+  background: var(--_mf-editor-hover);
+}
+
+.mf-editor-tools button:focus-visible {
+  outline: 2px solid var(--_mf-editor-focus);
+  outline-offset: 2px;
+}
+
+.mf-editor-tools button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mf-editor-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  overflow-x: auto;
+  padding: var(--mf-editor-breadcrumb-padding, 0.5rem 1rem);
+  white-space: nowrap;
+  font-size: var(--mf-editor-breadcrumb-font-size, 0.8125rem);
+  background: var(--mf-editor-breadcrumb-background, var(--_mf-editor-surface));
+  border-bottom: var(--mf-editor-breadcrumb-border-width, 0px) solid
+    var(--_mf-editor-toolbar-border);
+}
+
+.mf-editor-content {
+  min-width: 0;
+  background: var(--mf-tabs-surface, var(--_mf-editor-surface));
+}
+
+.mf-editor-content .mf-monaco-runtime {
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.mf-editor-content .mf-tabs-content {
+  outline: none;
+}
+
+/* The headless Monaco runtime deliberately has no textarea chrome. */
+.mf-editor-content .mf-monaco-runtime > textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: var(--mf-editor-textarea-min-height, 14rem);
+  resize: vertical;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  padding: var(--mf-editor-textarea-padding, 1.25rem);
+  background: var(--mf-tabs-surface, var(--_mf-editor-surface));
+  color: inherit;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: var(--mf-editor-font-size, 0.8125rem);
+  line-height: 1.75;
+  tab-size: 2;
+}
+
+.mf-editor-content .mf-monaco-runtime > textarea:focus-visible {
+  outline: 2px solid var(--_mf-editor-focus);
+  outline-offset: -2px;
+}
+
+@media (max-width: 480px) {
+  .mf-editor-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .mf-editor-tools {
+    margin-inline-start: auto;
+    padding-bottom: 0.375rem;
+  }
+}

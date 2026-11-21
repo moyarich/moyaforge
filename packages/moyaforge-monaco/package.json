@@ -2,7 +2,7 @@
   "name": "@moyarich/moyaforge-monaco",
   "version": "0.1.0",
   "type": "module",
-  "description": "Monaco React and TypeFox editor components, shared workspace UI, and Vite worker integrations.",
+  "description": "Headless React Monaco and TypeFox runtimes, editor models, and Vite worker integrations.",
   "license": "MIT",
   "sideEffects": true,
   "exports": {

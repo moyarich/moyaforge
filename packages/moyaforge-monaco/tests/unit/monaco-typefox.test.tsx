@@ -19,13 +19,13 @@ test("TypeFox uses workspace drafts, inferred languages and file locks", () => {
   const render = (props = {}) =>
     renderToStaticMarkup(h(MonacoEditorTypeFox, { files, ...props }));
   expect(render()).toContain('data-language="typescript"');
-  expect(render()).not.toContain('readonly=""');
-  expect(render({ readOnly: true })).toContain('readonly=""');
-  expect(render({ options: { readOnly: true } })).toContain('readonly=""');
+  expect(render()).not.toContain('readOnly=""');
+  expect(render({ readOnly: true })).toContain('readOnly=""');
+  expect(render({ options: { readOnly: true } })).toContain('readOnly=""');
   expect(
     render({ options: { readOnly: true }, readOnly: false }),
-  ).not.toContain('readonly=""');
-  expect(render({ activeFile: "package.json" })).toContain('readonly=""');
+  ).not.toContain('readOnly=""');
+  expect(render({ activeFile: "package.json" })).toContain('readOnly=""');
 });
 test("TypeFox rejects ambiguous model paths", () => {
   expect(() =>

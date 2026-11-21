@@ -1,3 +1,4 @@
+import { SidebarScrollArea } from "./SidebarScrollArea.js";
 import { Navigation } from "./Navigation.js";
 import type { ReactNode, HTMLAttributes } from "react";
 import type { SidebarNavigationNode } from "./types.js";
@@ -20,6 +21,8 @@ export interface SidebarV1Props extends HTMLAttributes<HTMLElement> {
   pages?: readonly SourcePage[];
   currentUrl?: string;
   open?: boolean;
+  /** Allow navigation labels to wrap onto multiple lines. Defaults to false. */
+  wrapNavigation?: boolean;
   onNavigate?: () => void;
   outline?: ReactNode;
   header?: ReactNode;
@@ -32,6 +35,7 @@ export function SidebarV1({
   pages = [],
   currentUrl,
   open = false,
+  wrapNavigation = false,
   onNavigate,
   outline,
   header,
@@ -43,7 +47,10 @@ export function SidebarV1({
   ...props
 }: SidebarV1Props) {
   return (
-    <aside className={`${className}${open ? " is-open" : ""}`} {...props}>
+    <aside
+      className={`${className} mf-sidebar-panel${open ? " is-open" : ""}${wrapNavigation ? " mf-sidebar-wrap-navigation" : ""}`}
+      {...props}
+    >
       {header !== undefined ? (
         header
       ) : label || version ? (
@@ -52,27 +59,29 @@ export function SidebarV1({
           {version && <span>{version}</span>}
         </div>
       ) : null}
-      {children !== undefined ? (
-        children
-      ) : groups ? (
-        <Navigation groups={groups} onNavigate={onNavigate} />
-      ) : (
-        <nav aria-label="Documentation">
-          <ul>
-            {pages.map((page) => (
-              <li key={page.url}>
-                <a
-                  href={page.url}
-                  aria-current={page.url === currentUrl ? "page" : undefined}
-                >
-                  {page.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-      {outline}
+      <SidebarScrollArea>
+        {children !== undefined ? (
+          children
+        ) : groups ? (
+          <Navigation groups={groups} onNavigate={onNavigate} />
+        ) : (
+          <nav aria-label="Documentation">
+            <ul>
+              {pages.map((page) => (
+                <li key={page.url}>
+                  <a
+                    href={page.url}
+                    aria-current={page.url === currentUrl ? "page" : undefined}
+                  >
+                    {page.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+        {outline}
+      </SidebarScrollArea>
       {footer != null && <div className="mf-sidebar-footer">{footer}</div>}
     </aside>
   );

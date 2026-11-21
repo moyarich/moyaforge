@@ -14,7 +14,6 @@ vi.mock(
   }),
 );
 import { MonacoEditorReact } from "../../src/components/MonacoEditorReact/MonacoEditorReact.js";
-import { MonacoCodeGroup } from "../../src/components/MonacoEditorReact/MonacoCodeGroup.js";
 import { languageForPath } from "../../src/components/MonacoEditorCore/languages.js";
 const files = [
   { name: "App.tsx", value: "const app = true;" },
@@ -24,22 +23,17 @@ test("real editor infers language and enforces workspace, file and options read-
   const render = (props = {}) =>
     renderToStaticMarkup(h(MonacoEditorReact, { files, ...props }));
   expect(render()).toContain('data-language="typescript"');
-  expect(render()).not.toContain('readonly=""');
-  expect(render({ readOnly: true })).toContain('readonly=""');
-  expect(render({ options: { readOnly: true } })).toContain('readonly=""');
+  expect(render()).not.toContain('readOnly=""');
+  expect(render({ readOnly: true })).toContain('readOnly=""');
+  expect(render({ options: { readOnly: true } })).toContain('readOnly=""');
   expect(
     render({ options: { readOnly: true }, readOnly: false }),
-  ).not.toContain('readonly=""');
-  expect(render({ activeFile: "locked.json" })).toContain('readonly=""');
+  ).not.toContain('readOnly=""');
+  expect(render({ activeFile: "locked.json" })).toContain('readOnly=""');
   expect(render({ activeFile: "locked.json" })).toContain(
     'data-language="json"',
   );
-  expect(renderToStaticMarkup(h(MonacoCodeGroup, { files }))).toContain(
-    'readonly=""',
-  );
-  expect(
-    renderToStaticMarkup(h(MonacoCodeGroup, { files, editable: true })),
-  ).not.toContain('readonly=""');
+  expect(render()).not.toContain('role="tablist"');
 });
 test("separate editor instances isolate identical filenames", () => {
   const html = renderToStaticMarkup(
