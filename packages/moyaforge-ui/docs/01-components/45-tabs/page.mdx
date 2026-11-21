@@ -10,9 +10,9 @@ description: Composable tab panels with CSS-variable theming.
 
 ## Live example
 
-::::code-preview[Tab panel CSS themes]{component="./Example.tsx"}
+::::code-preview[Tab panel CSS themes]{component="./TabThemes.tsx"}
 
-::code-preview-sources{files="./Example.tsx,./Example.css" replacements="portable"}
+::code-preview-sources{files="./TabThemes.tsx,./TabThemes.css" replacements="portable"}
 
 ::::
 
@@ -22,9 +22,9 @@ Switch between the existing tab style, curved workspace tabs, and a Fluent-inspi
 
 Set `tabsScroll` on `TabsList` to enable overflow navigation (disabled by default). When the tab strip is wider than its container, it shows **left/right navigation arrows** and **faded edges** to indicate more tabs are available. Arrows disappear at the corresponding scroll boundary. Mouse wheel or trackpad scrolling and keyboard selection remain supported.
 
-::::code-preview[Overflowing file tabs]{component="./OverflowExample.tsx"}
+::::code-preview[Overflowing file tabs]{component="./ScrollableFileTabs.tsx"}
 
-::code-preview-sources{files="./OverflowExample.tsx,./OverflowExample.css" replacements="portable"}
+::code-preview-sources{files="./ScrollableFileTabs.tsx,./ScrollableFileTabs.css" replacements="portable"}
 
 ::::
 
@@ -33,7 +33,12 @@ You can customize the controls from your own CSS with `--mf-tabs-scroll-fade-wid
 ## Usage
 
 ```tsx
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@moyarich/moyaforge-ui/components/Tabs";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@moyarich/moyaforge-ui/components/Tabs";
 
 <Tabs defaultValue="content" className="my-tabs">
   <TabsList aria-label="Panels">
@@ -42,7 +47,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@moyarich/moyaforge-ui
   </TabsList>
   <TabsContent value="content">Editor content</TabsContent>
   <TabsContent value="source">Source content</TabsContent>
-</Tabs>
+</Tabs>;
 ```
 
 ## Theme tokens
@@ -67,7 +72,7 @@ import "./tabs.css";
   </TabsList>
   <TabsContent value="preview">Preview panel</TabsContent>
   <TabsContent value="source">Source panel</TabsContent>
-</Tabs>
+</Tabs>;
 ```
 
 ```css

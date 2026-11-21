@@ -10,7 +10,7 @@ description: Help readers avoid problems before taking a risky step.
 
 ::::code-preview[Warning callout]{react replacements="portable"}
 
-::code-preview-sources{files="./example.css"}
+::code-preview-sources{files="./WarningCallout.css"}
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
 export default function WarningExample() {
@@ -33,7 +33,7 @@ export default function WarningExample() {
 
 Write the warning directly in Markdown. The title follows `warning`, and the body supports Markdown formatting.
 
-::::code-preview[Inline Markdown warning]{preview="example.md,example.css,example.tsx"}
+::::code-preview[Inline Markdown warning]{preview="example.md,WarningCallout.css"}
 
 ```md filename="example.md"
 ::: warning Before you continue
@@ -48,26 +48,10 @@ Read the [component documentation](../) before continuing.
 :::
 ```
 
-```css filename="example.css"
+```css filename="WarningCallout.css"
 .custom-block.warning {
   --mf-custom-block-bg: color-mix(in srgb, #b45309 12%, transparent);
   --mf-custom-block-border: #27bd10;
-}
-```
-
-```tsx filename="example.tsx"
-import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
-
-export default function WarningExample() {
-  return (
-    <CustomBlock
-      className="warning-example"
-      type="warning"
-      title="Before you continue"
-    >
-      Save me
-    </CustomBlock>
-  );
 }
 ```
 

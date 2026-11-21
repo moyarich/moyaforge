@@ -20,14 +20,14 @@ When a preview includes separate named fences or `code-preview-sources`, the col
 
 ## Key implementation paths
 
-| Stage | Source |
-| --- | --- |
-| Plugin order and compiler options | `packages/moyaforge-mdx/src/mdx/mdx-tooling-options.ts` |
-| Header rewrite and offset restoration | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-directive-parser.ts` |
-| Raw CSS/script masking | `packages/moyaforge-mdx/src/plugins/remark/code-preview/mask-inline-preview-assets.ts` |
-| Directive component mapping | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-map-directives-to-components.ts` |
-| Code-tab extraction and preview child filtering | `packages/moyaforge-mdx/src/plugins/remark/code-preview/collect-preview-content.ts` |
+| Stage                                           | Source                                                                                              |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Plugin order and compiler options               | `packages/moyaforge-mdx/src/mdx/mdx-tooling-options.ts`                                             |
+| Header rewrite and offset restoration           | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-directive-parser.ts`             |
+| Raw CSS/script masking                          | `packages/moyaforge-mdx/src/plugins/remark/code-preview/mask-inline-preview-assets.ts`              |
+| Directive component mapping                     | `packages/moyaforge-mdx/src/plugins/remark/remark-directive/remark-map-directives-to-components.ts` |
+| Code-tab extraction and preview child filtering | `packages/moyaforge-mdx/src/plugins/remark/code-preview/collect-preview-content.ts`                 |
 
 The `collectPreviewContent` transform produces **two independent results**: a `code` prop containing the authored text and compiled child nodes for the preview. Masked `<style>` or `<script>` bodies must not disappear from the former when absent from the latter.
 
-**Next:** [CSS and JavaScript security](../30-security/page.mdx) · [Overview](../page.mdx)
+**Next:** [CSS and JavaScript security](../30-security/page.mdx) · [Overview](../)

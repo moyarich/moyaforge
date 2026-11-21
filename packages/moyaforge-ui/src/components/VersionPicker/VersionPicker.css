@@ -1,22 +1,73 @@
-.mf-version-picker {
-  --_mf-version-color: var(--mf-version-picker-color, var(--_mf-text, #303038));
-  --_mf-version-background: var(--mf-version-picker-background, var(--_mf-bg, #fff));
-  --_mf-version-border: var(
-    --mf-version-picker-border-color,
-    var(--_mf-line, #e9e9ed)
-  );
-  display: grid;
-  gap: 8px;
-  color: var(--_mf-version-color);
-  font-size: 13px;
+:root {
+  --mf-version-picker-color: light-dark(#303038, #e5e5ec);
+  --mf-version-picker-background: light-dark(#fff, #19191e);
+  --mf-version-picker-border-color: light-dark(#e9e9ed, #303039);
+  --mf-version-picker-muted: light-dark(#73737c, #a4a4b1);
+  --mf-version-picker-radius: 6px;
 }
-.mf-version-picker select {
-  width: 100%;
+.mf-version-picker {
+  --_mf-version-color: var(--mf-version-picker-color);
+  --_mf-version-background: var(--mf-version-picker-background);
+  --_mf-version-border: var(--mf-version-picker-border-color);
+  --_mf-version-muted: var(--mf-version-picker-muted);
+  --_mf-version-radius: var(--mf-version-picker-radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  color: var(--_mf-version-color);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.mf-version-picker-label {
+  min-width: 0;
+  color: var(--_mf-version-muted);
+}
+.mf-version-picker-control {
+  position: relative;
+  min-width: 0;
+  max-width: 65%;
+}
+.mf-version-picker select,
+.mf-version-picker-value {
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
   border: 1px solid var(--_mf-version-border);
-  border-radius: 6px;
-  padding: 8px 10px;
+  border-radius: var(--_mf-version-radius);
+  padding: 4px 8px;
   font: inherit;
+  font-weight: 500;
   color: var(--_mf-version-color);
   background: var(--_mf-version-background);
-  opacity: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.mf-version-picker-value {
+  flex-shrink: 1;
+}
+.mf-version-picker select {
+  appearance: none;
+  width: 100%;
+  padding-inline-end: 28px;
+  cursor: pointer;
+}
+.mf-version-picker-control > svg {
+  position: absolute;
+  inset-inline-end: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  color: var(--_mf-version-muted);
+}
+.mf-version-picker select:hover {
+  border-color: var(--_mf-version-muted);
+}
+.mf-version-picker select:focus-visible {
+  outline: 2px solid var(--_mf-version-muted);
+  outline-offset: 2px;
 }

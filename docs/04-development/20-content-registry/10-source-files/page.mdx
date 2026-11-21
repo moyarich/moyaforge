@@ -17,18 +17,18 @@ The `sources` in `registry.config.ts` define filesystem roots and glob patterns.
 
 Use this pattern for a docs tree that intentionally exposes ordinary Markdown:
 
-~~~ts
+```ts
 const docs = {
   base: "../../docs",
   include: ["**/*.{md,mdx}"],
   pageFiles: "all",
   exclude: ["**/{README,readme}.{md,mdx}"],
 };
-~~~
+```
 
 Use an explicit canonical glob for package-owned documentation instead of `*/README.md`:
 
-~~~ts
+```ts
 const packages = {
   base: "../../packages",
   include: ["**/page.{md,mdx}"],
@@ -41,7 +41,7 @@ const packages = {
   ],
   metadata: ["*/package.json"],
 };
-~~~
+```
 
 The package JSON files supply **source metadata**, not extra documentation routes. Package README files are still published to npm and available on GitHub. CLI-generated registries also exclude README files explicitly.
 
@@ -51,4 +51,4 @@ The package JSON files supply **source metadata**, not extra documentation route
 
 When changing registry globs, verify that source pages, UI component examples, package CLI docs, and metadata still load. Avoid changing `isContentPageFile` globally merely to fix a particular application's configuration: other consumers may intentionally choose different source policies.
 
-[Content registry overview](../page.mdx) · [Metadata and navigation](../20-metadata-navigation/page.mdx)
+[Content registry overview](../) · [Metadata and navigation](../20-metadata-navigation/page.mdx)

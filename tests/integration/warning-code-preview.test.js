@@ -46,10 +46,7 @@ test("Warning previews accept a source directive before inline React imports and
     ),
   );
 
-  expect(registered).toHaveLength(2);
-  expect(registered[1].source).toContain(
-    "export default function WarningExample",
-  );
+  expect(registered).toHaveLength(1);
   expect(registered[0].authoredFile).toBe(page);
   expect(registered[0].source).toContain(
     "export default function WarningExample",
@@ -63,7 +60,7 @@ test("Warning previews accept a source directive before inline React imports and
   expect(output).toContain("example.md");
   expect(output).toContain("_components.strong");
   expect(output).toContain("@scope (.mf-preview-fence-");
-  expect(output).toContain("example.css");
+  expect(output).toContain("WarningCallout.css");
   expect(output.match(/replacementPreset: "portable"/g)).toHaveLength(1);
   expect(output).toContain("Save me");
 });
@@ -73,12 +70,12 @@ test("Markdown and CSS are authored inline without a React or documentation wrap
   const markdown = /```md filename="example.md"\n([\s\S]*?)\n```/.exec(
     value,
   )?.[1];
-  const css = /```css filename="example.css"\n([\s\S]*?)\n```/.exec(value)?.[1];
+  const css = /```css filename="WarningCallout.css"\n([\s\S]*?)\n```/.exec(value)?.[1];
   expect(markdown).toContain("::: warning Before you continue");
   expect(markdown).not.toContain("code-preview");
   expect(markdown).not.toContain("import ");
   expect(value).toMatch(
-    /preview="example\.md,example\.css(?:,example\.(?:sh|tsx))?"/,
+    /preview="example\.md,WarningCallout\.css(?:,example\.(?:sh|tsx))?"/,
   );
   expect(css).toContain(".custom-block.warning");
   expect(css).toContain("--mf-custom-block-border");

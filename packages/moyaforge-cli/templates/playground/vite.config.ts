@@ -37,6 +37,7 @@ const compileMdx = mdx(createMdxOptions({
   componentMappings: {
     "code-preview": {
       component: "InlineCodePreview",
+        booleanProps: ["refresh"],
       titleProp: "title",
       sourceProp: "code",
       filesProp: "sourceFiles",

@@ -14,7 +14,7 @@ The parser assigns each raw asset a tag, original offset, original code, and `re
 
 The trusted CSS option is passed into `createMdxOptions`, which configures the remark parser:
 
-~~~~ts
+```ts
 const compileMdx = mdx(
   createMdxOptions({
     // Enable only for reviewed, repository-controlled documentation.
@@ -42,7 +42,7 @@ const compileMdx = mdx(
     },
   }),
 );
-~~~~
+```
 
 If `allowInlinePreviewStyles` is omitted, raw CSS stays **source-only**. This option is **not** a sandbox. Authored CSS can affect elements outside the preview because normal browser style sheets are global. Authors should scope selectors to a class unique to the example; use actual origin isolation for untrusted content.
 
@@ -56,4 +56,4 @@ Raw scripts with attributes, external sources, or unsupported tag formatting are
 
 A `<script>` that appears in the Code tab is **inert source text**, not a mounted DOM script. Setting `allowInlinePreviewStyles: true` only changes whether trusted **CSS** is rendered—it never enables JavaScript. To show runnable third-party examples, isolate execution in a separate origin rather than extending this raw-script path.
 
-**Next:** [Vite and file-backed previews](../40-vite/page.mdx) · [Overview](../page.mdx)
+**Next:** [Vite and file-backed previews](../40-vite/page.mdx) · [Overview](../)

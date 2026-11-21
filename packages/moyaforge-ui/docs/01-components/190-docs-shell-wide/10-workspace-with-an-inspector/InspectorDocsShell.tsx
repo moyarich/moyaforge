@@ -1,0 +1,17 @@
+import "./InspectorDocsShell.css";
+import { DocsShellWide } from "../../../../src/components/DocsShellWide/DocsShellWide.js";
+
+export default function InspectorDocsShell() {
+  return (
+    <div className="wide-shell-example">
+      <DocsShellWide
+        title="Workspace layout"
+        navigationItems={[{ label: "Overview", href: "#/ui" }]}
+        inspector={<p>Inspector panel</p>}
+        toolbar={<span>Workspace tools</span>}
+      >
+        <p>Wide workspace content.</p>
+      </DocsShellWide>
+    </div>
+  );
+}

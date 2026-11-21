@@ -9,6 +9,14 @@ Use `Animation` for a single effect and `AnimationGroup` to coordinate several e
 
 Change the group's React `key` to replay it from the beginning.
 
+## Installation
+
+```sh
+npx @moyarich/moyaforge-cli@latest add animation
+```
+
+Import the copied components from `@/components/ui/Animation/index.js`, or use a relative path when your app has no `@/` alias. Their styles are imported by the components.
+
 ## Options
 
 Both components accept a `className` string, array, or conditional object.
@@ -28,66 +36,14 @@ Both components accept a `className` string, array, or conditional object.
 | `stagger` (group)  | Delay in seconds between sequential entries. For independent entries, adds this delay per index. Defaults to `0`. |
 | `distance`         | Vertical offset in pixels for slide effects. Defaults to `12`.                                                    |
 
+`expand` on `AnimationGroup` defaults to `false`. Enable it when sequential content should reveal its layout progressively, as in the terminal example.
+
 Entries show their content immediately when the user prefers reduced motion.
 
-## Single animation
+## Examples
 
-:::code-preview[Fade in]{react replacements="portable"}
+Each example has its own page, live preview, and copyable source files.
 
-import { Animation } from "../../../src/components/Animation/index.js";
-
-<Animation effect="fade">
-  <p>Welcome to the guide.</p>
-</Animation>
-
-:::
-
----
-
-## AnimationGroup
-
-Place each `Animation` directly inside the group. With `sequence`, each effect finishes before the next one starts. Without `sequence`, `stagger` offsets the start of each effect.
-
-:::code-preview[Sequential animation]{react replacements="portable"}
-
-import {
-  Animation,
-  AnimationGroup,
-} from "../../../src/components/Animation/index.js";
-
-<AnimationGroup sequence stagger={0.15}>
-  <Animation effect="fade-slide">
-    <h2>Build your documentation</h2>
-  </Animation>
-  <Animation effect="typewriter" duration={1}>
-    <p>Start with a Markdown page.</p>
-  </Animation>
-</AnimationGroup>
-
-:::
-
-::::code-preview[Replay animation]{react replacements="portable"}
-
-import { AnimationExample } from "./Example.tsx";
-
-<AnimationExample />
-
-::code-preview-sources{files="./Example.tsx,./example.css"}
-
-::::
-
----
-
-## Terminal animation
-
-Type the command, reveal each result in order, and replay the simulated run.
-
-::::code-preview[shadcn initialization]{react replacements="portable"}
-
-import { TerminalExample } from "./TerminalExample.tsx";
-
-<TerminalExample />
-
-::code-preview-sources{files="./TerminalExample.tsx,./TerminalExample.css"}
-
-::::
+- [Fade in](/ui/components/animation/fade-in): animate a single message.
+- [Sequential animation](/ui/components/animation/sequential-animation): run entries one after another.
+- [Terminal initialization sequence](/ui/components/animation/terminal-initialization): combine typing, sequential results, and progressive height.

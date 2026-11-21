@@ -8,15 +8,15 @@ description: What each workspace owns, CLI templates, published package boundari
 
 MoyaForge is a workspace of separate capabilities. **Repository README files are still shipped to npm and shown on GitHub**; the playground does not treat them as authored documentation routes.
 
-| Workspace | Responsibility |
-| --- | --- |
-| `@moyarich/moyaforge` | Headless React framework helpers, route components, documentation links and public config |
-| `@moyarich/moyaforge-mdx` | Content discovery, MDX compilation, page registry and virtual modules |
-| `@moyarich/moyaforge-ui` | Source-installable documentation UI and examples |
-| `@moyarich/moyaforge-monaco` | Optional editor components, workers and Vite types |
-| `@moyarich/moyaforge-search-sqlite` | Optional SQLite indexing and search adapter |
-| `@moyarich/moyaforge-cli` | App scaffolding and editable component installation |
-| `apps/playground` | Private consumer that renders the documentation; not a published package |
+| Workspace                           | Responsibility                                                                            |
+| ----------------------------------- | ----------------------------------------------------------------------------------------- |
+| `@moyarich/moyaforge`               | Headless React framework helpers, route components, documentation links and public config |
+| `@moyarich/moyaforge-mdx`           | Content discovery, MDX compilation, page registry and virtual modules                     |
+| `@moyarich/moyaforge-ui`            | Source-installable documentation UI and examples                                          |
+| `@moyarich/moyaforge-monaco`        | Optional editor components, workers and Vite types                                        |
+| `@moyarich/moyaforge-search-sqlite` | Optional SQLite indexing and search adapter                                               |
+| `@moyarich/moyaforge-cli`           | App scaffolding and editable component installation                                       |
+| `apps/playground`                   | Private consumer that renders the documentation; not a published package                  |
 
 ## Package entry points and host ownership
 
@@ -28,7 +28,8 @@ The MDX package provides `@moyarich/moyaforge-mdx/vite` for registry and code-pr
 
 The [CLI documentation](../../../packages/moyaforge-cli/docs/page.mdx) covers `init`, `list`, `add`, `dev` and `preview`. Generated app content and `registry.config.ts` belong to the consumer, not to `apps/playground`.
 
-The CLI `add` command installs editable canonical component source. Styles are owned by their components, and user edits are preserved unless overwrite is explicitly requested. For a local consumer verification, use the scripts on the [Development](../page.mdx) page.
+The CLI `add` command installs editable canonical component source.
+Styles are owned by their components, and user edits are preserved unless overwrite is explicitly requested.
 
 The generated Vite aliases map `@/` to the project's configured `src/` directory. Package users can alternatively import published component entry points instead of source-installing them.
 
@@ -42,6 +43,6 @@ The generated Vite aliases map `@/` to the project's configured `src/` directory
 - Authored content registry: `apps/playground/registry.config.ts`, which discovers Markdown/MDX page sources and their navigation.
 - Package public APIs and `CHANGELOG.md`: user-visible releases; CI/process notes belong in Development docs instead.
 
-Never treat the generated component `registry.json` as the MDX page registry. See [Content registry internals](../20-content-registry/page.mdx), [Code preview internals](../10-code-preview-internals/page.mdx) and the [Development](../page.mdx) maintainer workflow guide.
+Never treat the generated component `registry.json` as the MDX page registry. See [Content registry internals](../20-content-registry/page.mdx), [Code preview internals](../10-code-preview-internals/page.mdx) and the [Development](../) maintainer workflow guide.
 
-[Development overview](../page.mdx)
+[Development overview](../)

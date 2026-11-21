@@ -1,12 +1,12 @@
 ---
 title: Code Group
 label: Code Group
-description: Switch between npm and pnpm command examples.
+description: Present related code examples in accessible tabs.
 ---
 
 # Code Group
 
-Switch between npm and pnpm command examples.
+Present related code examples in tabs, such as install commands for different package managers.
 
 ## Installation
 
@@ -38,20 +38,45 @@ import { CodeGroup, CodeTab } from "@/components/ui/CodeGroup/CodeGroup";
 
 <CodeGroup label="Package managers">
   <CodeTab label="npm">
-    <pre>npm install my-package</pre>
+    <pre>
+      <code>npm install react</code>
+    </pre>
   </CodeTab>
   <CodeTab label="pnpm">
-    <pre>pnpm add my-package</pre>
+    <pre>
+      <code>pnpm add react</code>
+    </pre>
   </CodeTab>
 </CodeGroup>;
 ```
+
+## Styling
+
+Set public CSS variables on the group or a containing element:
+
+```css
+.install-commands {
+  --mf-code-group-active-color: #0f766e;
+  --mf-code-group-tabs-gap: 20px;
+  --mf-code-group-border-radius: 10px;
+}
+```
+
+| Variable                        | Purpose                          |
+| ------------------------------- | -------------------------------- |
+| `--mf-code-group-active-color`  | Selected tab text and underline. |
+| `--mf-code-group-tabs-gap`      | Space between tab labels.        |
+| `--mf-code-group-background`    | Code surface background.         |
+| `--mf-code-group-border`        | Group and toolbar borders.       |
+| `--mf-code-group-border-radius` | Outer corner radius.             |
+| `--mf-code-group-padding`       | Code panel padding.              |
+
+Use Left/Right arrow keys, Home, and End to switch tabs from the keyboard. The copy button copies the active tab's code.
+
+---
 
 ## Examples
 
 - [Tabs in Markdown](/ui/components/code-group/tabs-in-md) includes the Vite and MDX provider setup for directive syntax.
 - [Tabs in MDX](/ui/components/code-group/tabs-in-mdx)
 - [Tabs in React](/ui/components/code-group/tabs-in-react)
-
-## Styling
-
-`CodeGroup` now uses the shared `Tabs`, `TabsList`, `TabsTrigger`, and `TabsContent` primitives. Set `--mf-code-group-active-color` for the active tab, `--mf-code-group-tabs-gap` for label spacing, and `--mf-code-group-background` for the code surface. You can also override the shared public `--mf-tabs-*` properties to change the tab strip and panel styling, without a React theme prop.

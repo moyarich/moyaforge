@@ -80,7 +80,10 @@ The UI workspace owns tabs, Save, and Copy actions. Keep files in React state vi
 To connect a language server, pass `languageClientConfig` with the same configuration accepted by TypeFox's `MonacoEditorReactComp` (typed as `LanguageClientConfig` from `monaco-languageclient/lcwrapper`):
 
 ```tsx
-<TypeFoxEditorWorkspace files={files} languageClientConfig={languageClientConfig} />
+<TypeFoxEditorWorkspace
+  files={files}
+  languageClientConfig={languageClientConfig}
+/>
 ```
 
 The host must provide a running language server and its transport; MoyaForge does not start one. Initialize shared VS Code services once at application startup when mounting both Monaco integrations.
@@ -119,7 +122,7 @@ import "./editor.css";
   className="typefox-editor"
   files={files}
   height={320}
-/>
+/>;
 ```
 
 ```css

@@ -1,0 +1,90 @@
+---
+title: MDX with an inline component
+label: MDX with an inline component
+---
+
+# MDX with an inline component
+
+Open **Code** and copy **selected-mdx-usage.mdx** for the full directive and all of its inline files.
+
+An MDX entry can combine prose, directives, and an imported component from another named fence. It uses the host's configured remark and rehype plugins.
+
+::::::code-preview[Release note]{preview="release.mdx,release.css"}
+
+````mdx filename="selected-mdx-usage.mdx"
+:::::code-preview[Release note]{preview="release.mdx,release.css"}
+
+```mdx filename="release.mdx"
+import ReleaseBadge from "./ReleaseBadge.tsx";
+
+<ReleaseBadge />
+
+### Your site is ready
+
+You can now publish your **documentation**.
+
+::: tip Before publishing
+
+Run `npm run build` to check the production output.
+
+:::
+```
+
+```tsx filename="ReleaseBadge.tsx"
+export default function ReleaseBadge() {
+  return <span className="release-badge">Ready to ship</span>;
+}
+```
+
+```css filename="release.css"
+.release-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  color: #0f766e;
+  background: color-mix(in srgb, #0f766e 12%, transparent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+```
+
+:::::
+````
+
+```mdx filename="release.mdx"
+import ReleaseBadge from "./ReleaseBadge.tsx";
+
+<ReleaseBadge />
+
+### Your site is ready
+
+You can now publish your **documentation**.
+
+::: tip Before publishing
+
+Run `npm run build` to check the production output.
+
+:::
+```
+
+```tsx filename="ReleaseBadge.tsx"
+export default function ReleaseBadge() {
+  return <span className="release-badge">Ready to ship</span>;
+}
+```
+
+```css filename="release.css"
+.release-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  color: #0f766e;
+  background: color-mix(in srgb, #0f766e 12%, transparent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+```
+
+::::::
+
+`release.mdx` is the rendered entry. `ReleaseBadge.tsx` supplies its component, while `release.css` styles the preview. Neither the entry nor its component needs a separate file on disk. This example requires the Vite code-preview plugin and the site's custom-block directive mapping.

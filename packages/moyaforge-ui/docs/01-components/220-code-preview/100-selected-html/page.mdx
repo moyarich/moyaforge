@@ -1,0 +1,76 @@
+---
+title: HTML with inline CSS
+label: HTML with inline CSS
+---
+
+# HTML with inline CSS
+
+Open **Code** and copy **selected-html-usage.mdx** for the full directive and all of its inline files.
+
+Select an HTML fence to render native markup. Add a CSS fence to style the example without importing a React component.
+
+:::::code-preview[Project details]{preview="details.html,details.css"}
+
+````mdx filename="selected-html-usage.mdx"
+::::code-preview[Project details]{preview="details.html,details.css"}
+
+```html filename="details.html"
+<details class="project-details">
+  <summary>What is included?</summary>
+  <ul>
+    <li>Markdown documentation</li>
+    <li>Editable UI components</li>
+    <li>A production build</li>
+  </ul>
+</details>
+```
+
+```css filename="details.css"
+.project-details {
+  width: min(100%, 26rem);
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 0.75rem;
+}
+.project-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.project-details ul {
+  margin-bottom: 0;
+}
+```
+
+::::
+````
+
+```html filename="details.html"
+<details class="project-details">
+  <summary>What is included?</summary>
+  <ul>
+    <li>Markdown documentation</li>
+    <li>Editable UI components</li>
+    <li>A production build</li>
+  </ul>
+</details>
+```
+
+```css filename="details.css"
+.project-details {
+  width: min(100%, 26rem);
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 0.75rem;
+}
+.project-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.project-details ul {
+  margin-bottom: 0;
+}
+```
+
+:::::
+
+The disclosure works through native HTML behavior. HTML fences render markup; use a React or MDX entry for component logic. The CSS is scoped to this preview.

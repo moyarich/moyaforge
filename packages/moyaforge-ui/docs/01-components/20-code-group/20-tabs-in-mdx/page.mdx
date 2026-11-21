@@ -3,18 +3,20 @@ title: Tabs in MDX
 label: Tabs in MDX
 ---
 
-import Example from "./Example.mdx";
+import PackageManagerTabs from "./PackageManagerTabs.mdx";
 
 # Tabs in MDX
 
-Import `CodeGroup` and `CodeTab` in your `.mdx` file. Wrap each fenced code block in a `CodeTab` and give the group a label. Open **Code** to copy the complete example. The import uses `@/` as an alias for `src/`.
+Import `CodeGroup` and `CodeTab` in your `.mdx` file. Wrap each fenced code block in a `CodeTab` and give the group a label. Open **Code** to copy the complete example. The displayed import uses `@/` as an alias for `src/`; replace it with your component path if your application has no alias. The components import their own styles.
 
 ::::code-preview[Tabs in MDX]
 
-::code-preview-sources{files="./Example.mdx" replacements="portable"}
+::code-preview-sources{files="./PackageManagerTabs.mdx" replacements="portable"}
 
-<Example />
+<PackageManagerTabs />
 
 ::::
+
+Unlike the Markdown directive example, these components are imported directly in the MDX file. Your Vite setup still needs the MDX compiler, but no `code-group` directive mapping or provider registration is needed for these explicit imports.
 
 [Component documentation](/ui/components/code-group)

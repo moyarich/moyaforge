@@ -1,4 +1,4 @@
-import { existsSync, globSync, readFileSync } from "node:fs";
+import { existsSync, globSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { describe, expect, test } from "vitest";
 
@@ -23,8 +23,8 @@ describe("component documentation examples", () => {
       if (page === "220-code-preview/10-counter-in-mdx/page.mdx") {
         if (
           !source.includes("<CodePreview") ||
-          !source.includes('../../CounterExample.tsx?raw') ||
-          !source.includes('../../counterExample.css?raw')
+          !source.includes("../../CounterExample.tsx?raw") ||
+          !source.includes("../../counterExample.css?raw")
         ) {
           missing.push(page);
         }
@@ -37,10 +37,22 @@ describe("component documentation examples", () => {
       // React and inline Markdown (including raw style/script tags) capture
       // their authored body automatically. File-backed previews must attach
       // their source files explicitly.
-      const hasInlineMarkdown = /:{3,4}code-preview\[[^\]\n]+\][^\n]*\r?\n\s*\r?\n\s*<(?:style|script)>/.test(
-        source,
+      const hasInlineMarkdown =
+        /:{3,4}code-preview\[[^\]\n]+\][^\n]*\r?\n\s*\r?\n\s*<(?:style|script)>/.test(
+          source,
+        );
+      const selected = /preview="([^"]+)"/
+        .exec(source)?.[1]
+        .split(",")
+        .map((name) => name.trim());
+      const namedFences = [...source.matchAll(/filename="([^"]+)"/g)].map(
+        (match) => match[1],
       );
+      const hasSelectedSources =
+        selected?.length &&
+        selected.every((name) => namedFences.includes(name));
       if (
+        !hasSelectedSources &&
         !/\{react(?:\s|\})/.test(source) &&
         !hasInlineMarkdown &&
         !/::code-preview-sources\{files=/.test(source)
@@ -48,7 +60,9 @@ describe("component documentation examples", () => {
         missing.push(page);
       }
     }
-    expect(missing, "Examples without a live preview and source code").toEqual([]);
+    expect(missing, "Examples without a live preview and source code").toEqual(
+      [],
+    );
   });
 
   test("source tabs refer to real files, and sibling React examples expose their TSX", () => {
@@ -66,13 +80,16 @@ describe("component documentation examples", () => {
           missing.push(`${page}: ${reference}`);
         }
       }
-      if (
-        existsSync(resolve(directory, "Example.tsx")) &&
-        !references.some((reference) => reference.endsWith("/Example.tsx"))
-      ) {
-        missing.push(`${page}: Example.tsx is not in the source tabs`);
+      for (const example of readdirSync(directory).filter((name) =>
+        name.endsWith(".tsx"),
+      )) {
+        if (!references.some((reference) => reference.endsWith("/" + example)))
+          missing.push(`${page}: ${example} is not in the source tabs`);
       }
     }
-    expect(missing, "Missing or unlisted authored preview source files").toEqual([]);
+    expect(
+      missing,
+      "Missing or unlisted authored preview source files",
+    ).toEqual([]);
   });
 });

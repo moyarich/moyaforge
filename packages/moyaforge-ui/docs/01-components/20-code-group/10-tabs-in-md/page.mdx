@@ -3,23 +3,56 @@ title: Tabs in Markdown
 label: Tabs in Markdown
 ---
 
-import Example from "./Example.mdx";
-
 # Tabs in Markdown
 
-Select a tab to see the install command for that package manager.
+Select a package manager to see its install command. The Markdown source is written inline, and the CSS tab shows how to customize the group border.
 
-::::code-preview[Tabs in Markdown]
+:::::code-preview[Tabs in Markdown]{preview="example.md,example.css"}
 
-::code-preview-sources{files="./Example.mdx"}
+````md filename="example.md"
+:::: code-group Package managers
 
-<Example />
+::: tab npm
+
+```bash
+npm install react
+```
+
+:::
+
+::: tab pnpm
+
+```bash
+pnpm add react
+```
+
+:::
 
 ::::
+````
+
+```css filename="example.css"
+.mf-code-group {
+  --mf-code-group-border: #27bd10;
+}
+```
+
+:::::
 
 ## Use these tabs in Markdown
 
-Use a `code-group` directive with one `tab` per package manager.
+Use a `code-group` directive with one `tab` per package manager. Copy the **example.md** source tab into your Markdown file. The `code-preview` wrapper is used only by this documentation.
+
+### Install the MDX tooling
+
+If your app does not already process Markdown, install the compiler and React provider:
+
+```sh
+npm install @mdx-js/react
+npm install -D @mdx-js/rollup @vitejs/plugin-react vite @moyarich/moyaforge-mdx
+```
+
+The following setup assumes an existing React application with TypeScript support.
 
 ### Configure Vite
 
@@ -52,14 +85,14 @@ export default defineConfig({
 });
 ```
 
-### Register the MDX Component
+### Register the components
 
-Import both installed components and register them under the names used in the Vite config. Copy the example from **Code** into `src/Guide.mdx`.
+Import both installed components and register them under the names used in the Vite config. Copy the example from **Code** into `src/Guide.md`.
 
 ```tsx filename="src/App.tsx"
 import { MDXProvider } from "@mdx-js/react";
 import { CodeGroup, CodeTab } from "./components/ui/CodeGroup/CodeGroup.js";
-import Guide from "./Guide.mdx";
+import Guide from "./Guide.md";
 
 export function App() {
   return (
@@ -69,7 +102,5 @@ export function App() {
   );
 }
 ```
-
-If your app already wraps its documentation in an `MDXProvider`, add the component mapping to that provider.
 
 [Component documentation](/ui/components/code-group)

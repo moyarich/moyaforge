@@ -14,20 +14,20 @@ For usage examples, see [CodePreview](../../../packages/moyaforge-ui/docs/01-com
 
 ## Find the right guide
 
-| Task | Developer guide |
-| --- | --- |
-| Write Markdown/MDX examples; avoid hydration errors | [Authoring and valid HTML](./10-authoring/page.mdx) |
+| Task                                                               | Developer guide                                       |
+| ------------------------------------------------------------------ | ----------------------------------------------------- |
+| Write Markdown/MDX examples; avoid hydration errors                | [Authoring and valid HTML](./10-authoring/page.mdx)   |
 | Understand remark plugins, source offsets, and Code-tab extraction | [Compiler and source capture](./20-compiler/page.mdx) |
-| Control which CSS and scripts may run | [CSS and JavaScript security](./30-security/page.mdx) |
-| Register components and resolve virtual modules | [Vite and file-backed previews](./40-vite/page.mdx) |
-| Understand React rendering and embedded-language coloring | [Rendering and highlighting](./50-rendering/page.mdx) |
-| Find files, run tests, and debug failures | [Testing and troubleshooting](./60-testing/page.mdx) |
+| Control which CSS and scripts may run                              | [CSS and JavaScript security](./30-security/page.mdx) |
+| Register components and resolve virtual modules                    | [Vite and file-backed previews](./40-vite/page.mdx)   |
+| Understand React rendering and embedded-language coloring          | [Rendering and highlighting](./50-rendering/page.mdx) |
+| Find files, run tests, and debug failures                          | [Testing and troubleshooting](./60-testing/page.mdx)  |
 
 ## Ownership and data flow
 
 MoyaForge **does not implement a second Markdown compiler**. `@mdx-js/mdx` provides MDX parsing and compilation. `remark-directive`, `remark-flexible-containers`, and MoyaForge remark plugins interpret the extra `:::` syntax. The host's Vite plugin provides discoverable component files and generated preview modules. React components in `@moyarich/moyaforge-ui` render the result.
 
-~~~~text
+```text
 Authored .md / .mdx page
     |
     v
@@ -51,7 +51,7 @@ Compiled MDX / Vite loaders ---> InlineCodePreview / CodePreview
                                   v                  v
                            PreviewContent       PreviewSource
                            (live React)         (HighlightedCode)
-~~~~
+```
 
 The parsing, source extraction, Vite module registration, and rendering phases are intentionally separate. Changing how code is displayed must **not** change which authored code can execute.
 
@@ -59,4 +59,4 @@ The parsing, source extraction, Vite module registration, and rendering phases a
 
 If you're changing **what appears in the Code tab**, start with [compiler and source capture](./20-compiler/page.mdx). If you're changing **what runs in the preview**, read the [security policy](./30-security/page.mdx) first. If CSS is not visibly colored, see [rendering and highlighting](./50-rendering/page.mdx).
 
-[Development overview](../page.mdx)
+[Development overview](../)

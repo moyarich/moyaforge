@@ -29,13 +29,16 @@ npx shadcn@latest add moyarich/moyaforge/code-preview-editor
 
 Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#installation) to configure the editor workers.
 
-::::code-preview[CodePreviewEditor]{react replacements="portable"}
+::::code-preview[Editable source with Monaco]{react replacements="portable"}
+
+::code-preview-sources{files="./MonacoPreviewExample.tsx" replacements="portable"}
 
 import { CodePreviewEditor } from "../../../../src/components/CodePreviewEditor/index.js";
 import MonacoPreviewExample from "./MonacoPreviewExample.tsx";
 import counterSource from "../../CounterExample.tsx?raw";
 import counterStyles from "../../counterExample.css?raw";
-export const workerSource = 'import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";\nconfigureReactWorkers();\n';
+export const workerSource =
+  'import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";\nconfigureReactWorkers();\n';
 
 <CodePreviewEditor
   title="Monaco source editor"
@@ -73,8 +76,14 @@ The example styles live alongside its TSX source; use the `--mf-preview-*` varia
 
 ## Workspace tabs
 
-`CodePreviewEditor` always uses the UI-owned editor workspace. Style tabs and their panels using `--mf-tabs-*` CSS variables. `showBreadcrumbs` enables the file path, `renderBreadcrumbs` customizes it, and `tools` accepts app-provided React buttons. 
+`CodePreviewEditor` always uses the UI-owned editor workspace. Style tabs and their panels using `--mf-tabs-*` CSS variables. `showBreadcrumbs` enables the file path, `renderBreadcrumbs` customizes it, and `tools` accepts app-provided React buttons.
 
 ```tsx
-<CodePreviewEditor title="Editor" files={files} showBreadcrumbs tools={<button onClick={openSearch}>Search</button>} renderPreview={renderPreview} />
+<CodePreviewEditor
+  title="Editor"
+  files={files}
+  showBreadcrumbs
+  tools={<button onClick={openSearch}>Search</button>}
+  renderPreview={renderPreview}
+/>
 ```

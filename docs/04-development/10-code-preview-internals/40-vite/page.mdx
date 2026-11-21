@@ -8,7 +8,7 @@ description: Component roots, source resolution, the shared registry context, an
 
 The host first discovers documentation pages and builds a shared registry. Pass the **same context** to the MDX mapping and Vite plugin:
 
-~~~~ts
+```ts
 import {
   createCodePreviewRegistry,
   createCodePreviewPlugin,
@@ -33,7 +33,7 @@ export default defineConfig({
     // ...your MDX and React plugins
   ],
 });
-~~~~
+```
 
 `createCodePreviewRegistry` registers eligible sibling files and exposes `componentRoots`, `modules`, `keysByPath`, and `basesByPath`. `createCodePreviewPlugin` may extend those maps with explicitly allowed React component roots. `resolveCodePreviewSource` validates relative references against the registered file inventory and optional `#NamedExport` suffix.
 
@@ -47,4 +47,4 @@ Inline `{react}` modules are compiled by `@mdx-js/mdx` **at build time**, not wi
 
 See the working [playground Vite configuration](../../../../apps/playground/vite.config.ts) and [component registry tests](../../../../packages/moyaforge-mdx/tests/vite/code-preview-component-roots.test.js). The CLI playground template also wires the same features.
 
-**Next:** [Rendering and highlighting](../50-rendering/page.mdx) · [Overview](../page.mdx)
+**Next:** [Rendering and highlighting](../50-rendering/page.mdx) · [Overview](../)

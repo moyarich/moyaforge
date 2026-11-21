@@ -12,19 +12,24 @@ description: Virtual registry modules, page metadata, TOC, sidebar groups, and b
 
 The Vite registry adapter exposes three distinct module surfaces:
 
-| Module | Use |
-| --- | --- |
-| `virtual:moyaforge-mdx/metadata` | Plain page, route, navigation, heading and source metadata; **no React page imports** |
-| `virtual:moyaforge-mdx/lazy-registry` | Source-grouped dynamic page loaders, avoiding eager MDX module imports |
-| `virtual:moyaforge-mdx/registry` | Compatibility module with eager `pages` and lazy `lazyPages` maps |
+| Module                                | Use                                                                                   |
+| ------------------------------------- | ------------------------------------------------------------------------------------- |
+| `virtual:moyaforge-mdx/metadata`      | Plain page, route, navigation, heading and source metadata; **no React page imports** |
+| `virtual:moyaforge-mdx/lazy-registry` | Source-grouped dynamic page loaders, avoiding eager MDX module imports                |
+| `virtual:moyaforge-mdx/registry`      | Compatibility module with eager `pages` and lazy `lazyPages` maps                     |
 
-~~~ts
-import { pages, routes, navigation, tree } from "virtual:moyaforge-mdx/metadata";
+```ts
+import {
+  pages,
+  routes,
+  navigation,
+  tree,
+} from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 
 const loadPage = sources.docs.lazyPages["04-development/page.mdx"];
 const component = await loadPage();
-~~~
+```
 
 Use the types-only `@moyarich/moyaforge-mdx/virtual` entry in your TypeScript `compilerOptions.types` or `vite-env.d.ts`. The `@moyarich/moyaforge-mdx/vite` entry is for the actual Vite plugins. MDX frontmatter is stored in registry metadata; `createMdxOptions({ exportFrontmatter: true })` is only for legacy consumers needing a compiled JS export.
 
@@ -35,7 +40,7 @@ Use the types-only `@moyarich/moyaforge-mdx/virtual` entry in your TypeScript `c
 - Frontmatter `sidebar.group: true` allows a source-root `page.mdx` to become a clickable group heading. Its separate disclosure toggle expands children. Use `sidebar.collapsible`, `sidebar.defaultOpen`, or `sidebar.label` to tune behavior.
 - The `icon` field accepts a Lucide kebab-case name, stored as metadata; UI rendering remains optional.
 
-~~~yaml
+```yaml
 ---
 title: UI Components
 label: Overview
@@ -45,7 +50,7 @@ sidebar:
   collapsible: true
   defaultOpen: true
 ---
-~~~
+```
 
 ## TOC, heading IDs, and links
 
@@ -55,6 +60,4 @@ sidebar:
 
 `validateInternalLinks` checks page links against registered public routes and heading anchors. `checkContentLinks` and `formatLinkIssues` support CI diagnostics for missing pages, missing anchors, and invalid references. The checker handles Markdown links and literal MDX anchor `href` values; dynamic JSX expressions cannot be statically validated. Run `npm run check:links` after moving documentation.
 
-See [Routing and navigation](../../../01-routing/page.mdx) for host React Router integration, and [Development](../../page.mdx) for source-file links versus public routes.
-
-[Content registry overview](../page.mdx) · [Source files](../10-source-files/page.mdx)
+[Content registry overview](../)

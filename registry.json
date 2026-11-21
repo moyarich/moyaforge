@@ -11,6 +11,11 @@
       "dependencies": ["clsx@^2.1.1", "motion@^14.14.0", "react@>=18"],
       "files": [
         {
+          "path": "packages/moyaforge-ui/src/components/Animation/AnimatedEntry.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/AnimatedEntry.tsx"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Animation/Animation.css",
           "type": "registry:file",
           "target": "~/src/components/ui/Animation/Animation.css"
@@ -21,9 +26,39 @@
           "target": "~/src/components/ui/Animation/Animation.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Animation/Animation.types.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/Animation.types.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/AnimationGroup.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/AnimationGroup.tsx"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Animation/AnimationSequence.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/Animation/AnimationSequence.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/ExpandingEntry.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/ExpandingEntry.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/MotionEntry.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/MotionEntry.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/TypewriterEntry.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/TypewriterEntry.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Animation/getAnimationDelay.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Animation/getAnimationDelay.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Animation/index.ts",
@@ -283,6 +318,11 @@
           "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewRefreshButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewRefreshButton.tsx"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewSource.css"
@@ -465,6 +505,11 @@
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewRefreshButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewRefreshButton.tsx"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
@@ -773,6 +818,7 @@
       "dependencies": [
         "@types/is-hotkey@^0.1.10",
         "is-hotkey@^0.2.1",
+        "lucide-react@^1.56.0",
         "react@>=18"
       ],
       "files": [
@@ -1398,6 +1444,11 @@
           "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewRefreshButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewRefreshButton.tsx"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/PreviewSource.css"
@@ -1461,6 +1512,7 @@
       "dependencies": [
         "@types/is-hotkey@^0.1.10",
         "is-hotkey@^0.2.1",
+        "lucide-react@^1.56.0",
         "react@>=18"
       ],
       "files": [
@@ -1843,7 +1895,7 @@
       "type": "registry:component",
       "title": "Version Picker",
       "description": "Editable MoyaForge version-picker source. Components import their own CSS.",
-      "dependencies": [],
+      "dependencies": ["lucide-react@^1.56.0", "react@>=18"],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/VersionPicker/VersionPicker.css",

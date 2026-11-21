@@ -47,6 +47,7 @@ const compileMdx = mdx(
     componentMappings: {
       "code-preview": {
         component: "InlineCodePreview",
+        booleanProps: ["refresh"],
         titleProp: "title",
         sourceProp: "code",
         filesProp: "sourceFiles",
@@ -100,7 +101,12 @@ export default defineConfig({
       codePreview,
       componentRoots: [
         ...codePreview.componentRoots,
-        fileURLToPath(new URL("../../packages/moyaforge-ui/src/components", import.meta.url)),
+        fileURLToPath(
+          new URL(
+            "../../packages/moyaforge-ui/src/components",
+            import.meta.url,
+          ),
+        ),
       ],
     }),
     mdxRegistryPlugin({

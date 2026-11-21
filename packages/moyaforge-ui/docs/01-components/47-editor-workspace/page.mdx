@@ -23,9 +23,9 @@ const [files, setFiles] = useState([
   height={320}
   showBreadcrumbs
   onFileChange={(name, value) =>
-    setFiles(current => current.map(file =>
-      file.name === name ? { ...file, value } : file,
-    ))
+    setFiles((current) =>
+      current.map((file) => (file.name === name ? { ...file, value } : file)),
+    )
   }
   onSave={(name, value) => saveFile(name, value)}
 />;
@@ -43,10 +43,10 @@ import { EditorWorkspace } from "@moyarich/moyaforge-ui/components/EditorWorkspa
     <textarea
       value={activeFile.value}
       readOnly={readOnly || activeFile.readOnly}
-      onChange={event => onFileChange(activeFile.name, event.target.value)}
+      onChange={(event) => onFileChange(activeFile.name, event.target.value)}
     />
   )}
-/>
+/>;
 ```
 
 ## Use your own stylesheet
@@ -72,8 +72,10 @@ export function MyEditor() {
       files={files}
       height={320}
       onFileChange={(name, value) =>
-        setFiles(current =>
-          current.map(file => file.name === name ? { ...file, value } : file)
+        setFiles((current) =>
+          current.map((file) =>
+            file.name === name ? { ...file, value } : file,
+          ),
         )
       }
     />

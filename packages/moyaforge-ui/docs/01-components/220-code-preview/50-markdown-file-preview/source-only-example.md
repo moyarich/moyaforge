@@ -1,2 +1,2 @@
-:::code-preview[Greeting source]{code="./Greeting.tsx" language="typescript"}
+:::code-preview[Greeting source]{code="./GreetingCard.tsx" language="typescript"}
 :::

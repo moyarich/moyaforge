@@ -1,4 +1,5 @@
 import "./DocumentationSite.css";
+import { PanelLeft } from "lucide-react";
 import {
   ResizablePanelGroup,
   ResizablePanel,
@@ -65,6 +66,33 @@ export function DocumentationSite({
 }: DocumentationSiteProps) {
   const layoutId = useId();
   const [menu, setMenu] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!menu) return;
+    const media = window.matchMedia("(max-width: 720px)");
+    if (!media.matches) {
+      setMenu(false);
+      return;
+    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenu(false);
+        menuButton.current?.focus();
+      }
+    };
+    const closeOnResize = () => {
+      if (!media.matches) setMenu(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    media.addEventListener("change", closeOnResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+      media.removeEventListener("change", closeOnResize);
+    };
+  }, [menu]);
   const [dark, setDark] = useState(false);
   const article = useRef<HTMLElement>(null);
   useEffect(() => setMenu(false), [currentPath]);
@@ -98,12 +126,56 @@ export function DocumentationSite({
       {children}
     </a>
   );
+  const sidebarContent =
+    sidebar !== undefined ? (
+      sidebar
+    ) : (
+      <aside className="mf-sidebar mf-sidebar-panel">
+        {sidebarHeader ?? (
+          <div className="mf-version">
+            {sidebarLabel ?? "Documentation"} <span>{sidebarVersion}</span>
+          </div>
+        )}
+        <SidebarScrollArea>
+          <nav aria-label="Documentation navigation">
+            <ul>
+              {pages.map((page) => (
+                <li key={page.path}>{link(page, page.label)}</li>
+              ))}
+            </ul>
+          </nav>
+        </SidebarScrollArea>
+        {sidebarFooter != null && (
+          <div className="mf-sidebar-footer">{sidebarFooter}</div>
+        )}
+      </aside>
+    );
+  const closeMenu = () => {
+    setMenu(false);
+    menuButton.current?.focus();
+  };
+  const closeAfterNavigation = (
+    event: import("react").MouseEvent<HTMLDivElement>,
+  ) => {
+    if ((event.target as Element).closest("a[href]")) setMenu(false);
+  };
   return (
     <div className={`mf-docs${dark ? " mf-docs-dark" : ""}`}>
       <a className="mf-skip" href="#main">
         Skip to content
       </a>
-      <header className="mf-header">
+      <header className="mf-header" inert={menu}>
+        <button
+          type="button"
+          ref={menuButton}
+          className="mf-menu"
+          onClick={() => setMenu((value) => !value)}
+          aria-expanded={menu}
+          aria-label={menu ? "Close navigation" : "Open navigation"}
+          title={menu ? "Close navigation" : "Open navigation"}
+        >
+          <PanelLeft aria-hidden="true" focusable="false" />
+        </button>
         <div className="mf-brand">
           {pages[0] ? link(pages[0], title) : title}
         </div>
@@ -125,16 +197,62 @@ export function DocumentationSite({
           >
             {dark ? "☀" : "☾"}
           </button>
-          <button
-            type="button"
-            className="mf-menu"
-            onClick={() => setMenu((value) => !value)}
-            aria-expanded={menu}
-          >
-            Menu
-          </button>
         </nav>
       </header>
+      {menu && (
+        <button
+          type="button"
+          className="mf-sidebar-backdrop"
+          aria-label="Close navigation"
+          tabIndex={-1}
+          onClick={() => {
+            setMenu(false);
+            menuButton.current?.focus();
+          }}
+        />
+      )}
+      {sidebar !== null && (
+        <ResizablePanelGroup className="mf-mobile-navigation" hidden={!menu}>
+          <ResizablePanel
+            defaultSize={80}
+            minSize={40}
+            maxSize={95}
+            className="mf-mobile-sidebar-panel"
+            onClickCapture={closeAfterNavigation}
+          >
+            <div className="mf-mobile-navigation-header">
+              <span className="mf-brand">{title}</span>
+              <button
+                type="button"
+                className="mf-menu"
+                onClick={closeMenu}
+                aria-label="Close navigation"
+                title="Close navigation"
+                aria-expanded={menu}
+              >
+                <PanelLeft aria-hidden="true" focusable="false" />
+              </button>
+            </div>
+            {sidebarContent}
+          </ResizablePanel>
+          <ResizableHandle
+            aria-label="Resize mobile navigation"
+            className="mf-mobile-sidebar-handle"
+          />
+          <ResizablePanel
+            defaultSize={20}
+            minSize={5}
+            className="mf-mobile-dismiss-panel"
+          >
+            <button
+              type="button"
+              aria-label="Close navigation"
+              tabIndex={-1}
+              onClick={closeMenu}
+            />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      )}
       <ResizablePanelGroup
         className={[
           "mf-docs-grid",
@@ -154,31 +272,12 @@ export function DocumentationSite({
               minSize={14}
               maxSize={40}
               className="mf-docs-sidebar-panel"
+              onClickCapture={(event) => {
+                if ((event.target as Element).closest("a[href]"))
+                  setMenu(false);
+              }}
             >
-              {sidebar !== undefined ? (
-                sidebar
-              ) : (
-                <aside className="mf-sidebar mf-sidebar-panel">
-                  {sidebarHeader ?? (
-                    <div className="mf-version">
-                      {sidebarLabel ?? "Documentation"}{" "}
-                      <span>{sidebarVersion}</span>
-                    </div>
-                  )}
-                  <SidebarScrollArea>
-                    <nav aria-label="Documentation navigation">
-                      <ul>
-                        {pages.map((page) => (
-                          <li key={page.path}>{link(page, page.label)}</li>
-                        ))}
-                      </ul>
-                    </nav>
-                  </SidebarScrollArea>
-                  {sidebarFooter != null && (
-                    <div className="mf-sidebar-footer">{sidebarFooter}</div>
-                  )}
-                </aside>
-              )}
+              {sidebarContent}
             </ResizablePanel>
             <ResizableHandle
               className="mf-docs-sidebar-handle"
@@ -191,6 +290,7 @@ export function DocumentationSite({
           defaultSize={sidebar === null ? 100 : 78}
           minSize={60}
           className="mf-docs-content-panel"
+          inert={menu}
         >
           <div className="mf-docs-content-grid">
             <main ref={article} id="main" className="mf-article" tabIndex={-1}>

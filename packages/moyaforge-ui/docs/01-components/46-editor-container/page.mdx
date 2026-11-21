@@ -12,17 +12,32 @@ Use these lightweight layout components with the reusable [Tabs](/ui/components/
 
 ```tsx
 import { FileCode2, Search } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@moyarich/moyaforge-ui/components/Tabs";
-import { EditorContainer, EditorToolbar, EditorTools, EditorBreadcrumbs, EditorContent } from "@moyarich/moyaforge-ui/components/EditorContainer";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@moyarich/moyaforge-ui/components/Tabs";
+import {
+  EditorContainer,
+  EditorToolbar,
+  EditorTools,
+  EditorBreadcrumbs,
+  EditorContent,
+} from "@moyarich/moyaforge-ui/components/EditorContainer";
 
 <EditorContainer>
   <Tabs defaultValue="app" className="workspace-tabs">
     <EditorToolbar>
       <TabsList aria-label="Editor files">
-        <TabsTrigger value="app" icon={<FileCode2 size={16} />}>App.tsx</TabsTrigger>
+        <TabsTrigger value="app" icon={<FileCode2 size={16} />}>
+          App.tsx
+        </TabsTrigger>
       </TabsList>
       <EditorTools>
-        <button type="button" aria-label="Search" onClick={openSearch}><Search size={16} /></button>
+        <button type="button" aria-label="Search" onClick={openSearch}>
+          <Search size={16} />
+        </button>
       </EditorTools>
     </EditorToolbar>
     <EditorBreadcrumbs>src / App.tsx</EditorBreadcrumbs>
@@ -30,11 +45,10 @@ import { EditorContainer, EditorToolbar, EditorTools, EditorBreadcrumbs, EditorC
       <TabsContent value="app">Editor goes here</TabsContent>
     </EditorContent>
   </Tabs>
-</EditorContainer>
+</EditorContainer>;
 ```
 
 `EditorToolbar`, `EditorTools`, and `EditorBreadcrumbs` are optional. The toolbar is application-controlled and does not invent actions.
-
 
 ## Style the editor with your own CSS
 
@@ -47,7 +61,7 @@ import "./editor.css";
   <Tabs defaultValue="app">
     {/* EditorToolbar, TabsList, TabsTrigger and EditorContent */}
   </Tabs>
-</EditorContainer>
+</EditorContainer>;
 ```
 
 ```css

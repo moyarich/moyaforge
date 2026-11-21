@@ -2,7 +2,7 @@ import {
   HighlightedCode,
   previewLanguage,
 } from "../HighlightedCode/HighlightedCode.js";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Preview,
   PreviewHeader,
@@ -10,6 +10,7 @@ import {
   PreviewActions,
   PreviewCodeToggle,
   PreviewCopyButton,
+  PreviewRefreshButton,
   PreviewContent,
   PreviewSource,
 } from "../Preview/index.js";
@@ -32,6 +33,8 @@ export type CodePreviewProps = {
   files: readonly PreviewFile[];
   /** Applied to every file, in order (e.g. rewrite repo-relative imports). */
   replacements?: readonly Replacement[];
+  /** Show a button that remounts the rendered example. Defaults to false. */
+  refresh?: boolean;
   children: ReactNode;
 };
 
@@ -48,8 +51,10 @@ export function CodePreview({
   title,
   files,
   replacements = [],
+  refresh = false,
   children,
 }: CodePreviewProps) {
+  const [revision, setRevision] = useState(0);
   if (!files.length)
     throw new Error("CodePreview requires at least one source file.");
   if (new Set(files.map((file) => file.label)).size !== files.length)
@@ -65,12 +70,17 @@ export function CodePreview({
       <PreviewHeader>
         <PreviewTitle>{title}</PreviewTitle>
         <PreviewActions>
+          {refresh && (
+            <PreviewRefreshButton
+              onRefresh={() => setRevision((value) => value + 1)}
+            />
+          )}
           <PreviewCodeToggle />
           <PreviewCopyButton />
         </PreviewActions>
       </PreviewHeader>
 
-      <PreviewContent>{children}</PreviewContent>
+      <PreviewContent key={revision}>{children}</PreviewContent>
 
       {processed.length > 1 ? (
         <PreviewSource asChild>

@@ -1,10 +1,10 @@
 ---
-title: React Monaco and TypeFox together
-label: Shared worker runtime
+title: Shared Monaco worker runtime
+label: Shared Monaco worker runtime
 description: Mount both Monaco editor integrations with one VS Code-compatible runtime.
 ---
 
-# React Monaco and TypeFox together
+# Shared Monaco worker runtime
 
 Both editors can appear in one React tree when they use the **same VS Code-compatible Monaco runtime**. Initialize shared services before mounting either editor, rather than installing two standalone worker factories.
 
@@ -30,9 +30,9 @@ Do **not** also call `configureReactWorkers()` or `configureTypeFoxWorkers()`. A
 
 ## Example
 
-::::code-preview[Both editor integrations]{component="./Example.tsx"}
+::::code-preview[Both editor integrations]{component="./SharedMonacoRuntime.tsx"}
 
-::code-preview-sources{files="./Example.tsx"}
+::code-preview-sources{files="./SharedMonacoRuntime.tsx"}
 
 ::::
 

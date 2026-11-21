@@ -12,16 +12,16 @@ The source of truth for the private playground is `apps/playground/registry.conf
 
 ## Developer guides
 
-| Topic | Details |
-| --- | --- |
-| [Sources and README exclusion](./10-source-files/page.mdx) | Source globs, canonical pages, ordinary Markdown, and registry tests |
+| Topic                                                                | Details                                                                  |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [Sources and README exclusion](./10-source-files/page.mdx)           | Source globs, canonical pages, ordinary Markdown, and registry tests     |
 | [Metadata, navigation, and links](./20-metadata-navigation/page.mdx) | Virtual modules, frontmatter, TOC, headings, links, and sidebar behavior |
 
 The standard MDX compilation and code-preview pipeline are described separately in [Code preview internals](../10-code-preview-internals/page.mdx).
 
 ## Processing stages
 
-~~~text
+```text
 registry.config.ts
    |
    v
@@ -38,10 +38,11 @@ mdxRegistryPlugin (Vite)
    |  virtual:.../registry   (compatibility)
    v
 Host router, sidebar, outline and search integration
-~~~
+```
 
-The implementation lives in `packages/moyaforge-mdx/src/content/`, `src/registry/`, `src/navigation/`, and `src/vite/registry-plugin/`. The host application owns the React router and presentation.
+The implementation lives in `packages/moyaforge-mdx/src/content/`, `src/registry/`, `src/navigation/`, and `src/vite/registry-plugin/`.
+The host application owns the React router and presentation.
 
 **README files remain in the repository** for GitHub and npm package documentation, but are not registered as playground pages.
 
-[Development overview](../page.mdx)
+[Development overview](../)

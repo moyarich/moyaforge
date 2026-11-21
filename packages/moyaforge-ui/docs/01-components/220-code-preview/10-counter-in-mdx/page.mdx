@@ -8,7 +8,7 @@ import { CodePreview } from "../../../../src/components/CodePreview/index.js";
 import CounterExample from "../../CounterExample.tsx";
 import counterSource from "../../CounterExample.tsx?raw";
 import counterStyles from "../../counterExample.css?raw";
-import previewMarkup from "./example.mdx?raw";
+import previewMarkup from "./counter-in-mdx-usage.mdx?raw";
 
 # Counter preview in MDX
 
@@ -17,7 +17,7 @@ Click the counter to try it. Open **Code** to see the React component and styles
 <CodePreview
   title="Counter"
   files={[
-    { label: "example.mdx", code: previewMarkup, language: "mdx" },
+    { label: "counter-in-mdx-usage.mdx", code: previewMarkup, language: "mdx" },
     { label: "CounterExample.tsx", code: counterSource },
     { label: "counterExample.css", code: counterStyles },
   ]}
