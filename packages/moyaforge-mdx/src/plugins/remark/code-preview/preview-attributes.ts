@@ -1,6 +1,11 @@
 import type { DirectiveHeader } from "../remark-directive/directive-node.js";
 
-const PREVIEW_ATTRIBUTES = ["component", "code", "language"] as const;
+const PREVIEW_ATTRIBUTES = [
+  "component",
+  "code",
+  "language",
+  "preview",
+] as const;
 
 export function readPreviewAttributes(
   value: string,
@@ -24,10 +29,7 @@ export function readPreviewAttributes(
     throw new Error(
       "The code-preview language attribute requires a code source.",
     );
-  if (
-    attributes.language &&
-    !/^[a-zA-Z0-9_-]+$/.test(attributes.language)
-  )
+  if (attributes.language && !/^[a-zA-Z0-9_-]+$/.test(attributes.language))
     throw new Error("Invalid code-preview language.");
 
   return attributes;

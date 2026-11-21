@@ -1,9 +1,15 @@
 import "./DocumentationSite.css";
 import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "../../ResizablePanel/index.js";
+import {
   DocumentationSearch,
   type DocumentationSearchProps,
 } from "../../Search/DocumentationSearch.js";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { SidebarScrollArea } from "../../SidebarV1/SidebarScrollArea.js";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
 export interface DocumentationSitePage {
   path: string;
@@ -57,6 +63,7 @@ export function DocumentationSite({
   searchShortcut = defaultSearchShortcut,
   onNavigate,
 }: DocumentationSiteProps) {
+  const layoutId = useId();
   const [menu, setMenu] = useState(false);
   const [dark, setDark] = useState(false);
   const article = useRef<HTMLElement>(null);
@@ -128,76 +135,107 @@ export function DocumentationSite({
           </button>
         </nav>
       </header>
-      <div
+      <ResizablePanelGroup
         className={[
           "mf-docs-grid",
+          "mf-docs-resizable",
           menu && "is-menu-open",
           sidebar === null && "mf-no-sidebar",
           outline === null && "mf-no-outline",
-        ].filter(Boolean).join(" ")}
+        ]
+          .filter(Boolean)
+          .join(" ")}
       >
-        {sidebar !== undefined ? (
-          sidebar
-        ) : (
-          <aside className="mf-sidebar">
-            {sidebarHeader ?? (
-              <div className="mf-version">
-                {sidebarLabel ?? "Documentation"} <span>{sidebarVersion}</span>
+        {sidebar !== null && (
+          <>
+            <ResizablePanel
+              id={`${layoutId}-sidebar`}
+              defaultSize={22}
+              minSize={14}
+              maxSize={40}
+              className="mf-docs-sidebar-panel"
+            >
+              {sidebar !== undefined ? (
+                sidebar
+              ) : (
+                <aside className="mf-sidebar mf-sidebar-panel">
+                  {sidebarHeader ?? (
+                    <div className="mf-version">
+                      {sidebarLabel ?? "Documentation"}{" "}
+                      <span>{sidebarVersion}</span>
+                    </div>
+                  )}
+                  <SidebarScrollArea>
+                    <nav aria-label="Documentation navigation">
+                      <ul>
+                        {pages.map((page) => (
+                          <li key={page.path}>{link(page, page.label)}</li>
+                        ))}
+                      </ul>
+                    </nav>
+                  </SidebarScrollArea>
+                  {sidebarFooter != null && (
+                    <div className="mf-sidebar-footer">{sidebarFooter}</div>
+                  )}
+                </aside>
+              )}
+            </ResizablePanel>
+            <ResizableHandle
+              className="mf-docs-sidebar-handle"
+              aria-label="Resize documentation sidebar"
+            />
+          </>
+        )}
+        <ResizablePanel
+          id={`${layoutId}-content`}
+          defaultSize={sidebar === null ? 100 : 78}
+          minSize={60}
+          className="mf-docs-content-panel"
+        >
+          <div className="mf-docs-content-grid">
+            <main ref={article} id="main" className="mf-article" tabIndex={-1}>
+              <div className="mf-breadcrumb">
+                {current?.source ?? "Documentation"} <span>/</span>{" "}
+                {current?.label ?? "No page selected"}
               </div>
+              {children}
+              <footer className="mf-page-footer">
+                {repository ? (
+                  <a
+                    href={contributeHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Contribute on GitHub ↗
+                  </a>
+                ) : null}
+                <div>
+                  {currentIndex > 0
+                    ? link(
+                        pages[currentIndex - 1],
+                        <>Previous page ← {pages[currentIndex - 1].label}</>,
+                      )
+                    : null}
+                  {currentIndex >= 0 && currentIndex < pages.length - 1
+                    ? link(
+                        pages[currentIndex + 1],
+                        <>Next page → {pages[currentIndex + 1].label}</>,
+                      )
+                    : null}
+                </div>
+              </footer>
+            </main>
+            {outline !== undefined ? (
+              outline
+            ) : (
+              <aside className="mf-outline">
+                {outlineHeader}
+                {outlineFooter}
+              </aside>
             )}
-            <nav aria-label="Documentation navigation">
-              <ul>
-                {pages.map((page) => (
-                  <li key={page.path}>{link(page, page.label)}</li>
-                ))}
-              </ul>
-            </nav>
-            {sidebarFooter ? (
-              <div className="mf-sidebar-footer">{sidebarFooter}</div>
-            ) : null}
-          </aside>
-        )}
-        <main ref={article} id="main" className="mf-article" tabIndex={-1}>
-          <div className="mf-breadcrumb">
-            {current?.source ?? "Documentation"} <span>/</span>{" "}
-            {current?.label ?? "No page selected"}
           </div>
-          {children}
-          <footer className="mf-page-footer">
-            {repository ? (
-              <a
-                href={contributeHref}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Contribute on GitHub ↗
-              </a>
-            ) : null}
-            <div>
-              {currentIndex > 0
-                ? link(
-                    pages[currentIndex - 1],
-                    <>Previous page ← {pages[currentIndex - 1].label}</>,
-                  )
-                : null}
-              {currentIndex >= 0 && currentIndex < pages.length - 1
-                ? link(
-                    pages[currentIndex + 1],
-                    <>Next page → {pages[currentIndex + 1].label}</>,
-                  )
-                : null}
-            </div>
-          </footer>
-        </main>
-        {outline !== undefined ? (
-          outline
-        ) : (
-          <aside className="mf-outline">
-            {outlineHeader}
-            {outlineFooter}
-          </aside>
-        )}
-      </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   );
 }

@@ -15,7 +15,7 @@ Run this command from the root of your project:
 npx @moyarich/moyaforge-cli@latest init
 ```
 
-Without a template, `init` creates `moyaforge.components.json`, which stores the component registry and installation directory used by `moyaforge add`. It does **not** generate an application.
+Without a template, `init` creates `moyaforge.components.json`, which stores the component registry and installation directory used by `moyaforge add`. Use `--template` when you want to generate an application as well.
 
 ## Generate a documentation project
 
@@ -26,22 +26,37 @@ npm run dev
 
 The `docs` template generates an application with React, Vite, MDX, and starter pages in `docs/`. It installs editable `docs-shell` and `code-group` components from the component registry into `src/components/ui/`.
 
-## Templates and options
+## Choose a template
+
+| Template     | Use it for                                                           |
+| ------------ | -------------------------------------------------------------------- |
+| `docs`       | A documentation site with a docs shell and grouped code blocks.      |
+| `hybrid`     | Documentation with a separate interactive playground route.          |
+| `playground` | A documentation playground with registry-based UI and code previews. |
+| `existing`   | A separate documentation entry inside your existing React project.   |
+
+Start each new site in its own empty directory:
 
 ```sh
-# Documentation site with SQLite search
-npx @moyarich/moyaforge-cli@latest init --template docs --search
+mkdir my-docs
+cd my-docs
+npx @moyarich/moyaforge-cli@latest init --template docs
+npm run dev
+```
 
-# Documentation with a separate interactive playground route
-npx @moyarich/moyaforge-cli@latest init --template hybrid
+### Enable search
 
-# Standalone documentation playground using registry-based UI
+Choose search when you scaffold the project:
+
+```sh
 npx @moyarich/moyaforge-cli@latest init --template playground --search
+```
 
-# Framework dependency instead of source-only mode
-npx @moyarich/moyaforge-cli@latest init --template docs --mode package
+### Add documentation to an existing app
 
-# Isolated documentation entry inside an existing React app
+From your application's root directory, run:
+
+```sh
 npx @moyarich/moyaforge-cli@latest init --template existing
 npm run docs:dev
 ```
@@ -63,3 +78,31 @@ The `existing` template puts its entry under `moyaforge/` and adds `docs:*` scri
 - `--overwrite` permits replacing existing files.
 
 Generated components remain editable, and existing files are preserved unless `--overwrite` is supplied.
+
+## Inspect changes before applying them
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template docs --dry-run --diff
+npx @moyarich/moyaforge-cli@latest init --template docs
+```
+
+The first command prints the planned changes. The second writes them and installs dependencies. Review existing files before using `--overwrite`.
+
+## Install dependencies separately
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --template docs --no-install
+npm install
+npm run dev
+```
+
+## Target another directory
+
+Create the destination first. `--cwd` selects an existing directory:
+
+```sh
+mkdir my-docs
+npx @moyarich/moyaforge-cli@latest init --cwd ./my-docs --template docs
+cd my-docs
+npm run dev
+```

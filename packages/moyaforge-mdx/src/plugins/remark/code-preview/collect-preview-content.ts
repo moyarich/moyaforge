@@ -1,3 +1,4 @@
+import { renderMarkdownFence } from "./render-markdown-fence.js";
 import { importInlineReactExample } from "./inline-react-module.js";
 import type { InlinePreviewAsset } from "./mask-inline-preview-assets.js";
 import { namedCodeBlock } from "../code-block/named-code-block.js";
@@ -36,12 +37,20 @@ export function collectPreviewContent(
   container?: Node,
 ) {
   const inlineReact = header?.flags.includes("react");
+  if (header?.preview && (inlineReact || header.component || header.code))
+    throw new Error(
+      "code-preview preview cannot be combined with react, component, or code.",
+    );
   if (inlineReact && (header?.component || header?.code))
     throw new Error(
       "A {react} preview takes its component and source from the directive body.",
     );
   if (header?.component) {
-    if (!/^(?:\.\/|\.\.\/)+(?:[\w-]+\/)*[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)(?:#[A-Za-z_$][\w$]*)?$/.test(header.component))
+    if (
+      !/^(?:\.\/|\.\.\/)+(?:[\w-]+\/)*[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)(?:#[A-Za-z_$][\w$]*)?$/.test(
+        header.component,
+      )
+    )
       throw new Error(
         `Invalid code-preview component: ${header.component}. Use a relative .tsx/.jsx file under a registered component root; append #ExportName for a named export.`,
       );
@@ -60,6 +69,7 @@ export function collectPreviewContent(
   }
 
   const files: PreviewFile[] = [];
+  const fences: PreviewFile[] = [];
   if (header?.code) {
     files.push(readPreviewFile(header.code, filePath, header.language));
     attributes.push({
@@ -85,8 +95,22 @@ export function collectPreviewContent(
     const block = selected.filesProp && namedCodeBlock(child);
     if (!block) return true;
     files.push(block);
+    fences.push(block);
     return false;
   });
+  if (header?.preview) {
+    const matches = fences.filter((fence) => fence.label === header.preview);
+    if (matches.length !== 1)
+      throw new Error(
+        `code-preview preview="${header.preview}" must match exactly one named code fence.`,
+      );
+    const fence = matches[0];
+    if (!/^(md|markdown)$/.test(fence.language ?? ""))
+      throw new Error(
+        "code-preview preview currently supports md or markdown fences.",
+      );
+    content.splice(0, content.length, ...renderMarkdownFence(fence.code));
+  }
   if (selected.filesProp && files.length) {
     attributes.push({
       type: "mdxJsxAttribute",
@@ -134,7 +158,7 @@ export function collectPreviewContent(
       attributes.push({
         type: "mdxJsxAttribute",
         name: selected.sourceProp,
-        value: hasLocalSources && !inlineReact ? "" : body,
+        value: header?.preview || (hasLocalSources && !inlineReact) ? "" : body,
       });
     if (inlineReact) {
       if (!filePath || !selected.registerInlineReact)
@@ -165,12 +189,16 @@ export function collectPreviewContent(
     if (!asset.render) return [];
     if (!filePath || !selected.registerInlineReact)
       throw new Error(
-        "Inline <" + asset.tag + "> in code-preview requires the Vite code-preview plugin (registerInlineReact).",
+        "Inline <" +
+          asset.tag +
+          "> in code-preview requires the Vite code-preview plugin (registerInlineReact).",
       );
-    return [importInlineReactExample(
-      file,
-      selected.registerInlineReact(inlineAssetModule(asset), filePath),
-    )];
+    return [
+      importInlineReactExample(
+        file,
+        selected.registerInlineReact(inlineAssetModule(asset), filePath),
+      ),
+    ];
   });
 }
 
@@ -200,7 +228,10 @@ function sourceFromPreviewContainer(
   if (openerEnd < 0 || openerEnd >= end) return undefined;
 
   const closerStart = source.lastIndexOf("\n", end - 1) + 1;
-  if (closerStart <= openerEnd || !/^:{3,}\s*$/.test(source.slice(closerStart, end)))
+  if (
+    closerStart <= openerEnd ||
+    !/^:{3,}\s*$/.test(source.slice(closerStart, end))
+  )
     return undefined;
 
   return source

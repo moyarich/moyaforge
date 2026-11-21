@@ -10,7 +10,7 @@ const directory = resolve(
 );
 const page = resolve(directory, "page.mdx");
 
-test("Warning previews accept a source directive before inline React imports and render a file-backed Markdown component", async () => {
+test("Warning previews accept a source directive before inline React imports and render Markdown examples", async () => {
   const value = await readFile(page, "utf8");
   const registered = [];
   const resolved = [];
@@ -36,7 +36,11 @@ test("Warning previews accept a source directive before inline React imports and
                 : undefined;
             },
           },
-          "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
+          "*": {
+            component: "CustomBlock",
+            typeProp: "type",
+            titleProp: "title",
+          },
         },
       }),
     ),
@@ -45,24 +49,29 @@ test("Warning previews accept a source directive before inline React imports and
   expect(registered).toHaveLength(1);
   expect(registered[0].authoredFile).toBe(page);
   expect(registered[0].source).toContain('import "./example.css";');
-  expect(registered[0].source).toMatch(/<CustomBlock\s+className="warning-example"/);
+  expect(registered[0].source).toMatch(
+    /<CustomBlock\s+className="warning-example"/,
+  );
   expect(registered[0].source).not.toContain("code-preview-sources");
-  expect(resolved).toEqual([{ reference: "./Example.tsx", authoredFile: page }]);
+  expect(resolved).toEqual([]);
   expect(output).toContain("virtual:moyaforge-mdx/react-preview/warning");
-  expect(output).toContain("warning/Example.tsx");
+  expect(output).toContain("example.md");
+  expect(output).toContain("_components.strong");
   expect(output).toContain("Example.mdx");
   expect(output).toContain("example.css");
-  expect(output.match(/replacementPreset: "portable"/g)).toHaveLength(2);
+  expect(output.match(/replacementPreset: "portable"/g)).toHaveLength(1);
   expect(output).toContain("Save a backup before changing your settings.");
 });
 
-test("the file-backed component renders the Markdown source and matches the CSS casing", async () => {
-  const wrapper = await readFile(resolve(directory, "Example.tsx"), "utf8");
+test("Markdown source stays free of documentation wrappers and the page supplies its styling", async () => {
   const example = await readFile(resolve(directory, "Example.mdx"), "utf8");
+  const value = await readFile(page, "utf8");
   const styles = await readFile(resolve(directory, "example.css"), "utf8");
 
-  expect(wrapper).toContain('import Example from "./Example.mdx";');
-  expect(example).toContain('import "./example.css";');
   expect(example).toContain("::: warning Before you continue");
+  expect(example).not.toContain("code-preview");
+  expect(example).not.toContain("import ");
+  expect(value).toContain('preview="example.md"');
+  expect(value).toContain('filename="example.css"');
   expect(styles).toContain(".warning-example .custom-block.warning");
 });

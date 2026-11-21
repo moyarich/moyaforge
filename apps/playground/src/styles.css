@@ -13,7 +13,7 @@ pre {
   tab-size: 2;
 }
 .playground-version-picker {
-  margin-bottom: 28px;
+  margin-bottom: 12px;
 }
 .playground-feedback {
   --_mf-feedback-color: var(--mf-feedback-color, var(--_mf-muted, #73737c));

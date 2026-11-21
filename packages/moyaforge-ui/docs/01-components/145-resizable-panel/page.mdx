@@ -1,0 +1,82 @@
+---
+title: Resizable panels
+label: Resizable panels
+description: Compose draggable and keyboard-accessible split layouts.
+---
+
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "../../../src/components/ResizablePanel/index.js";
+
+# Resizable panels
+
+Compose panels for documentation navigation, editors, file explorers, or split views. The components have no dependency on a sidebar or editor.
+
+## Installation
+
+```sh
+npx @moyarich/moyaforge-cli@latest add resizable-panel
+```
+
+## Sidebar and content
+
+Drag the boundary or focus it and press the arrow keys. Shift+Arrow moves in larger steps; Home and End reach the allowed limits.
+
+::::code-preview[Resizable navigation]{react}
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../../src/components/ResizablePanel/index.js";
+
+<ResizablePanelGroup
+  style={{ height: 260, border: "1px solid #8884", borderRadius: 8 }}
+>
+  <ResizablePanel defaultSize={30} minSize={15} maxSize={55}>
+    <nav aria-label="Example navigation" style={{ padding: 20 }}>
+      <strong>Guide</strong>
+      <p>Getting started</p>
+      <p>Components</p>
+    </nav>
+  </ResizablePanel>
+  <ResizableHandle aria-label="Resize navigation" />
+  <ResizablePanel defaultSize={70} minSize={45}>
+    <div style={{ padding: 24 }}>
+      Your documentation, editor, or file explorer goes here.
+    </div>
+  </ResizablePanel>
+</ResizablePanelGroup>
+::::
+
+## Usage
+
+```tsx
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/ResizablePanel/ResizablePanel.js";
+
+<ResizablePanelGroup direction="horizontal" style={{ height: 480 }}>
+  <ResizablePanel id="navigation" defaultSize={25} minSize={15} maxSize={40}>
+    <Navigation />
+  </ResizablePanel>
+  <ResizableHandle aria-label="Resize navigation" />
+  <ResizablePanel id="content" defaultSize={75} minSize={60}>
+    <Content />
+  </ResizablePanel>
+</ResizablePanelGroup>;
+```
+
+Keep panels and handles as direct children, alternating between them. Set default sizes to total 100. Sizes and limits are percentages of the available panel space. Give the group a height, or place it inside a parent with a defined height.
+
+Use `direction="vertical"` to stack panels. Nest another group inside a panel for editor and preview layouts. Each group manages its own sizes.
+
+| Component             | Prop                  | Default           | Purpose                                                            |
+| --------------------- | --------------------- | ----------------- | ------------------------------------------------------------------ |
+| `ResizablePanelGroup` | `direction`           | `"horizontal"`    | Choose side-by-side or stacked panels.                             |
+| `ResizablePanelGroup` | `onLayoutChange`      | —                 | Receive a record of panel IDs and percentage sizes while resizing. |
+| `ResizablePanel`      | `defaultSize`         | `50`              | Initial percentage of available space.                             |
+| `ResizablePanel`      | `minSize` / `maxSize` | `0` / `100`       | Constrain resizing.                                                |
+| `ResizablePanel`      | `id`                  | Generated         | Provide a stable ID for layout callbacks.                          |
+| `ResizableHandle`     | `aria-label`          | `"Resize panels"` | Describe the boundary for assistive technology.                    |
+
+Style the boundary with `--mf-resizable-border` and `--mf-resizable-accent`. Each component also accepts HTML attributes, `className`, and `style`.
