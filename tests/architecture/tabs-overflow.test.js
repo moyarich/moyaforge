@@ -9,10 +9,10 @@ import { TabsTrigger } from "../../packages/moyaforge-ui/src/components/Tabs/Tab
 
 const dir = resolve(import.meta.dirname, "../../packages/moyaforge-ui/src/components/Tabs");
 
-test("scroll navigation preserves tablist accessibility and tab selection", () => {
+test("explicit scroll settings preserve tablist accessibility and tab selection", () => {
   const markup = renderToStaticMarkup(
     h(Tabs, { defaultValue: "one" },
-      h(TabsList, { "aria-label": "Open files" },
+      h(TabsList, { tabsScroll: false, "aria-label": "Open files" },
         h(TabsTrigger, { value: "one" }, "One"),
         h(TabsTrigger, { value: "two" }, "Two"),
       ),
