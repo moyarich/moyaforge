@@ -1,0 +1,186 @@
+:root {
+  --mf-interactive-preview-border: var(
+    --mf-border-color,
+    light-dark(#e4e4e7, #3f3f46)
+  );
+  --mf-interactive-preview-muted: var(--mf-muted, light-dark(#71717a, #a1a1aa));
+  --mf-interactive-preview-soft: light-dark(#f7f7f8, #202023);
+  --mf-interactive-preview-accent: var(--mf-accent, #e35454);
+  --mf-interactive-preview-control-height: 2.25rem;
+}
+.interactive-preview {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--mf-interactive-preview-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  text-align: start;
+}
+.interactive-preview-header {
+  padding: 1.25rem 1.5rem;
+}
+.interactive-preview-header strong {
+  font-size: 0.9375rem;
+}
+.interactive-preview .interactive-preview-header p {
+  margin: 0.375rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--mf-interactive-preview-muted);
+}
+.interactive-preview-row {
+  min-width: 0;
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--mf-interactive-preview-border);
+}
+.interactive-preview-configuration {
+  border-top: 1px solid var(--mf-interactive-preview-border);
+}
+.interactive-preview-configuration-panel {
+  padding: 1.25rem 1.5rem;
+}
+.interactive-preview-controls {
+  container: interactive-preview-controls / inline-size;
+  box-sizing: border-box;
+  width: 100%;
+  min-inline-size: 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.interactive-preview-controls > legend {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+  padding: 0;
+  line-height: 1.5;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.interactive-preview-controls :where(label) {
+  display: grid;
+  gap: 0.375rem;
+  min-width: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.interactive-preview-controls
+  :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--mf-interactive-preview-control-height);
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--mf-interactive-preview-border);
+  border-radius: 0.375rem;
+  color: inherit;
+  background: var(--mf-bg, light-dark(#fff, #18181b));
+  font: inherit;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.interactive-preview-controls select {
+  --_mf-interactive-preview-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  appearance: none;
+  height: var(--mf-interactive-preview-control-height);
+  padding-block: 0.375rem;
+  padding-inline: 0.75rem 2.25rem;
+  background-image: var(--_mf-interactive-preview-select-chevron);
+  background-position: right 0.625rem center;
+  background-size: 1rem;
+  background-repeat: no-repeat;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.interactive-preview-controls select:dir(rtl) {
+  background-position: left 0.625rem center;
+}
+.interactive-preview-controls select:not(:disabled):hover {
+  border-color: var(--mf-interactive-preview-muted);
+}
+.interactive-preview-controls select:disabled {
+  background-color: var(--mf-interactive-preview-soft);
+  color: var(--mf-interactive-preview-muted);
+  opacity: 0.65;
+}
+.interactive-preview-controls select option {
+  color: var(--mf-text, light-dark(#27272a, #e4e4e7));
+  background: var(--mf-bg, light-dark(#fff, #18181b));
+}
+.interactive-preview-controls :where(input, select, textarea):focus-visible {
+  outline: 2px solid var(--mf-interactive-preview-accent);
+  outline-offset: 2px;
+}
+.interactive-preview-controls select:focus-visible {
+  border-color: var(--mf-interactive-preview-accent);
+  outline: 2px solid
+    color-mix(in srgb, var(--mf-interactive-preview-accent) 25%, transparent);
+  outline-offset: 1px;
+}
+@media (forced-colors: active) {
+  .interactive-preview-controls select {
+    appearance: auto;
+    background-image: none;
+    padding-inline-end: 0.75rem;
+  }
+  .interactive-preview-controls select:focus-visible {
+    outline-color: Highlight;
+  }
+}
+.interactive-preview-controls :where(input, select, textarea):disabled {
+  cursor: not-allowed;
+}
+.interactive-preview-row-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  flex-wrap: wrap;
+}
+.interactive-preview-row-title svg,
+.interactive-preview-controls legend svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  color: var(--mf-interactive-preview-muted);
+}
+.interactive-preview-row-title span {
+  color: var(--mf-interactive-preview-muted);
+}
+.interactive-preview-metadata {
+  min-width: 0;
+  font-size: 0.8125rem;
+}
+.interactive-preview-metadata-title {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+}
+.interactive-preview-code {
+  --mf-code-group-margin: 0;
+}
+@media (max-width: 640px) {
+  .interactive-preview-header,
+  .interactive-preview-row,
+  .interactive-preview-configuration-panel {
+    padding-inline: 1rem;
+  }
+  .interactive-preview-configuration > .mf-resizable-group {
+    display: block;
+  }
+  .interactive-preview-configuration .mf-resizable-handle {
+    display: none;
+  }
+  .interactive-preview-configuration-panel
+    + .mf-resizable-handle
+    + .interactive-preview-configuration-panel {
+    border-top: 1px solid var(--mf-interactive-preview-border);
+  }
+}

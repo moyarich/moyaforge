@@ -1,4 +1,3 @@
-export { MdxPreview, type MdxPreviewProps } from "./MdxPreview.js";
 export {
   createVirtualRegistry,
   type VirtualSources,

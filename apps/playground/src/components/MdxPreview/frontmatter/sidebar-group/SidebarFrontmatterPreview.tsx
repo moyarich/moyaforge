@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from "react";
-import { MdxPreview } from "../../MdxPreview.js";
+import { InteractivePreview } from "../../../../../../../packages/moyaforge-ui/src/components/InteractivePreview/index.js";
 import { FrontmatterSitePreview } from "../FrontmatterSitePreview.js";
 import {
   createFrontmatterDemo,
@@ -22,7 +22,7 @@ export default function SidebarFrontmatterPreview() {
   }
 
   return (
-    <MdxPreview
+    <InteractivePreview
       className="frontmatter-demo"
       title="Sidebar group from frontmatter"
       description="Change the settings to update the sidebar and its Markdown source."
@@ -104,6 +104,6 @@ export default function SidebarFrontmatterPreview() {
           registry={registry}
         />
       </div>
-    </MdxPreview>
+    </InteractivePreview>
   );
 }

@@ -1,5 +1,5 @@
 import "./SidebarGroupPreview.css";
-import { useState, type MouseEvent } from "react";
+import { useState, type MouseEvent, type ReactNode } from "react";
 import { buildDocumentationGroups } from "../../../../../../../packages/moyaforge-mdx/src/navigation/tree/index.js";
 import { SidebarV1 } from "../../../../../../../packages/moyaforge-ui/src/components/SidebarV1/index.js";
 import type { FrontmatterDemo } from "../frontmatter-demo.js";
@@ -9,8 +9,10 @@ export function SidebarGroupPreview({
   registry,
   currentPath: controlledPath,
   onNavigate,
+  outline,
 }: Pick<FrontmatterDemo, "registry"> & {
   currentPath?: string;
+  outline?: ReactNode;
   onNavigate?: (path: string) => void;
 }) {
   const [currentPath, setCurrentPath] = useState("/docs/installation");
@@ -33,6 +35,7 @@ export function SidebarGroupPreview({
     <SidebarV1
       className="mf-sidebar sidebar-frontmatter-result"
       groups={groups}
+      outline={outline}
       currentUrl={
         controlledPath ??
         (registry.byPath.has(currentPath)

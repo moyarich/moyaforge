@@ -50,7 +50,7 @@ export interface FrontmatterDemoOptions {
 export function createFrontmatterFiles({
   sidebar = { group: true, collapsible: true, defaultOpen: true },
   page = {},
-}: FrontmatterDemoOptions = {}) {
+}: FrontmatterDemoOptions = {}): Record<string, string> {
   const landing = stringify({ title: "Guide", sidebar }).trimEnd();
   const metadata = stringify({ title: "Installation", ...page }).trimEnd();
   return {

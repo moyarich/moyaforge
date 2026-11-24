@@ -1,3 +1,4 @@
+import { SidebarGroupPreview } from "../sidebar-group/SidebarGroupPreview.js";
 import { VirtualPage } from "../../VirtualPage.js";
 import {
   useId,
@@ -18,10 +19,20 @@ import {
   TableOfContents,
   type TableOfContentsItem,
 } from "../../../../../../../packages/moyaforge-ui/src/components/TableOfContents/index.js";
-import { MdxPreview } from "../../MdxPreview.js";
+import { InteractivePreview } from "../../../../../../../packages/moyaforge-ui/src/components/InteractivePreview/index.js";
 import { articleSections, createFrontmatterDemo } from "../frontmatter-demo.js";
 
-function createHeadings(prefix: string): TocHeading[] {
+function createHeadings(prefix: string, file: string): TocHeading[] {
+  if (file !== "01-installation/page.md") {
+    const landing = file === "page.md";
+    return [
+      {
+        id: `${prefix}-${landing ? "guide" : "authoring"}`,
+        value: landing ? "Guide" : "Authoring",
+        depth: 1,
+      },
+    ];
+  }
   const roots: TocHeading[] = [];
   const stack: TocHeading[] = [];
   for (const section of articleSections) {
@@ -51,6 +62,7 @@ function flattenHeadings(
 export default function OutlinePreview() {
   const prefix = useId();
   const article = useRef<HTMLDivElement>(null);
+  const [currentPath, setCurrentPath] = useState("/docs/installation");
   const [mode, setMode] = useState("custom");
   const [options, setOptions] = useState<Required<TocOptions>>({
     placement: "right",
@@ -68,11 +80,19 @@ export default function OutlinePreview() {
         ? options
         : mode === "enabled";
   const { files, registry } = createFrontmatterDemo({ page: { toc } });
-  const page = registry.pages.find(
-    (page) => page.file === "01-installation/page.md",
-  )!;
-  const resolved = getTableOfContents(createHeadings(prefix), page.toc);
+  const page = registry.byPath.get(currentPath)!;
+  const filename = `${page.source}/${page.file}`;
+  const resolved = getTableOfContents(
+    createHeadings(prefix, page.file),
+    page.toc,
+  );
   const placement = resolved.options.placement;
+
+  function navigateToPage(path: string) {
+    setCurrentPath(path);
+    setActiveId("");
+    article.current?.scrollTo({ top: 0 });
+  }
 
   function updateMode(event: ChangeEvent<HTMLSelectElement>) {
     setMode(event.currentTarget.value);
@@ -146,12 +166,12 @@ export default function OutlinePreview() {
     );
 
   return (
-    <MdxPreview
+    <InteractivePreview
       className="frontmatter-demo"
       title="Outline from frontmatter"
-      description="Try every toc setting against headings from the virtual article. The default outline includes depths 2 and 3."
+      description="Controls configure Installation. Use the sidebar to view each virtual page and its own outline settings."
       files={files}
-      primaryFile="docs/01-installation/page.md"
+      primaryFile={filename}
       previewDescription="Rendered article and outline"
       sourceDescription="Example source files"
       metadata={
@@ -268,22 +288,24 @@ export default function OutlinePreview() {
       )}
       <div className={`frontmatter-outline-layout is-${placement}`}>
         <aside className="frontmatter-outline-navigation">
-          <strong>Navigation</strong>
-          <p>Guide</p>
-          <p>Installation</p>
-          {placement === "sidebar" && outline}
+          <SidebarGroupPreview
+            registry={registry}
+            currentPath={page.path}
+            onNavigate={navigateToPage}
+            outline={placement === "sidebar" ? outline : null}
+          />
         </aside>
         <div
           ref={article}
           className="frontmatter-outline-article"
           role="region"
-          aria-label="Virtual installation article"
+          aria-label="Virtual page article"
           tabIndex={0}
         >
           {placement === "inline" && outline}
           <VirtualPage
-            filename="docs/01-installation/page.md"
-            source={files["docs/01-installation/page.md"]}
+            filename={filename}
+            source={files[filename]}
             headingPrefix={`${prefix}-`}
           />
         </div>
@@ -291,6 +313,6 @@ export default function OutlinePreview() {
           <aside className="frontmatter-outline-rail">{outline}</aside>
         )}
       </div>
-    </MdxPreview>
+    </InteractivePreview>
   );
 }

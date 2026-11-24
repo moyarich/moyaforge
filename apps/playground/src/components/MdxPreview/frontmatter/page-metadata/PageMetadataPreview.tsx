@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type ReactNode } from "react";
-import { MdxPreview } from "../../MdxPreview.js";
+import { InteractivePreview } from "../../../../../../../packages/moyaforge-ui/src/components/InteractivePreview/index.js";
 import {
   buildFrontmatterRegistry,
   createFrontmatterFiles,
@@ -63,7 +63,7 @@ export default function PageMetadataPreview() {
     setMetadata((previous) => ({ ...previous, [name]: value }));
   }
   return (
-    <MdxPreview
+    <InteractivePreview
       className="frontmatter-demo"
       title="Page metadata from frontmatter"
       description="Change the title, summary, or icon. Compare the resolved metadata with the rendered sidebar."
@@ -102,6 +102,6 @@ export default function PageMetadataPreview() {
       }
     >
       {preview}
-    </MdxPreview>
+    </InteractivePreview>
   );
 }

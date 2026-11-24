@@ -1086,6 +1086,110 @@
       ]
     },
     {
+      "name": "interactive-preview",
+      "type": "registry:component",
+      "title": "Interactive Preview",
+      "description": "Editable MoyaForge interactive-preview source. Components import their own CSS.",
+      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroupTabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroupTabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeTab.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeTab.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreview.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/InteractivePreview/InteractivePreview.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreview.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/InteractivePreview/InteractivePreview.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/InteractivePreview/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/InteractivePreview/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/resize-panel-pair.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/resize-panel-pair.ts"
+        }
+      ]
+    },
+    {
       "name": "monaco-editor-react",
       "type": "registry:component",
       "title": "Monaco Editor React",

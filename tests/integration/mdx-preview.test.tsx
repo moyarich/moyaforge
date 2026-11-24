@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test } from "vitest";
 import { createVirtualRegistry } from "../../apps/playground/src/components/MdxPreview/virtual-registry.js";
-import { MdxPreview } from "../../apps/playground/src/components/MdxPreview/MdxPreview.js";
+import { InteractivePreview } from "../../packages/moyaforge-ui/src/components/InteractivePreview/index.js";
 
 test("virtual registries support multiple sources and source-relative documents", () => {
   const { registry, files } = createVirtualRegistry({
@@ -38,7 +38,7 @@ test("virtual frontmatter handles CRLF and validates metadata", () => {
 
 test("metadata shares resizable configuration with controls and stays outside the rendered preview", () => {
   const markup = renderToStaticMarkup(
-    createElement(MdxPreview, {
+    createElement(InteractivePreview, {
       title: "Reusable demo",
       files: { "example.ts": "const value = 1;" },
       controls: createElement("input", { "aria-label": "Setting" }),

@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 import type { NavigationMode } from "../../../../../../../packages/moyaforge-mdx/src/registry/index.js";
-import { MdxPreview } from "../../MdxPreview.js";
+import { InteractivePreview } from "../../../../../../../packages/moyaforge-ui/src/components/InteractivePreview/index.js";
 import { createFrontmatterDemo } from "../frontmatter-demo.js";
 import { FrontmatterSitePreview } from "../FrontmatterSitePreview.js";
 
@@ -22,7 +22,7 @@ export default function NavigationPreview() {
   }
 
   return (
-    <MdxPreview
+    <InteractivePreview
       className="frontmatter-demo"
       title="Navigation from frontmatter"
       description="Change Installation’s visibility and order relative to Authoring (order 2)."
@@ -73,6 +73,6 @@ export default function NavigationPreview() {
       <div className="frontmatter-stage">
         <FrontmatterSitePreview files={files} registry={registry} />
       </div>
-    </MdxPreview>
+    </InteractivePreview>
   );
 }

@@ -1,12 +1,13 @@
-# MdxPreview
+# MDX preview helpers
 
-A playground demo frame with optional controls and resolved metadata, a rendered
-preview, and highlighted source tabs. Controls and metadata share a resizable
-row; narrow screens stack the columns. The component does not interpret
-frontmatter or choose what to render.
+The reusable layout is `InteractivePreview` in `moyaforge-ui`. This folder
+contains only virtual registries, MDX body rendering, and frontmatter-specific
+demos. Controls, metadata, source tabs, and resize behavior belong to the UI component.
 
 ```tsx
-import { MdxPreview, createVirtualRegistry } from "./MdxPreview/index.js";
+import { InteractivePreview } from "@moyarich/moyaforge-ui/components/InteractivePreview";
+import "@moyarich/moyaforge-ui/components/InteractivePreview/styles.css";
+import { createVirtualRegistry } from "./MdxPreview/index.js";
 
 const { files, registry } = createVirtualRegistry({
   handbook: {
@@ -17,7 +18,7 @@ const { files, registry } = createVirtualRegistry({
 
 export function RegistryExample() {
   return (
-    <MdxPreview
+    <InteractivePreview
       title="Virtual handbook"
       files={files}
       metadata={<p>{registry.routes.length} routable pages</p>}
@@ -28,7 +29,7 @@ export function RegistryExample() {
           <li key={page.path}>{page.title}</li>
         ))}
       </ul>
-    </MdxPreview>
+    </InteractivePreview>
   );
 }
 ```

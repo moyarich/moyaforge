@@ -1,4 +1,4 @@
-.mdx-preview .sidebar-frontmatter-result.mf-sidebar {
+.interactive-preview .sidebar-frontmatter-result.mf-sidebar {
   display: flex;
   position: static;
   height: auto;
@@ -12,6 +12,6 @@
 .sidebar-frontmatter-result .mf-sidebar-scroll-content {
   padding-top: 0.5rem;
 }
-.mdx-preview-code {
+.interactive-preview-code {
   --mf-code-group-margin: 0;
 }
