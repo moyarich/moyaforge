@@ -1163,6 +1163,26 @@
           "target": "~/src/components/ui/InteractivePreview/InteractivePreview.tsx"
         },
         {
+          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewControls.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewControls.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewLayout.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewLayout.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewMetadata.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewMetadata.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewSelect.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewSelect.css"
+        },
+        {
           "path": "packages/moyaforge-ui/src/components/InteractivePreview/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/InteractivePreview/index.ts"
