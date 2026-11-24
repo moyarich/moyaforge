@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useTabs } from "./TabsContext.js";
 
-/** Opt-in overflow controls for a tab strip. */
+/** Overflow controls for a tab strip. */
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
   tabsScroll?: boolean;
 }
@@ -18,7 +18,7 @@ export function TabsList({
   children,
   className,
   onKeyDown,
-  tabsScroll = false,
+  tabsScroll = true,
   ...props
 }: TabsListProps) {
   const { select, value } = useTabs();
