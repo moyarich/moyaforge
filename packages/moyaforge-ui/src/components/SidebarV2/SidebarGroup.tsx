@@ -1,3 +1,4 @@
+import "./SidebarGroup.css";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 export interface SidebarGroupProps extends ComponentPropsWithoutRef<"div"> {
@@ -27,18 +28,36 @@ export function SidebarGroup({
 }: SidebarGroupProps) {
   const trigger = { label, count, expanded, icon, onToggle };
   return (
-    <div data-moyaforge-sidebar-group="" {...props}>
+    <div
+      data-moyaforge-sidebar-group=""
+      {...props}
+      className={["mf-sidebar-v2-group", props.className]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {renderTrigger ? (
         renderTrigger(trigger)
       ) : (
-        <button type="button" aria-expanded={expanded} onClick={onToggle}>
+        <button
+          className="mf-sidebar-v2-group-trigger"
+          type="button"
+          aria-expanded={expanded}
+          onClick={onToggle}
+        >
           {icon}
-          <span>{label}</span>
-          {count != null ? <span>{count}</span> : null}
+          <span className="mf-sidebar-v2-group-label">{label}</span>
+          {count != null ? (
+            <span className="mf-sidebar-v2-count">{count}</span>
+          ) : null}
         </button>
       )}
       {expanded ? (
-        <div data-moyaforge-sidebar-children="">{children}</div>
+        <div
+          className="mf-sidebar-v2-children"
+          data-moyaforge-sidebar-children=""
+        >
+          {children}
+        </div>
       ) : null}
     </div>
   );

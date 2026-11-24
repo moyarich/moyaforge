@@ -1,3 +1,5 @@
+import "./SidebarOutline.css";
+import "./SidebarItem.css";
 import type { ReactNode } from "react";
 
 export interface SidebarOutlineItem {
@@ -29,13 +31,18 @@ export function SidebarOutline({
   renderLabel,
 }: SidebarOutlineProps) {
   return (
-    <div data-moyaforge-sidebar-outline="">
+    <div className="mf-sidebar-v2-outline" data-moyaforge-sidebar-outline="">
       {items.map((item, index) => {
         const key = item.id ?? `${item.label}:${index}`;
         return (
-          <div data-moyaforge-sidebar-outline-entry="" key={key}>
+          <div
+            className="mf-sidebar-v2-outline-entry"
+            data-moyaforge-sidebar-outline-entry=""
+            key={key}
+          >
             {item.id ? (
               <button
+                className="mf-sidebar-v2-item"
                 type="button"
                 data-moyaforge-sidebar-item=""
                 aria-current={item.id === value ? "location" : undefined}
@@ -45,7 +52,10 @@ export function SidebarOutline({
               </button>
             ) : null}
             {item.children?.length ? (
-              <div data-moyaforge-sidebar-children="">
+              <div
+                className="mf-sidebar-v2-outline-children"
+                data-moyaforge-sidebar-children=""
+              >
                 <SidebarOutline
                   items={item.children}
                   value={value}

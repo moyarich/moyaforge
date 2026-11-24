@@ -7,6 +7,8 @@ export default function SearchField() {
         placeholder: "Search documentation",
         "aria-label": "Search documentation",
       }}
-    />
+    >
+      <kbd>⌘ K</kbd>
+    </Search>
   );
 }

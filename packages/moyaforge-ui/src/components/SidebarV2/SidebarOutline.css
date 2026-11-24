@@ -1,0 +1,10 @@
+.mf-sidebar-v2-outline {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+.mf-sidebar-v2-outline-children {
+  margin-inline-start: 0.625rem;
+  padding-inline-start: 0.5rem;
+  border-inline-start: 1px solid var(--mf-sidebar-border-color);
+}

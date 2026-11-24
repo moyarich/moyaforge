@@ -5,39 +5,18 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from "../../ResizablePanel/index.js";
-import {
-  DocumentationSearch,
-  type DocumentationSearchProps,
-} from "../../Search/DocumentationSearch.js";
+import { DocumentationSearch } from "../../Search/DocumentationSearch.js";
 import { SidebarScrollArea } from "../../SidebarV1/SidebarScrollArea.js";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-
-export interface DocumentationSitePage {
-  path: string;
-  label: string;
-  source?: string;
-  /** Repository-relative path to the page's source file. */
-  sourcePath?: string;
-}
-export interface DocumentationSiteProps {
-  title: string;
-  children: ReactNode;
-  repository?: string;
-  repositoryBranch?: string;
-  pages?: readonly DocumentationSitePage[];
-  currentPath?: string;
-  sidebar?: ReactNode;
-  sidebarHeader?: ReactNode;
-  sidebarFooter?: ReactNode;
-  sidebarLabel?: string;
-  sidebarVersion?: string;
-  outline?: ReactNode;
-  outlineHeader?: ReactNode;
-  outlineFooter?: ReactNode;
-  onSearch?: (query: string) => Promise<readonly DocumentationSitePage[]>;
-  searchShortcut?: Pick<DocumentationSearchProps, "hotkey" | "kbd">;
-  onNavigate?: (path: string) => void;
-}
+import { useId, useState, type ReactNode } from "react";
+import type {
+  DocumentationSitePage,
+  DocumentationSiteProps,
+} from "./DocumentationSite.types.js";
+import {
+  getDocumentationNavigation,
+  getRepositoryEditUrl,
+} from "./documentation-site-utils.js";
+import { useMobileNavigation } from "./use-mobile-navigation.js";
 
 const defaultSearchShortcut = {
   hotkey: ["meta+k", "ctrl+k"],
@@ -52,6 +31,7 @@ export function DocumentationSite({
   repositoryBranch = "main",
   pages = [],
   currentPath,
+  breadcrumbs,
   sidebar,
   sidebarHeader,
   sidebarFooter,
@@ -65,48 +45,30 @@ export function DocumentationSite({
   onNavigate,
 }: DocumentationSiteProps) {
   const layoutId = useId();
-  const [menu, setMenu] = useState(false);
-  const menuButton = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    if (!menu) return;
-    const media = window.matchMedia("(max-width: 720px)");
-    if (!media.matches) {
-      setMenu(false);
-      return;
-    }
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMenu(false);
-        menuButton.current?.focus();
-      }
-    };
-    const closeOnResize = () => {
-      if (!media.matches) setMenu(false);
-    };
-    document.addEventListener("keydown", closeOnEscape);
-    media.addEventListener("change", closeOnResize);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", closeOnEscape);
-      media.removeEventListener("change", closeOnResize);
-    };
-  }, [menu]);
+  const { menu, setMenu, menuButton, closeMenu, closeAfterNavigation } =
+    useMobileNavigation(currentPath);
   const [dark, setDark] = useState(false);
-  const article = useRef<HTMLElement>(null);
-  useEffect(() => setMenu(false), [currentPath]);
-  const currentIndex = pages.findIndex((page) => page.path === currentPath);
-  const current = pages[currentIndex];
-  const contributeHref =
-    current?.sourcePath && repository
-      ? `${repository.replace(/\/$/, "")}/edit/main/${current.sourcePath.split("/").map(encodeURIComponent).join("/")}`
-      : repository;
+  const {
+    visiblePages,
+    current,
+    previous,
+    next,
+    breadcrumbs: defaultBreadcrumbs,
+  } = getDocumentationNavigation(pages, currentPath);
+  const breadcrumbItems = breadcrumbs ?? defaultBreadcrumbs;
+  const contributeHref = getRepositoryEditUrl(
+    repository,
+    repositoryBranch,
+    current?.sourcePath,
+  );
   const navigate = (path: string) => {
     setMenu(false);
     onNavigate?.(path);
   };
-  const link = (page: DocumentationSitePage, children: ReactNode) => (
+  const link = (
+    page: Pick<DocumentationSitePage, "path">,
+    children: ReactNode,
+  ) => (
     <a
       href={page.path}
       onClick={(event) => {
@@ -139,8 +101,8 @@ export function DocumentationSite({
         <SidebarScrollArea>
           <nav aria-label="Documentation navigation">
             <ul>
-              {pages.map((page) => (
-                <li key={page.path}>{link(page, page.label)}</li>
+              {visiblePages.map((page) => (
+                <li key={page.path}>{link(page, page.title)}</li>
               ))}
             </ul>
           </nav>
@@ -150,15 +112,6 @@ export function DocumentationSite({
         )}
       </aside>
     );
-  const closeMenu = () => {
-    setMenu(false);
-    menuButton.current?.focus();
-  };
-  const closeAfterNavigation = (
-    event: import("react").MouseEvent<HTMLDivElement>,
-  ) => {
-    if ((event.target as Element).closest("a[href]")) setMenu(false);
-  };
   return (
     <div className={`mf-docs${dark ? " mf-docs-dark" : ""}`}>
       <a className="mf-skip" href="#main">
@@ -177,7 +130,7 @@ export function DocumentationSite({
           <PanelLeft aria-hidden="true" focusable="false" />
         </button>
         <div className="mf-brand">
-          {pages[0] ? link(pages[0], title) : title}
+          {visiblePages[0] ? link(visiblePages[0], title) : title}
         </div>
         {onSearch && (
           <DocumentationSearch
@@ -188,7 +141,7 @@ export function DocumentationSite({
           />
         )}
         <nav aria-label="Main navigation">
-          {pages[0] ? link(pages[0], "Guide") : null}
+          {visiblePages[0] ? link(visiblePages[0], "Guide") : null}
           {repository ? <a href={repository}>GitHub ↗</a> : null}
           <button
             type="button"
@@ -272,10 +225,7 @@ export function DocumentationSite({
               minSize={14}
               maxSize={40}
               className="mf-docs-sidebar-panel"
-              onClickCapture={(event) => {
-                if ((event.target as Element).closest("a[href]"))
-                  setMenu(false);
-              }}
+              onClickCapture={closeAfterNavigation}
             >
               {sidebarContent}
             </ResizablePanel>
@@ -293,11 +243,30 @@ export function DocumentationSite({
           inert={menu}
         >
           <div className="mf-docs-content-grid">
-            <main ref={article} id="main" className="mf-article" tabIndex={-1}>
-              <div className="mf-breadcrumb">
-                {current?.source ?? "Documentation"} <span>/</span>{" "}
-                {current?.label ?? "No page selected"}
-              </div>
+            <main id="main" className="mf-article" tabIndex={-1}>
+              {breadcrumbItems.length > 0 && (
+                <nav className="mf-breadcrumb" aria-label="Breadcrumb">
+                  <ol>
+                    {breadcrumbItems.map((item, index) => (
+                      <li key={item.path}>
+                        {index > 0 && (
+                          <span
+                            className="mf-breadcrumb-separator"
+                            aria-hidden="true"
+                          >
+                            /
+                          </span>
+                        )}
+                        {index === breadcrumbItems.length - 1 ? (
+                          <span aria-current="page">{item.title}</span>
+                        ) : (
+                          link(item, item.title)
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              )}
               {children}
               <footer className="mf-page-footer">
                 {repository ? (
@@ -310,18 +279,10 @@ export function DocumentationSite({
                   </a>
                 ) : null}
                 <div>
-                  {currentIndex > 0
-                    ? link(
-                        pages[currentIndex - 1],
-                        <>Previous page ← {pages[currentIndex - 1].label}</>,
-                      )
+                  {previous
+                    ? link(previous, <>Previous page ← {previous.title}</>)
                     : null}
-                  {currentIndex >= 0 && currentIndex < pages.length - 1
-                    ? link(
-                        pages[currentIndex + 1],
-                        <>Next page → {pages[currentIndex + 1].label}</>,
-                      )
-                    : null}
+                  {next ? link(next, <>Next page → {next.title}</>) : null}
                 </div>
               </footer>
             </main>

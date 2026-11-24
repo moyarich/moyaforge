@@ -5,17 +5,17 @@ import {
   resolveMoyaForgeTocOptions,
 } from "../../dist/utils/content/index.js";
 
-test("frontmatter uses label or title with clear defaults", () => {
+test("frontmatter uses title with clear defaults", () => {
   assert.equal(
-    parseMoyaForgePageMetadata({ title: "Guide" }, "docs/page.mdx").label,
+    parseMoyaForgePageMetadata({ title: "Guide" }, "docs/page.mdx").title,
     "Guide",
   );
   assert.equal(
     parseMoyaForgePageMetadata(
-      { label: " Docs ", title: "Documentation" },
+      { title: " Documentation " },
       "docs/page.mdx",
-    ).label,
-    "Docs",
+    ).title,
+    "Documentation",
   );
   assert.deepEqual(resolveMoyaForgeTocOptions({ toc: true }), {
     show: true,
@@ -37,11 +37,11 @@ test("frontmatter uses label or title with clear defaults", () => {
   );
 });
 test("frontmatter rejects invalid navigation and TOC values", () => {
-  assert.throws(() => parseMoyaForgePageMetadata({}, "docs/page.mdx"), /label/);
+  assert.throws(() => parseMoyaForgePageMetadata({}, "docs/page.mdx"), /title/);
   assert.throws(
     () =>
       parseMoyaForgePageMetadata(
-        { label: "X", navigation: "no" },
+        { title: "X", navigation: "no" },
         "docs/page.mdx",
       ),
     /navigation/,
@@ -49,7 +49,7 @@ test("frontmatter rejects invalid navigation and TOC values", () => {
   assert.throws(
     () =>
       parseMoyaForgePageMetadata(
-        { label: "X", toc: { show: "yes" } },
+        { title: "X", toc: { show: "yes" } },
         "docs/page.mdx",
       ),
     /toc.show/,

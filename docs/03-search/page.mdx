@@ -1,6 +1,5 @@
 ---
 title: SQLite search
-label: SQLite search
 ---
 
 # SQLite search
@@ -82,7 +81,7 @@ function Docs() {
   return (
     <DocumentationSite
       title="My docs"
-      pages={routes.filter((page) => page.navigation === "visible")}
+      pages={routes}
       currentPath={pathname}
       onNavigate={navigate}
       onSearch={findMatchingPages}
@@ -101,7 +100,7 @@ export function App() {
 }
 ```
 
-Press **Cmd+K** or **Ctrl+K** to focus search, and **Escape** in the field to clear it. Try the [live SQLite search example](/ui/components/search/sqlite-search) to see how the client returns results.
+Press **Cmd+K** or **Ctrl+K** to focus search, and **Escape** in the field to clear it. Try the [live SQLite search example](/ui/components/search/search-documentation-with-sqlite) to see how the client returns results.
 
 ## Use the standalone API
 

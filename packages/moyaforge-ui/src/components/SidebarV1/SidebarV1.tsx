@@ -8,7 +8,7 @@ export interface SourcePage {
 }
 export interface DocumentationGroup {
   source: string;
-  page?: { path: string; label: string; icon?: string };
+  page?: { path: string; title: string; icon?: string };
   collapsible?: boolean;
   defaultOpen?: boolean;
   label: string;
@@ -63,7 +63,11 @@ export function SidebarV1({
         {children !== undefined ? (
           children
         ) : groups ? (
-          <Navigation groups={groups} onNavigate={onNavigate} />
+          <Navigation
+            groups={groups}
+            onNavigate={onNavigate}
+            currentUrl={currentUrl}
+          />
         ) : (
           <nav aria-label="Documentation">
             <ul>

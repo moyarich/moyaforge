@@ -1,10 +1,10 @@
 export * from "./mdx/mdx-tooling-options.js";
 
-export * from "./navigation/tree.js";
+export * from "./navigation/tree/index.js";
 
-export * from "./navigation/toc.js";
+export * from "./navigation/toc/index.js";
 
-export * from "./registry/registry.js";
+export * from "./registry/index.js";
 
 export * from "./content/index.js";
 

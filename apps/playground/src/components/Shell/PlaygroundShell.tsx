@@ -9,7 +9,7 @@ import {
   DocOutlineShell,
   DocOutline,
 } from "../../../../../packages/moyaforge-ui/src/components/DocOutline/index.ts";
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+import type { RegistryPage } from "@moyarich/moyaforge-mdx";
 import { createContentRouting } from "@moyarich/moyaforge/headless";
 import { buildDocumentationGroups } from "@moyarich/moyaforge-mdx/navigation";
 import registry from "../../../registry.config.ts";
@@ -22,13 +22,20 @@ import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
 const contentRouting = createContentRouting(routes);
 
 async function findMatchingPages(query: string) {
-  return contentRouting.searchResultPages(await searchPages(query));
+  return contentRouting
+    .searchResultPages(await searchPages(query))
+    .map((page) => ({
+      path: page.path,
+      label: page.title,
+      source: page.source,
+      sourcePath: page.sourcePath,
+    }));
 }
 
 export function PlaygroundShell({
   page,
   children,
-}: PropsWithChildren<{ page?: NormalizedPage }>) {
+}: PropsWithChildren<{ page?: RegistryPage }>) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -36,18 +43,6 @@ export function PlaygroundShell({
   }, [page]);
   const groups = useMemo(
     () => buildDocumentationGroups(routes, registry.sources),
-    [],
-  );
-  const visiblePages = useMemo(
-    () =>
-      routes
-        .filter((item) => item.navigation === "visible")
-        .map((item) => ({
-          path: item.path,
-          label: item.label ?? item.title,
-          source: item.source,
-          sourcePath: item.sourcePath,
-        })),
     [],
   );
   const toc = page
@@ -59,7 +54,7 @@ export function PlaygroundShell({
   return (
     <DocumentationSite
       title="MoyaForge"
-      pages={visiblePages}
+      pages={routes}
       currentPath={page?.path}
       onNavigate={navigate}
       repository="https://github.com/moyarich/moyaforge"

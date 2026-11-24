@@ -1,8 +1,8 @@
 import { test, expect } from "vitest";
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+import type { RegistryPage } from "@moyarich/moyaforge-mdx";
 import { createContentRouting } from "../../../../packages/moyaforge/src/routing/content-routing";
 
-const pages: NormalizedPage[] = (
+const pages: RegistryPage[] = (
   [
     {
       source: "docs",
@@ -25,8 +25,8 @@ const pages: NormalizedPage[] = (
   ] as const
 ).map((page, order) => ({
   ...page,
+  id: page.path.split("/").at(-1)!,
   title: page.path,
-  label: page.path,
   order,
   toc: false,
   parentPath: null,

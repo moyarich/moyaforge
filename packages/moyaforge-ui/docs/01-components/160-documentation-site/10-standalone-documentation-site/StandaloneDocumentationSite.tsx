@@ -4,7 +4,7 @@ export default function StandaloneDocumentationSite() {
   return (
     <DocumentationSite
       title="Example site"
-      pages={[{ path: "/ui", label: "Overview" }]}
+      pages={[{ path: "/ui", title: "Overview" }]}
       currentPath="/ui"
       sidebar={null}
       outline={null}

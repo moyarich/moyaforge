@@ -15,11 +15,10 @@ docs/
 
 ## Frontmatter
 
-Pages should declare a nonempty `label` or `title`. The shared `parseMoyaForgePageMetadata(frontmatter, sourcePath)` API validates `description`, `navigation`, `toc`, `sidebarOutline` and `outlineLabelPrefix`. `navigation` accepts `visible` (default), `hidden` (routable without sidebar), and `disabled` (excluded). Existing source manifest helpers remain compatible with their current permissive metadata model.
+Pages should declare a nonempty `title`. The shared `parseMoyaForgePageMetadata(frontmatter, sourcePath)` API validates `description`, `navigation`, `toc`, `sidebarOutline` and `outlineLabelPrefix`. `navigation` accepts `visible` (default), `hidden` (routable without sidebar), and `disabled` (excluded). Existing source manifest helpers remain compatible with their current permissive metadata model.
 
 ```mdx
 ---
-label: Getting started
 title: Get started with MoyaForge
 description: Install and configure the documentation framework.
 navigation: visible

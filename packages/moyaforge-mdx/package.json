@@ -29,14 +29,14 @@
       "default": "./dist/content/source-files.js"
     },
     "./toc": {
-      "types": "./dist/navigation/toc.d.ts",
-      "import": "./dist/navigation/toc.js",
-      "default": "./dist/navigation/toc.js"
+      "types": "./dist/navigation/toc/index.d.ts",
+      "import": "./dist/navigation/toc/index.js",
+      "default": "./dist/navigation/toc/index.js"
     },
     "./navigation": {
-      "types": "./dist/navigation/tree.d.ts",
-      "import": "./dist/navigation/tree.js",
-      "default": "./dist/navigation/tree.js"
+      "types": "./dist/navigation/tree/index.d.ts",
+      "import": "./dist/navigation/tree/index.js",
+      "default": "./dist/navigation/tree/index.js"
     }
   },
   "files": [

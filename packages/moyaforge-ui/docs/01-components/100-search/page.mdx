@@ -1,6 +1,5 @@
 ---
 title: Search
-label: Search
 description: A search field you can connect to a documentation index.
 ---
 
@@ -60,8 +59,22 @@ import { Search } from "@/components/ui/Search/Search";
 ## Examples
 
 - [Documentation search field](/ui/components/search/documentation-search-field)
-- [Search documentation with SQLite](/ui/components/search/sqlite-search)
+- [Search documentation with SQLite](/ui/components/search/search-documentation-with-sqlite)
 
 ## Styling
 
 Set `--mf-search-background`, `--mf-search-border-color`, and `--mf-search-border-radius` to match the input to your form controls.
+
+The field includes a Lucide search icon, a focus ring, and disabled styling. Pass
+`icon={null}` to hide the icon, or supply your own through `icon`. Add a `kbd`
+child for a visual shortcut hint; keyboard handling remains the host’s responsibility.
+
+Public `--mf-search-*` defaults are defined in `:root`. Override them on a wrapper
+or the control. Variables starting with `--_mf-*` are private.
+
+```css
+.my-search {
+  --mf-search-border-radius: 0.75rem;
+  --mf-search-focus-color: var(--mf-accent);
+}
+```

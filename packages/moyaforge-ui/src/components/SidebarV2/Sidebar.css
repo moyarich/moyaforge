@@ -1,21 +1,37 @@
-.mf-sidebar-v2 {
-  --_mf-sidebar-color: var(--mf-sidebar-color, inherit);
-  --_mf-sidebar-background: var(--mf-sidebar-background, transparent);
-  --_mf-sidebar-border-color: var(--mf-sidebar-border-color, currentColor);
-  --_mf-sidebar-gap: var(--mf-sidebar-gap, 0.5rem);
-  --_mf-sidebar-padding: var(--mf-sidebar-padding, 0.625rem);
+:root {
+  --mf-sidebar-color: var(--mf-text, light-dark(#27272a, #e4e4e7));
+  --mf-sidebar-background: var(--mf-bg, light-dark(#ffffff, #18181b));
+  --mf-sidebar-border-color: light-dark(#e4e4e7, #3f3f46);
+  --mf-sidebar-gap: 0.5rem;
+  --mf-sidebar-padding: 0.625rem;
+  --mf-sidebar-radius: 0.375rem;
+  --mf-sidebar-muted-color: light-dark(#71717a, #a1a1aa);
+  --mf-sidebar-hover-background: light-dark(#f4f4f5, #27272a);
+  --mf-sidebar-active-background: light-dark(#e4e4e7, #3f3f46);
+  --mf-sidebar-focus-color: var(--mf-accent, #71717a);
+}
 
+.mf-sidebar-v2 {
+  --_mf-sidebar-color: var(--mf-sidebar-color);
+  --_mf-sidebar-background: var(--mf-sidebar-background);
+  --_mf-sidebar-border-color: var(--mf-sidebar-border-color);
+  --_mf-sidebar-gap: var(--mf-sidebar-gap);
+  --_mf-sidebar-padding: var(--mf-sidebar-padding);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
   color: var(--_mf-sidebar-color);
   background: var(--_mf-sidebar-background);
+  font: inherit;
+  text-align: start;
 }
 
-.mf-sidebar-header,
-.mf-sidebar-content,
-.mf-sidebar-footer {
-  padding: var(--_mf-sidebar-padding);
-}
-
-.mf-sidebar-content {
-  display: grid;
-  gap: var(--_mf-sidebar-gap);
+.mf-sidebar-v2-count {
+  margin-inline-start: auto;
+  color: var(--mf-sidebar-muted-color);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
 }

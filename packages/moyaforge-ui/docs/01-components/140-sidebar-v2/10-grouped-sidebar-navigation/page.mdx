@@ -1,9 +1,14 @@
 ---
 title: Grouped sidebar navigation
-label: Grouped sidebar navigation
 ---
 
 # Sidebar V2 · Grouped sidebar navigation
+
+Compose `SidebarSection` and `SidebarGroup` to create Guide and Components groups.
+Nest `SidebarGroup` inside another group for Installation → Frameworks → Vite
+and Sidebar → Navigation → Nested groups. Each group has its own collapse state,
+item count, and disclosure icon. Selecting
+an item updates `active` locally without leaving this page.
 
 ::::code-preview[Grouped sidebar navigation]{component="./GroupedSidebar.tsx"}
 

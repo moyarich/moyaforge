@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { buildPageRegistry } from "../../dist/registry/registry.js";
+import { buildPageRegistry } from "../../dist/registry/index.js";
 
-test("discovers root and nested landing pages with path-derived labels and ordering", () => {
+test("discovers root and nested landing pages with title-derived URLs and folder ordering", () => {
   const registry = buildPageRegistry({
     docs: [
       { file: "02-api/page.mdx" },
@@ -12,12 +12,12 @@ test("discovers root and nested landing pages with path-derived labels and order
   });
   assert.deepEqual(
     registry.navigation.map((p) => p.path),
-    ["/docs", "/docs/start", "/docs/api"],
+    ["/docs", "/docs/quick-start", "/docs/api"],
   );
-  assert.equal(registry.byPath.get("/docs/start").label, "Quick start");
+  assert.equal(registry.byPath.get("/docs/quick-start").title, "Quick start");
   assert.deepEqual(
-    registry.breadcrumbs("/docs/start").map((p) => p.path),
-    ["/docs", "/docs/start"],
+    registry.breadcrumbs("/docs/quick-start").map((p) => p.path),
+    ["/docs", "/docs/quick-start"],
   );
 });
 
@@ -87,7 +87,7 @@ test("ordinary configured Markdown files have distinct routes", () => {
     "architecture.md",
   );
   assert.equal(
-    registry.byPath.get("/packages/moyaforge/README")?.file,
+    registry.byPath.get("/packages/moyaforge/readme")?.file,
     "moyaforge/README.md",
   );
   assert.equal(registry.byPath.get("/docs")?.file, "page.mdx");

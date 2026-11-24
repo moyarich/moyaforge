@@ -1,6 +1,5 @@
 ---
 title: Markdown and MDX
-label: Markdown & MDX
 ---
 
 # Markdown and MDX
@@ -46,7 +45,7 @@ export default {
 
 ## Control page visibility
 
-Frontmatter supports `title`, `label`, `description`, `order`, `navigation`, and `toc`. Set `navigation: hidden` to keep a page linkable without displaying it in the sidebar. Set `navigation: disabled` to exclude it from the routable inventory.
+Frontmatter supports `title`, `description`, `order`, `navigation`, and `toc`. Set `navigation: hidden` to keep a page linkable without displaying it in the sidebar. Set `navigation: disabled` to exclude it from the routable inventory.
 
 ## Use components in MDX
 
@@ -57,3 +56,19 @@ For the implementation of preview directives, code tabs and source-only scripts,
 The complete content-discovery and virtual-module contracts are described in [Content registry internals](../04-development/20-content-registry/page.mdx). Broad `pageFiles: "all"` globs need explicit README exclusions; the playground and CLI templates include them.
 
 The compiler includes GFM, frontmatter parsing, heading slugs, and table-of-contents extraction. A compiled JavaScript frontmatter export is opt-in. See [MDX conventions](../mdx-conventions.md) for details.
+
+## Page titles and URLs
+
+Use `title` as the single page name in frontmatter:
+
+```yaml
+---
+title: Getting started
+---
+```
+
+MoyaForge generates `id: "getting-started"` from that title. The page appears under the same title in navigation and uses `/docs/getting-started` as its URL when it is a child of the `docs` source. Parent pages contribute their own title-based URL segments. Source landing pages keep their source URL, such as `/docs`.
+
+IDs are lowercase, with punctuation and whitespace replaced by hyphens. Accents are normalized, and non-Latin letters are retained. Numeric folder prefixes continue to control order. Sibling pages must have distinct generated URLs. Changing a title changes its URL, so update incoming links; source-file links are resolved against the current registry.
+
+The old page `label` frontmatter field is removed. Source-group and table-of-contents labels still name their own UI sections and do not override page titles.

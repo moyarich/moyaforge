@@ -1,6 +1,8 @@
+import { createPageId } from "@moyarich/moyaforge-mdx";
 import { buildNavigation } from "../navigation/navigation.js";
 import {
   createPageDescriptor,
+  labelFromSegment,
   type PageDescriptor,
   type PageModule,
 } from "./content.js";
@@ -37,6 +39,16 @@ export function createMoyaForgeSource(
   const urls = new Set<string>();
   for (const [name, collection] of Object.entries(collections)) {
     const base = "/" + collection.baseUrl.split("/").filter(Boolean).join("/");
+    const titleIds = new Map(
+      Object.entries(collection.modules).map(([path, mod]) => [
+        path
+          .replace(/^\.\//, "")
+          .replace(/^\/+/, "")
+          .replace(/(^|\/)page\.mdx?$/, "")
+          .replace(/\.mdx?$/, ""),
+        createPageDescriptor(path, mod).id,
+      ]),
+    );
     for (const [path, mod] of Object.entries(collection.modules).sort(
       ([a], [b]) => a.localeCompare(b, undefined, { numeric: true }),
     )) {
@@ -48,7 +60,11 @@ export function createMoyaForgeSource(
       const route = relative
         .split("/")
         .filter(Boolean)
-        .map((segment) => segment.replace(/^\d+[-_. ]*/, ""))
+        .map(
+          (segment, index, parts) =>
+            titleIds.get(parts.slice(0, index + 1).join("/")) ??
+            createPageId(labelFromSegment(segment)),
+        )
         .join("/");
       const url = (base + (route ? "/" + route : "")).replace(/\/+/g, "/");
       const frontmatter = mod.frontmatter ?? {};

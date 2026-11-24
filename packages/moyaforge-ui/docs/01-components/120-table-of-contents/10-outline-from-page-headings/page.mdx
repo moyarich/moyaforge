@@ -1,13 +1,20 @@
 ---
 title: Outline from page headings
-label: Outline from page headings
 ---
 
 # Table of Contents · Outline from page headings
 
+Click an outline link to select it immediately and keep it selected until smooth
+scrolling finishes. Scrolling manually instead selects the heading in view; wheel,
+touch, scrollbar, and keyboard input release the clicked selection. Second- and third-level headings show the outline hierarchy.
+
+The example passes explicit `items` and uses `renderLink` for local scrolling and
+`aria-current`. In an MDX site, build these items from compiler-provided headings
+so their IDs match the rendered headings.
+
 ::::code-preview[Outline from page headings]{component="./HeadingsTableOfContents.tsx"}
 
-::code-preview-sources{files="./HeadingsTableOfContents.tsx" replacements="portable"}
+::code-preview-sources{files="./HeadingsTableOfContents.tsx,./HeadingsTableOfContents.css" replacements="portable"}
 
 ::::
 

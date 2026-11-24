@@ -1,6 +1,5 @@
 ---
 title: Sidebar V1
-label: Sidebar V1
 description: Live demonstration of the canonical Sidebar V1 component.
 ---
 
@@ -48,6 +47,14 @@ import { SidebarV1 } from "@/components/ui/SidebarV1/SidebarV1";
 />;
 ```
 
+Use `pages` for a flat list and `groups` for section headings and nested navigation.
+Each group has a `source`, `label`, and `nodes`; set `collapsible` with a group
+`page` to show a separate disclosure control. See the grouped demo below for
+complete data and local selection handling.
+
+When `currentUrl` is provided, grouped links use it to mark the active page.
+Without it, grouped navigation follows the React Router location.
+
 ## Examples
 
 - [Sidebar with page links](/ui/components/sidebar-v1/sidebar-with-page-links)
@@ -68,7 +75,7 @@ Enable wrapping when you prefer to show the full label:
 
 Keep the default with `<SidebarV1 groups={groups} />`. Custom navigation supplied as children uses the same scrolling area.
 
-For a draggable boundary between navigation and content, compose the sidebar inside a [ResizablePanel](/ui/components/resizable-panel). Resize behavior belongs to the panel group, so the same components can also divide an editor and preview.
+For a draggable boundary between navigation and content, compose the sidebar inside a [ResizablePanel](/ui/components/resizable-panels). Resize behavior belongs to the panel group, so the same components can also divide an editor and preview.
 
 ## Scrollbar and resize colors
 

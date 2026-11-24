@@ -1,6 +1,6 @@
 import { lazy, Suspense, type ComponentType, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+import type { RegistryPage } from "@moyarich/moyaforge-mdx";
 
 import { DocumentationRoutesContext } from "./DocumentationLink.js";
 import { useDocumentationHash } from "./useDocumentationHash.js";
@@ -21,12 +21,12 @@ export interface RegistryLazySources {
 
 export interface RegistryRouteViewProps {
   /** Canonical metadata exported from virtual:moyaforge-mdx/metadata. */
-  routes: readonly NormalizedPage[];
+  routes: readonly RegistryPage[];
   /** Lazy MDX modules exported from virtual:moyaforge-mdx/lazy-registry. */
   sources: RegistryLazySources;
   notFound?: ReactNode;
   fallback?: ReactNode;
-  renderPage?: (page: NormalizedPage, content: ReactNode) => ReactNode;
+  renderPage?: (page: RegistryPage, content: ReactNode) => ReactNode;
 }
 
 const cache = new WeakMap<

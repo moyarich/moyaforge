@@ -1,0 +1,12 @@
+.mf-sidebar-v2-section {
+  min-width: 0;
+}
+.mf-sidebar-v2-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--mf-sidebar-gap);
+  padding: 0.5rem 0.625rem;
+  color: var(--mf-sidebar-muted-color);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}

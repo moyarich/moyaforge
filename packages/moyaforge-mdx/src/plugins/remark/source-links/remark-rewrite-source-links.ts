@@ -1,18 +1,22 @@
 import { dirname, resolve } from "node:path";
 import type { ContentSourcesConfig } from "../../../content/discovery.js";
-import type { NormalizedPage } from "../../../registry/registry.js";
+import type { RegistryPage } from "../../../registry/index.js";
 
 export interface SourceLinkOptions {
   config: ContentSourcesConfig;
   root: string;
-  routes: readonly NormalizedPage[];
+  routes: readonly RegistryPage[];
 }
 
 /**
  * Rewrite Markdown links targeting real .md/.mdx source files into public
  * registry routes. The authored links remain usable when browsing GitHub.
  */
-export function remarkRewriteSourceLinks({ config, root, routes }: SourceLinkOptions) {
+export function remarkRewriteSourceLinks({
+  config,
+  root,
+  routes,
+}: SourceLinkOptions) {
   const routeByFile = new Map<string, string>();
   for (const page of routes) {
     if (page.navigation === "disabled") continue;

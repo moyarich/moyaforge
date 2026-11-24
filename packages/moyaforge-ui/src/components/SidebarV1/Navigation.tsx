@@ -8,22 +8,28 @@ import type { DocumentationGroup } from "./SidebarV1.js";
 export interface NavigationProps {
   groups: readonly DocumentationGroup[];
   onNavigate?: () => void;
+  /** Controlled selection for embedded navigation; otherwise uses the router location. */
+  currentUrl?: string;
 }
-export function Navigation({ groups, onNavigate }: NavigationProps) {
+export function Navigation({
+  groups,
+  onNavigate,
+  currentUrl,
+}: NavigationProps) {
   const renderNodes = (nodes: SidebarNavigationNode[]): ReactNode =>
     nodes.map((node) => (
       <li key={node.path}>
         {node.page ? (
-          <NavLink
+          <NavigationLink
             className="mf-navigation-row"
-            end
+            currentUrl={currentUrl}
             to={node.page.path}
-            title={node.page.label}
+            title={node.page.title}
             onClick={() => onNavigate?.()}
           >
             <MenuIcon name={node.page.icon} />
-            <span className="mf-navigation-label">{node.page.label}</span>
-          </NavLink>
+            <span className="mf-navigation-label">{node.page.title}</span>
+          </NavigationLink>
         ) : (
           <span className="mf-folder mf-navigation-row">
             <MenuIcon />
@@ -45,6 +51,7 @@ export function Navigation({ groups, onNavigate }: NavigationProps) {
             key={group.source}
             group={group}
             onNavigate={onNavigate}
+            currentUrl={currentUrl}
           >
             {renderNodes(group.nodes)}
           </NavigationGroup>
@@ -56,10 +63,12 @@ export function Navigation({ groups, onNavigate }: NavigationProps) {
 function NavigationGroup({
   group,
   onNavigate,
+  currentUrl,
   children,
 }: {
   group: DocumentationGroup;
   onNavigate?: () => void;
+  currentUrl?: string;
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(group.defaultOpen ?? true);
@@ -70,16 +79,16 @@ function NavigationGroup({
     <section className="mf-navigation-group">
       <div className="title mf-navigation-group-title">
         {group.page ? (
-          <NavLink
+          <NavigationLink
             className="mf-navigation-row"
-            end
+            currentUrl={currentUrl}
             to={group.page.path}
             title={group.label}
             onClick={() => onNavigate?.()}
           >
             <MenuIcon name={group.page.icon} />
             <span className="mf-navigation-label">{group.label}</span>
-          </NavLink>
+          </NavigationLink>
         ) : (
           <span className="mf-navigation-row">
             <MenuIcon />
@@ -118,5 +127,38 @@ function MenuIcon({ name }: { name?: string }) {
         <DynamicIcon name={name as IconName} size={16} focusable="false" />
       )}
     </span>
+  );
+}
+
+/** Use the router by default, or a plain link when selection is controlled by the host. */
+function NavigationLink({
+  currentUrl,
+  to,
+  children,
+  ...props
+}: {
+  currentUrl?: string;
+  to: string;
+  children: ReactNode;
+  className: string;
+  title: string;
+  onClick: () => void;
+}) {
+  if (currentUrl === undefined)
+    return (
+      <NavLink {...props} to={to} end>
+        {children}
+      </NavLink>
+    );
+  const active = currentUrl === to;
+  return (
+    <a
+      {...props}
+      href={to}
+      className={`${props.className}${active ? " active" : ""}`}
+      aria-current={active ? "page" : undefined}
+    >
+      {children}
+    </a>
   );
 }
