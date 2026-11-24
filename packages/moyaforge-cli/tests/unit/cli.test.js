@@ -244,7 +244,7 @@ test("monaco installation reports setup notes without copying README files", asy
   expect(dry.stdout).toContain(
     "npm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/react monaco-editor",
   );
-  expect(dry.stdout).toContain("Monaco workers");
+  expect(dry.stdout).toContain("Configure workers once");
   await expect(
     read(root, "src/components/ui/MonacoEditorReact/README.md"),
   ).rejects.toThrow();
