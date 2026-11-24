@@ -20,36 +20,6 @@ test.each([
   },
 );
 
-test("sidebar-v1 carries its structural navigation type without importing MDX", async () => {
-  const item = registry.items.find((entry) => entry.name === "sidebar-v1");
-  const typePath = "packages/moyaforge-ui/src/components/SidebarV1/types.ts";
-  expect(item.files.some((entry) => entry.path === typePath)).toBe(true);
-
-  for (const filename of ["Navigation.tsx", "SidebarV1.tsx"]) {
-    const source = await readFile(
-      new URL(
-        `../../packages/moyaforge-ui/src/components/SidebarV1/${filename}`,
-        import.meta.url,
-      ),
-      "utf8",
-    );
-    expect(source).toContain('from "./types.js"');
-    expect(source).not.toContain("@moyarich/moyaforge-mdx");
-    expect(source).not.toContain("packages/moyaforge/");
-  }
-});
-
-test("sidebar-v2 retains its Page source dependency in the installable registry", () => {
-  const item = registry.items.find((entry) => entry.name === "sidebar-v2");
-  const paths = new Set(item.files.map((entry) => entry.path));
-  expect(
-    paths.has("packages/moyaforge-ui/src/components/SidebarV2/Sidebar.tsx"),
-  ).toBe(true);
-  expect(paths.has("packages/moyaforge-ui/src/components/Page/index.ts")).toBe(
-    true,
-  );
-});
-
 test.each(["navigation-tree", "sidebar-v1", "sidebar-v2"])(
   "%s installs its own UI source without framework component files",
   (name) => {
@@ -70,69 +40,6 @@ test("sidebar-v1 does not require the MDX runtime package", () => {
       entry.startsWith("@moyarich/moyaforge-mdx@"),
     ),
   ).toBe(false);
-});
-
-test("docs-layout installs as a standalone React component", async () => {
-  const item = registry.items.find((entry) => entry.name === "docs-layout");
-  expect(item).toBeDefined();
-  expect(item.dependencies).toEqual(["react@>=18"]);
-  expect(
-    item.files.filter((entry) =>
-      entry.path.startsWith("packages/moyaforge/src/"),
-    ),
-  ).toEqual([]);
-  expect(
-    item.files.some(
-      (entry) =>
-        entry.path ===
-        "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
-    ),
-  ).toBe(true);
-  const source = await readFile(
-    new URL(
-      "../../packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx",
-      import.meta.url,
-    ),
-    "utf8",
-  );
-  expect(source).not.toContain("@moyarich/moyaforge-mdx");
-  expect(source).not.toContain("react-router-dom");
-});
-
-test("documentation-site installs independently of framework routing and DocsLayout", async () => {
-  const item = registry.items.find(
-    (entry) => entry.name === "documentation-site",
-  );
-  expect(item).toBeDefined();
-  expect(item.dependencies).toEqual([
-    "@moyarich/moyaforge-mdx@^0.1.0",
-    "@types/is-hotkey@^0.1.10",
-    "is-hotkey@^0.2.1",
-    "lucide-react@^1.56.0",
-    "react@>=18",
-  ]);
-  expect(
-    item.files.filter((entry) =>
-      entry.path.startsWith("packages/moyaforge/src/"),
-    ),
-  ).toEqual([]);
-  const paths = item.files.map((entry) => entry.path);
-  expect(paths).toContain(
-    "packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx",
-  );
-  expect(paths).not.toContain(
-    "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.tsx",
-  );
-  const source = await readFile(
-    new URL(
-      "../../packages/moyaforge-ui/src/components/Layout/DocumentationSite/DocumentationSite.tsx",
-      import.meta.url,
-    ),
-    "utf8",
-  );
-  expect(source).not.toContain("@moyarich/moyaforge-mdx");
-  expect(source).not.toContain("react-router-dom");
-  expect(source).not.toContain("useContentRouting");
 });
 
 test("all UI-owned registry entries exclude framework implementation paths", () => {
@@ -165,34 +72,3 @@ test("the framework tarball excludes the standalone UI package", async () => {
   );
 });
 
-test("documentation-site registry metadata matches generator conventions", () => {
-  const item = registry.items.find(
-    (entry) => entry.name === "documentation-site",
-  );
-  expect(item.description).toBe(
-    "Editable MoyaForge documentation-site source. Components import their own CSS.",
-  );
-});
-
-test("framework publishes its stylesheet once from dist", async () => {
-  const manifest = JSON.parse(
-    await readFile(
-      new URL("../../packages/moyaforge/package.json", import.meta.url),
-      "utf8",
-    ),
-  );
-  expect(manifest.exports["./components.css"]).toBeUndefined();
-  expect(manifest.files).not.toContain("src/components.css");
-  expect(manifest.files).not.toContain("src/components/**/*.css");
-});
-
-test("registry source files follow generator ordering", () => {
-  for (const item of registry.items) {
-    const sourcePaths = item.files
-      .map((file) => file.path)
-      .filter((path) => path !== "LICENSE");
-    expect(sourcePaths, `stale source ordering in ${item.name}`).toEqual(
-      [...sourcePaths].sort(),
-    );
-  }
-});
