@@ -18,7 +18,7 @@ export function TabsList({
   children,
   className,
   onKeyDown,
-  tabsScroll = true,
+  tabsScroll = false,
   ...props
 }: TabsListProps) {
   const { select, value } = useTabs();
