@@ -105,6 +105,7 @@ test("documentation-site installs independently of framework routing and DocsLay
   );
   expect(item).toBeDefined();
   expect(item.dependencies).toEqual([
+    "@moyarich/moyaforge-mdx@^0.1.0",
     "@types/is-hotkey@^0.1.10",
     "is-hotkey@^0.2.1",
     "lucide-react@^1.56.0",
