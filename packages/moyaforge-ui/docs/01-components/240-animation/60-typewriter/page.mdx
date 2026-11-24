@@ -1,0 +1,56 @@
+---
+title: Typewriter
+description: Reveal static text character by character while reserving its final layout.
+---
+
+# Typewriter
+
+Reveal static text character by character while reserving its final layout. Use **Refresh** to replay the animation.
+
+::::code-preview[Typewriter]{refresh preview="TypedMessage.tsx" replacements="portable"}
+
+```tsx filename="TypedMessage.tsx"
+import { Animation } from "../../../../src/components/Animation/index.js";
+import "./TypedMessage.css";
+
+export default function TypedMessage() {
+  return (
+    <Animation effect="typewriter" duration={2.4} wait={0.4} className="animation-typewriter-example">
+      <h2>Your next idea starts here.</h2>
+      <p>Write a page. Share what you know. Build something useful.</p>
+    </Animation>
+  );
+}
+```
+
+```css filename="TypedMessage.css"
+.animation-typewriter-example {
+  width: min(100%, 26rem);
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, currentColor 3%, transparent);
+  text-align: start;
+}
+
+.animation-typewriter-example h2 {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.animation-typewriter-example p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+```
+
+::::
+
+`duration` and `wait` are measured in seconds. Reduced-motion preferences show
+the finished content immediately.
+
+[Animation documentation](/ui/components/animation)

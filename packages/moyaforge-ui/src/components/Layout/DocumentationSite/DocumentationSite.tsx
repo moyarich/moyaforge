@@ -71,6 +71,7 @@ export function DocumentationSite({
   ) => (
     <a
       href={page.path}
+      aria-current={page.path === currentPath ? "page" : undefined}
       onClick={(event) => {
         if (
           onNavigate &&

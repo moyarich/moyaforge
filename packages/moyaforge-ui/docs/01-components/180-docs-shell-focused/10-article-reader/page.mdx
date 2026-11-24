@@ -1,0 +1,21 @@
+---
+title: Article reader
+description: A centered article with a default heading, a save action, and chapter navigation.
+---
+
+# Article reader
+
+Read two chapters using **Next** and **Previous**. **Save guide** toggles a local
+saved state; it does not write to storage.
+
+`title` and `subtitle` use the shell’s default header. `articleActions` supplies
+the save button, `footer` supplies chapter controls, and `navigation={null}`
+omits the back link. The content and interaction state belong to the example.
+
+::::code-preview[Article reader]{component="./ArticleReader.tsx"}
+
+::code-preview-sources{files="./ArticleReader.tsx,./ArticleReader.css" replacements="portable"}
+
+::::
+
+[Docs Shell Focused documentation](/ui/components/docs-shell-focused)

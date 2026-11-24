@@ -4,9 +4,18 @@ title: Workspace with an inspector
 
 # Docs Shell Wide · Workspace with an inspector
 
+Select a page in the navigation, then edit its title, summary, or status in the
+inspector. The center preview updates immediately. Use **Inspector** in the
+toolbar to hide or restore the properties panel. Edits stay local to this demo.
+
+This example supplies all five named slots: `header`, `toolbar`, `navigation`,
+`inspector`, and `footer`. `PageInspector` is a separate controlled component;
+the workspace owns page state and receives property updates through `onChange`.
+Pass `null` to `inspector` to remove that panel.
+
 ::::code-preview[Workspace with an inspector]{component="./InspectorDocsShell.tsx"}
 
-::code-preview-sources{files="./InspectorDocsShell.tsx,./InspectorDocsShell.css" replacements="portable"}
+::code-preview-sources{files="./InspectorDocsShell.tsx,./PageInspector.tsx,./InspectorDocsShell.css" replacements="portable"}
 
 ::::
 

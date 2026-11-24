@@ -7,7 +7,10 @@ import { DocumentationSearch } from "../../../../src/components/Search/index.js"
 const contentRouting = createContentRouting(routes);
 
 async function search(query: string) {
-  return contentRouting.searchResultPages(await searchPages(query)).slice(0, 5);
+  return contentRouting
+    .searchResultPages(await searchPages(query))
+    .slice(0, 5)
+    .map((page) => ({ path: page.path, label: page.title }));
 }
 
 export default function SqliteDocumentationSearch() {

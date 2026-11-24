@@ -24,7 +24,7 @@ export default defineMoyaForgeConfig({
 
 | Mode     | Goal                                                                          | Consumer owns                                |
 | -------- | ----------------------------------------------------------------------------- | -------------------------------------------- |
-| `docs`   | VitePress-like documentation experience with minimal setup                    | MDX content, site config, optional overrides |
+| `docs`   | Documentation experience with minimal setup                                   | MDX content, site config, optional overrides |
 | `app`    | Add MoyaForge primitives to an existing React app                             | Router, application shell, all non-doc pages |
 | `hybrid` | Embed a documentation section alongside a normal React playground/application | App routes + docs mounts and app features    |
 

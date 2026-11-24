@@ -1,0 +1,325 @@
+---
+title: Markdown and MDX
+description: Configure page names, navigation, sidebar groups, and outlines with frontmatter.
+---
+
+
+import {
+  PageMetadataPreview,
+  NavigationPreview,
+  SidebarFrontmatterPreview,
+  OutlinePreview,
+} from "../../../apps/playground/src/components/MdxPreview/frontmatter/index.js";
+
+# Markdown and MDX
+
+Use frontmatter to tell MoyaForge **what a page is and where it belongs**.
+Write the article itself below the frontmatter. The same configuration works in
+Markdown (`.md`) and MDX (`.mdx`); choose MDX when the body needs React components.
+
+This guide starts with one page, then adds its name, navigation settings, sidebar
+group, and outline. If you used a MoyaForge template, you can follow along in its
+content directory. For an existing app, [configure content discovery](#connect-content-to-your-app)
+first, then return here.
+
+## Start with a page
+
+Create `docs/01-installation/page.md` in your registered `docs` source:
+
+```md filename="docs/01-installation/page.md"
+---
+title: Installation
+description: Set up your first documentation workspace.
+---
+
+# Installation
+
+Set up your documentation workspace.
+
+## Install tools
+
+Install the project dependencies.
+
+### Configure Vite
+
+Register your compiler plugins.
+```
+
+The first `---` block is YAML frontmatter. It must start the file. The body below
+it uses ordinary Markdown: headings, paragraphs, lists, tables, links, and code.
+The visible `# Installation` heading belongs to the body; frontmatter does not
+insert or rewrite that heading.
+
+## Frontmatter
+
+Start with `title` and `description`. Add the remaining settings only when you
+need to change a default. Work through these four decisions in order:
+
+1. What should the page be called?
+2. Where should it appear in navigation?
+3. How should the source’s sidebar group look?
+4. Which article headings should appear in the outline?
+
+Each demo uses an independent copy of the same small source: **Guide**, with
+**Installation** and **Authoring** pages. Change the controls, inspect the result,
+and copy the generated Markdown from the Code row. Demo changes do not edit files
+in your project.
+
+### Name the page and its URL
+
+Set `title` to the name readers should see in navigation and search.
+Add a short `description` for metadata and search consumers. If your navigation
+shows icons, choose a Lucide `icon` name such as `book-open` or `settings`.
+
+**Try it:** rename Installation to **Install with Vite**, then change its description
+and icon. The preview shows the resolved metadata and the corresponding sidebar.
+
+<PageMetadataPreview />
+
+Notice that changing `title` also changes the page’s URL ID. In this example,
+`Installation` produces `/docs/installation`, while `Install with Vite` produces
+`/docs/install-with-vite`. The Markdown body heading stays `Installation` until
+you edit it yourself. Normally, keep the body heading and frontmatter title aligned.
+
+The source key supplies `/docs`. Child pages append their title-based IDs;
+a source’s landing page stays at `/docs` regardless of its title:
+
+| File | Title | URL |
+| --- | --- | --- |
+| `docs/page.md` | `Guide` | `/docs` |
+| `docs/01-installation/page.md` | `Installation` | `/docs/installation` |
+| `docs/01-installation/01-vite/page.md` | `Vite setup` | `/docs/installation/vite-setup` |
+
+IDs use lowercase letters and hyphens, normalize accents, and retain non-Latin
+letters. `page.md` and `page.mdx` name their containing page; they do not add a
+`page` URL segment. A folder without a landing page uses its folder name for
+that segment.
+
+Renaming an ancestor changes its descendant URLs too. Update route links after
+a rename, or use relative source links such as
+`[Installation](./01-installation/page.md)` from `docs/page.md`, which resolve to
+the current registered route.
+
+### Control navigation and order
+
+Next, decide how readers should reach Installation. `navigation` controls whether
+the page has a route and whether the sidebar lists it:
+
+| Value | Direct link works | Listed in navigation |
+| --- | --- | --- |
+| `visible` (default) | Yes | Yes |
+| `hidden` | Yes | No |
+| `disabled` | No | No |
+
+Leave it visible for a normal guide. Use `hidden` for a page linked from another
+guide, or `disabled` to keep the document out of the routable inventory.
+Visibility is per page; hiding a parent does not hide its children.
+
+Then set its position. Numeric prefixes normally supply the order:
+`01-installation` comes before `02-authoring`. An explicit `order` overrides the
+prefix. Lower values come first.
+
+**Try it:** set Installation’s order to **3** to move it after Authoring. Then
+compare `hidden` and `disabled`: both remove the sidebar link, but only `hidden`
+keeps the direct route available.
+
+<NavigationPreview />
+
+### Name a sidebar group
+
+The previous settings describe an individual page. A sidebar group is configured
+on the **source landing page** instead: `docs/page.md` in this example.
+
+Set `sidebar.group: true` there to promote its `title`, **Guide**, to a linked
+group heading. Its child pages then appear directly below the heading. Set
+`sidebar.collapsible: true` to add a collapse control, and use
+`sidebar.defaultOpen` to choose its initial state.
+
+**Try it:** turn off **Group heading**. Guide becomes a regular page beneath the
+source label, **Documentation**. Turn grouping back on, then turn off **Start
+expanded** to see the initial collapsed state.
+
+<SidebarFrontmatterPreview />
+
+The Code row starts with `docs/page.md` because that is where these settings
+belong. Changing the controls rebuilds the demo and applies the initial open
+state again. In your application, `defaultOpen` is an initial state, not a command
+to reopen a group after a user closes it.
+
+Without promotion, the source label comes from `navigation.label` in
+`registry.config.ts`. These settings affect the source group; they do not make
+every nested folder collapsible.
+
+### Set the page outline
+
+Finally, configure navigation **within** the article using `toc`. It uses the
+body’s headings, independently of sidebar page navigation.
+
+By default, the outline sits on the right and includes heading depths 2 and 3
+(`##` and `###`). Use `toc: false` when a page does not need an outline. To
+customize it, use an object and choose:
+
+- `placement`: `right`, `sidebar`, or `inline`; `none` hides it.
+- `minDepth` and `maxDepth`: which heading levels to include, from 1 through 6.
+- `label`: the outline’s heading, such as **In this guide**.
+- `collapsible` and `defaultOpen`: whether it can close and how it starts.
+
+**Try it:** select `inline`, change the label, and increase the maximum depth to
+**4** to include **Check types**. Enable disclosure and turn off **Start expanded**.
+Finally, select **false — no outline** and inspect the generated `toc: false`.
+
+<OutlinePreview />
+
+Omit `toc` to use the registry’s setting. `toc: true` enables the built-in
+defaults. A page-level options object replaces the registry’s setting rather than
+merging individual fields; its missing fields use the built-in defaults listed
+in the reference below.
+
+### Put the page settings together
+
+After trying the controls, your Installation page might start like this:
+
+```yaml filename="docs/01-installation/page.md"
+---
+title: Installation
+description: Set up your first documentation workspace.
+icon: book-open
+order: 1
+navigation: visible
+toc:
+  placement: inline
+  label: In this guide
+  minDepth: 2
+  maxDepth: 4
+  collapsible: true
+  defaultOpen: false
+---
+```
+
+Keep the article body below this block. Put `sidebar` settings on `docs/page.md`,
+as shown in the group demo, rather than adding them to this child page. You do
+not need to include every field: omit any setting whose default already fits.
+
+## Add React components with MDX
+
+Rename a page to `page.mdx` when it needs imports and JSX. Frontmatter and
+Markdown still work the same way:
+
+```mdx filename="docs/02-components/page.mdx"
+---
+title: Components
+---
+
+import { Button } from "./Button.js";
+
+# Components
+
+Use the button to begin the next step.
+
+<Button>Get started</Button>
+```
+
+This assumes a neighboring `Button.js` file exports `Button`. Use an import path
+that matches your project. An ordinary `.md` page cannot use MDX imports and JSX.
+See the [component examples](/ui) for complete integrations.
+
+## Frontmatter reference
+
+Use this table when checking a field’s type. The walkthrough above shows how the fields work together.
+
+| Field         | Type                                                       | When omitted                                                       |
+| ------------- | ---------------------------------------------------------- | ------------------------------------------------------------------ |
+| `title`       | Nonempty string                                            | Derived from the folder or filename, excluding its numeric prefix. |
+| `description` | String                                                     | No summary.                                                        |
+| `icon`        | Kebab-case Lucide name                                     | No icon.                                                           |
+| `order`       | Finite number                                              | Numeric filename/folder order, then unnumbered pages.              |
+| `navigation`  | `visible`, `hidden`, `disabled`                            | `visible`.                                                         |
+| `sidebar`     | Object with `group`, `collapsible`, `defaultOpen` booleans | No promoted source heading.                                        |
+| `toc`         | Boolean or outline-options object                          | Registry default.                                                  |
+
+Use unquoted YAML booleans and numbers: `toc: false`, `order: 2`. Quote strings
+containing YAML punctuation, such as `description: "Setup: install the tools."`.
+Use `title` for the page name; page-level `label` and `sidebar.label` are rejected.
+`toc.label` is allowed because it names the outline.
+
+### Outline defaults
+
+| `toc` option | Built-in default |
+| --- | --- |
+| `placement` | `right` |
+| `label` | `On this page` |
+| `minDepth` | `2` |
+| `maxDepth` | `3` |
+| `collapsible` | `false` |
+| `defaultOpen` | `true` |
+
+`minDepth` and `maxDepth` must be integers from 1 to 6, with `maxDepth` at least
+`minDepth`. The documentation shell renders placement and disclosure; custom
+shells must consume those settings and the compiler’s extracted headings.
+
+## Troubleshooting
+
+Validation errors include the source filename. Check the field types above,
+make sure `title` contains letters or numbers, and use kebab-case icon names such
+as `arrow-right`, rather than React names such as `ArrowRight`.
+
+Two pages cannot generate the same route. If `Getting Started` and
+`Getting-started` share a parent, change one title or move a page under another
+parent. Both titles otherwise generate `getting-started`.
+
+## Connect content to your app
+
+Skip this section if your template already configures the registry and MDX
+compiler. These files go at the root of an existing Vite React project, alongside
+`package.json` and the `docs` directory used above.
+
+### Register the source
+
+```ts filename="registry.config.ts"
+import type { RegistryConfiguration } from "@moyarich/moyaforge-mdx/vite";
+
+export default {
+  sources: {
+    docs: {
+      base: "./docs",
+      include: ["**/page.{md,mdx}"],
+      navigation: { label: "Documentation", order: 1 },
+    },
+  },
+} satisfies RegistryConfiguration;
+```
+
+The source key `docs` supplies the `/docs` URL prefix. `base` locates its files
+relative to the app root, and `include` selects which files discovery considers.
+This example selects only `page.md` and `page.mdx`, keeping supporting example
+files out of the page inventory.
+
+### Configure the compiler
+
+```ts filename="vite.config.ts"
+import { defineConfig } from "vite";
+import mdx from "@mdx-js/rollup";
+import react from "@vitejs/plugin-react";
+import { createMdxOptions } from "@moyarich/moyaforge-mdx";
+import { mdxRegistryPlugin } from "@moyarich/moyaforge-mdx/vite";
+import registry from "./registry.config";
+
+export default defineConfig({
+  plugins: [
+    mdxRegistryPlugin({ registry, root: import.meta.dirname }),
+    { enforce: "pre", ...mdx(createMdxOptions()) },
+    react({ include: /\.(?:js|jsx|md|mdx|ts|tsx)$/ }),
+  ],
+});
+```
+
+The registry plugin produces page metadata and lazy imports. The MDX plugin
+compiles the content, including frontmatter, heading IDs, and extracted outlines.
+Connect the generated pages to your app using the
+[Routing and navigation guide](../../01-routing/page.mdx).
+
+## Further reading
+
+- [MDX conventions](../20-mdx-conventions/page.md): compiler behavior and frontmatter exports.
+- [Content registry](../../04-development/20-content-registry/page.mdx): discovery and generated metadata.
+- [Code preview](../../04-development/10-code-preview-internals/page.mdx): preview directives, source tabs, and compilation.

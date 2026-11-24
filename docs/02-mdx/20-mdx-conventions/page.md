@@ -15,7 +15,10 @@ docs/
 
 ## Frontmatter
 
-Pages should declare a nonempty `title`. The shared `parseMoyaForgePageMetadata(frontmatter, sourcePath)` API validates `description`, `navigation`, `toc`, `sidebarOutline` and `outlineLabelPrefix`. `navigation` accepts `visible` (default), `hidden` (routable without sidebar), and `disabled` (excluded). Existing source manifest helpers remain compatible with their current permissive metadata model.
+Use `title` as the page name. The registry validates `title`, `description`,
+`icon`, `order`, `navigation`, `sidebar`, and `toc`. Titles generate route IDs;
+source landing pages keep their source-root URL. Page-level `label` and
+`sidebar.label` are not supported.
 
 ```mdx
 ---
@@ -23,19 +26,24 @@ title: Get started with MoyaForge
 description: Install and configure the documentation framework.
 navigation: visible
 toc:
-  show: true
+  placement: right
+  minDepth: 2
+  maxDepth: 3
   collapsible: true
   defaultOpen: true
 ---
 
-# Getting started
+# Get started with MoyaForge
 
 Use **Markdown**, tables, fenced code, and MDX components.
 ```
 
+See [Markdown and MDX](../10-markdown-and-mdx/page.mdx#frontmatter) for the full field reference,
+route examples, navigation visibility, source sidebar groups, and TOC settings.
+
 ## Shared Vite compiler
 
-Install the supported peer dependencies and use `createMoyaForgeMdxOptions` with `@mdx-js/rollup`:
+Install the supported peer dependencies and use `createMdxOptions` with `@mdx-js/rollup`:
 
 ```js
 import mdx from "@mdx-js/rollup";

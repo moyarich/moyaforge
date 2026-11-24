@@ -1,0 +1,56 @@
+---
+title: Reveal
+description: Reveal a block of content progressively using the reveal effect.
+---
+
+# Reveal
+
+Reveal a block of content progressively using the reveal effect. Use **Refresh** to replay the animation.
+
+::::code-preview[Reveal]{refresh preview="RevealNotice.tsx" replacements="portable"}
+
+```tsx filename="RevealNotice.tsx"
+import { Animation } from "../../../../src/components/Animation/index.js";
+import "./RevealNotice.css";
+
+export default function RevealNotice() {
+  return (
+    <Animation effect="reveal" duration={1.2} wait={0.4} className="animation-reveal-example">
+      <h2>A little more detail</h2>
+      <p>Keep the introduction short, then reveal the supporting content.</p>
+    </Animation>
+  );
+}
+```
+
+```css filename="RevealNotice.css"
+.animation-reveal-example {
+  width: min(100%, 26rem);
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, currentColor 3%, transparent);
+  text-align: start;
+}
+
+.animation-reveal-example h2 {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.animation-reveal-example p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+```
+
+::::
+
+`duration` and `wait` are measured in seconds. Reduced-motion preferences show
+the finished content immediately.
+
+[Animation documentation](/ui/components/animation)

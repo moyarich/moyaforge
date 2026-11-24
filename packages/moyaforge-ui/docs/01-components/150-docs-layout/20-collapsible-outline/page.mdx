@@ -4,14 +4,19 @@ title: Collapsible outline
 
 # Docs Layout · Collapsible outline
 
+Open **Explore this guide** in the preview to reveal the nested heading links.
+The outline starts closed and sits above the article so it remains visible in
+a narrow preview.
+
 Set `toc.collapsible` to enable native HTML `<details>` disclosure, and
-`toc.defaultOpen` to control its initial state. No React disclosure state or
+`toc.defaultOpen` to control its initial state. This example uses
+`placement: "inline"`; use `"right"` or `"sidebar"` for other layouts. No React disclosure state or
 JavaScript click handler is required. Custom `outline` and `sidebar` slots
 continue to replace the defaults.
 
 ::::code-preview[Collapsible outline]{component="./CollapsibleDocsOutline.tsx"}
 
-::code-preview-sources{files="./CollapsibleDocsOutline.tsx" replacements="portable"}
+::code-preview-sources{files="./CollapsibleDocsOutline.tsx,./CollapsibleDocsOutline.css" replacements="portable"}
 
 ::::
 

@@ -1,0 +1,25 @@
+---
+title: Guide with a sidebar
+description: Supply page metadata and render the selected guide inside DocsLayout.
+---
+
+# Guide with a sidebar
+
+Select Overview, Installation, or Authoring to change the article. **Next page**
+advances through the same pages. Navigation stays inside this preview.
+
+`DocsLayout` builds its sidebar from `pages` and marks `currentUrl` as active.
+Your application supplies the selected page content. This demo uses React state;
+a real application can supply the same values from its router.
+
+The `header` and `footer` slots customize the chrome. `outline={null}` removes
+the outline. The example CSS keeps the embedded layout in normal document flow
+instead of using viewport-height, sticky panels.
+
+::::code-preview[Guide with a sidebar]{component="./GuideWithSidebar.tsx"}
+
+::code-preview-sources{files="./GuideWithSidebar.tsx,./GuideWithSidebar.css" replacements="portable"}
+
+::::
+
+[Docs Shell documentation](/ui/components/docs-shell)

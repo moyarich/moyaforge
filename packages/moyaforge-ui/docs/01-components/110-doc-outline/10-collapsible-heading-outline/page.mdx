@@ -4,9 +4,18 @@ title: Collapsible heading outline
 
 # Doc Outline · Collapsible heading outline
 
+Select **On this page** to collapse or expand the outline. Select a heading link
+to scroll the adjacent article without navigating away from this page. The nested
+`children` array places **Install dependencies** beneath its parent heading.
+
+`collapsible` enables the disclosure button; `defaultOpen` starts it expanded.
+The example uses a named `renderLink` function for local scrolling and selected
+link styling. The component’s default scroll tracking follows the document
+window; this embedded demo controls selection on click.
+
 ::::code-preview[Collapsible heading outline]{component="./CollapsibleOutline.tsx"}
 
-::code-preview-sources{files="./CollapsibleOutline.tsx" replacements="portable"}
+::code-preview-sources{files="./CollapsibleOutline.tsx,./CollapsibleOutline.css" replacements="portable"}
 
 ::::
 

@@ -17,6 +17,26 @@ npx @moyarich/moyaforge-cli@latest add animation
 
 Import the copied components from `@/components/ui/Animation/index.js`, or use a relative path when your app has no `@/` alias. Their styles are imported by the components.
 
+## Usage
+
+This example uses the default `fade-slide` effect. Select **Refresh** to replay it.
+
+::::code-preview[Welcome message]{refresh preview="WelcomeMessage.tsx" replacements="portable"}
+
+```tsx filename="WelcomeMessage.tsx"
+import { Animation } from "../../../src/components/Animation/index.js";
+
+export default function WelcomeMessage() {
+  return (
+    <Animation duration={0.9} wait={0.4} distance={16}>
+      <p>Welcome to your workspace. Make something worth sharing.</p>
+    </Animation>
+  );
+}
+```
+
+::::
+
 ## Options
 
 Both components accept a `className` string, array, or conditional object.
@@ -45,5 +65,9 @@ Entries show their content immediately when the user prefers reduced motion.
 Each example has its own page, live preview, and copyable source files.
 
 - [Fade in](/ui/components/animation/fade-in): animate a single message.
+- [Slide](/ui/components/animation/slide): move an opaque notification into place.
+- [Fade and slide](/ui/components/animation/fade-and-slide): combine opacity and movement.
+- [Reveal](/ui/components/animation/reveal): progressively reveal a content block.
+- [Typewriter](/ui/components/animation/typewriter): reveal static text character by character.
 - [Sequential animation](/ui/components/animation/sequential-animation): run entries one after another.
 - [Terminal initialization sequence](/ui/components/animation/sequential-animation#terminal-initialization-sequence): combine typing, sequential results, and progressive height.

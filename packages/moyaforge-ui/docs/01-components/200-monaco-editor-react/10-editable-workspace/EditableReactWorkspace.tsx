@@ -7,12 +7,12 @@ export default function MultiFileEditor() {
     {
       name: "App.tsx",
       value:
-        "export default function App() {\\n  return <h1>Hello, MoyaForge!</h1>;\\n}\\n",
+        "export default function App() {\n  return <h1>Hello, MoyaForge!</h1>;\n}\n",
     },
-    { name: "styles.css", value: "h1 {\\n  color: royalblue;\\n}\\n" },
+    { name: "styles.css", value: "h1 {\n  color: royalblue;\n}\n" },
     {
       name: "package.json",
-      value: '{\\n  "name": "my-app",\\n  "private": true\\n}\\n',
+      value: '{\n  "name": "my-app",\n  "private": true\n}\n',
       readOnly: true,
     },
   ]);
