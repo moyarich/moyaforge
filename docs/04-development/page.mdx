@@ -13,7 +13,6 @@ For the full compiler-to-browser implementation, see [Code preview internals](./
 
 See [Component styling conventions](./60-component-styling/page.mdx) for class hooks, conditional state classes, and the public/private CSS variable contract.
 
-
 These pages preserve the internal details needed to maintain MoyaForge without turning npm/GitHub README files into documentation routes.
 
 - [Content registry internals](./20-content-registry/page.mdx) — source discovery, README exclusion, metadata, navigation, TOC and links.
@@ -22,7 +21,6 @@ These pages preserve the internal details needed to maintain MoyaForge without t
 - [Package boundaries and scaffolding](./50-packages-and-scaffolding/page.mdx) — workspace ownership, public entry points, CLI templates and releases.
 
 The playground registry selects authored `page.md`/`page.mdx` pages and, for general docs, explicitly excludes `README.md`/`README.mdx` even when `pageFiles: "all"`. Package README files remain in the repository and npm tarballs; their maintainer-relevant content is summarized in the linked guides.
-
 
 ## Requirements
 
@@ -244,7 +242,7 @@ The playground reads the authored-content registry from `apps/playground/registr
 Write a relative Markdown link to the real `.md` or `.mdx` file. For example, from `packages/moyaforge-ui/docs/page.mdx`:
 
 ```mdx
-[Code Block](./01-components/10-code-block/page.mdx)
+[Code Block](../01-components/10-code-block/page.mdx)
 [Code Block usage](./01-components/10-code-block/page.mdx#usage)
 ```
 
