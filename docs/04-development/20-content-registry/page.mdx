@@ -1,47 +1,66 @@
 ---
-title: Content registry internals
-description: How MoyaForge discovers authored pages and generates metadata, navigation, and lazy MDX modules.
+title: Content registry
+description: Follow documentation files from source discovery to routes, navigation, and page loading.
 ---
 
-# Content registry internals
+# Content registry
 
-The content registry decides which files are **documentation pages**. It is different from the component-installation registry (`registry.json`). MoyaForge derives routes and page metadata at build time; the browser does not discover files dynamically.
+The content registry turns your Markdown files into the page records used by the
+router, sidebar, search, and outline. Start with a content source, select its page
+files, then consume the generated metadata and lazy page loaders in your app.
 
-The source of truth for the private playground is `apps/playground/registry.config.ts`. Generated applications have their own `registry.config.ts`.
-
-## Developer guides
-
-| Topic                                                                | Details                                                                  |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [Sources and README exclusion](./10-source-files/page.mdx)           | Source globs, canonical pages, ordinary Markdown, and registry tests     |
-| [Metadata, navigation, and links](./20-metadata-navigation/page.mdx) | Virtual modules, frontmatter, TOC, headings, links, and sidebar behavior |
-
-The standard MDX compilation and code-preview pipeline are described separately in [Code preview internals](../10-code-preview-internals/page.mdx).
-
-## Processing stages
+This guide follows one small source throughout:
 
 ```text
-registry.config.ts
-   |
-   v
-createContentDiscovery / discoverContent
-   |  glob matching + exclusions + pageFiles policy
-   |  YAML frontmatter, headings and optional package JSON
-   v
-buildPageRegistry
-   |  page identity -> public routes, visibility, navigation
-   v
-mdxRegistryPlugin (Vite)
-   |  virtual:.../metadata    (no React page imports)
-   |  virtual:.../lazy-registry
-   |  virtual:.../registry   (compatibility)
-   v
-Host router, sidebar, outline and search integration
+my-app/
+  registry.config.ts
+  docs/
+    page.md                      # title: Guide
+    01-installation/page.md       # title: Installation
+    02-authoring/page.md          # title: Authoring
+    notes.md
+    README.md
 ```
 
-The implementation lives in `packages/moyaforge-mdx/src/content/`, `src/registry/`, `src/navigation/`, and `src/vite/registry-plugin/`.
-The host application owns the React router and presentation.
+With the default page-file policy, the three `page.md` files become pages.
+`notes.md` and `README.md` stay supporting files. With source key `docs`, the
+resulting routes are `/docs`, `/docs/installation`, and `/docs/authoring`.
 
-**README files remain in the repository** for GitHub and npm package documentation, but are not registered as playground pages.
+## Follow the files through the registry
+
+| Stage | Input | Result |
+| --- | --- | --- |
+| Discovery | Source directory, include/exclude patterns, and page-file policy | Selected Markdown files, parsed frontmatter, and extracted headings. |
+| Normalization | Selected files and their metadata | Page titles, title-based routes, visibility, ordering, and parent relationships. |
+| Vite integration | The discovered registry | A metadata module and lazy page loaders. |
+| Application | Metadata and loaders | Router, sidebar, search, and rendered articles. |
+
+Discovery and normalization run outside the browser. The application receives
+prepared records; it does not scan directories at runtime.
+
+## Configure and use it
+
+1. [Select your page files](./10-source-files/page.mdx). Choose canonical page files or intentionally include ordinary Markdown.
+2. [Use metadata and load pages](./20-metadata-navigation/page.mdx). Compare `pages`, `routes`, and `navigation` in a live preview, then connect the generated modules to your application.
+
+For authoring page metadata, use the
+[frontmatter walkthrough](../../02-mdx/10-markdown-and-mdx/page.mdx#frontmatter).
+This section explains how that metadata moves through discovery and application
+integration.
+
+## Where the configuration lives
+
+A documentation app owns its `registry.config.ts`. In this repository, the
+playground’s file is `apps/playground/registry.config.ts`; generated applications
+have their own copy.
+
+The repository-root `registry.config.ts` has a different job: it generates the
+component-installation catalog, `registry.json`. Changing that catalog does not
+register a documentation page.
+
+The registry implementation lives in `packages/moyaforge-mdx/src/content/`,
+`src/registry/`, `src/navigation/`, and `src/vite/registry-plugin/`. Page compilation
+and preview directives are covered separately in
+[Code preview internals](../10-code-preview-internals/page.mdx).
 
 [Development overview](../)
