@@ -46,7 +46,7 @@ declare module "virtual:moyaforge-mdx/lazy-registry" {
   >;
 }
 
-declare module "virtual:moyaforge-mdx/code-preview-components" {
+declare module "virtual:moyaforge-mdx/preview-code-components" {
   const components: Record<
     string,
     () => Promise<Record<string, import("react").ComponentType>>
@@ -54,7 +54,7 @@ declare module "virtual:moyaforge-mdx/code-preview-components" {
   export default components;
 }
 
-declare module "virtual:moyaforge-mdx/code-preview-sources" {
+declare module "virtual:moyaforge-mdx/preview-code-sources" {
   const sources: Record<string, () => Promise<string>>;
   export default sources;
 }

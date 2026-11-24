@@ -122,7 +122,7 @@ export async function planProject({
 
   const docsFolder = join(templates, "docs");
   const codePreviewExample = template === "playground"
-    ? await readFile(join(templates, "playground-code-preview.mdx"), "utf8")
+    ? await readFile(join(templates, "playground-preview-code.mdx"), "utf8")
     : "";
   for await (const file of filesIn(docsFolder)) {
     const content = await readFile(file, "utf8");

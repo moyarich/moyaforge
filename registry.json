@@ -166,429 +166,6 @@
       ]
     },
     {
-      "name": "code-preview",
-      "type": "registry:component",
-      "title": "Code Preview",
-      "description": "Editable MoyaForge code-preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
-      "files": [
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeGroup.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroupTabs.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeGroupTabs.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeTab.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeTab.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodePreview/CodePreview.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodePreview/CodePreview.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodePreview/InlineCodePreview.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodePreview/InlineCodePreview.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodePreview/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodePreview/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/Preview.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/Preview.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewActions.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewActions.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewContent.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewContent.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContext.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewContext.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewCopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewFooter.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewHeader.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewRefreshButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewRefreshButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewSource.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewSource.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewTitle.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewTitle.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/index.ts"
-        }
-      ]
-    },
-    {
-      "name": "code-preview-editor",
-      "type": "registry:component",
-      "title": "Code Preview Editor",
-      "description": "Editable MoyaForge code-preview-editor source. Components import their own CSS.",
-      "dependencies": [
-        "@moyarich/moyaforge-monaco@^0.1.0",
-        "lucide-react@^1.56.0",
-        "react@>=18",
-        "shiki@^4.5.0"
-      ],
-      "files": [
-        {
-          "path": "packages/moyaforge-ui/src/components/CodePreviewEditor/CodePreviewEditor.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodePreviewEditor/CodePreviewEditor.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodePreviewEditor/CodePreviewEditor.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodePreviewEditor/CodePreviewEditor.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodePreviewEditor/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodePreviewEditor/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorWorkspace/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/Preview.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/Preview.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewActions.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewActions.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewContent.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewContent.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContext.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewContext.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewCopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewFooter.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewHeader.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewRefreshButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewRefreshButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewSource.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewSource.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewTitle.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/PreviewTitle.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Preview/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/Tabs.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/Tabs.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsContent.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsContext.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsList.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsList.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/index.ts"
-        }
-      ]
-    },
-    {
       "name": "copy-button",
       "type": "registry:component",
       "title": "Copy Button",
@@ -1086,130 +663,6 @@
       ]
     },
     {
-      "name": "interactive-preview",
-      "type": "registry:component",
-      "title": "Interactive Preview",
-      "description": "Editable MoyaForge interactive-preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
-      "files": [
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeGroup.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroupTabs.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeGroupTabs.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeTab.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/CodeTab.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeGroup/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreview.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/InteractivePreview/InteractivePreview.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreview.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/InteractivePreview/InteractivePreview.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewControls.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewControls.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewLayout.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewLayout.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewMetadata.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewMetadata.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/InteractivePreview/InteractivePreviewSelect.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/InteractivePreview/InteractivePreviewSelect.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/InteractivePreview/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/InteractivePreview/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/resize-panel-pair.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/resize-panel-pair.ts"
-        }
-      ]
-    },
-    {
       "name": "monaco-editor-react",
       "type": "registry:component",
       "title": "Monaco Editor React",
@@ -1612,6 +1065,577 @@
           "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/Preview/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "preview-code",
+      "type": "registry:component",
+      "title": "Preview Code",
+      "description": "Editable MoyaForge preview-code source. Components import their own CSS.",
+      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroupTabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroupTabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeTab.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeTab.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/Preview.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/Preview.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewRefreshButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewRefreshButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewCode/PreviewCode.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewCode/PreviewCode.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewCode/PreviewCodeInline.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewCode/PreviewCodeInline.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewCode/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewCode/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "preview-code-editor",
+      "type": "registry:component",
+      "title": "Preview Code Editor",
+      "description": "Editable MoyaForge preview-code-editor source. Components import their own CSS.",
+      "dependencies": [
+        "@moyarich/moyaforge-monaco@^0.1.0",
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorWorkspace/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/Preview.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/Preview.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/Preview.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewActions.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewActions.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCodeToggle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCodeToggle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewCopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewCopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewFooter.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewFooter.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewHeader.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewHeader.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewRefreshButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewRefreshButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewSource.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewSource.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/PreviewTitle.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/PreviewTitle.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Preview/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Preview/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewCodeEditor/PreviewCodeEditor.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewCodeEditor/PreviewCodeEditor.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewCodeEditor/PreviewCodeEditor.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewCodeEditor/PreviewCodeEditor.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewCodeEditor/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewCodeEditor/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "preview-inspector",
+      "type": "registry:component",
+      "title": "Preview Inspector",
+      "description": "Editable MoyaForge preview-inspector source. Components import their own CSS.",
+      "dependencies": ["react@>=18"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInspector/PreviewInspector.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInspector/PreviewInspector.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInspector/PreviewInspector.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInspector/PreviewInspector.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInspector/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInspector/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "preview-interactive",
+      "type": "registry:component",
+      "title": "Preview Interactive",
+      "description": "Editable MoyaForge preview-interactive source. Components import their own CSS.",
+      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeBlock.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeCopyIcon.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeBlock/CodeCopyIcon.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroup.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroup.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeGroupTabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeGroupTabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/CodeTab.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/CodeTab.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CodeGroup/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CodeGroup/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInteractive/PreviewInteractive.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInteractive/PreviewInteractive.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInteractive/PreviewInteractive.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInteractive/PreviewInteractive.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInteractive/PreviewInteractiveControls.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInteractive/PreviewInteractiveControls.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInteractive/PreviewInteractiveLayout.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInteractive/PreviewInteractiveLayout.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInteractive/PreviewInteractiveMetadata.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInteractive/PreviewInteractiveMetadata.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInteractive/PreviewInteractiveSelect.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInteractive/PreviewInteractiveSelect.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/PreviewInteractive/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/PreviewInteractive/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/resize-panel-pair.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/resize-panel-pair.ts"
         }
       ]
     },

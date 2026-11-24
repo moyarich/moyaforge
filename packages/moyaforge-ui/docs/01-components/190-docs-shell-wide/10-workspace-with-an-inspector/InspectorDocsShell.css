@@ -161,13 +161,7 @@
 .wide-shell-example .workspace-note p {
   margin: 0.5rem 0 0;
 }
-@container mf-shell-wide (min-width: 30rem) and (max-width: 42rem) {
-  .wide-shell-example .mf-wide-grid {
-    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
-  }
-  .wide-shell-example .mf-wide-inspector {
-    grid-column: 1 / -1;
-    border-inline-start: 0;
-    border-top: 1px solid var(--mf-wide-border);
-  }
+.wide-shell-example .mf-preview-inspector {
+  --mf-inspector-width: 12rem;
+  --mf-inspector-border: var(--mf-wide-border);
 }

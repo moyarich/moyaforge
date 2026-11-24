@@ -5,11 +5,11 @@ description: Configure page names, navigation, sidebar groups, and outlines with
 
 
 import {
-  PageMetadataPreview,
-  NavigationPreview,
-  SidebarFrontmatterPreview,
-  OutlinePreview,
-} from "../../../apps/playground/src/components/MdxPreview/frontmatter/index.js";
+  PreviewPageMetadata,
+  PreviewNavigation,
+  PreviewSidebarFrontmatter,
+  PreviewOutline,
+} from "../../../apps/playground/src/components/PreviewMdx/frontmatter/index.js";
 
 # Markdown and MDX
 
@@ -74,7 +74,7 @@ shows icons, choose a Lucide `icon` name such as `book-open` or `settings`.
 **Try it:** rename Installation to **Install with Vite**, then change its description
 and icon. The preview shows the resolved metadata and the corresponding sidebar.
 
-<PageMetadataPreview />
+<PreviewPageMetadata />
 
 Notice that changing `title` also changes the page’s URL ID. In this example,
 `Installation` produces `/docs/installation`, while `Install with Vite` produces
@@ -123,7 +123,7 @@ prefix. Lower values come first.
 compare `hidden` and `disabled`: both remove the sidebar link, but only `hidden`
 keeps the direct route available.
 
-<NavigationPreview />
+<PreviewNavigation />
 
 ### Name a sidebar group
 
@@ -139,7 +139,7 @@ group heading. Its child pages then appear directly below the heading. Set
 source label, **Documentation**. Turn grouping back on, then turn off **Start
 expanded** to see the initial collapsed state.
 
-<SidebarFrontmatterPreview />
+<PreviewSidebarFrontmatter />
 
 The Code row starts with `docs/page.md` because that is where these settings
 belong. Changing the controls rebuilds the demo and applies the initial open
@@ -168,7 +168,7 @@ customize it, use an object and choose:
 **4** to include **Check types**. Enable disclosure and turn off **Start expanded**.
 Finally, select **false — no outline** and inspect the generated `toc: false`.
 
-<OutlinePreview />
+<PreviewOutline />
 
 Omit `toc` to use the registry’s setting. `toc: true` enables the built-in
 defaults. A page-level options object replaces the registry’s setting rather than
@@ -322,4 +322,4 @@ Connect the generated pages to your app using the
 
 - [MDX conventions](../20-mdx-conventions/page.md): compiler behavior and frontmatter exports.
 - [Content registry](../../04-development/20-content-registry/page.mdx): discovery and generated metadata.
-- [Code preview](../../04-development/10-code-preview-internals/page.mdx): preview directives, source tabs, and compilation.
+- [Code preview](../../04-development/10-preview-code-internals/page.mdx): preview directives, source tabs, and compilation.

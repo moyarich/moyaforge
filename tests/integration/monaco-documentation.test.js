@@ -13,7 +13,7 @@ const examples = [
   "210-monaco-editor-typefox/20-read-only/page.mdx",
   "210-monaco-editor-typefox/40-textarea/page.mdx",
   "210-monaco-editor-typefox/50-shared-runtime/page.mdx",
-  "221-code-preview-editor/10-monaco-editor/page.mdx",
+  "221-preview-code-editor/10-monaco-editor/page.mdx",
 ];
 
 test.each(examples)("%s compiles without invalid MDX module syntax or removed worker imports", async (page) => {

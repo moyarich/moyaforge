@@ -13,12 +13,12 @@ import ReactExample from "../../packages/moyaforge-ui/docs/01-components/20-code
 
 const root = resolve("packages/moyaforge-ui/docs/01-components/20-code-group");
 const mappings = {
-  "code-preview": {
+  "preview-code": {
     component: "Preview",
     filesProp: "files",
     sourceProp: "code",
     localSources: true,
-    resolveCodePreviewComponent: () => "react/Example.tsx",
+    resolvePreviewCodeComponent: () => "react/Example.tsx",
   },
   "code-group": {
     component: "CodeGroup",

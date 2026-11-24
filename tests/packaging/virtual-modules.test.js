@@ -14,8 +14,8 @@ test("MDX Vite virtual modules have a packaged declaration-only entrypoint", asy
     "registry",
     "lazy-registry",
     "metadata",
-    "code-preview-components",
-    "code-preview-sources",
+    "preview-code-components",
+    "preview-code-sources",
   ]) {
     expect(declarations).toContain(`declare module "virtual:moyaforge-mdx/${id}"`);
   }

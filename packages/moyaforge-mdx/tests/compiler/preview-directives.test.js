@@ -118,15 +118,15 @@ test("host preview resolver validates the authored Markdown path", async () => {
   ).rejects.toThrow(/Unresolved preview/);
 });
 
-test("code-preview preserves authored JSX as source and renders it as children", async () => {
+test("preview-code preserves authored JSX as source and renders it as children", async () => {
   const body = '<p className="greeting">Hello from MDX.</p>';
   const result = String(
     await compile(
-      `::: code-preview Greeting\n\n${body}\n\n:::`,
+      `::: preview-code Greeting\n\n${body}\n\n:::`,
       createMdxOptions({
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             titleProp: "title",
             sourceProp: "code",
           },
@@ -134,7 +134,7 @@ test("code-preview preserves authored JSX as source and renders it as children",
       }),
     ),
   );
-  expect(result).toContain("InlineCodePreview");
+  expect(result).toContain("PreviewCodeInline");
   expect(result).toContain(`code: ${JSON.stringify(body)}`);
   expect(result).toContain('className: "greeting"');
 });
@@ -167,11 +167,11 @@ test.each([
 test("forwards configured directive flags and preserves inline preview source", async () => {
   const result = String(
     await compile(
-      ":::code-preview[Fade in]{refresh}\n\n<p>Hello</p>\n\n:::",
+      ":::preview-code[Fade in]{refresh}\n\n<p>Hello</p>\n\n:::",
       createMdxOptions({
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             titleProp: "title",
             sourceProp: "code",
             booleanProps: ["refresh"],
@@ -208,7 +208,7 @@ test("uses native directives for code groups and their nested tabs", async () =>
 test("isolates repeated import names and keeps named fences as preview sources", async () => {
   const registered = [];
   const page = [
-    "::::code-preview[First]{react replacements=}",
+    "::::preview-code[First]{react replacements=}",
     'import {\n  First as Greeting,\n} from "./first.js";',
     "",
     "<Greeting />",
@@ -219,7 +219,7 @@ test("isolates repeated import names and keeps named fences as preview sources",
     "",
     "::::",
     "",
-    ":::code-preview[Second]{react replacements=portable}",
+    ":::preview-code[Second]{react replacements=portable}",
     "",
     'import { Second as Greeting } from "./second.js";',
     "",
@@ -232,8 +232,8 @@ test("isolates repeated import names and keeps named fences as preview sources",
       { value: page, path: "/docs/page.mdx" },
       createMdxOptions({
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             sourceProp: "code",
             filesProp: "sourceFiles",
             registerInlineReact(source, file) {
@@ -270,16 +270,16 @@ test("isolates repeated import names and keeps named fences as preview sources",
 test("file-backed preview errors describe opt-in component root registration", async () => {
   const options = createMdxOptions({
     componentMappings: {
-      "code-preview": {
-        component: "InlineCodePreview",
-        resolveCodePreviewComponent: () => undefined,
+      "preview-code": {
+        component: "PreviewCodeInline",
+        resolvePreviewCodeComponent: () => undefined,
       },
     },
   });
   const compilePreview = (component) =>
     compile(
       {
-        value: `:::code-preview[Example]{component="${component}"}\n\n:::`,
+        value: `:::preview-code[Example]{component="${component}"}\n\n:::`,
         path: "/docs/warning/page.mdx",
       },
       options,
@@ -294,6 +294,8 @@ test("file-backed preview errors describe opt-in component root registration", a
   );
 
   await expect(
-    compilePreview("../../../../src/components/CodeBlock/CodeBlock.tsx#Bad;Name"),
-  ).rejects.toThrow(/Invalid code-preview component/);
+    compilePreview(
+      "../../../../src/components/CodeBlock/CodeBlock.tsx#Bad;Name",
+    ),
+  ).rejects.toThrow(/Invalid preview-code component/);
 });

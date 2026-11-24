@@ -1,0 +1,14 @@
+import { PreviewCode } from "./components/ui/PreviewCode/index.js";
+import CounterExample from "./CounterExample.tsx";
+import counterSource from "./CounterExample.tsx?raw";
+import counterStyles from "./counterExample.css?raw";
+
+<PreviewCode
+  title="Counter"
+  files={[
+    { label: "CounterExample.tsx", code: counterSource },
+    { label: "counterExample.css", code: counterStyles },
+  ]}
+>
+  <CounterExample />
+</PreviewCode>

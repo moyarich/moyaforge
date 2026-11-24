@@ -1,0 +1,155 @@
+---
+title: React with inline dependencies
+---
+
+# React with inline dependencies
+
+Open **Code** and copy **selected-react-usage.mdx** for the full directive and all of its inline files.
+
+Select the React entry and stylesheet. The entry imports a TypeScript module and JSON file from other named fences. These files exist in the preview's virtual workspace; no matching files need to exist on disk.
+
+:::::preview-code[Project checklist]{preview="Checklist.tsx,checklist.css"}
+
+````mdx filename="selected-react-usage.mdx"
+::::preview-code[Project checklist]{preview="Checklist.tsx,checklist.css"}
+
+```tsx filename="Checklist.tsx"
+import { useState } from "react";
+import { tasks } from "./tasks.ts";
+import settings from "./settings.json";
+
+export default function Checklist() {
+  const [done, setDone] = useState<string[]>([]);
+  return (
+    <section className="preview-checklist">
+      <h3>{settings.title}</h3>
+      <p>
+        {done.length} of {tasks.length} complete
+      </p>
+      {tasks.map((task) => (
+        <label key={task}>
+          <input
+            type="checkbox"
+            checked={done.includes(task)}
+            onChange={() =>
+              setDone((current) =>
+                current.includes(task)
+                  ? current.filter((item) => item !== task)
+                  : [...current, task],
+              )
+            }
+          />
+          {task}
+        </label>
+      ))}
+    </section>
+  );
+}
+```
+
+```ts filename="tasks.ts"
+export const tasks: string[] = [
+  "Install dependencies",
+  "Write your first page",
+  "Build the site",
+];
+```
+
+```json filename="settings.json"
+{ "title": "Ready to publish?" }
+```
+
+```css filename="checklist.css"
+.preview-checklist {
+  width: min(100%, 24rem);
+  display: grid;
+  gap: 0.75rem;
+}
+.preview-checklist h3,
+.preview-checklist p {
+  margin: 0;
+}
+.preview-checklist label {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+}
+.preview-checklist input {
+  accent-color: #0f766e;
+}
+```
+
+::::
+````
+
+```tsx filename="Checklist.tsx"
+import { useState } from "react";
+import { tasks } from "./tasks.ts";
+import settings from "./settings.json";
+
+export default function Checklist() {
+  const [done, setDone] = useState<string[]>([]);
+  return (
+    <section className="preview-checklist">
+      <h3>{settings.title}</h3>
+      <p>
+        {done.length} of {tasks.length} complete
+      </p>
+      {tasks.map((task) => (
+        <label key={task}>
+          <input
+            type="checkbox"
+            checked={done.includes(task)}
+            onChange={() =>
+              setDone((current) =>
+                current.includes(task)
+                  ? current.filter((item) => item !== task)
+                  : [...current, task],
+              )
+            }
+          />
+          {task}
+        </label>
+      ))}
+    </section>
+  );
+}
+```
+
+```ts filename="tasks.ts"
+export const tasks: string[] = [
+  "Install dependencies",
+  "Write your first page",
+  "Build the site",
+];
+```
+
+```json filename="settings.json"
+{ "title": "Ready to publish?" }
+```
+
+```css filename="checklist.css"
+.preview-checklist {
+  width: min(100%, 24rem);
+  display: grid;
+  gap: 0.75rem;
+}
+.preview-checklist h3,
+.preview-checklist p {
+  margin: 0;
+}
+.preview-checklist label {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+}
+.preview-checklist input {
+  accent-color: #0f766e;
+}
+```
+
+:::::
+
+The entry must default-export a React component. Relative imports first resolve against named fences, then from the documentation page's directory. The Vite preview-code plugin compiles TypeScript and isolates each example's imports.
+
+Select CSS in `preview` to scope it to this example. The TypeScript and JSON dependencies are imported by the entry and do not need to be selected themselves.

@@ -2,6 +2,7 @@ import "./InspectorDocsShell.css";
 import { useState, type MouseEvent } from "react";
 import { PageInspector, type PageProperties } from "./PageInspector.js";
 import { FileText, PanelRight, PanelsTopLeft } from "lucide-react";
+import { PreviewInspector } from "../../../../src/components/PreviewInspector/index.js";
 import { DocsShellWide } from "../../../../src/components/DocsShellWide/DocsShellWide.js";
 
 const initialPages = [
@@ -93,11 +94,6 @@ export default function InspectorDocsShell() {
             ))}
           </nav>
         }
-        inspector={
-          showInspector ? (
-            <PageInspector page={selected} onChange={updatePage} />
-          ) : null
-        }
         footer={
           <div className="workspace-footer">
             <span>{pages.length} pages</span>
@@ -105,22 +101,30 @@ export default function InspectorDocsShell() {
           </div>
         }
       >
-        <article className="workspace-document">
-          <div className="workspace-document-icon">
-            <FileText aria-hidden="true" />
-          </div>
-          <span className="workspace-badge">{selected.status}</span>
-          <h2>{selected.title || "Untitled page"}</h2>
-          <p>{selected.summary || "Add a summary in the inspector."}</p>
-          <div className="workspace-note">
-            <strong>One layout, replaceable slots</strong>
-            <p>
-              The header, toolbar, navigation, inspector, and footer are
-              supplied to DocsShellWide. Select a page to inspect its
-              properties.
-            </p>
-          </div>
-        </article>
+        <PreviewInspector
+          label="Page preview"
+          inspector={
+            showInspector ? (
+              <PageInspector page={selected} onChange={updatePage} />
+            ) : null
+          }
+        >
+          <article className="workspace-document">
+            <div className="workspace-document-icon">
+              <FileText aria-hidden="true" />
+            </div>
+            <span className="workspace-badge">{selected.status}</span>
+            <h2>{selected.title || "Untitled page"}</h2>
+            <p>{selected.summary || "Add a summary in the inspector."}</p>
+            <div className="workspace-note">
+              <strong>One layout, replaceable slots</strong>
+              <p>
+                Select a page to inspect its properties. The preview updates
+                as you edit them.
+              </p>
+            </div>
+          </article>
+        </PreviewInspector>
       </DocsShellWide>
     </div>
   );

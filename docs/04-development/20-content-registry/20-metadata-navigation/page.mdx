@@ -3,7 +3,7 @@ title: Registry metadata and navigation
 description: Compare discovered pages, routable pages, and sidebar navigation, then load an article from the generated modules.
 ---
 
-import RegistryViewsPreview from "../../../../apps/playground/src/components/MdxPreview/registry/RegistryViewsPreview.js";
+import PreviewRegistryViews from "../../../../apps/playground/src/components/PreviewMdx/registry/PreviewRegistryViews.js";
 
 # Registry metadata and navigation
 
@@ -28,7 +28,7 @@ are Guide, Installation, and Authoring; their source key is `docs`.
 `navigation`. Disable it next: its page record remains, but its route is removed.
 Changing the source key demonstrates how the route prefix is generated.
 
-<RegistryViewsPreview />
+<PreviewRegistryViews />
 
 The preview builds an isolated in-memory registry and renders a real sidebar and
 the selected Markdown body. It does not scan your disk. The source-discovery

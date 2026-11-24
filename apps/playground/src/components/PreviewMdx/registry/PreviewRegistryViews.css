@@ -1,0 +1,23 @@
+.registry-views-table {
+  overflow-x: auto;
+  margin-bottom: 1.25rem;
+}
+.registry-views-table table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+.registry-views-table caption {
+  margin-bottom: 0.75rem;
+  text-align: start;
+  font-weight: 600;
+}
+.registry-views-table :is(th, td) {
+  padding: 0.625rem;
+  border-bottom: 1px solid var(--mf-preview-interactive-border);
+  text-align: start;
+}
+.registry-views-table code {
+  overflow-wrap: anywhere;
+}

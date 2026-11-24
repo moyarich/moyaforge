@@ -7,7 +7,7 @@ description: Run animation entries one after another.
 
 Place each `Animation` directly inside `AnimationGroup`. With `sequence`, each entry finishes before the next starts. `stagger` sets the pause between entries. Copy **SequentialMessages.tsx** and **SequentialMessages.css** together. The component imports its stylesheet.
 
-::::code-preview[Sequential animation]{refresh preview="SequentialMessages.tsx" replacements="portable"}
+::::preview-code[Sequential animation]{refresh preview="SequentialMessages.tsx" replacements="portable"}
 
 ```tsx filename="SequentialMessages.tsx"
 import "./SequentialMessages.css";
@@ -65,9 +65,9 @@ export default function SequentialMessages() {
 
 The **TerminalInitialization.tsx** source tab contains the complete terminal component and replay button. `sequence` runs each step in order; `expand` lets the terminal grow as steps appear. The matching CSS is included in its own source tab. This is a simulated transcript and does not execute a command.
 
-::::code-preview[Terminal initialization sequence]{refresh component="./TerminalInitialization.tsx"}
+::::preview-code[Terminal initialization sequence]{refresh component="./TerminalInitialization.tsx"}
 
-::code-preview-sources{files="./TerminalInitialization.tsx,./TerminalInitialization.css" replacements="portable"}
+::preview-code-sources{files="./TerminalInitialization.tsx,./TerminalInitialization.css" replacements="portable"}
 
 ::::
 

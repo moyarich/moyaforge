@@ -1,6 +1,6 @@
 import { compile } from "@mdx-js/mdx";
 import { expect, test } from "vitest";
-import { createInlineReactModules } from "../../packages/moyaforge-mdx/src/vite/code-preview/inline-react-modules.js";
+import { createInlineReactModules } from "../../packages/moyaforge-mdx/src/vite/preview-code/inline-react-modules.js";
 import { createMdxOptions } from "../../packages/moyaforge-mdx/src/mdx/mdx-tooling-options.js";
 
 test("TSX modules compile types and resolve inline JSON and TypeScript dependencies", async () => {
@@ -35,7 +35,7 @@ test("MDX fence imports stay isolated and its directives use the host compiler o
   const modules = createInlineReactModules();
   const options = createMdxOptions({
     componentMappings: {
-      "code-preview": {
+      "preview-code": {
         component: "Preview",
         filesProp: "files",
         registerInlineReact: modules.register,
@@ -44,7 +44,7 @@ test("MDX fence imports stay isolated and its directives use the host compiler o
     },
   });
   const value =
-    '::::code-preview[Test]{preview="entry.mdx"}\n\n```mdx filename="entry.mdx"\nimport Button from "./Button.tsx";\n\n::: warning Notice\n\nHello\n\n:::\n\n<Button />\n```\n\n```tsx filename="Button.tsx"\nexport default function Button() { return <button>Click</button>; }\n```\n\n::::';
+    '::::preview-code[Test]{preview="entry.mdx"}\n\n```mdx filename="entry.mdx"\nimport Button from "./Button.tsx";\n\n::: warning Notice\n\nHello\n\n:::\n\n<Button />\n```\n\n```tsx filename="Button.tsx"\nexport default function Button() { return <button>Click</button>; }\n```\n\n::::';
   const output = String(
     await compile({ value, path: "/docs/page.mdx" }, options),
   );
@@ -61,9 +61,9 @@ test("MDX fence imports stay isolated and its directives use the host compiler o
 
 test("Vite bundles a TSX fence with inline TypeScript, JSON, and CSS dependencies", async () => {
   const { build } = await import("vite");
-  const { createCodePreviewRegistry, createCodePreviewPlugin } =
-    await import("../../packages/moyaforge-mdx/src/vite/code-preview/code-preview.js");
-  const codePreview = createCodePreviewRegistry({
+  const { createPreviewCodeRegistry, createPreviewCodePlugin } =
+    await import("../../packages/moyaforge-mdx/src/vite/preview-code/preview-code.js");
+  const codePreview = createPreviewCodeRegistry({
     root: process.cwd(),
     sources: {},
     pages: [],
@@ -93,7 +93,7 @@ test("Vite bundles a TSX fence with inline TypeScript, JSON, and CSS dependencie
     configFile: false,
     logLevel: "silent",
     plugins: [
-      createCodePreviewPlugin({ codePreview }),
+      createPreviewCodePlugin({ codePreview }),
       {
         name: "preview-test-entry",
         resolveId(id) {
@@ -130,10 +130,10 @@ test("Vite bundles a TSX fence with inline TypeScript, JSON, and CSS dependencie
 test("react directive bodies support complete typed modules without leaking exports into MDX", async () => {
   const modules = createInlineReactModules();
   const value =
-    '::::code-preview[Module]{react replacements="portable"}\n\nexport default function Example() {\n  const label: string = "Hello";\n  return <strong>{label}</strong>;\n}\n\n::::';
+    '::::preview-code[Module]{react replacements="portable"}\n\nexport default function Example() {\n  const label: string = "Hello";\n  return <strong>{label}</strong>;\n}\n\n::::';
   const options = createMdxOptions({
     componentMappings: {
-      "code-preview": {
+      "preview-code": {
         component: "Preview",
         sourceProp: "code",
         filesProp: "files",

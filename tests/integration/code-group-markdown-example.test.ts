@@ -14,7 +14,7 @@ test("Markdown code-group example keeps both tabs inside the selected source fen
       { value, path },
       createMdxOptions({
         componentMappings: {
-          "code-preview": {
+          "preview-code": {
             component: "Preview",
             filesProp: "files",
             sourceProp: "code",

@@ -4,8 +4,8 @@ import { createMdxOptions } from "../../packages/moyaforge-mdx/src/mdx/mdx-tooli
 
 const options = createMdxOptions({
   componentMappings: {
-    "code-preview": {
-      component: "InlineCodePreview",
+    "preview-code": {
+      component: "PreviewCodeInline",
       titleProp: "title",
       sourceProp: "code",
       filesProp: "sourceFiles",
@@ -14,7 +14,7 @@ const options = createMdxOptions({
   },
 });
 function example(attribute = 'preview="example.md"', language = "md") {
-  return `::::code-preview[Warning]{${attribute}}\n\n\`\`\`css filename="example.css"\np { color: red; }\n\`\`\`\n\n\`\`\`${language} filename="example.md"\n::: warning Before you continue\n\nSave a **backup**.\n\n:::\n\`\`\`\n\n::::`;
+  return `::::preview-code[Warning]{${attribute}}\n\n\`\`\`css filename="example.css"\np { color: red; }\n\`\`\`\n\n\`\`\`${language} filename="example.md"\n::: warning Before you continue\n\nSave a **backup**.\n\n:::\n\`\`\`\n\n::::`;
 }
 test("selected Markdown fence renders a callout while both fences remain source tabs", async () => {
   const output = String(await compile(example(), options));
@@ -32,7 +32,7 @@ test("unknown fence names fail with a useful error", async () => {
 });
 test("unsupported render languages fail explicitly", async () => {
   await expect(compile(example(undefined, "ts"), options)).rejects.toThrow(
-    "requires the Vite code-preview plugin",
+    "requires the Vite preview-code plugin",
   );
 });
 test("component selection and fence selection cannot compete", async () => {
@@ -66,7 +66,7 @@ test("CSS-only selections work and duplicate names are rejected", async () => {
 
 test("multiple Markdown entries render in the selected order", async () => {
   const value =
-    '::::code-preview[Multiple]{preview="second.md,first.md"}\n\n```md filename="first.md"\nFirst\n```\n\n```md filename="second.md"\nSecond\n```\n\n::::';
+    '::::preview-code[Multiple]{preview="second.md,first.md"}\n\n```md filename="first.md"\nFirst\n```\n\n```md filename="second.md"\nSecond\n```\n\n::::';
   const output = String(await compile(value, options));
   expect(output).toContain('children: "Second"');
   expect(output).toContain('children: "First"');
@@ -77,7 +77,7 @@ test("multiple Markdown entries render in the selected order", async () => {
 test("selected Markdown uses the configured remark plugins", async () => {
   const configured = createMdxOptions({
     componentMappings: {
-      "code-preview": { component: "Preview", filesProp: "files" },
+      "preview-code": { component: "Preview", filesProp: "files" },
     },
     additionalRemarkPlugins: [
       () => (tree) => {
@@ -92,7 +92,7 @@ test("selected Markdown uses the configured remark plugins", async () => {
   });
   const output = String(
     await compile(
-      '::::code-preview[Test]{preview="entry.md"}\n\n```md filename="entry.md"\nCustom text\n```\n\n::::',
+      '::::preview-code[Test]{preview="entry.md"}\n\n```md filename="entry.md"\nCustom text\n```\n\n::::',
       configured,
     ),
   );
@@ -101,7 +101,7 @@ test("selected Markdown uses the configured remark plugins", async () => {
 test("selected HTML renders markup without Markdown escaping", async () => {
   const output = String(
     await compile(
-      '::::code-preview[HTML]{preview="entry.html"}\n\n```html filename="entry.html"\n<strong>Hello</strong>\n```\n\n::::',
+      '::::preview-code[HTML]{preview="entry.html"}\n\n```html filename="entry.html"\n<strong>Hello</strong>\n```\n\n::::',
       options,
     ),
   );

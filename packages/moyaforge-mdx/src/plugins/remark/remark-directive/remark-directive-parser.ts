@@ -1,5 +1,5 @@
-import { maskInlineReactImports } from "../code-preview/mask-inline-react-imports.js";
-import { maskInlinePreviewAssets } from "../code-preview/mask-inline-preview-assets.js";
+import { maskInlineReactImports } from "../preview-code/mask-inline-react-imports.js";
+import { maskInlinePreviewAssets } from "../preview-code/mask-inline-preview-assets.js";
 import type { Root } from "mdast";
 import type { Processor } from "unified";
 
@@ -39,6 +39,22 @@ export function remarkDirectiveParser(
         return line;
       }
       if (codeFence) return line;
+      const obsoletePreviewDirective =
+        /^ {0,3}:{2,}[ \t]*(code-preview(?:-sources)?)(?=\[|\{|\s|$)/.exec(
+          line,
+        );
+      if (obsoletePreviewDirective) {
+        const name = obsoletePreviewDirective[1];
+        const replacement =
+          name === "code-preview" ? "preview-code" : "preview-code-sources";
+        file.fail(
+          `Unsupported directive "${name}". Use "${replacement}" instead.`,
+          {
+            line: index + 1,
+            column: 1,
+          },
+        );
+      }
       // Keep imports local to the compiled preview. Preserve offsets for source extraction.
       if (reactFenceWidth !== undefined) {
         if (new RegExp(`^ {0,3}:{${reactFenceWidth},}\\s*$`).test(line)) {
@@ -48,7 +64,7 @@ export function remarkDirectiveParser(
         }
       } else {
         const reactOpener =
-          /^ {0,3}(:{3,})code-preview(?:\[[^\]]*\])?\{([^{}]*)\}\s*$/.exec(
+          /^ {0,3}(:{3,})preview-code(?:\[[^\]]*\])?\{([^{}]*)\}\s*$/.exec(
             line,
           );
         if (reactOpener?.[2].split(/\s+/).includes("react")) {
@@ -58,7 +74,7 @@ export function remarkDirectiveParser(
       }
 
       // An empty replacement preset is equivalent to omitting it.
-      if (/^ {0,3}:{3,}code-preview(?:\[[^\]]*\])?\{/.test(line)) {
+      if (/^ {0,3}:{3,}preview-code(?:\[[^\]]*\])?\{/.test(line)) {
         line = line.replace(/(\sreplacements)=(?=[\t ]*\})/, "$1 ");
       }
 

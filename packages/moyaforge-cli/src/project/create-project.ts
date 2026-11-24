@@ -21,7 +21,7 @@ export async function createProject(options: InstallOptions): Promise<void> {
             "custom-block",
             "code-block",
             "code-group",
-            "code-preview",
+            "preview-code",
             ...(options.search ? ["search"] : []),
           ]
         : ["docs-shell", "code-group", ...(options.search ? ["search"] : [])],

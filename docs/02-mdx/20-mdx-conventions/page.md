@@ -70,5 +70,5 @@ Files and exports prefixed with `remark` are plugin entry points. The compiler r
 | --- | --- |
 | Fenced code blocks | Standard Markdown parsing. Preview source collection uses `namedCodeBlock` to identify fences with filenames. |
 | `code-group` and its nested `tab` | `remarkMapDirectivesToComponents` maps the group and its tabs to the configured components. |
-| `code-preview` and `code-preview-sources` | `remarkMapDirectivesToComponents` calls the preview helpers to collect inline source and load named files. |
+| `preview-code` and `preview-code-sources` | `remarkMapDirectivesToComponents` calls the preview helpers to collect inline source and load named files. |
 | File-backed `preview` | `remarkMapFilePreviewDirectives`, enabled by `filePreviewOptions`. |

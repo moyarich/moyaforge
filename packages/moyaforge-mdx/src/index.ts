@@ -11,6 +11,6 @@ export * from "./content/index.js";
 export * from "./plugins/rehype/rehype-annotate-code-blocks.js";
 export * from "./plugins/remark/source-links/remark-rewrite-source-links.js";
 export * from "./mdx/remark-map-directives-to-components.js";
-export * from "./plugins/remark/code-preview/remark-map-file-preview-directives.js";
+export * from "./plugins/remark/preview-code/remark-map-file-preview-directives.js";
 
-export * from "./vite/code-preview/code-preview.js";
+export * from "./vite/preview-code/preview-code.js";

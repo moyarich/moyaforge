@@ -24,7 +24,7 @@ import {
 import {
   type FilePreviewOptions,
   remarkMapFilePreviewDirectives,
-} from "../plugins/remark/code-preview/remark-map-file-preview-directives.js";
+} from "../plugins/remark/preview-code/remark-map-file-preview-directives.js";
 
 /** Host-specific remark/rehype plugins are supplied by each consuming app. */
 export interface MdxToolingOptions {
@@ -34,7 +34,7 @@ export interface MdxToolingOptions {
   /** Transform file-backed ::: preview references into host-resolved PreviewDirective components. */
   filePreviewOptions?: boolean | FilePreviewOptions;
   additionalRehypePlugins?: PluggableList;
-  /** Enable raw CSS in code-preview only for reviewed, repository-controlled MDX. Defaults to false. Never enables scripts. */
+  /** Enable raw CSS in preview-code only for reviewed, repository-controlled MDX. Defaults to false. Never enables scripts. */
   allowInlinePreviewStyles?: boolean;
   /** Opt into a compiled MDX frontmatter export for older module consumers. YAML registry metadata does not require it. */
   exportFrontmatter?: boolean;

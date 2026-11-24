@@ -46,10 +46,10 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { DocumentationLink } from "@moyarich/moyaforge/headless";
-import { InlineCodePreview } from "../../../packages/moyaforge-ui/src/components/CodePreview/InlineCodePreview.js";
-import { CodePreview } from "../../../packages/moyaforge-ui/src/components/CodePreview/CodePreview.tsx";
+import { PreviewCodeInline } from "../../../packages/moyaforge-ui/src/components/PreviewCode/PreviewCodeInline.js";
+import { PreviewCode } from "../../../packages/moyaforge-ui/src/components/PreviewCode/PreviewCode.tsx";
 
-import componentModules from "virtual:moyaforge-mdx/code-preview-components";
+import componentModules from "virtual:moyaforge-mdx/preview-code-components";
 
 const examples = new Map<string, ReturnType<typeof lazy>>();
 
@@ -75,25 +75,25 @@ function resolvePreviewExample(reference: string) {
   return Example;
 }
 
-function PlaygroundInlineCodePreview({
+function PreviewCodeInlinePlayground({
   component,
   children,
   ...preview
-}: ComponentProps<typeof InlineCodePreview> & { component?: string }) {
+}: ComponentProps<typeof PreviewCodeInline> & { component?: string }) {
   const Example = component ? resolvePreviewExample(component) : undefined;
   if (component && !Example)
     throw new Error(`Unknown preview component: ${component}`);
   return (
-    <InlineCodePreview {...preview}>
+    <PreviewCodeInline {...preview}>
       {Example ? <Example /> : children}
-    </InlineCodePreview>
+    </PreviewCodeInline>
   );
 }
 
 const components = {
   a: DocumentationLink,
-  InlineCodePreview: PlaygroundInlineCodePreview,
-  CodePreview,
+  PreviewCodeInline: PreviewCodeInlinePlayground,
+  PreviewCode,
   pre: CodeBlock,
   CodeBlock,
   CustomBlock,

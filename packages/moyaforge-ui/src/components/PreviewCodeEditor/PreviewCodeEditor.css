@@ -1,0 +1,13 @@
+.mf-preview-code-editor-stage {
+  display: grid;
+  place-items: center;
+  min-block-size: 10rem;
+  padding: var(--mf-preview-padding, 1.5rem);
+}
+
+.mf-preview-code-editor-source {
+  min-inline-size: 0;
+  /* The preview already owns the frame; keep the tab and panel styling. */
+  --mf-editor-radius: 0;
+  --mf-editor-border: transparent;
+}
