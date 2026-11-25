@@ -33,6 +33,11 @@
       "import": "./dist/navigation/toc/index.js",
       "default": "./dist/navigation/toc/index.js"
     },
+    "./page-id": {
+      "types": "./dist/registry/create-page-id.d.ts",
+      "import": "./dist/registry/create-page-id.js",
+      "default": "./dist/registry/create-page-id.js"
+    },
     "./navigation": {
       "types": "./dist/navigation/tree/index.d.ts",
       "import": "./dist/navigation/tree/index.js",
