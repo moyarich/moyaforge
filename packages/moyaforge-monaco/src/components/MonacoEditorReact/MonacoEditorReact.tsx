@@ -4,7 +4,6 @@ import type { editor } from "monaco-editor";
 import type { EditorProps, OnMount } from "@monaco-editor/react";
 import { MonacoFileSession, type MonacoFileSessionProps } from "../MonacoFileSession/MonacoFileSession.js";
 import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
-import { languageForPath } from "../../languages/languageForPath.js";
 
 /** Configuration for the headless editor runtime. */
 export interface MonacoEditorReactProps extends Omit<
@@ -78,7 +77,7 @@ export function MonacoEditorReact({
                 .map(encodeURIComponent)
                 .join("/")
             }
-            language={file.language ?? languageForPath(file.path ?? file.name)}
+            language={file.language}
             value={value}
             height={height}
             keepCurrentModel

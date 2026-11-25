@@ -14,15 +14,15 @@ vi.mock(
   }),
 );
 import { MonacoEditorReact } from "../../src/components/MonacoEditorReact/MonacoEditorReact.js";
-import { languageForPath } from "../../src/languages/languageForPath.js";
 const files = [
   { name: "App.tsx", value: "const app = true;" },
   { name: "locked.json", value: "{}", readOnly: true },
 ];
-test("real editor infers language and enforces workspace, file and options read-only settings", () => {
+test("real editor delegates language inference and enforces workspace, file and options read-only settings", () => {
   const render = (props = {}) =>
     renderToStaticMarkup(h(MonacoEditorReact, { files, ...props }));
-  expect(render()).toContain('data-language="typescript"');
+  expect(render()).not.toContain('data-language=');
+  expect(render({ files: [{ name: "example.txt", value: "", language: "typescript" }] })).toContain('data-language="typescript"');
   expect(render()).not.toContain('readOnly=""');
   expect(render({ readOnly: true })).toContain('readOnly=""');
   expect(render({ options: { readOnly: true } })).toContain('readOnly=""');
@@ -30,9 +30,7 @@ test("real editor infers language and enforces workspace, file and options read-
     render({ options: { readOnly: true }, readOnly: false }),
   ).not.toContain('readOnly=""');
   expect(render({ activeFile: "locked.json" })).toContain('readOnly=""');
-  expect(render({ activeFile: "locked.json" })).toContain(
-    'data-language="json"',
-  );
+  expect(render({ activeFile: "locked.json" })).not.toContain('data-language=');
   expect(render()).not.toContain('role="tablist"');
 });
 test("separate editor instances isolate identical filenames", () => {
@@ -50,12 +48,6 @@ test("separate editor instances isolate identical filenames", () => {
   expect(paths).toHaveLength(2);
   expect(paths[0]).not.toBe(paths[1]);
   expect(paths.every((path) => path.endsWith("App.tsx"))).toBe(true);
-});
-test("language inference handles common extensions, query suffixes and unknown files", () => {
-  expect(languageForPath("src/APP.TSX?raw")).toBe("typescript");
-  expect(languageForPath("src/main.jsx")).toBe("javascript");
-  expect(languageForPath("settings.jsonc")).toBe("json");
-  expect(languageForPath("Makefile")).toBe("plaintext");
 });
 
 test("explicit host updates replace changed values while preserving other drafts and removing old files", async () => {

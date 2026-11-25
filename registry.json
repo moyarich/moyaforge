@@ -855,11 +855,6 @@
           "target": "~/src/components/hooks/useEditorTheme.ts"
         },
         {
-          "path": "packages/moyaforge-monaco/src/languages/languageForPath.ts",
-          "type": "registry:file",
-          "target": "~/src/components/languages/languageForPath.ts"
-        },
-        {
           "path": "packages/moyaforge-monaco/src/models/reconcileFileDrafts.ts",
           "type": "registry:file",
           "target": "~/src/components/models/reconcileFileDrafts.ts"
@@ -909,11 +904,6 @@
           "path": "packages/moyaforge-monaco/src/hooks/useEditorTheme.ts",
           "type": "registry:file",
           "target": "~/src/components/hooks/useEditorTheme.ts"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/languages/languageForPath.ts",
-          "type": "registry:file",
-          "target": "~/src/components/languages/languageForPath.ts"
         },
         {
           "path": "packages/moyaforge-monaco/src/models/reconcileFileDrafts.ts",

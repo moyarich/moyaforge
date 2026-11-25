@@ -11,7 +11,6 @@ import {
   type MonacoFileSessionProps,
   type MonacoFileRenderProps,
 } from "../MonacoFileSession/MonacoFileSession.js";
-import { languageForPath } from "../../languages/languageForPath.js";
 
 /** Configuration for the headless editor runtime. */
 export interface MonacoEditorTypeFoxProps extends Omit<
@@ -89,8 +88,7 @@ function TypeFoxEditor({
             modified: {
               text: value,
               uri,
-              enforceLanguageId:
-                file.language ?? languageForPath(file.path ?? file.name),
+              ...(file.language !== undefined && { enforceLanguageId: file.language }),
             },
           },
           editorOptions: {

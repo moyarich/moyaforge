@@ -6,6 +6,7 @@ import { reconcileFileDrafts } from "../../models/reconcileFileDrafts.js";
 export interface MonacoFile {
   name: string;
   value: string;
+  /** Explicit native language ID; omit to infer from the model URI and content. */
   language?: string;
   path?: string;
   readOnly?: boolean;
