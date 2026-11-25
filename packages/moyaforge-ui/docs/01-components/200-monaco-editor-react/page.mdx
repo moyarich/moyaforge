@@ -154,7 +154,7 @@ initialization above are still required.
 
 ## Using React Monaco and TypeFox together
 
-Keep the same Vite plugin, but replace the standalone initializer in `main.tsx`:
+For an application using both editors, register the Vite plugin and initialize the shared runtime in `main.tsx`:
 
 ```ts filename="main.tsx"
 import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
@@ -162,7 +162,7 @@ import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initi
 await initializeSharedMonaco();
 ```
 
-Call it before `createRoot(...).render(...)`, and remove `configureReactWorkers()`.
+Call it before `createRoot(...).render(...)`.
 Use one initialization strategy per application. See
 [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx)
 for the TypeFox dependencies and shared-runtime setup.

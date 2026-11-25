@@ -16,7 +16,7 @@ Headless Monaco React and TypeFox editor runtimes, with models and application-l
 | `/vite/react-types` | TypeScript declarations for the Vite virtual module |
 
 Choose **one** runtime strategy and initialize it at application startup,
-before mounting editors. There are no implicit `/auto` entry points.
+before mounting editors.
 
 ### React Monaco only
 
@@ -53,8 +53,7 @@ Do not also call either standalone initializer.
 
 Monaco prefers `MonacoEnvironment.getWorker` over `getWorkerUrl` if both
 exist. The standalone React integration uses `getWorker`; TypeFox uses
-`getWorkerUrl` and `getWorkerOptions`. Instead of deleting or overwriting
-the competing callback, the package reports a clear configuration error.
+`getWorkerUrl` and `getWorkerOptions`. The package reports a configuration error if competing worker strategies are detected.
 Worker scripts and protocol can be shared without sharing Worker instances.
 
 ## Vite
@@ -88,4 +87,4 @@ import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoE
 />;
 ```
 
-This intentionally replaces the former Monaco-owned tabs, actions and `MonacoCodeGroup` API. When mounting both editor engines, initialize their shared runtime once at the application entry point.
+When mounting both editor engines, initialize their shared runtime once at the application entry point.
