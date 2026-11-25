@@ -1,4 +1,4 @@
-import { createPageId } from "@moyarich/moyaforge-mdx";
+import { createPageId } from "@moyarich/moyaforge-mdx/page-id";
 import type { ComponentType } from "react";
 
 const ORDER_PREFIX = /^\d+[-_. ]*/;
