@@ -9,21 +9,21 @@ Both editors can appear in one React tree when they use the **same VS Code-compa
 
 ## Vite setup
 
-Register `monacoReactTypesPlugin(projectRoot)` from `@moyarich/moyaforge-monaco/vite`. Install the optional peer dependencies for both editors, including `@codingame/monaco-vscode-editor-api` and the matching `@codingame/monaco-vscode-standalone-*` packages.
+Register `monacoReactTypesPlugin(projectRoot)` from `@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin`. Install the optional peer dependencies for both editors, including `@codingame/monaco-vscode-editor-api` and the matching `@codingame/monaco-vscode-standalone-*` packages. Add `@moyarich/moyaforge-monaco/vite/react-types` to `compilerOptions.types`.
 
 ## Initialize once before rendering
 
 ```tsx filename="main.tsx"
 import { createRoot } from "react-dom/client";
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
+import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
 import { App } from "./App.js";
 
-await initializeSharedMonaco();
+await initializeMonacoVscodeRuntime();
 
 createRoot(document.getElementById("root")!).render(<App />);
 ```
 
-`initializeSharedMonaco()` safely reuses one initialization promise across callers and React StrictMode mounts. It configures TypeFox's worker factory, points `@monaco-editor/react` at the same editor API, and initializes VS Code services before either editor starts.
+`initializeMonacoVscodeRuntime()` safely reuses one initialization promise across callers and React StrictMode mounts. It installs one VS Code-compatible worker factory and points `@monaco-editor/react` at the same Monaco API that TypeFox uses. It starts VS Code services before either editor mounts.
 
 Do **not** also call `configureReactWorkers()` or `configureTypeFoxWorkers()`. A shared runtime uses compatible worker scripts and protocol; it does not require sharing one running Web Worker instance.
 

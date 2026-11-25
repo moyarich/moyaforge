@@ -21,4 +21,4 @@ import { TypeFoxEditorPanel } from "@moyarich/moyaforge-ui/components/TypeFoxEdi
 
 For a fully custom shell, use the headless `MonacoEditorTypeFox` from `@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox`. Its `languageClientConfig` forwards the optional `LanguageClientConfig` to the underlying editor. The host must provide the language server and transport.
 
-Configure workers with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers`, or `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` when using both editor integrations.
+Configure workers with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers`, or `initializeMonacoVscodeRuntime()` from `@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime` when using both editor integrations. For host-managed registration, `createMonacoVscodeWorkerConfig()` from `@moyarich/moyaforge-monaco/workers/createMonacoVscodeWorkerConfig` returns the worker configuration for the host to install.

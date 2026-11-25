@@ -13,16 +13,16 @@ description: React Monaco, TypeFox, worker setup, Vite declarations, and shared 
 | ------------------ | ------------------------------------------------------------------------- |
 | React Monaco only  | `configureReactWorkers()` from `@moyarich/moyaforge-monaco/workers/configureReactWorkers`         |
 | TypeFox only       | `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers`     |
-| Both editors       | `await initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` |
+| Both editors       | `await initializeMonacoVscodeRuntime()` from `@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime` |
 
 For both editor engines:
 
 ```tsx
 import { createRoot } from "react-dom/client";
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
+import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
 import { App } from "./App.js";
 
-await initializeSharedMonaco();
+await initializeMonacoVscodeRuntime();
 createRoot(document.getElementById("root")!).render(<App />);
 ```
 
@@ -32,7 +32,7 @@ Standalone React Monaco supplies `MonacoEnvironment.getWorker`. TypeFox uses `ge
 
 ## Custom workers
 
-React Monaco accepts the native `monaco.Environment` configuration. A host-provided `getWorker` or `getWorkerUrl` takes precedence over the built-in factory.
+React Monaco accepts the native `monaco.Environment` configuration. A host-provided `getWorker` or `getWorkerUrl` takes precedence over the built-in factory. Pass `typescript.compilerOptions` in the same object to override TypeScript defaults.
 
 ```ts
 import {
@@ -49,7 +49,7 @@ configureReactWorkers({
 });
 ```
 
-TypeFox and the shared runtime accept the native `WorkerFactoryConfig` from `monaco-languageclient/workerFactory`. Additional `workerLoaders` extend the defaults, and matching labels override them.
+TypeFox and the shared runtime accept the native `WorkerFactoryConfig` from `monaco-languageclient/workerFactory`. Additional `workerLoaders` extend the defaults, and matching labels override them. Pass `typescript.compilerOptions` to override TypeScript defaults, for example `{ typescript: { compilerOptions: { strict: true } } }`. Custom `paths` entries merge with the built-in React type paths.
 
 ```ts
 import { Worker } from "monaco-languageclient/workerFactory";
@@ -66,7 +66,21 @@ configureTypeFoxWorkers({
 });
 ```
 
-For an application using both editors, pass the same TypeFox configuration to `initializeSharedMonaco(config)` instead. Configure the runtime before mounting editors; the first initialization owns worker configuration. Custom workers must implement the protocol expected by the requesting service. Register any additional language contributions or providers through Monaco or TypeFox's native APIs.
+For an application using both editors, pass the same TypeFox configuration to `initializeMonacoVscodeRuntime(config)` instead. Configure the runtime before mounting editors; the first initialization owns worker configuration. Custom workers must implement the protocol expected by the requesting service. Register any additional language contributions or providers through Monaco or TypeFox's native APIs.
+
+### Host-managed worker registration
+
+Use `createMonacoVscodeWorkerConfig()` when your host owns worker registration. The helper returns lazy worker loaders and merges any overrides by label. Call `useWorkerFactory()` when the host is ready to register them.
+
+```ts
+import { useWorkerFactory } from "monaco-languageclient/workerFactory";
+import { createMonacoVscodeWorkerConfig } from "@moyarich/moyaforge-monaco/workers/createMonacoVscodeWorkerConfig";
+
+const workerConfig = createMonacoVscodeWorkerConfig();
+useWorkerFactory(workerConfig);
+```
+
+This registers workers only. TypeScript defaults, React declaration libraries, and VS Code service startup are separate parts of runtime setup.
 
 ## Vite and TypeScript types
 

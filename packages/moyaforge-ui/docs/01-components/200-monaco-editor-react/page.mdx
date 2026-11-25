@@ -157,9 +157,9 @@ initialization above are still required.
 For an application using both editors, register the Vite plugin and initialize the shared runtime in `main.tsx`:
 
 ```ts filename="main.tsx"
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
+import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
 
-await initializeSharedMonaco();
+await initializeMonacoVscodeRuntime();
 ```
 
 Call it before `createRoot(...).render(...)`.

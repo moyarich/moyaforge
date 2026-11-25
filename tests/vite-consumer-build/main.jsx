@@ -16,10 +16,10 @@ import {
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 
 const SharedMonacoFixture = lazy(async () => {
-  const { initializeSharedMonaco } = await import(
-    "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco"
+  const { initializeMonacoVscodeRuntime } = await import(
+    "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime"
   );
-  await initializeSharedMonaco();
+  await initializeMonacoVscodeRuntime();
   return import("../fixtures/monaco-shared.jsx");
 });
 

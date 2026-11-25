@@ -47,12 +47,12 @@ afterEach(() => {
 
 test("shared initialization preserves host configuration and starts once", async () => {
   globalThis.MonacoEnvironment = { extra: "preserved" };
-  const { initializeSharedMonaco } = await import(
-    "../../packages/moyaforge-monaco/src/runtime/initializeSharedMonaco.ts"
+  const { initializeMonacoVscodeRuntime } = await import(
+    "../../packages/moyaforge-monaco/src/runtime/initializeMonacoVscodeRuntime.ts"
   );
 
-  const first = initializeSharedMonaco();
-  const second = initializeSharedMonaco();
+  const first = initializeMonacoVscodeRuntime();
+  const second = initializeMonacoVscodeRuntime();
   expect(first).toBe(second);
   await Promise.all([first, second]);
 
@@ -81,11 +81,11 @@ test("shared initialization preserves host configuration and starts once", async
 test("shared initialization refuses to override a standalone worker factory", async () => {
   const worker = vi.fn();
   globalThis.MonacoEnvironment = { getWorker: worker };
-  const { initializeSharedMonaco } = await import(
-    "../../packages/moyaforge-monaco/src/runtime/initializeSharedMonaco.ts"
+  const { initializeMonacoVscodeRuntime } = await import(
+    "../../packages/moyaforge-monaco/src/runtime/initializeMonacoVscodeRuntime.ts"
   );
 
-  await expect(initializeSharedMonaco()).rejects.toThrow(
+  await expect(initializeMonacoVscodeRuntime()).rejects.toThrow(
     /Standalone Monaco workers/,
   );
   expect(globalThis.MonacoEnvironment.getWorker).toBe(worker);
@@ -93,11 +93,19 @@ test("shared initialization refuses to override a standalone worker factory", as
   expect(mocks.vscodeStart).not.toHaveBeenCalled();
 });
 
-test("shared initialization passes native worker factory configuration to TypeFox", async () => {
-  const { initializeSharedMonaco } = await import(
-    "../../packages/moyaforge-monaco/src/runtime/initializeSharedMonaco.ts"
+test("shared initialization passes worker and TypeScript options to TypeFox", async () => {
+  const { initializeMonacoVscodeRuntime } = await import(
+    "../../packages/moyaforge-monaco/src/runtime/initializeMonacoVscodeRuntime.ts"
   );
-  const config = { workerLoaders: { custom: () => ({ url: "/custom.js" }) } };
-  await initializeSharedMonaco(config);
+  const config = {
+    workerLoaders: { custom: () => ({ url: "/custom.js" }) },
+    typescript: {
+      compilerOptions: { strict: true },
+      declarationLibraries: {
+        "file:///types/app.d.ts": "declare const appVersion: string;",
+      },
+    },
+  };
+  await initializeMonacoVscodeRuntime(config);
   expect(mocks.typefoxSetup).toHaveBeenCalledExactlyOnceWith(config);
 });

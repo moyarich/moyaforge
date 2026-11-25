@@ -22,6 +22,6 @@ import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEdito
 
 For a custom shell, import `MonacoEditorReact` from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` and pass an active file. The runtime does not take `onSave`, `showFileTabs`, or `showCopyButton`.
 
-Configure workers once using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/workers/configureReactWorkers`. When using TypeFox too, initialize the shared VS Code-compatible runtime via `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` instead.
+Configure workers once using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/workers/configureReactWorkers`. When using TypeFox too, initialize the shared VS Code-compatible runtime via `initializeMonacoVscodeRuntime()` from `@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime` instead.
 
 Guide and worker setup: https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react

@@ -9,8 +9,8 @@ test("Storybook initializes one shared Monaco runtime before rendering either ed
   const config = await readFile(resolve(uiRoot, ".storybook/main.ts"), "utf8");
   const manifest = JSON.parse(await readFile(resolve(uiRoot, "package.json"), "utf8"));
 
-  expect(story).toContain('from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco"');
-  expect(story).toMatch(/loaders:\s*\[\s*async \(\) => \{\s*await initializeSharedMonaco\(\)/);
+  expect(story).toContain('from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime"');
+  expect(story).toMatch(/loaders:\s*\[\s*async \(\) => \{\s*await initializeMonacoVscodeRuntime\(\)/);
   expect(story).toContain("export const ReactMonaco");
   expect(story).toContain("export const TypeFoxMonaco");
   expect(story).toContain("export const SideBySide");

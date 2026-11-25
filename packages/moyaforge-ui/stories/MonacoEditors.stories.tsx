@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
+import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
 import { MonacoEditorPanel } from "../src/components/MonacoEditorPanel/index.js";
 import { TypeFoxEditorPanel } from "../src/components/TypeFoxEditorPanel/index.js";
 
@@ -46,7 +46,7 @@ const meta = {
   // mounting the story, and the shared initializer caches its promise.
   loaders: [
     async () => {
-      await initializeSharedMonaco();
+      await initializeMonacoVscodeRuntime();
       return {};
     },
   ],

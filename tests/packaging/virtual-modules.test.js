@@ -31,7 +31,7 @@ test("Monaco Vite virtual React types are namespaced and published", async () =>
   expect(declarations).toContain('declare module "virtual:moyaforge-monaco/react-types"');
   expect(declarations).not.toContain("virtual:monaco-react-types");
 
-  for (const path of ["src/vite/monacoReactTypesPlugin.ts", "src/workers/configureReactWorkers.ts", "src/workers/configureTypeFoxWorkers.ts"]) {
+  for (const path of ["src/vite/monacoReactTypesPlugin.ts", "src/workers/configureTypeScript.ts"]) {
     const source = await readFile(resolve(root, path), "utf8");
     expect(source).toContain("virtual:moyaforge-monaco/react-types");
     expect(source).not.toContain("virtual:monaco-react-types");

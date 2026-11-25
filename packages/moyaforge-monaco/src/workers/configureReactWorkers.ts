@@ -14,7 +14,7 @@ import CssWorker from "monaco-editor/esm/vs/language/css/css.worker.js?worker";
 import JsonWorker from "monaco-editor/esm/vs/language/json/json.worker.js?worker";
 import HtmlWorker from "monaco-editor/esm/vs/language/html/html.worker.js?worker";
 
-import reactWorkerLibraries from "virtual:moyaforge-monaco/react-types";
+import { configureTypeScript } from "./configureTypeScript.js";
 
 const environment = globalThis as typeof globalThis & {
   MonacoEnvironment?: monaco.Environment;
@@ -24,60 +24,41 @@ let configured = false;
 /**
  * Configure standalone React Monaco with local Vite workers and React TSX types.
  * Call before mounting editors. Subsequent calls are no-ops.
- * @param options - Native Monaco environment settings. A host getWorker or getWorkerUrl takes precedence over defaults.
+ * @param options - Native Monaco environment settings and optional TypeScript compiler overrides and declaration libraries.
+ * A host getWorker or getWorkerUrl takes precedence over defaults.
  * @throws If a TypeFox worker factory is already configured.
  * @returns Nothing; updates the loader, compiler defaults and global worker factory.
  */
-export function configureReactWorkers(options: monaco.Environment = {}) {
+export function configureReactWorkers({
+  typescript,
+  ...options
+}: monaco.Environment & {
+  typescript?: {
+    compilerOptions?: monaco.languages.typescript.CompilerOptions;
+    /** Declaration source keyed by its virtual file URI. */
+    declarationLibraries?: Readonly<Record<string, string>>;
+  };
+} = {}) {
   if (configured) return;
   // Monaco prefers getWorker over TypeFox's getWorkerUrl. Never silently
   // replace an existing VS Code-compatible worker factory.
   if (typeof (environment.MonacoEnvironment as (monaco.Environment & { getWorkerOptions?: unknown }) | undefined)?.getWorkerOptions === "function") {
     throw new Error(
-      "TypeFox workers are already configured. Use initializeSharedMonaco() before mounting either editor.",
+      "TypeFox workers are already configured. Use initializeMonacoVscodeRuntime() before mounting either editor.",
     );
   }
   loader.config({ monaco });
 
-  // Newer monaco-editor versions expose `monaco.typescript`;
-  // older ones only have `monaco.languages.typescript`.
-  const tsApi: typeof monaco.languages.typescript =
-    (monaco as any).typescript ?? monaco.languages.typescript;
-
-  const { typescriptDefaults, ModuleResolutionKind, JsxEmit, ScriptTarget } =
-    tsApi;
-
-  typescriptDefaults.setCompilerOptions({
-    ...typescriptDefaults.getCompilerOptions(),
-    target: ScriptTarget.ESNext,
-    moduleResolution: ModuleResolutionKind.NodeJs,
-    allowNonTsExtensions: true,
-    // Needed for `import React from "react"` (@types/react uses `export =`)
-    esModuleInterop: true,
-    allowSyntheticDefaultImports: true,
-    paths: {
-      react: ["file:///node_modules/@types/react/index.d.ts"],
-      "react/jsx-runtime": [
-        "file:///node_modules/@types/react/jsx-runtime.d.ts",
-      ],
-      "react/jsx-dev-runtime": [
-        "file:///node_modules/@types/react/jsx-dev-runtime.d.ts",
-      ],
-      "react-dom": ["file:///node_modules/@types/react-dom/index.d.ts"],
-      "react-dom/client": ["file:///node_modules/@types/react-dom/client.d.ts"],
-      csstype: ["file:///node_modules/csstype/index.d.ts"],
-    },
-    jsx: JsxEmit.ReactJSX,
+  const { typescriptDefaults } = monaco.languages.typescript;
+  const typeScript = configureTypeScript({
+    api: monaco.languages.typescript,
+    currentCompilerOptions: typescriptDefaults.getCompilerOptions(),
+    ...typescript,
   });
-
-  for (const [filePath, content] of Object.entries(reactWorkerLibraries)) {
+  typescriptDefaults.setCompilerOptions(typeScript.compilerOptions);
+  for (const [filePath, content] of Object.entries(typeScript.declarationLibraries)) {
     typescriptDefaults.addExtraLib(content, filePath);
   }
-
-  typescriptDefaults.addExtraLib(
-    'declare module "*.css" {}',
-    "file:///types/styles.d.ts",
-  );
 
   const hostEnvironment = environment.MonacoEnvironment;
   const nextEnvironment = { ...hostEnvironment, ...options };

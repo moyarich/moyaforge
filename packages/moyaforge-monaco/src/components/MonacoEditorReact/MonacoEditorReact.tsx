@@ -33,7 +33,7 @@ export function MonacoEditorReact({
   if (
     new Set(
       files.map((file) => (file.path ?? file.name).replaceAll("\\", "/")),
-    ).size !== props.files.length
+    ).size !== files.length
   )
     throw new Error("Monaco model paths must be unique within a workspace.");
   const prefix = `inmemory://moyaforge/${encodeURIComponent(id)}/`;

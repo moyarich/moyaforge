@@ -24,10 +24,15 @@
     "./vite/react-types": {
       "types": "./dist/vite/react-types.d.ts"
     },
-    "./runtime/initializeSharedMonaco": {
-      "types": "./dist/runtime/initializeSharedMonaco.d.ts",
-      "import": "./dist/runtime/initializeSharedMonaco.js",
-      "default": "./dist/runtime/initializeSharedMonaco.js"
+    "./workers/createMonacoVscodeWorkerConfig": {
+      "types": "./dist/workers/createMonacoVscodeWorkerConfig.d.ts",
+      "import": "./dist/workers/createMonacoVscodeWorkerConfig.js",
+      "default": "./dist/workers/createMonacoVscodeWorkerConfig.js"
+    },
+    "./runtime/initializeMonacoVscodeRuntime": {
+      "types": "./dist/runtime/initializeMonacoVscodeRuntime.d.ts",
+      "import": "./dist/runtime/initializeMonacoVscodeRuntime.js",
+      "default": "./dist/runtime/initializeMonacoVscodeRuntime.js"
     },
     "./components/MonacoEditorReact": {
       "types": "./dist/components/MonacoEditorReact/index.d.ts",

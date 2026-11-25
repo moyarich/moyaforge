@@ -35,7 +35,7 @@ npm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @typefox/monaco-ed
 npm install @codingame/monaco-vscode-standalone-languages@^37.6.1 @codingame/monaco-vscode-standalone-typescript-language-features@^37.6.1 @codingame/monaco-vscode-standalone-css-language-features@^37.6.1 @codingame/monaco-vscode-standalone-json-language-features@^37.6.1 @codingame/monaco-vscode-standalone-html-language-features@^37.6.1
 ```
 
-For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin` in `vite.config.ts` and call `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers` once at application startup. If using React Monaco too, call `initializeSharedMonaco()` from `/runtime/initializeSharedMonaco` instead. Other bundlers need their own worker setup.
+For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin` in `vite.config.ts` and call `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers` once at application startup. If using React Monaco too, call `initializeMonacoVscodeRuntime()` from `/runtime/initializeMonacoVscodeRuntime` instead. Other bundlers need their own worker setup.
 
 For editor worker architecture and shared initialization details, see [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx).
 
