@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
+import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
 import { MonacoEditorWorkspace } from "../src/components/MonacoEditorWorkspace/index.js";
 import { TypeFoxEditorWorkspace } from "../src/components/TypeFoxEditorWorkspace/index.js";
 

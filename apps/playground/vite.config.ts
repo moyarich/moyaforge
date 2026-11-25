@@ -15,7 +15,7 @@ import {
   mdxRegistryPlugin,
   resolvePreviewCodeSource,
 } from "@moyarich/moyaforge-mdx/vite";
-import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
 import registry from "./registry.config.ts";
 import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
 
