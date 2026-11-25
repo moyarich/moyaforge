@@ -1,6 +1,6 @@
 import "./MonacoFileSession.css";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { reconcileFileDrafts } from "../../models/reconcileFileDrafts.js";
+import { reconcileFileDrafts } from "./reconcileFileDrafts.js";
 
 /** Source file and optional model metadata supplied by the host. */
 export interface MonacoFile {
@@ -32,34 +32,50 @@ export interface MonacoFileSessionProps {
 }
 
 /** Headless file state and rendering adapter. No editor chrome or toolbar. */
-export function MonacoFileSession({ files, activeFile, onFileChange, readOnly = false, renderEditor, className }: MonacoFileSessionProps) {
-  if (new Set(files.map(file => file.name)).size !== files.length)
+export function MonacoFileSession({
+  files,
+  activeFile,
+  onFileChange,
+  readOnly = false,
+  renderEditor,
+  className,
+}: MonacoFileSessionProps) {
+  if (new Set(files.map((file) => file.name)).size !== files.length)
     throw new Error("Monaco file names must be unique.");
-  const [drafts, setDrafts] = useState<Record<string, string>>(
-    () => Object.fromEntries(files.map(file => [file.name, file.value])),
+  const [drafts, setDrafts] = useState<Record<string, string>>(() =>
+    Object.fromEntries(files.map((file) => [file.name, file.value])),
   );
-  const previousValues = useRef(new Map(files.map(file => [file.name, file.value])));
+  const previousValues = useRef(
+    new Map(files.map((file) => [file.name, file.value])),
+  );
   useEffect(() => {
     const previous = previousValues.current;
-    setDrafts(current => reconcileFileDrafts(current, previous, files));
-    previousValues.current = new Map(files.map(file => [file.name, file.value]));
+    setDrafts((current) => reconcileFileDrafts(current, previous, files));
+    previousValues.current = new Map(
+      files.map((file) => [file.name, file.value]),
+    );
   }, [files]);
   const selectedFile = useMemo(
-    () => files.find(file => file.name === activeFile) ?? files[0],
+    () => files.find((file) => file.name === activeFile) ?? files[0],
     [files, activeFile],
   );
   if (!selectedFile) return null;
   const locked = readOnly || selectedFile.readOnly === true;
   return (
-    <div data-moyaforge-monaco="" className={["mf-monaco-file-session", className].filter(Boolean).join(" ")}
-      data-readonly={locked || undefined}>
+    <div
+      data-moyaforge-monaco=""
+      className={["mf-monaco-file-session", className]
+        .filter(Boolean)
+        .join(" ")}
+      data-readonly={locked || undefined}
+    >
       {renderEditor({
         file: selectedFile,
         value: drafts[selectedFile.name] ?? selectedFile.value,
         readOnly: locked,
-        onChange: value => {
+        onChange: (value) => {
           if (locked) return;
-          setDrafts(current => ({ ...current, [selectedFile.name]: value }));
+          setDrafts((current) => ({ ...current, [selectedFile.name]: value }));
           onFileChange?.(selectedFile.name, value, selectedFile);
         },
       })}
