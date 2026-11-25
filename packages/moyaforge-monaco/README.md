@@ -9,11 +9,11 @@ Headless Monaco React and TypeFox editor runtimes, with models and application-l
 | `/components/MonacoEditorReact` | Headless React Monaco editor runtime |
 | `/components/MonacoEditorTypeFox` | Headless TypeFox editor runtime backed by VS Code services |
 | `/styles.css` | Combined Monaco component styles |
-| `/react` | Standalone `@monaco-editor/react` workers |
-| `/typefox` | Standalone TypeFox workers |
-| `/shared` | One VS Code-compatible runtime for React Monaco + TypeFox |
-| `/vite` | Vite plugin for TSX worker declarations |
-| `/virtual` | TypeScript declarations for the Vite virtual module |
+| `/workers/configureReactWorkers` | Standalone `@monaco-editor/react` workers |
+| `/workers/configureTypeFoxWorkers` | Standalone TypeFox workers |
+| `/runtime/initializeSharedMonaco` | One VS Code-compatible runtime for React Monaco + TypeFox |
+| `/vite/monacoReactTypesPlugin` | Vite plugin for TSX worker declarations |
+| `/vite/react-types` | TypeScript declarations for the Vite virtual module |
 
 Choose **one** runtime strategy and initialize it at application startup,
 before mounting editors. There are no implicit `/auto` entry points.
@@ -21,7 +21,7 @@ before mounting editors. There are no implicit `/auto` entry points.
 ### React Monaco only
 
 ```ts
-import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
+import { configureReactWorkers } from "@moyarich/moyaforge-monaco/workers/configureReactWorkers";
 
 configureReactWorkers();
 ```
@@ -29,7 +29,7 @@ configureReactWorkers();
 ### TypeFox only
 
 ```ts
-import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/typefox";
+import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers";
 
 configureTypeFoxWorkers();
 ```
@@ -38,7 +38,7 @@ configureTypeFoxWorkers();
 
 ```tsx
 import { createRoot } from "react-dom/client";
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
+import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
 import { App } from "./App.js";
 
 await initializeSharedMonaco();
@@ -60,8 +60,8 @@ Worker scripts and protocol can be shared without sharing Worker instances.
 ## Vite
 
 Register `monacoReactTypesPlugin(projectRoot)` from
-`@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and add
-`@moyarich/moyaforge-monaco/virtual` to `compilerOptions.types`.
+`@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin` in `vite.config.ts` and add
+`@moyarich/moyaforge-monaco/vite/react-types` to `compilerOptions.types`.
 The plugin provides `virtual:moyaforge-monaco/react-types` with
 React, React DOM and `csstype` declarations for Monaco's TSX worker.
 Install the optional peers for the runtime strategy you choose.

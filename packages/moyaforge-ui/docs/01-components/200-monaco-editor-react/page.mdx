@@ -29,7 +29,7 @@ configuration, add `monacoReactTypesPlugin` to its existing `plugins` array.
 ```ts filename="vite.config.ts"
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
 
 export default defineConfig({
   plugins: [react(), monacoReactTypesPlugin(import.meta.dirname)],
@@ -49,7 +49,7 @@ This is a settings fragment to merge, not a replacement for your entire tsconfig
 ```json filename="tsconfig.json"
 {
   "compilerOptions": {
-    "types": ["vite/client", "@moyarich/moyaforge-monaco/virtual"]
+    "types": ["vite/client", "@moyarich/moyaforge-monaco/vite/react-types"]
   }
 }
 ```
@@ -65,7 +65,7 @@ not inside an editor component or a React effect.
 ```tsx filename="src/main.tsx"
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
+import { configureReactWorkers } from "@moyarich/moyaforge-monaco/workers/configureReactWorkers";
 import App from "./App";
 
 configureReactWorkers();
@@ -157,7 +157,7 @@ initialization above are still required.
 Keep the same Vite plugin, but replace the standalone initializer in `main.tsx`:
 
 ```ts filename="main.tsx"
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
+import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
 
 await initializeSharedMonaco();
 ```

@@ -11,15 +11,15 @@ description: React Monaco, TypeFox, worker setup, Vite declarations, and shared 
 
 | Editor combination | Run once in the application's entry point                                 |
 | ------------------ | ------------------------------------------------------------------------- |
-| React Monaco only  | `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react`         |
-| TypeFox only       | `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/typefox`     |
-| Both editors       | `await initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/shared` |
+| React Monaco only  | `configureReactWorkers()` from `@moyarich/moyaforge-monaco/workers/configureReactWorkers`         |
+| TypeFox only       | `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers`     |
+| Both editors       | `await initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` |
 
 For both editor engines:
 
 ```tsx
 import { createRoot } from "react-dom/client";
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
+import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco";
 import { App } from "./App.js";
 
 await initializeSharedMonaco();
@@ -32,7 +32,7 @@ Standalone React Monaco supplies `MonacoEnvironment.getWorker`. TypeFox uses `ge
 
 ## Vite and TypeScript types
 
-Register `monacoReactTypesPlugin(projectRoot)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts`. Add `@moyarich/moyaforge-monaco/virtual` to the TypeScript `compilerOptions.types` list. The plugin provides `virtual:moyaforge-monaco/react-types` to supply the React, React DOM and CSS types expected by Monaco's TSX worker.
+Register `monacoReactTypesPlugin(projectRoot)` from `@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin` in `vite.config.ts`. Add `@moyarich/moyaforge-monaco/vite/react-types` to the TypeScript `compilerOptions.types` list. The plugin provides `virtual:moyaforge-monaco/react-types` to supply the React, React DOM and CSS types expected by Monaco's TSX worker.
 
 TypeFox optionally accepts `languageClientConfig`, but **the host must supply its own language server and transport**. MoyaForge does not start a language server.
 
