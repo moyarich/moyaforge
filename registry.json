@@ -549,10 +549,10 @@
       ]
     },
     {
-      "name": "editor-workspace",
+      "name": "editor-panel",
       "type": "registry:component",
-      "title": "Editor Workspace",
-      "description": "Editable MoyaForge editor-workspace source. Components import their own CSS.",
+      "title": "Editor Panel",
+      "description": "Editable MoyaForge editor-panel source. Components import their own CSS.",
       "dependencies": [
         "lucide-react@^1.56.0",
         "react@>=18"
@@ -584,19 +584,19 @@
           "target": "~/src/components/ui/EditorContainer/index.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+          "target": "~/src/components/ui/EditorPanel/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
@@ -699,11 +699,124 @@
       ]
     },
     {
+      "name": "monaco-editor-panel",
+      "type": "registry:component",
+      "title": "Monaco Editor Panel",
+      "description": "Editable MoyaForge monaco-editor-panel source. Components import their own CSS.",
+      "dependencies": [
+        "@moyarich/moyaforge-monaco@^0.1.0",
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
+      "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorContainer/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/EditorPanel/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorPanel/MonacoEditorPanel.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorPanel/MonacoEditorPanel.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorPanel/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoEditorPanel/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsContext.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsList.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/Tabs/index.ts"
+        }
+      ]
+    },
+    {
       "name": "monaco-editor-react",
       "type": "registry:component",
       "title": "Monaco Editor React",
       "description": "Editable MoyaForge monaco-editor-react source. Components import their own CSS.",
-      "docs": "## MonacoEditorReact setup\n\n`MonacoEditorReact` is a headless React Monaco runtime. It owns editor models, file drafts, worker integrations, language inference and read-only behavior, but it **does not render tabs, Copy, Save or toolbar controls**.\n\nInstall the Monaco runtime and optional UI workspace:\n\n```sh\nnpm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/react monaco-editor\n```\n\nImport the visual workspace from `moyaforge-ui`:\n\n```tsx\nimport { MonacoEditorWorkspace } from \"@moyarich/moyaforge-ui/components/MonacoEditorWorkspace\";\n\n<MonacoEditorWorkspace\n  files={files}\n  onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}\n  height={320}\n/>;\n```\n\nFor a custom shell, import `MonacoEditorReact` from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` and pass an active file. The runtime does not take `onSave`, `showFileTabs`, or `showCopyButton`.\n\nConfigure workers once using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/workers/configureReactWorkers`. When using TypeFox too, initialize the shared VS Code-compatible runtime via `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` instead.\n\nGuide and worker setup: https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react\n",
+      "docs": "## MonacoEditorReact setup\n\n`MonacoEditorReact` is a headless React Monaco runtime. It owns editor models, file drafts, worker integrations, language inference and read-only behavior, but it **does not render tabs, Copy, Save or toolbar controls**.\n\nInstall the Monaco runtime and optional UI workspace:\n\n```sh\nnpm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/react monaco-editor\n```\n\nImport the visual workspace from `moyaforge-ui`:\n\n```tsx\nimport { MonacoEditorPanel } from \"@moyarich/moyaforge-ui/components/MonacoEditorPanel\";\n\n<MonacoEditorPanel\n  files={files}\n  onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}\n  height={320}\n/>;\n```\n\nFor a custom shell, import `MonacoEditorReact` from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` and pass an active file. The runtime does not take `onSave`, `showFileTabs`, or `showCopyButton`.\n\nConfigure workers once using `configureReactWorkers()` from `@moyarich/moyaforge-monaco/workers/configureReactWorkers`. When using TypeFox too, initialize the shared VS Code-compatible runtime via `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` instead.\n\nGuide and worker setup: https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-ui/docs/01-components/200-monaco-editor-react\n",
       "dependencies": [
         "@monaco-editor/react@>=4",
         "lucide-react@^1.56.0",
@@ -763,7 +876,7 @@
       "type": "registry:component",
       "title": "Monaco Editor Typefox",
       "description": "Editable MoyaForge monaco-editor-typefox source. Components import their own CSS.",
-      "docs": "# MonacoEditorTypeFox\n\nHeadless TypeFox Monaco runtime using VS Code services. Tabs, Save/Copy actions, breadcrumbs and visual editor layout are provided by `moyaforge-ui`, not by the runtime.\n\nInstall both the UI and the TypeFox runtime dependencies in your React application:\n\n```sh\nnpm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1\n```\n\n```tsx\nimport { TypeFoxEditorWorkspace } from \"@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace\";\n\n<TypeFoxEditorWorkspace\n  files={files}\n  onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}\n  height={320}\n  showBreadcrumbs\n/>;\n```\n\nFor a fully custom shell, use the headless `MonacoEditorTypeFox` from `@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox`. Its `languageClientConfig` forwards the optional `LanguageClientConfig` to the underlying editor. The host must provide the language server and transport.\n\nConfigure workers with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers`, or `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` when using both editor integrations.\n",
+      "docs": "# MonacoEditorTypeFox\n\nHeadless TypeFox Monaco runtime using VS Code services. Tabs, Save/Copy actions, breadcrumbs and visual editor layout are provided by `moyaforge-ui`, not by the runtime.\n\nInstall both the UI and the TypeFox runtime dependencies in your React application:\n\n```sh\nnpm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1\n```\n\n```tsx\nimport { TypeFoxEditorPanel } from \"@moyarich/moyaforge-ui/components/TypeFoxEditorPanel\";\n\n<TypeFoxEditorPanel\n  files={files}\n  onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}\n  height={320}\n  showBreadcrumbs\n/>;\n```\n\nFor a fully custom shell, use the headless `MonacoEditorTypeFox` from `@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox`. Its `languageClientConfig` forwards the optional `LanguageClientConfig` to the underlying editor. The host must provide the language server and transport.\n\nConfigure workers with `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers`, or `initializeSharedMonaco()` from `@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco` when using both editor integrations.\n",
       "dependencies": [
         "@codingame/monaco-vscode-editor-api@^37.6.1",
         "@typefox/monaco-editor-react@~8.0.2",
@@ -811,119 +924,6 @@
           "path": "packages/moyaforge-monaco/src/styles/MonacoLoading.css",
           "type": "registry:file",
           "target": "~/src/components/styles/MonacoLoading.css"
-        }
-      ]
-    },
-    {
-      "name": "monaco-editor-workspace",
-      "type": "registry:component",
-      "title": "Monaco Editor Workspace",
-      "description": "Editable MoyaForge monaco-editor-workspace source. Components import their own CSS.",
-      "dependencies": [
-        "@moyarich/moyaforge-monaco@^0.1.0",
-        "lucide-react@^1.56.0",
-        "react@>=18"
-      ],
-      "files": [
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CopyButton/CopyButton.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorWorkspace/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/Tabs.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/Tabs.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsContent.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContent.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsContent.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsContext.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsContext.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsList.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsList.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsList.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsTrigger.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/TabsTrigger.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/TabsTrigger.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/Tabs/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/Tabs/index.ts"
         }
       ]
     },
@@ -1338,19 +1338,19 @@
           "target": "~/src/components/ui/EditorContainer/index.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+          "target": "~/src/components/ui/EditorPanel/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
@@ -1363,14 +1363,14 @@
           "target": "~/src/components/ui/HighlightedCode/HighlightedCode.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx",
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorPanel/MonacoEditorPanel.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorWorkspace/MonacoEditorWorkspace.tsx"
+          "target": "~/src/components/ui/MonacoEditorPanel/MonacoEditorPanel.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/MonacoEditorWorkspace/index.ts",
+          "path": "packages/moyaforge-ui/src/components/MonacoEditorPanel/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorWorkspace/index.ts"
+          "target": "~/src/components/ui/MonacoEditorPanel/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Preview/Preview.css",
@@ -2043,10 +2043,10 @@
       ]
     },
     {
-      "name": "type-fox-editor-workspace",
+      "name": "type-fox-editor-panel",
       "type": "registry:component",
-      "title": "Type Fox Editor Workspace",
-      "description": "Editable MoyaForge type-fox-editor-workspace source. Components import their own CSS.",
+      "title": "Type Fox Editor Panel",
+      "description": "Editable MoyaForge type-fox-editor-panel source. Components import their own CSS.",
       "dependencies": [
         "@moyarich/moyaforge-monaco@^0.1.0",
         "lucide-react@^1.56.0",
@@ -2079,19 +2079,19 @@
           "target": "~/src/components/ui/EditorContainer/index.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.css",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.css",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.css"
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.css"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/EditorWorkspace.tsx",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/EditorPanel.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/EditorWorkspace.tsx"
+          "target": "~/src/components/ui/EditorPanel/EditorPanel.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/EditorWorkspace/index.ts",
+          "path": "packages/moyaforge-ui/src/components/EditorPanel/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/EditorWorkspace/index.ts"
+          "target": "~/src/components/ui/EditorPanel/index.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
@@ -2144,14 +2144,14 @@
           "target": "~/src/components/ui/Tabs/index.ts"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TypeFoxEditorWorkspace/TypeFoxEditorWorkspace.tsx",
+          "path": "packages/moyaforge-ui/src/components/TypeFoxEditorPanel/TypeFoxEditorPanel.tsx",
           "type": "registry:file",
-          "target": "~/src/components/ui/TypeFoxEditorWorkspace/TypeFoxEditorWorkspace.tsx"
+          "target": "~/src/components/ui/TypeFoxEditorPanel/TypeFoxEditorPanel.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/TypeFoxEditorWorkspace/index.ts",
+          "path": "packages/moyaforge-ui/src/components/TypeFoxEditorPanel/index.ts",
           "type": "registry:file",
-          "target": "~/src/components/ui/TypeFoxEditorWorkspace/index.ts"
+          "target": "~/src/components/ui/TypeFoxEditorPanel/index.ts"
         }
       ]
     },
