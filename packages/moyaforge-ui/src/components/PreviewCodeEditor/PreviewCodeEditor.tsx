@@ -5,7 +5,7 @@ import {
   Preview, PreviewActions, PreviewCodeToggle, PreviewContent,
   PreviewHeader, PreviewSource, PreviewTitle,
 } from "../Preview/index.js";
-import { MonacoEditorWorkspace } from "../MonacoEditorWorkspace/index.js";
+import { MonacoEditorPanel } from "../MonacoEditorPanel/index.js";
 import type { MonacoEditorReactProps, MonacoFile } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 export interface PreviewCodeEditorProps {
@@ -52,7 +52,7 @@ export function PreviewCodeEditor({
       </PreviewContent>
       <PreviewSource asChild>
         <div className="mf-preview-code-editor-source">
-          <MonacoEditorWorkspace
+          <MonacoEditorPanel
             files={editorFiles}
             defaultActiveFile={currentFiles.find(file => !file.readOnly)?.name}
             height={height}

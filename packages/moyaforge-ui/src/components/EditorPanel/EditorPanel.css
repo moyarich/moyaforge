@@ -1,10 +1,10 @@
-.mf-editor-workspace-crumb {
+.mf-editor-panel-crumb {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
 }
 
-.mf-editor-workspace-readonly {
+.mf-editor-panel-readonly {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;

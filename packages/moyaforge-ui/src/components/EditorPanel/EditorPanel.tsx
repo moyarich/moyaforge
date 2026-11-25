@@ -1,23 +1,23 @@
-import "./EditorWorkspace.css";
+import "./EditorPanel.css";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ChevronRight, Copy, FileCode2, LockKeyhole, Save } from "lucide-react";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../Tabs/index.js";
 import { EditorContainer, EditorToolbar, EditorTools, EditorBreadcrumbs, EditorContent } from "../EditorContainer/index.js";
 
-export interface EditorWorkspaceFile {
+export interface EditorPanelFile {
   name: string;
   value: string;
   path?: string;
   readOnly?: boolean;
 }
-export interface EditorWorkspaceRenderProps<T extends EditorWorkspaceFile> {
+export interface EditorPanelRenderProps<T extends EditorPanelFile> {
   files: readonly T[];
   activeFile: T;
   onFileChange: (name: string, value: string) => void;
   readOnly: boolean;
 }
-export interface EditorWorkspaceProps<T extends EditorWorkspaceFile> {
+export interface EditorPanelProps<T extends EditorPanelFile> {
   files: readonly T[];
   activeFile?: string;
   defaultActiveFile?: string;
@@ -29,16 +29,16 @@ export interface EditorWorkspaceProps<T extends EditorWorkspaceFile> {
   showBreadcrumbs?: boolean;
   renderBreadcrumbs?: (file: T) => ReactNode;
   tools?: ReactNode;
-  renderEditor: (props: EditorWorkspaceRenderProps<T>) => ReactNode;
+  renderEditor: (props: EditorPanelRenderProps<T>) => ReactNode;
   className?: string;
 }
 
 /** Editor-agnostic tabs, actions and panels. The host owns file contents. */
-export function EditorWorkspace<T extends EditorWorkspaceFile>({
+export function EditorPanel<T extends EditorPanelFile>({
   files, activeFile, defaultActiveFile, onActiveFileChange, onFileChange,
   onSave, readOnly = false, showCopyButton = true, showBreadcrumbs = false,
   renderBreadcrumbs, tools, renderEditor, className,
-}: EditorWorkspaceProps<T>) {
+}: EditorPanelProps<T>) {
   const [uncontrolled, setUncontrolled] = useState(defaultActiveFile ?? files[0]?.name ?? "");
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const previousValues = useRef(new Map(files.map(file => [file.name, file.value])));
@@ -96,7 +96,7 @@ export function EditorWorkspace<T extends EditorWorkspaceFile>({
             ))}
           </TabsList>
           <EditorTools>
-            {locked && <span className="mf-editor-workspace-readonly"><LockKeyhole size={14} aria-hidden="true" />Read only</span>}
+            {locked && <span className="mf-editor-panel-readonly"><LockKeyhole size={14} aria-hidden="true" />Read only</span>}
             {onSave && <button type="button" disabled={locked} aria-label={`Save ${selected.name}`} onClick={() => onSave(selected.name, selected.value, selected)}>
               <Save size={15} aria-hidden="true" /> Save
             </button>}
@@ -107,7 +107,7 @@ export function EditorWorkspace<T extends EditorWorkspaceFile>({
         {showBreadcrumbs && <EditorBreadcrumbs>
           {renderBreadcrumbs ? renderBreadcrumbs(selected) :
             (selected.path ?? selected.name).replaceAll("\\", "/").split("/").filter(Boolean).map((part, index) => (
-              <span className="mf-editor-workspace-crumb" key={index}>
+              <span className="mf-editor-panel-crumb" key={index}>
                 {index > 0 && <ChevronRight size={14} aria-hidden="true" />}{part}
               </span>
             ))}

@@ -3,12 +3,12 @@ import {
   type MonacoEditorReactProps,
 } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 import {
-  EditorWorkspace,
-  type EditorWorkspaceProps,
-} from "../EditorWorkspace/index.js";
+  EditorPanel,
+  type EditorPanelProps,
+} from "../EditorPanel/index.js";
 import type { MonacoFile } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
-export interface MonacoEditorWorkspaceProps extends Omit<EditorWorkspaceProps<MonacoFile>, "renderEditor"> {
+export interface MonacoEditorPanelProps extends Omit<EditorPanelProps<MonacoFile>, "renderEditor"> {
   height?: MonacoEditorReactProps["height"];
   width?: MonacoEditorReactProps["width"];
   theme?: MonacoEditorReactProps["theme"];
@@ -19,12 +19,12 @@ export interface MonacoEditorWorkspaceProps extends Omit<EditorWorkspaceProps<Mo
 }
 
 /** React Monaco editor embedded in UI-owned editor chrome. */
-export function MonacoEditorWorkspace({
+export function MonacoEditorPanel({
   files, height, width, theme, options, loading, beforeMount, onMount,
   ...props
-}: MonacoEditorWorkspaceProps) {
+}: MonacoEditorPanelProps) {
   return (
-    <EditorWorkspace
+    <EditorPanel
       {...props}
       files={files}
       renderEditor={({ files: currentFiles, activeFile, onFileChange, readOnly }) => (

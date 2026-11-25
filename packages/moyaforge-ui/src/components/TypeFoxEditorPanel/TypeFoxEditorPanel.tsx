@@ -3,9 +3,9 @@ import {
   type MonacoEditorTypeFoxProps,
 } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 import type { MonacoFile } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
-import { EditorWorkspace, type EditorWorkspaceProps } from "../EditorWorkspace/index.js";
+import { EditorPanel, type EditorPanelProps } from "../EditorPanel/index.js";
 
-export interface TypeFoxEditorWorkspaceProps extends Omit<EditorWorkspaceProps<MonacoFile>, "renderEditor"> {
+export interface TypeFoxEditorPanelProps extends Omit<EditorPanelProps<MonacoFile>, "renderEditor"> {
   height?: MonacoEditorTypeFoxProps["height"];
   width?: MonacoEditorTypeFoxProps["width"];
   theme?: MonacoEditorTypeFoxProps["theme"];
@@ -17,12 +17,12 @@ export interface TypeFoxEditorWorkspaceProps extends Omit<EditorWorkspaceProps<M
 }
 
 /** TypeFox runtime embedded in the same UI-owned editor chrome. */
-export function TypeFoxEditorWorkspace({
+export function TypeFoxEditorPanel({
   files, height, width, theme, options, vscodeApiConfig, languageClientConfig,
   onReady, onError, ...props
-}: TypeFoxEditorWorkspaceProps) {
+}: TypeFoxEditorPanelProps) {
   return (
-    <EditorWorkspace {...props} files={files}
+    <EditorPanel {...props} files={files}
       renderEditor={({ files: currentFiles, activeFile, onFileChange, readOnly }) => (
         <MonacoEditorTypeFox
           files={currentFiles} activeFile={activeFile.name} onFileChange={onFileChange}
