@@ -55,7 +55,7 @@ test("separate editor instances isolate identical filenames", () => {
 
 test("explicit host updates replace changed values while preserving other drafts and removing old files", async () => {
   const { reconcileFileDrafts } =
-    await import("../../src/models/reconcileFileDrafts.js");
+    await import("../../src/components/MonacoFileSession/reconcileFileDrafts.js");
   const previous = new Map([
     ["a.ts", "original a"],
     ["b.ts", "original b"],
