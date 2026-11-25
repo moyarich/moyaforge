@@ -1,19 +1,23 @@
-import { useEditorTheme } from "../MonacoEditorCore/useEditorTheme.js";
+import { useEditorTheme } from "../../hooks/useEditorTheme.js";
 import { useEffect, useId, useRef } from "react";
 import type { editor } from "monaco-editor";
 import type { EditorProps, OnMount } from "@monaco-editor/react";
 import { Monaco, type MonacoProps } from "../MonacoEditorCore/Monaco.js";
 import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
-import { languageForPath } from "../MonacoEditorCore/languages.js";
+import { languageForPath } from "../../languages/languageForPath.js";
 
+/** Configuration for the headless editor runtime. */
 export interface MonacoEditorReactProps extends Omit<
   MonacoProps,
   "renderEditor"
 > {
+  /** Editor height; defaults to 320. */
   height?: number | string;
+  /** Container width; defaults to 100%. */
   width?: number | string;
   /** Omit to follow inherited CSS color-scheme, then system preference. */
   theme?: string;
+  /** Native Monaco construction options; file locks take precedence. */
   options?: editor.IStandaloneEditorConstructionOptions;
   loading?: EditorProps["loading"];
   beforeMount?: EditorProps["beforeMount"];

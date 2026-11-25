@@ -1,7 +1,8 @@
 import "./Monaco.css";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { reconcileFileDrafts } from "./drafts.js";
+import { reconcileFileDrafts } from "../../models/reconcileFileDrafts.js";
 
+/** Source file and optional model metadata supplied by the host. */
 export interface MonacoFile {
   name: string;
   value: string;
@@ -9,17 +10,22 @@ export interface MonacoFile {
   path?: string;
   readOnly?: boolean;
 }
+/** Selected file draft and change callback passed to a headless renderer. */
 export interface MonacoEditorRenderProps {
   file: MonacoFile;
   value: string;
   readOnly: boolean;
   onChange: (value: string) => void;
 }
+/** Host-controlled file selection and editor rendering configuration. */
 export interface MonacoProps {
   files: readonly MonacoFile[];
+  /** Selected file name; defaults to the first file. */
   activeFile?: string;
+  /** Receives local draft changes; the host owns persistence. */
   onFileChange?: (name: string, value: string, file: MonacoFile) => void;
   readOnly?: boolean;
+  /** Render the selected file using the supplied draft state. */
   renderEditor: (props: MonacoEditorRenderProps) => ReactNode;
   className?: string;
 }

@@ -26,6 +26,12 @@ export const languages: Record<string, string> = {
   svg: "xml",
 };
 
+/**
+ * Infer a Monaco language ID from a filename or model path.
+ * @param path - File path, optionally containing a query or fragment.
+ * @returns Language ID, or plaintext for unknown extensions.
+ * @example languageForPath("App.tsx") // "typescript"
+ */
 export function languageForPath(path: string): string {
   const extension = path.split(/[?#]/)[0].split(".").at(-1)?.toLowerCase();
 

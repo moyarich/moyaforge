@@ -1,5 +1,11 @@
 import { useEffect, useState, type RefObject } from "react";
 
+/**
+ * Resolve an explicit theme or observe the host CSS color scheme.
+ * @param root - Ref to the editor container whose ancestors are observed.
+ * @param theme - Optional explicit Monaco theme name.
+ * @returns Explicit theme, vs, or vs-dark. Listeners are cleaned up on unmount.
+ */
 export function useEditorTheme(
   root: RefObject<HTMLDivElement | null>,
   theme?: string,

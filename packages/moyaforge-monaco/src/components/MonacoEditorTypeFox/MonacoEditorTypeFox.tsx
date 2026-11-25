@@ -1,5 +1,5 @@
 import "../MonacoEditorCore/MonacoLoading.css";
-import { useEditorTheme } from "../MonacoEditorCore/useEditorTheme.js";
+import { useEditorTheme } from "../../hooks/useEditorTheme.js";
 import { useEffect, useId, useRef, useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
@@ -11,15 +11,19 @@ import {
   type MonacoProps,
   type MonacoEditorRenderProps,
 } from "../MonacoEditorCore/Monaco.js";
-import { languageForPath } from "../MonacoEditorCore/languages.js";
+import { languageForPath } from "../../languages/languageForPath.js";
 
+/** Configuration for the headless editor runtime. */
 export interface MonacoEditorTypeFoxProps extends Omit<
   MonacoProps,
   "renderEditor"
 > {
+  /** Editor height; defaults to 320. */
   height?: number | string;
+  /** Container width; defaults to 100%. */
   width?: number | string;
   theme?: string;
+  /** Native Monaco construction options; file locks take precedence. */
   options?: editor.IStandaloneEditorConstructionOptions;
   vscodeApiConfig?: MonacoVscodeApiConfig;
   /** Optional TypeFox language-server connection; the host owns its transport. */
