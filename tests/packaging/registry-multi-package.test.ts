@@ -110,12 +110,12 @@ test("Monaco registry entries remain installable without coupling ordinary UI co
     expect(item.files.length).toBeGreaterThan(0);
     expect(
       item.files.every((file) =>
-        file.path.startsWith("packages/moyaforge-monaco/src/components/"),
+        file.path.startsWith("packages/moyaforge-monaco/src/"),
       ),
     ).toBe(true);
     expect(
       item.files.every((file) =>
-        file.target.startsWith("~/src/components/ui/"),
+        file.target.startsWith("~/src/components/"),
       ),
     ).toBe(true);
   }

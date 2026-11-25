@@ -8,7 +8,11 @@
       "type": "registry:component",
       "title": "Animation",
       "description": "Editable MoyaForge animation source. Components import their own CSS.",
-      "dependencies": ["clsx@^2.1.1", "motion@^14.14.0", "react@>=18"],
+      "dependencies": [
+        "clsx@^2.1.1",
+        "motion@^14.14.0",
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Animation/AnimatedEntry.tsx",
@@ -72,7 +76,9 @@
       "type": "registry:component",
       "title": "Code Block",
       "description": "Editable MoyaForge code-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -111,7 +117,9 @@
       "type": "registry:component",
       "title": "Code Group",
       "description": "Editable MoyaForge code-group source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -170,7 +178,9 @@
       "type": "registry:component",
       "title": "Copy Button",
       "description": "Editable MoyaForge copy-button source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -194,7 +204,9 @@
       "type": "registry:component",
       "title": "Custom Block",
       "description": "Editable MoyaForge custom-block source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CustomBlock/CustomBlock.css",
@@ -218,7 +230,9 @@
       "type": "registry:component",
       "title": "Demo",
       "description": "Editable MoyaForge demo source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Demo/Demo.css",
@@ -242,7 +256,9 @@
       "type": "registry:component",
       "title": "Doc Outline",
       "description": "Editable MoyaForge doc-outline source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocOutline/DocOutline.css",
@@ -286,7 +302,9 @@
       "type": "registry:component",
       "title": "Docs Layout",
       "description": "Editable MoyaForge docs-layout source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
@@ -315,7 +333,9 @@
       "type": "registry:block",
       "title": "Docs Shell",
       "description": "Editable MoyaForge docs-shell source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
@@ -344,7 +364,9 @@
       "type": "registry:component",
       "title": "Docs Shell Focused",
       "description": "Editable MoyaForge docs-shell-focused source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellFocused/DocsShellFocused.css",
@@ -368,7 +390,9 @@
       "type": "registry:component",
       "title": "Docs Shell Wide",
       "description": "Editable MoyaForge docs-shell-wide source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/DocsShellWide/DocsShellWide.css",
@@ -477,7 +501,9 @@
       "type": "registry:component",
       "title": "Edit Page Link",
       "description": "Editable MoyaForge edit-page-link source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EditPageLink/EditPageLink.css",
@@ -501,7 +527,9 @@
       "type": "registry:component",
       "title": "Editor Container",
       "description": "Editable MoyaForge editor-container source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
@@ -525,7 +553,10 @@
       "type": "registry:component",
       "title": "Editor Workspace",
       "description": "Editable MoyaForge editor-workspace source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -624,7 +655,9 @@
       "type": "registry:component",
       "title": "Empty State",
       "description": "Editable MoyaForge empty-state source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/EmptyState/EmptyState.tsx",
@@ -643,7 +676,10 @@
       "type": "registry:component",
       "title": "Highlighted Code",
       "description": "Editable MoyaForge highlighted-code source. Components import their own CSS.",
-      "dependencies": ["react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
@@ -691,21 +727,6 @@
           "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
         },
         {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/drafts.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/drafts.ts"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/languages.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/languages.ts"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/useEditorTheme.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/useEditorTheme.ts"
-        },
-        {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
@@ -719,6 +740,21 @@
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/hooks/useEditorTheme.ts",
+          "type": "registry:file",
+          "target": "~/src/components/hooks/useEditorTheme.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/languages/languageForPath.ts",
+          "type": "registry:file",
+          "target": "~/src/components/languages/languageForPath.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/models/reconcileFileDrafts.ts",
+          "type": "registry:file",
+          "target": "~/src/components/models/reconcileFileDrafts.ts"
         }
       ]
     },
@@ -752,21 +788,6 @@
           "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
         },
         {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/drafts.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/drafts.ts"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/languages.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/languages.ts"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/useEditorTheme.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/useEditorTheme.ts"
-        },
-        {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx"
@@ -775,6 +796,21 @@
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorTypeFox/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorTypeFox/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/hooks/useEditorTheme.ts",
+          "type": "registry:file",
+          "target": "~/src/components/hooks/useEditorTheme.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/languages/languageForPath.ts",
+          "type": "registry:file",
+          "target": "~/src/components/languages/languageForPath.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/models/reconcileFileDrafts.ts",
+          "type": "registry:file",
+          "target": "~/src/components/models/reconcileFileDrafts.ts"
         }
       ]
     },
@@ -896,7 +932,9 @@
       "type": "registry:component",
       "title": "Navigation Tree",
       "description": "Editable MoyaForge navigation-tree source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/NavigationTree/NavigationTree.css",
@@ -920,7 +958,9 @@
       "type": "registry:component",
       "title": "Page",
       "description": "Editable MoyaForge page source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -944,7 +984,11 @@
       "type": "registry:component",
       "title": "Preview",
       "description": "Editable MoyaForge preview source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CopyButton/CopyButton.css",
@@ -1073,7 +1117,11 @@
       "type": "registry:component",
       "title": "Preview Code",
       "description": "Editable MoyaForge preview-code source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -1496,7 +1544,9 @@
       "type": "registry:component",
       "title": "Preview Inspector",
       "description": "Editable MoyaForge preview-inspector source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/PreviewInspector/PreviewInspector.css",
@@ -1520,7 +1570,11 @@
       "type": "registry:component",
       "title": "Preview Interactive",
       "description": "Editable MoyaForge preview-interactive source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/CodeBlock/CodeBlock.css",
@@ -1644,7 +1698,9 @@
       "type": "registry:component",
       "title": "Resizable Panel",
       "description": "Editable MoyaForge resizable-panel source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.css",
@@ -1755,7 +1811,9 @@
       "type": "registry:component",
       "title": "Sidebar V2",
       "description": "Editable MoyaForge sidebar-v2 source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Page/Page.css",
@@ -1864,7 +1922,10 @@
       "type": "registry:component",
       "title": "Source",
       "description": "Editable MoyaForge source source. Components import their own CSS.",
-      "dependencies": ["react@>=18", "shiki@^4.5.0"],
+      "dependencies": [
+        "react@>=18",
+        "shiki@^4.5.0"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/HighlightedCode/HighlightedCode.css",
@@ -1898,7 +1959,9 @@
       "type": "registry:component",
       "title": "Table Of Contents",
       "description": "Editable MoyaForge table-of-contents source. Components import their own CSS.",
-      "dependencies": ["react@>=18"],
+      "dependencies": [
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/TableOfContents/TableOfContents.css",
@@ -1922,7 +1985,10 @@
       "type": "registry:component",
       "title": "Tabs",
       "description": "Editable MoyaForge tabs source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
@@ -2094,7 +2160,10 @@
       "type": "registry:component",
       "title": "Version Picker",
       "description": "Editable MoyaForge version-picker source. Components import their own CSS.",
-      "dependencies": ["lucide-react@^1.56.0", "react@>=18"],
+      "dependencies": [
+        "lucide-react@^1.56.0",
+        "react@>=18"
+      ],
       "files": [
         {
           "path": "packages/moyaforge-ui/src/components/VersionPicker/VersionPicker.css",
