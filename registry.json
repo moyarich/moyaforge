@@ -712,21 +712,6 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/Monaco.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/Monaco.tsx"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoLoading.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
-        },
-        {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorReact/MonacoEditorReact.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorReact/MonacoEditorReact.tsx"
@@ -742,6 +727,16 @@
           "target": "~/src/components/ui/MonacoEditorReact/index.ts"
         },
         {
+          "path": "packages/moyaforge-monaco/src/components/MonacoFileSession/MonacoFileSession.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoFileSession/MonacoFileSession.css"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoFileSession/MonacoFileSession.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoFileSession/MonacoFileSession.tsx"
+        },
+        {
           "path": "packages/moyaforge-monaco/src/hooks/useEditorTheme.ts",
           "type": "registry:file",
           "target": "~/src/components/hooks/useEditorTheme.ts"
@@ -755,6 +750,11 @@
           "path": "packages/moyaforge-monaco/src/models/reconcileFileDrafts.ts",
           "type": "registry:file",
           "target": "~/src/components/models/reconcileFileDrafts.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/styles/MonacoLoading.css",
+          "type": "registry:file",
+          "target": "~/src/components/styles/MonacoLoading.css"
         }
       ]
     },
@@ -773,21 +773,6 @@
       ],
       "files": [
         {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/Monaco.css"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/Monaco.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/Monaco.tsx"
-        },
-        {
-          "path": "packages/moyaforge-monaco/src/components/MonacoEditorCore/MonacoLoading.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/MonacoEditorCore/MonacoLoading.css"
-        },
-        {
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorTypeFox/MonacoEditorTypeFox.tsx"
@@ -796,6 +781,16 @@
           "path": "packages/moyaforge-monaco/src/components/MonacoEditorTypeFox/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/MonacoEditorTypeFox/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoFileSession/MonacoFileSession.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoFileSession/MonacoFileSession.css"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/components/MonacoFileSession/MonacoFileSession.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/MonacoFileSession/MonacoFileSession.tsx"
         },
         {
           "path": "packages/moyaforge-monaco/src/hooks/useEditorTheme.ts",
@@ -811,6 +806,11 @@
           "path": "packages/moyaforge-monaco/src/models/reconcileFileDrafts.ts",
           "type": "registry:file",
           "target": "~/src/components/models/reconcileFileDrafts.ts"
+        },
+        {
+          "path": "packages/moyaforge-monaco/src/styles/MonacoLoading.css",
+          "type": "registry:file",
+          "target": "~/src/components/styles/MonacoLoading.css"
         }
       ]
     },
