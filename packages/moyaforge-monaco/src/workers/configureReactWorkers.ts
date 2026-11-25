@@ -24,14 +24,15 @@ let configured = false;
 /**
  * Configure standalone React Monaco with local Vite workers and React TSX types.
  * Call before mounting editors. Subsequent calls are no-ops.
+ * @param options - Native Monaco environment settings. A host getWorker or getWorkerUrl takes precedence over defaults.
  * @throws If a TypeFox worker factory is already configured.
  * @returns Nothing; updates the loader, compiler defaults and global worker factory.
  */
-export function configureReactWorkers() {
+export function configureReactWorkers(options: monaco.Environment = {}) {
   if (configured) return;
   // Monaco prefers getWorker over TypeFox's getWorkerUrl. Never silently
   // replace an existing VS Code-compatible worker factory.
-  if (typeof environment.MonacoEnvironment?.getWorkerUrl === "function") {
+  if (typeof (environment.MonacoEnvironment as (monaco.Environment & { getWorkerOptions?: unknown }) | undefined)?.getWorkerOptions === "function") {
     throw new Error(
       "TypeFox workers are already configured. Use initializeSharedMonaco() before mounting either editor.",
     );
@@ -78,19 +79,31 @@ export function configureReactWorkers() {
     "file:///types/styles.d.ts",
   );
 
-  environment.MonacoEnvironment = {
-    ...environment.MonacoEnvironment,
-    getWorker(_moduleId, label) {
-      if (label === "typescript" || label === "javascript")
-        return new TypeScriptWorker();
-      if (["css", "scss", "less"].includes(label)) return new CssWorker();
-      if (label === "json") return new JsonWorker();
-      if (["html", "handlebars", "razor"].includes(label))
-        return new HtmlWorker();
-      return new EditorWorker();
-    },
-  };
+  const hostEnvironment = environment.MonacoEnvironment;
+  const nextEnvironment = { ...hostEnvironment, ...options };
+  // A native host factory takes precedence over our defaults, including URL-based factories.
+  if (!nextEnvironment.getWorker && !nextEnvironment.getWorkerUrl) {
+    nextEnvironment.getWorker = getDefaultReactWorker;
+  }
+  environment.MonacoEnvironment = nextEnvironment;
   configured = true;
 }
+
+/**
+ * Create a built-in Monaco worker using the native Environment.getWorker signature.
+ * Delegate unhandled labels to this function from a host-supplied worker factory.
+ * @param _moduleId - Monaco worker module identifier.
+ * @param label - Monaco worker label.
+ * @returns Browser Worker for the requested language service or the editor fallback.
+ */
+export const getDefaultReactWorker: NonNullable<monaco.Environment["getWorker"]> =
+  (_moduleId, label) => {
+    if (label === "typescript" || label === "javascript")
+      return new TypeScriptWorker();
+    if (["css", "scss", "less"].includes(label)) return new CssWorker();
+    if (label === "json") return new JsonWorker();
+    if (["html", "handlebars", "razor"].includes(label)) return new HtmlWorker();
+    return new EditorWorker();
+  };
 
 export { monaco };

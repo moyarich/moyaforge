@@ -9,7 +9,7 @@ import {
 import "@codingame/monaco-vscode-standalone-css-language-features";
 import "@codingame/monaco-vscode-standalone-json-language-features";
 import "@codingame/monaco-vscode-standalone-html-language-features";
-import { useWorkerFactory, Worker } from "monaco-languageclient/workerFactory";
+import { useWorkerFactory, Worker, type WorkerFactoryConfig } from "monaco-languageclient/workerFactory";
 
 // Delegate worker URL generation to the consuming Vite application. Library
 // builds cannot bake in /assets/*.js URLs: those files are not served from
@@ -60,10 +60,11 @@ let configured = false;
 /**
  * Register VS Code-compatible TypeFox workers using host-bundled Vite URLs.
  * Call before mounting editors. Subsequent calls are no-ops.
+ * @param config - Native TypeFox worker factory configuration; host workerLoaders override built-in labels.
  * @throws If a standalone Monaco getWorker factory is already configured.
  * @returns Nothing; installs the worker factory and TypeScript defaults.
  */
-export function configureTypeFoxWorkers() {
+export function configureTypeFoxWorkers(config: WorkerFactoryConfig = {}) {
   if (configured) return;
   // getWorker has priority over TypeFox's getWorkerUrl. Do not mutate
   // another editor integration's global worker configuration.
@@ -91,6 +92,7 @@ export function configureTypeFoxWorkers() {
     new Worker(new URL(HtmlWorkerUrl, import.meta.url), { type: "module" });
 
   useWorkerFactory({
+    ...config,
     workerLoaders: {
       editorWorkerService: editorWorker,
       typescript: typescriptWorker,
@@ -105,6 +107,7 @@ export function configureTypeFoxWorkers() {
       html: htmlWorker,
       handlebars: htmlWorker,
       razor: htmlWorker,
+      ...config.workerLoaders,
     },
   });
   configured = true;
