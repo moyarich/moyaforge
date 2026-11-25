@@ -4,20 +4,34 @@ Headless Monaco React and TypeFox editor runtimes, with models and application-l
 
 ## Package entry points
 
-| Import                                    | Purpose                                                             |
-| ----------------------------------------- | ------------------------------------------------------------------- |
-| `/components/MonacoEditorReact`           | Headless React Monaco editor runtime                                |
-| `/components/MonacoEditorTypeFox`         | Headless TypeFox editor runtime backed by VS Code services          |
-| `/styles.css`                             | Combined Monaco component styles                                    |
-| `/workers/configureReactWorkers`          | Standalone `@monaco-editor/react` workers                           |
-| `/workers/configureTypeFoxWorkers`        | Standalone TypeFox workers and TypeScript defaults                  |
-| `/workers/createMonacoVscodeWorkerConfig` | Build lazy VS Code-compatible worker loaders for host-managed setup |
-| `/runtime/initializeMonacoVscodeRuntime`  | One VS Code-compatible runtime for React Monaco + TypeFox           |
-| `/vite/monacoReactTypesPlugin`            | Vite plugin for TSX worker declarations                             |
-| `/vite/react-types`                       | TypeScript declarations for the Vite virtual module                 |
+| Import suffix | Purpose |
+| --- | --- |
+| `/components/MonacoEditorReact` | Headless React Monaco editor |
+| `/components/MonacoEditorTypeFox` | Headless TypeFox editor backed by VS Code services |
+| `/styles.css` | Combined Monaco component styles |
+| `/workers/configureReactWorkers` | Standalone React Monaco worker setup |
+| `/workers/configureTypeFoxWorkers` | Standalone TypeFox worker setup |
+| `/workers/createMonacoVscodeWorkerConfig` | Lazy worker loaders for host-managed registration |
+| `/runtime/initializeMonacoVscodeRuntime` | Shared VS Code-compatible runtime for React Monaco and TypeFox |
+| `/vite/monacoReactTypesPlugin` | Vite plugin that supplies React declarations to the editor |
+| `/vite/react-types` | Type declaration for the Vite virtual module |
 
-Choose **one** runtime strategy and initialize it at application startup,
-before mounting editors.
+## Application setup
+
+Pick the startup function for the editors your app mounts. Call it once at
+application startup, before rendering. Install the optional peers for that
+setup and configure the [Vite plugin](#vite).
+
+| Editors | Monaco runtime | Startup function |
+| --- | --- | --- |
+| React Monaco only | Microsoft's `monaco-editor` | `configureReactWorkers()` |
+| TypeFox only | `@codingame/monaco-vscode-editor-api` | `configureTypeFoxWorkers()` |
+| Both | One shared `@codingame/monaco-vscode-editor-api` instance | `await initializeMonacoVscodeRuntime()` |
+
+Microsoft's package provides a standalone browser editor with models and
+language workers. CodinGame's compatible editor API can integrate with VS Code
+services such as workspace files, TextMate grammars, and a web extension host.
+[Microsoft Monaco Editor](https://github.com/microsoft/monaco-editor) · [CodinGame setup guide](https://github.com/CodinGame/monaco-vscode-api/wiki/Getting-started-guide)
 
 ### React Monaco only
 
@@ -47,19 +61,15 @@ await initializeMonacoVscodeRuntime();
 createRoot(document.getElementById("root")!).render(<App />);
 ```
 
-`initializeMonacoVscodeRuntime()` configures TypeFox's worker factory, points
-`@monaco-editor/react` at the same VS Code-compatible editor API, and
-initializes VS Code services once. It caches one initialization promise.
-Do not also call either standalone initializer.
-
-Monaco prefers `MonacoEnvironment.getWorker` over `getWorkerUrl` if both
-exist. The standalone React integration uses `getWorker`; TypeFox uses
-`getWorkerUrl` and `getWorkerOptions`. The package reports a configuration error if competing worker strategies are detected.
-Worker scripts and protocol can be shared without sharing Worker instances.
+The [shared initializer](./src/runtime/initializeMonacoVscodeRuntime.ts) installs
+one VS Code-compatible worker factory, points `@monaco-editor/react` at the
+same Monaco instance used by TypeFox, and starts VS Code services. It caches
+the initialization promise. Call only this initializer when mounting both
+editors.
 
 ## Custom workers
 
-React Monaco accepts the native `monaco.Environment` configuration. A host-provided `getWorker` or `getWorkerUrl` takes precedence over the built-in factory. Pass `typescript.compilerOptions` in the same object to override TypeScript defaults.
+React Monaco accepts the native `monaco.Environment` configuration. A host-provided `getWorker` or `getWorkerUrl` takes precedence over the built-in factory.
 
 ```ts
 import {
@@ -76,7 +86,7 @@ configureReactWorkers({
 });
 ```
 
-TypeFox and the shared runtime accept the native `WorkerFactoryConfig` from `monaco-languageclient/workerFactory`. Additional `workerLoaders` extend the defaults, and matching labels override them. Pass `typescript.compilerOptions` to override TypeScript defaults, for example `{ typescript: { compilerOptions: { strict: true } } }`. Custom `paths` entries merge with the built-in React type paths.
+TypeFox and the shared runtime accept the native `WorkerFactoryConfig` from `monaco-languageclient/workerFactory`. Additional `workerLoaders` extend the defaults, and matching labels override them.
 
 ```ts
 import { Worker } from "monaco-languageclient/workerFactory";
@@ -91,15 +101,21 @@ configureTypeFoxWorkers({
 });
 ```
 
-For an application using both editors, pass the same TypeFox configuration to `initializeMonacoVscodeRuntime(config)` instead. Configure the runtime before mounting editors; the first initialization owns worker configuration. Custom workers must implement the protocol expected by the requesting service. Register any additional language contributions or providers through Monaco or TypeFox's native APIs.
+For both editors, pass `workerLoaders` to `initializeMonacoVscodeRuntime()`. Custom workers must implement the protocol expected by the requesting language service.
 
 For a host that manages worker registration itself, import `createMonacoVscodeWorkerConfig(config)` from `@moyarich/moyaforge-monaco/workers/createMonacoVscodeWorkerConfig`. It returns the merged worker configuration without registering workers or changing TypeScript defaults.
 
-All three setup functions also accept `typescript.declarationLibraries`, a map from virtual file URIs to declaration source. Entries with the same URI as a built-in library replace it.
+## TypeScript options
+
+All three startup functions accept a `typescript` object. Use `compilerOptions`
+to override compiler defaults and `declarationLibraries` to add declarations
+keyed by virtual file URI. Compiler `paths` merge by module name, and declaration
+libraries merge by URI. Your entries win when a key matches a built-in entry.
 
 ```ts
 configureReactWorkers({
   typescript: {
+    compilerOptions: { strict: true },
     declarationLibraries: {
       "file:///types/app.d.ts": "declare const appVersion: string;",
     },
@@ -109,12 +125,21 @@ configureReactWorkers({
 
 ## Vite
 
-Register `monacoReactTypesPlugin(projectRoot)` from
-`@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin` in `vite.config.ts` and add
-`@moyarich/moyaforge-monaco/vite/react-types` to `compilerOptions.types`.
-The plugin provides `virtual:moyaforge-monaco/react-types` with
-React, React DOM and `csstype` declarations for Monaco's TSX worker.
-Install the optional peers for the runtime strategy you choose.
+Add the plugin to your Vite config alongside your existing plugins. Pass the
+project directory so it can resolve React, React DOM, and `csstype` declarations.
+
+```ts
+import { defineConfig } from "vite";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
+
+export default defineConfig({
+  plugins: [monacoReactTypesPlugin(import.meta.dirname)],
+});
+```
+
+Add `@moyarich/moyaforge-monaco/vite/react-types` to `compilerOptions.types` in
+your TypeScript configuration. The plugin supplies the virtual module
+`virtual:moyaforge-monaco/react-types` used by the startup functions.
 
 ## Components
 
@@ -141,15 +166,3 @@ import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEdito
   showBreadcrumbs
 />;
 ```
-
-When mounting both editor engines, initialize their shared runtime once at the application entry point.
-
-`monaco-editor` gives you **a standalone browser editor**. `@codingame/monaco-vscode-editor-api` gives you **a Monaco-compatible editor that can run with VS Code services**.
-
-| Package                               | What you get                                                                                                                                                                                                                                                  |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `monaco-editor`                       | Microsoft’s standalone editor, with text models, syntax highlighting, and built-in language workers. [Microsoft Monaco Editor](https://github.com/microsoft/monaco-editor)                                                                                    |
-| `@codingame/monaco-vscode-editor-api` | A compatible editor API that integrates with separately configured VS Code services, such as workspace files, TextMate grammars, and a web extension host. [CodinGame setup guide](https://github.com/CodinGame/monaco-vscode-api/wiki/Getting-started-guide) |
-
-In **MoyaForge**, `configureReactWorkers()` uses Microsoft’s standalone runtime.
-TypeFox uses CodinGame’s runtime. When both editor components run together on the same page, `initializeMonacoVscodeRuntime()` gives the React component the same CodinGame instance that TypeFox uses. That lets both components use one runtime and one worker configuration. [Shared runtime](./packages/moyaforge-monaco/src/runtime/initializeMonacoVscodeRuntime.ts)

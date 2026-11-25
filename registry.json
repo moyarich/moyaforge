@@ -312,11 +312,21 @@
     },
     {
       "name": "docs-shell",
-      "type": "registry:block",
+      "type": "registry:component",
       "title": "Docs Shell",
       "description": "Editable MoyaForge docs-shell source. Components import their own CSS.",
       "dependencies": ["react@>=18"],
       "files": [
+        {
+          "path": "packages/moyaforge-ui/src/components/DocsShell/DocsShell.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/DocsShell/DocsShell.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/DocsShell/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/DocsShell/index.ts"
+        },
         {
           "path": "packages/moyaforge-ui/src/components/Layout/DocsLayout/DocsLayout.css",
           "type": "registry:file",
@@ -331,11 +341,6 @@
           "path": "packages/moyaforge-ui/src/utils/heading-fragment.ts",
           "type": "registry:file",
           "target": "~/src/components/utils/heading-fragment.ts"
-        },
-        {
-          "path": "registry/templates/docs-shell.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/docs-shell.tsx"
         }
       ]
     },

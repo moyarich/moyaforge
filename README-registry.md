@@ -1,10 +1,14 @@
 # MoyaForge component registry
 
-The root [`registry.config.ts`](../registry.config.ts) is the single source
+The root [`registry.config.ts`](registry.config.ts) is the single source
 of configuration for registry generation. It selects the component packages,
 public names and overrides, dependency manifests, templates, documentation,
 install target, and output file. It is **not** the MDX content registry used by
 the documentation playground.
+
+The UI package owns the [registry setup guides](packages/moyaforge-ui/docs/registry-setup/).
+The generator embeds those guides as item metadata in the root `registry.json`.
+The UI package also owns the [editable docs shell](packages/moyaforge-ui/src/components/DocsShell/DocsShell.tsx) that the registry installs into consumer apps.
 
 `scripts/build-registry/build-registry.ts` exports a reusable, framework-neutral
 function. Its Commander CLI loads `registry.config.ts` and passes its settings
@@ -72,7 +76,7 @@ graphs, so ordinary UI components do not pull in Monaco editor source.
 
 ## GitHub Actions
 
-[Build component registry](../.github/workflows/build-component-registry.yml)
+[Build component registry](.github/workflows/build-component-registry.yml)
 uses the same CLI, verifies generated content, validates the shadcn schema,
 and commits the output file declared by the configuration when changed.
 It runs on relevant pushes to `main` and supports manual dispatch.

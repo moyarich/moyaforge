@@ -71,7 +71,7 @@ test("custom destinations retain portable relative imports", async () => {
     run(root, "add", "docs-shell", "--directory", "ui/docs", "--no-install")
       .status,
   ).toBe(0);
-  expect(await read(root, "ui/docs/docs-shell.tsx")).toContain(
+  expect(await read(root, "ui/docs/DocsShell/DocsShell.tsx")).toContain(
     "./Layout/DocsLayout/DocsLayout.js",
   );
   expect(
@@ -100,7 +100,7 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
   expect(manifest.dependencies).not.toHaveProperty("@moyarich/moyaforge");
   const existingApp = await read(root, "moyaforge/src/App.tsx");
-  expect(existingApp).toContain("../../src/components/ui/docs-shell.js");
+  expect(existingApp).toContain("../../src/components/ui/DocsShell/DocsShell.js");
   expect(existingApp).toContain("sidebar={sidebar}");
   expect(existingApp).not.toContain("components/Routing/content-routing.js");
   expect(await read(root, "moyaforge/vite.config.ts")).toContain(
@@ -155,7 +155,7 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(searchViteConfig).not.toContain("__SEARCH_PLUGIN_IMPORT__");
   expect(searchViteConfig).toContain("sqliteSearchPlugin({");
   expect(searchViteConfig).toContain('import registry from "./registry.config"');
-  expect(await read(packageRoot, "src/components/ui/docs-shell.tsx")).toContain(
+  expect(await read(packageRoot, "src/components/ui/DocsShell/DocsShell.tsx")).toContain(
     "DocsShell",
   );
   expect(await read(packageRoot, "package.json")).not.toMatch(
