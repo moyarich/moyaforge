@@ -1,4 +1,4 @@
-import "../MonacoEditorCore/MonacoLoading.css";
+import "../../styles/MonacoLoading.css";
 import { useEditorTheme } from "../../hooks/useEditorTheme.js";
 import { useEffect, useId, useRef, useState } from "react";
 import { LoaderCircle } from "lucide-react";
@@ -7,15 +7,15 @@ import type { MonacoEditorProps } from "@typefox/monaco-editor-react";
 import type { editor } from "@codingame/monaco-vscode-editor-api";
 import type { MonacoVscodeApiConfig } from "monaco-languageclient/vscodeApiWrapper";
 import {
-  Monaco,
-  type MonacoProps,
-  type MonacoEditorRenderProps,
-} from "../MonacoEditorCore/Monaco.js";
+  MonacoFileSession,
+  type MonacoFileSessionProps,
+  type MonacoFileRenderProps,
+} from "../MonacoFileSession/MonacoFileSession.js";
 import { languageForPath } from "../../languages/languageForPath.js";
 
 /** Configuration for the headless editor runtime. */
 export interface MonacoEditorTypeFoxProps extends Omit<
-  MonacoProps,
+  MonacoFileSessionProps,
   "renderEditor"
 > {
   /** Editor height; defaults to 320. */
@@ -51,7 +51,7 @@ function TypeFoxEditor({
   onReady,
   onError,
   uri,
-}: MonacoEditorRenderProps & MonacoEditorTypeFoxProps & { uri: string }) {
+}: MonacoFileRenderProps & MonacoEditorTypeFoxProps & { uri: string }) {
   const current = useRef(value);
   const [revision, setRevision] = useState(0);
   const [ready, setReady] = useState(false);
@@ -154,7 +154,7 @@ export function MonacoEditorTypeFox({
       data-moyaforge-monaco-workspace=""
       style={{ width, minWidth: 0 }}
     >
-      <Monaco
+      <MonacoFileSession
         {...props}
         readOnly={props.readOnly ?? options?.readOnly ?? false}
         renderEditor={(state) => (

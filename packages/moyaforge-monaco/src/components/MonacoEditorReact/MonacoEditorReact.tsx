@@ -2,13 +2,13 @@ import { useEditorTheme } from "../../hooks/useEditorTheme.js";
 import { useEffect, useId, useRef } from "react";
 import type { editor } from "monaco-editor";
 import type { EditorProps, OnMount } from "@monaco-editor/react";
-import { Monaco, type MonacoProps } from "../MonacoEditorCore/Monaco.js";
+import { MonacoFileSession, type MonacoFileSessionProps } from "../MonacoFileSession/MonacoFileSession.js";
 import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
 import { languageForPath } from "../../languages/languageForPath.js";
 
 /** Configuration for the headless editor runtime. */
 export interface MonacoEditorReactProps extends Omit<
-  MonacoProps,
+  MonacoFileSessionProps,
   "renderEditor"
 > {
   /** Editor height; defaults to 320. */
@@ -65,7 +65,7 @@ export function MonacoEditorReact({
       data-moyaforge-monaco-workspace=""
       style={{ width, minWidth: 0 }}
     >
-      <Monaco
+      <MonacoFileSession
         {...props}
         readOnly={props.readOnly ?? options?.readOnly ?? false}
         renderEditor={({ file, value, onChange, readOnly }) => (

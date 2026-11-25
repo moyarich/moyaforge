@@ -1,5 +1,5 @@
-import "../MonacoEditorCore/MonacoLoading.css";
-import "../MonacoEditorCore/Monaco.css";
+import "../../styles/MonacoLoading.css";
+import "../MonacoFileSession/MonacoFileSession.css";
 import { Editor, type EditorProps } from "@monaco-editor/react";
 import { LoaderCircle } from "lucide-react";
 

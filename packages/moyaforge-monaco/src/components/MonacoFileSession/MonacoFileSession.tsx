@@ -1,4 +1,4 @@
-import "./Monaco.css";
+import "./MonacoFileSession.css";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { reconcileFileDrafts } from "../../models/reconcileFileDrafts.js";
 
@@ -11,14 +11,14 @@ export interface MonacoFile {
   readOnly?: boolean;
 }
 /** Selected file draft and change callback passed to a headless renderer. */
-export interface MonacoEditorRenderProps {
+export interface MonacoFileRenderProps {
   file: MonacoFile;
   value: string;
   readOnly: boolean;
   onChange: (value: string) => void;
 }
 /** Host-controlled file selection and editor rendering configuration. */
-export interface MonacoProps {
+export interface MonacoFileSessionProps {
   files: readonly MonacoFile[];
   /** Selected file name; defaults to the first file. */
   activeFile?: string;
@@ -26,12 +26,12 @@ export interface MonacoProps {
   onFileChange?: (name: string, value: string, file: MonacoFile) => void;
   readOnly?: boolean;
   /** Render the selected file using the supplied draft state. */
-  renderEditor: (props: MonacoEditorRenderProps) => ReactNode;
+  renderEditor: (props: MonacoFileRenderProps) => ReactNode;
   className?: string;
 }
 
 /** Headless file state and rendering adapter. No editor chrome or toolbar. */
-export function Monaco({ files, activeFile, onFileChange, readOnly = false, renderEditor, className }: MonacoProps) {
+export function MonacoFileSession({ files, activeFile, onFileChange, readOnly = false, renderEditor, className }: MonacoFileSessionProps) {
   if (new Set(files.map(file => file.name)).size !== files.length)
     throw new Error("Monaco file names must be unique.");
   const [drafts, setDrafts] = useState<Record<string, string>>(
