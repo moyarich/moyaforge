@@ -21,7 +21,7 @@ MoyaForge is a workspace of separate capabilities. **Repository README files are
 
 `@moyarich/moyaforge/headless` exposes routing and documentation-link helpers. `@moyarich/moyaforge/registry-routes` renders registry-discovered pages through `RegistryRoutes`. The host owns its React Router, MDX provider, branding, and runtime configuration.
 
-The MDX package provides `@moyarich/moyaforge-mdx/vite` for registry and preview-code plugins and `/virtual` for TypeScript declarations. The Monaco package exposes `/react`, `/typefox`, `/shared`, `/vite`, `/virtual`, and separately importable editor components. Avoid reintroducing removed legacy framework export paths for convenience.
+The MDX package provides `@moyarich/moyaforge-mdx/vite` for registry and preview-code plugins and `/vite/react-types` for TypeScript declarations. The Monaco package exposes `/workers/configureReactWorkers`, `/workers/configureTypeFoxWorkers`, `/runtime/initializeSharedMonaco`, `/vite/monacoReactTypesPlugin`, `/vite/react-types`, and separately importable editor components. Avoid reintroducing removed legacy framework export paths for convenience.
 
 ## CLI templates and component installation
 

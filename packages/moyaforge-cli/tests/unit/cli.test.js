@@ -383,12 +383,12 @@ test("Monaco integration is installed only for the playground starter", async ()
   const docsManifest = JSON.parse(await read(docsRoot, "package.json"));
   expect(docsManifest.devDependencies).not.toHaveProperty("@moyarich/moyaforge-monaco");
   const docsTsconfig = await read(docsRoot, "tsconfig.json");
-  expect(docsTsconfig).not.toContain("@moyarich/moyaforge-monaco/virtual");
+  expect(docsTsconfig).not.toContain("@moyarich/moyaforge-monaco/vite/react-types");
 
   const playgroundRoot = await project();
   expect(run(playgroundRoot, "init", "--template", "playground", "--no-install").status).toBe(0);
   const playgroundManifest = JSON.parse(await read(playgroundRoot, "package.json"));
   expect(playgroundManifest.devDependencies["@moyarich/moyaforge-monaco"]).toBe("^0.1.0");
   const playgroundTsconfig = await read(playgroundRoot, "tsconfig.json");
-  expect(playgroundTsconfig).toContain("@moyarich/moyaforge-monaco/virtual");
+  expect(playgroundTsconfig).toContain("@moyarich/moyaforge-monaco/vite/react-types");
 });

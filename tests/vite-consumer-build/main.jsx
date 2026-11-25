@@ -17,7 +17,7 @@ import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 
 const SharedMonacoFixture = lazy(async () => {
   const { initializeSharedMonaco } = await import(
-    "@moyarich/moyaforge-monaco/shared"
+    "@moyarich/moyaforge-monaco/runtime/initializeSharedMonaco"
   );
   await initializeSharedMonaco();
   return import("../fixtures/monaco-shared.jsx");

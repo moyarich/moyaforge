@@ -67,7 +67,7 @@ export async function planProject({
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
     __MONACO_TYPES__:
       template === "playground"
-        ? ', "@moyarich/moyaforge-monaco/virtual"'
+        ? ', "@moyarich/moyaforge-monaco/vite/react-types"'
         : "",
     __PLAYGROUND_ENABLED__: String(
       template === "hybrid" || template === "playground",

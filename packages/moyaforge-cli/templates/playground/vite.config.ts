@@ -1,4 +1,4 @@
-import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
