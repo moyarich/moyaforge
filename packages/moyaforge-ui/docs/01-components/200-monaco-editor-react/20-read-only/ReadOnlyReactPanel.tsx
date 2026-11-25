@@ -1,8 +1,8 @@
-import { MonacoEditorWorkspace } from "../../../../src/components/MonacoEditorWorkspace/index.js";
+import { MonacoEditorPanel } from "../../../../src/components/MonacoEditorPanel/index.js";
 
 export default function ReadOnlyEditor() {
   return (
-    <MonacoEditorWorkspace
+    <MonacoEditorPanel
       readOnly
       height={220}
       files={[

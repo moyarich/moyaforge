@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MonacoEditorWorkspace } from "../../../../src/components/MonacoEditorWorkspace/index.js";
+import { MonacoEditorPanel } from "../../../../src/components/MonacoEditorPanel/index.js";
 
 export default function MultiFileEditor() {
   const [saved, setSaved] = useState("");
@@ -18,7 +18,7 @@ export default function MultiFileEditor() {
   ]);
   return (
     <div>
-      <MonacoEditorWorkspace
+      <MonacoEditorPanel
         files={files}
         onFileChange={(name, value) =>
           setFiles((current) =>

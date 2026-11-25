@@ -1,11 +1,11 @@
 ---
 title: Monaco Editor React
-description: Set up a React Monaco workspace in Vite with local workers, React types, and editable files.
+description: Set up a React Monaco panel in Vite with local workers, React types, and editable files.
 ---
 
 # Monaco Editor React
 
-`MonacoEditorWorkspace` provides file tabs, editor content, Save, and Copy controls.
+`MonacoEditorPanel` provides file tabs, editor content, Save, and Copy controls.
 The setup below is for an existing **Vite + React + TypeScript** app using React Monaco.
 Complete the configuration and startup steps before mounting the editor.
 
@@ -87,7 +87,7 @@ to your storage or send the file to your API.
 
 ```tsx filename="src/App.tsx"
 import { useState } from "react";
-import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
 
 export default function App() {
   const [files, setFiles] = useState([
@@ -119,7 +119,7 @@ export default function App() {
 
   return (
     <>
-      <MonacoEditorWorkspace
+      <MonacoEditorPanel
         files={files}
         onFileChange={updateFile}
         onSave={onSaveHandler}
@@ -131,25 +131,25 @@ export default function App() {
 }
 ```
 
-Run `npm run dev` and open the Vite URL. The workspace renders the supplied
+Run `npm run dev` and open the Vite URL. The panel renders the supplied
 source as editable text. It does not execute the edited application; use
 [PreviewCodeEditor](/ui/components/preview-code-editor) for a live rendered preview.
 
 ## Copy component source instead
 
 If you prefer editable component files in your project, use one of these commands
-instead of importing `MonacoEditorWorkspace` from the UI package:
+instead of importing `MonacoEditorPanel` from the UI package:
 
 ```sh
-npx @moyarich/moyaforge-cli@latest add monaco-editor-workspace
+npx @moyarich/moyaforge-cli@latest add monaco-editor-panel
 ```
 
 ```sh
-npx shadcn@latest add moyarich/moyaforge/monaco-editor-workspace
+npx shadcn@latest add moyarich/moyaforge/monaco-editor-panel
 ```
 
 Then import from the generated component location, such as
-`@/components/ui/MonacoEditorWorkspace`. The Vite plugin, type packages, and worker
+`@/components/ui/MonacoEditorPanel`. The Vite plugin, type packages, and worker
 initialization above are still required.
 
 ## Using React Monaco and TypeFox together
@@ -169,13 +169,13 @@ for the TypeFox dependencies and shared-runtime setup.
 
 ## Styling
 
-Create `editor.css` **in your application**, import it into your React component, and pass a scoped class to `MonacoEditorWorkspace`:
+Create `editor.css` **in your application**, import it into your React component, and pass a scoped class to `MonacoEditorPanel`:
 
 ```tsx
-import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
 import "./editor.css";
 
-<MonacoEditorWorkspace
+<MonacoEditorPanel
   className="react-monaco-editor"
   files={files}
   height={320}
@@ -194,12 +194,12 @@ import "./editor.css";
 }
 ```
 
-You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. The CSS variables style the **editor UI**, not the underlying Monaco syntax theme. See [Editor Workspace](/ui/components/editor-workspace) for an editable, stateful example and curved-tab CSS preset.
+You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. The CSS variables style the **editor UI**, not the underlying Monaco syntax theme. See [Editor Panel](/ui/components/editor-panel) for an editable, stateful example and curved-tab CSS preset.
 
 ## Examples
 
-- [Editable workspace](/ui/components/monaco-editor-react/editable-workspace)
-- [Read-only workspace](/ui/components/monaco-editor-react/read-only-workspace)
+- [Editable panel](/ui/components/monaco-editor-react/editable-panel)
+- [Read-only panel](/ui/components/monaco-editor-react/read-only-panel)
 
 <details>
 <summary>Advanced options</summary>
@@ -207,7 +207,7 @@ You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--
 - `activeFile` and `onActiveFileChange` control the selected file.
 - `theme` overrides the inherited light/dark appearance.
 - `options`, `beforeMount`, and `onMount` customize Monaco.
-- `showCopyButton`, `showBreadcrumbs`, `tools`, and `renderBreadcrumbs` customize the UI-owned workspace.
+- `showCopyButton`, `showBreadcrumbs`, `tools`, and `renderBreadcrumbs` customize the UI-owned panel.
 - `className` and `--mf-tabs-*` / `--mf-editor-*` CSS variables customize the UI.
 
 For an editor without tabs or toolbar, import `MonacoEditorReact` from
