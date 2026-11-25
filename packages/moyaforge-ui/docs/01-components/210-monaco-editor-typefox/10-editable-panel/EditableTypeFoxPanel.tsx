@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TypeFoxEditorWorkspace } from "../../../../src/components/TypeFoxEditorWorkspace/index.js";
+import { TypeFoxEditorPanel } from "../../../../src/components/TypeFoxEditorPanel/index.js";
 
 export default function MultiFileEditor() {
   const [saved, setSaved] = useState("");
@@ -18,7 +18,7 @@ export default function MultiFileEditor() {
   ]);
   return (
     <div>
-      <TypeFoxEditorWorkspace
+      <TypeFoxEditorPanel
         files={files}
         onFileChange={(name, value) =>
           setFiles((current) =>

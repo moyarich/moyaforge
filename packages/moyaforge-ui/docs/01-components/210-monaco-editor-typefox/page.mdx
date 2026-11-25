@@ -3,7 +3,7 @@ title: Monaco Editor TypeFox
 description: The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and editor layout are provided by `moyaforge-ui`.
 ---
 
-import { TypeFoxEditorWorkspace as LiveMonacoEditorTypeFox } from "../../../src/components/TypeFoxEditorWorkspace/index.js";
+import { TypeFoxEditorPanel as LiveMonacoEditorTypeFox } from "../../../src/components/TypeFoxEditorPanel/index.js";
 
 # Monaco Editor TypeFox
 
@@ -11,18 +11,18 @@ The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and 
 
 ## Installation
 
-<CodeGroup label="Install TypeFox editor workspace">
+<CodeGroup label="Install TypeFox editor panel">
 <CodeTab label="MoyaForge CLI">
 
 ```sh
-npx @moyarich/moyaforge-cli@latest add type-fox-editor-workspace
+npx @moyarich/moyaforge-cli@latest add type-fox-editor-panel
 ```
 
 </CodeTab>
 <CodeTab label="shadcn">
 
 ```sh
-npx shadcn@latest add moyarich/moyaforge/type-fox-editor-workspace
+npx shadcn@latest add moyarich/moyaforge/type-fox-editor-panel
 ```
 
 </CodeTab>
@@ -49,7 +49,7 @@ configureTypeFoxWorkers();
 
 ## Usage
 
-::: preview-code TypeFox workspace
+::: preview-code TypeFox panel
 
 <LiveMonacoEditorTypeFox
   files={[{ name: "index.ts", value: "const answer = 42;" }]}
@@ -58,12 +58,12 @@ configureTypeFoxWorkers();
 
 :::
 
-The interactive workspace comes from `moyaforge-ui`; the headless `MonacoEditorTypeFox` runtime remains available from `moyaforge-monaco` for custom shells. To install only the runtime source, use `add monaco-editor-typefox`.
+The interactive panel comes from `moyaforge-ui`; the headless `MonacoEditorTypeFox` runtime remains available from `moyaforge-monaco` for custom shells. To install only the runtime source, use `add monaco-editor-typefox`.
 
 ```tsx
-import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
+import { TypeFoxEditorPanel } from "@moyarich/moyaforge-ui/components/TypeFoxEditorPanel";
 
-<TypeFoxEditorWorkspace
+<TypeFoxEditorPanel
   files={[
     { name: "index.ts", value: "const answer = 42;" },
     { name: "styles.css", value: "body { margin: 0; }" },
@@ -72,12 +72,12 @@ import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFo
 />;
 ```
 
-The UI workspace owns tabs, Save, and Copy actions. Keep files in React state via `onFileChange`; `onSave` receives the active file's latest value.
+The UI panel owns tabs, Save, and Copy actions. Keep files in React state via `onFileChange`; `onSave` receives the active file's latest value.
 
 To connect a language server, pass `languageClientConfig` with the same configuration accepted by TypeFox's `MonacoEditorReactComp` (typed as `LanguageClientConfig` from `monaco-languageclient/lcwrapper`):
 
 ```tsx
-<TypeFoxEditorWorkspace
+<TypeFoxEditorPanel
   files={files}
   languageClientConfig={languageClientConfig}
 />
@@ -87,8 +87,8 @@ The host must provide a running language server and its transport; MoyaForge doe
 
 ## Examples
 
-- [Editable workspace](/ui/components/monaco-editor-typefox/editable-workspace)
-- [Read-only workspace](/ui/components/monaco-editor-typefox/read-only-workspace)
+- [Editable panel](/ui/components/monaco-editor-typefox/editable-panel)
+- [Read-only panel](/ui/components/monaco-editor-typefox/read-only-panel)
 
 <details>
 <summary>Advanced options</summary>
@@ -96,7 +96,7 @@ The host must provide a running language server and its transport; MoyaForge doe
 - `activeFile` and `onActiveFileChange` control the selected file.
 - `theme` overrides the inherited light/dark appearance.
 - `options`, `vscodeApiConfig`, `languageClientConfig`, `onReady`, and `onError` customize TypeFox.
-- `showCopyButton`, `showBreadcrumbs`, `tools`, and `renderBreadcrumbs` customize the UI-owned workspace.
+- `showCopyButton`, `showBreadcrumbs`, `tools`, and `renderBreadcrumbs` customize the UI-owned panel.
 - `className` and `--mf-tabs-*` / `--mf-editor-*` CSS variables customize the UI.
 
 See [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx) for dependency and setup guidance.
@@ -105,17 +105,17 @@ See [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.m
 
 ## Styling
 
-Customize the workspace using `className`, `--mf-tabs-*`, and `--mf-editor-*` CSS variables. The underlying Monaco runtime is UI-free.
+Customize the panel using `className`, `--mf-tabs-*`, and `--mf-editor-*` CSS variables. The underlying Monaco runtime is UI-free.
 
 ## Customize styling with your CSS
 
-Create `editor.css` **in your application**, import it into your React component, and pass a scoped class to `TypeFoxEditorWorkspace`:
+Create `editor.css` **in your application**, import it into your React component, and pass a scoped class to `TypeFoxEditorPanel`:
 
 ```tsx
-import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
+import { TypeFoxEditorPanel } from "@moyarich/moyaforge-ui/components/TypeFoxEditorPanel";
 import "./editor.css";
 
-<TypeFoxEditorWorkspace
+<TypeFoxEditorPanel
   className="typefox-editor"
   files={files}
   height={320}
@@ -134,4 +134,4 @@ import "./editor.css";
 }
 ```
 
-You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. The CSS variables style the **editor UI**, not the underlying Monaco syntax theme. See [Editor Workspace](/ui/components/editor-workspace) for an editable, stateful example and curved-tab CSS preset.
+You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. The CSS variables style the **editor UI**, not the underlying Monaco syntax theme. See [Editor Panel](/ui/components/editor-panel) for an editable, stateful example and curved-tab CSS preset.

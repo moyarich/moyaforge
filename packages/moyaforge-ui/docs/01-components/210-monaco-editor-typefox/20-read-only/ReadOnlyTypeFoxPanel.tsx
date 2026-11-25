@@ -1,8 +1,8 @@
-import { TypeFoxEditorWorkspace } from "../../../../src/components/TypeFoxEditorWorkspace/index.js";
+import { TypeFoxEditorPanel } from "../../../../src/components/TypeFoxEditorPanel/index.js";
 
 export default function ReadOnlyEditor() {
   return (
-    <TypeFoxEditorWorkspace
+    <TypeFoxEditorPanel
       readOnly
       height={220}
       files={[

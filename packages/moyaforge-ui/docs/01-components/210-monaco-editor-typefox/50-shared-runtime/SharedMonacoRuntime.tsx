@@ -1,5 +1,5 @@
-import { MonacoEditorWorkspace } from "../../../../src/components/MonacoEditorWorkspace/index.js";
-import { TypeFoxEditorWorkspace } from "../../../../src/components/TypeFoxEditorWorkspace/index.js";
+import { MonacoEditorPanel } from "../../../../src/components/MonacoEditorPanel/index.js";
+import { TypeFoxEditorPanel } from "../../../../src/components/TypeFoxEditorPanel/index.js";
 
 const reactFiles = [
   { name: "react.tsx", value: "export const reactEditor = true;" },
@@ -14,11 +14,11 @@ export default function SharedMonacoExample() {
     <div style={{ display: "grid", gap: 16 }}>
       <section aria-label="React Monaco editor">
         <h3>React Monaco</h3>
-        <MonacoEditorWorkspace files={reactFiles} height={220} />
+        <MonacoEditorPanel files={reactFiles} height={220} />
       </section>
       <section aria-label="TypeFox Monaco editor">
         <h3>TypeFox</h3>
-        <TypeFoxEditorWorkspace files={typefoxFiles} height={220} />
+        <TypeFoxEditorPanel files={typefoxFiles} height={220} />
       </section>
     </div>
   );
