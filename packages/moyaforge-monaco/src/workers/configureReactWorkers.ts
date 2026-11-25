@@ -21,6 +21,12 @@ const environment = globalThis as typeof globalThis & {
 };
 let configured = false;
 
+/**
+ * Configure standalone React Monaco with local Vite workers and React TSX types.
+ * Call before mounting editors. Subsequent calls are no-ops.
+ * @throws If a TypeFox worker factory is already configured.
+ * @returns Nothing; updates the loader, compiler defaults and global worker factory.
+ */
 export function configureReactWorkers() {
   if (configured) return;
   // Monaco prefers getWorker over TypeFox's getWorkerUrl. Never silently

@@ -1,11 +1,17 @@
 import * as monaco from "@codingame/monaco-vscode-editor-api";
 import { loader } from "@monaco-editor/react";
 import { MonacoVscodeApiWrapper } from "monaco-languageclient/vscodeApiWrapper";
-import { configureTypeFoxWorkers } from "./typefox.js";
+import { configureTypeFoxWorkers } from "../workers/configureTypeFoxWorkers.js";
 
 let initialization: Promise<void> | undefined;
 
-/** Configure one VS Code-compatible runtime before mounting either editor. */
+/**
+ * Initialize one VS Code-compatible runtime for React Monaco and TypeFox.
+ * Await this before mounting editors; do not also configure standalone workers.
+ * @returns Cached promise that resolves when shared VS Code services have started.
+ * @throws Via promise rejection if startup fails or a competing worker factory exists.
+ * @example await initializeSharedMonaco();
+ */
 export function initializeSharedMonaco(): Promise<void> {
   return (initialization ??= (async () => {
     // TypeFox owns getWorkerUrl/getWorkerOptions. A pre-existing getWorker

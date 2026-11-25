@@ -22,6 +22,7 @@ import HtmlWorkerUrl from "@codingame/monaco-vscode-standalone-html-language-fea
 
 import reactWorkerLibraries from "virtual:moyaforge-monaco/react-types";
 
+/** Register React declaration libraries and TSX compiler defaults. */
 function configureTypeScript() {
   typescriptDefaults.setCompilerOptions({
     ...typescriptDefaults.getCompilerOptions(),
@@ -56,6 +57,12 @@ function configureTypeScript() {
 
 let configured = false;
 
+/**
+ * Register VS Code-compatible TypeFox workers using host-bundled Vite URLs.
+ * Call before mounting editors. Subsequent calls are no-ops.
+ * @throws If a standalone Monaco getWorker factory is already configured.
+ * @returns Nothing; installs the worker factory and TypeScript defaults.
+ */
 export function configureTypeFoxWorkers() {
   if (configured) return;
   // getWorker has priority over TypeFox's getWorkerUrl. Do not mutate

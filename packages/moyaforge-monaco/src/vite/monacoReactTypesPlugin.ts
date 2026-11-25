@@ -4,13 +4,23 @@ import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { Plugin } from "vite";
 
+/** Virtual module identifier used by both worker integrations. */
 const moduleId = "virtual:moyaforge-monaco/react-types";
+/** Declaration packages and entry filenames without the .d.ts suffix. */
 const declarations = {
   "@types/react": ["index", "global", "jsx-runtime", "jsx-dev-runtime"],
   "@types/react-dom": ["index", "client"],
   csstype: ["index"],
 };
 
+/**
+ * Expose the host project's React, React DOM and CSS declarations to Monaco.
+ * The Vite virtual module maps file URIs to declaration source text. Changes
+ * to watched declarations invalidate the module and reload the development page.
+ * @param root - Directory containing the host package.json, used for dependency resolution.
+ * @returns A Vite plugin that resolves, loads and watches the declarations.
+ * @example plugins: [monacoReactTypesPlugin(import.meta.dirname)]
+ */
 export function monacoReactTypesPlugin(root: string): Plugin {
   const resolvePackage = createRequire(
     pathToFileURL(join(root, "package.json")),
