@@ -1,13 +1,18 @@
+---
+title: MoyaForge UI component registry
+description: MoyaForge component registry
+---
+
 # MoyaForge component registry
 
 The root [`registry.config.ts`](registry.config.ts) is the single source
 of configuration for registry generation. It selects the component packages,
 public names and overrides, dependency manifests, templates, documentation,
-install target, and output file. It is **not** the MDX content registry used by
-the documentation playground.
+install target, and output file.
 
-The UI package owns the [registry setup guides](packages/moyaforge-ui/docs/registry-setup/).
-The generator embeds those guides as item metadata in the root `registry.json`.
+It is **not** a MDX content registry
+
+For editor setup, see the UI package’s [React Monaco guide](packages/moyaforge-ui/docs/01-components/200-monaco-editor-react/page.mdx) and [TypeFox guide](packages/moyaforge-ui/docs/01-components/210-monaco-editor-typefox/page.mdx).
 The UI package also owns the [editable docs shell](packages/moyaforge-ui/src/components/DocsShell/DocsShell.tsx) that the registry installs into consumer apps.
 
 `scripts/build-registry/build-registry.ts` exports a reusable, framework-neutral

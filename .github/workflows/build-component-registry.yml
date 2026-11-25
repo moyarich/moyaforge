@@ -9,7 +9,6 @@ on:
       - "packages/moyaforge/src/**"
       - "scripts/build-registry/**"
       - "registry.config.ts"
-      - "packages/moyaforge-ui/docs/registry-setup/**"
       - "packages/moyaforge/package.json"
       - "packages/moyaforge-ui/package.json"
       - "packages/moyaforge-monaco/package.json"

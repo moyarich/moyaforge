@@ -12,7 +12,7 @@ export default defineRegistryConfig({
   ],
   dependencyManifests: ["packages/moyaforge/package.json"],
   templatesDir: false,
-  docsDir: "packages/moyaforge-ui/docs/registry-setup",
+  docsDir: false,
   outputFile: "registry.json",
   targetDir: "~/src/components/ui",
   legacyStylesDir: "registry/styles",
