@@ -1,4 +1,4 @@
-import { createPageId } from "@moyarich/moyaforge-mdx";
+import { createPageId } from "@moyarich/moyaforge-mdx/page-id";
 import { buildNavigation } from "../navigation/navigation.js";
 import {
   createPageDescriptor,
