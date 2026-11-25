@@ -56,6 +56,44 @@ exist. The standalone React integration uses `getWorker`; TypeFox uses
 `getWorkerUrl` and `getWorkerOptions`. The package reports a configuration error if competing worker strategies are detected.
 Worker scripts and protocol can be shared without sharing Worker instances.
 
+## Custom workers
+
+React Monaco accepts the native `monaco.Environment` configuration. A host-provided `getWorker` or `getWorkerUrl` takes precedence over the built-in factory.
+
+```ts
+import {
+  configureReactWorkers,
+  getDefaultReactWorker,
+} from "@moyarich/moyaforge-monaco/workers/configureReactWorkers";
+import CustomWorker from "./custom.worker?worker";
+
+configureReactWorkers({
+  getWorker(moduleId, label) {
+    if (label === "custom") return new CustomWorker();
+    return getDefaultReactWorker(moduleId, label);
+  },
+});
+```
+
+TypeFox and the shared runtime accept the native `WorkerFactoryConfig` from `monaco-languageclient/workerFactory`. Additional `workerLoaders` extend the defaults, and matching labels override them.
+
+```ts
+import { Worker } from "monaco-languageclient/workerFactory";
+import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers";
+import CustomWorkerUrl from "./custom.worker.ts?worker&url";
+
+configureTypeFoxWorkers({
+  workerLoaders: {
+    custom: () => new Worker(
+      new URL(CustomWorkerUrl, import.meta.url),
+      { type: "module" },
+    ),
+  },
+});
+```
+
+For an application using both editors, pass the same TypeFox configuration to `initializeSharedMonaco(config)` instead. Configure the runtime before mounting editors; the first initialization owns worker configuration. Custom workers must implement the protocol expected by the requesting service. Register any additional language contributions or providers through Monaco or TypeFox's native APIs.
+
 ## Vite
 
 Register `monacoReactTypesPlugin(projectRoot)` from

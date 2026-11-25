@@ -26,11 +26,11 @@ vi.mock("monaco-languageclient/vscodeApiWrapper", () => ({
 }));
 
 vi.mock("../../packages/moyaforge-monaco/src/workers/configureTypeFoxWorkers.ts", () => ({
-  configureTypeFoxWorkers: () => {
+  configureTypeFoxWorkers: (config) => {
     if (typeof globalThis.MonacoEnvironment?.getWorker === "function") {
       throw new Error("Standalone Monaco workers are already configured");
     }
-    mocks.typefoxSetup();
+    mocks.typefoxSetup(config);
     globalThis.MonacoEnvironment ??= {};
     globalThis.MonacoEnvironment.getWorkerUrl = () => "/workers/typescript.js";
     globalThis.MonacoEnvironment.getWorkerOptions = () => ({ type: "module" });
@@ -91,4 +91,13 @@ test("shared initialization refuses to override a standalone worker factory", as
   expect(globalThis.MonacoEnvironment.getWorker).toBe(worker);
   expect(mocks.loaderConfig).not.toHaveBeenCalled();
   expect(mocks.vscodeStart).not.toHaveBeenCalled();
+});
+
+test("shared initialization passes native worker factory configuration to TypeFox", async () => {
+  const { initializeSharedMonaco } = await import(
+    "../../packages/moyaforge-monaco/src/runtime/initializeSharedMonaco.ts"
+  );
+  const config = { workerLoaders: { custom: () => ({ url: "/custom.js" }) } };
+  await initializeSharedMonaco(config);
+  expect(mocks.typefoxSetup).toHaveBeenCalledExactlyOnceWith(config);
 });
