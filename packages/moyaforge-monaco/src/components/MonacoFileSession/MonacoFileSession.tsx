@@ -51,7 +51,7 @@ export function MonacoFileSession({ files, activeFile, onFileChange, readOnly = 
   if (!selectedFile) return null;
   const locked = readOnly || selectedFile.readOnly === true;
   return (
-    <div data-moyaforge-monaco="" className={["mf-monaco-runtime", className].filter(Boolean).join(" ")}
+    <div data-moyaforge-monaco="" className={["mf-monaco-file-session", className].filter(Boolean).join(" ")}
       data-readonly={locked || undefined}>
       {renderEditor({
         file: selectedFile,

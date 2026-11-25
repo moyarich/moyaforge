@@ -21,7 +21,7 @@ function render(props = {}) {
 
 test("Monaco file session renders the selected file without owning UI chrome", () => {
   const html = render({ activeFile: "styles.css", className: "custom-editor" });
-  expect(html).toContain('class="mf-monaco-runtime custom-editor"');
+  expect(html).toContain('class="mf-monaco-file-session custom-editor"');
   expect(html).toContain('aria-label="styles.css"');
   expect(html).toContain("body {}");
   expect(html).not.toContain('role="tablist"');

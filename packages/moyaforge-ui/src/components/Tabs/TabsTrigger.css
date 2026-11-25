@@ -1,6 +1,6 @@
 .mf-tabs-item { position: relative; display: inline-flex; align-items: stretch; flex: none; min-width: 0; isolation: isolate; border-radius: var(--mf-tabs-radius, 0); }
 .mf-tabs-trigger { display: inline-flex; align-items: center; gap: .5rem; min-width: 0; border: 0; background: transparent; color: var(--mf-tabs-text-color, inherit); font: inherit; cursor: pointer; padding: var(--mf-tabs-trigger-padding, .625rem .875rem); white-space: nowrap; }
-.mf-tabs-trigger[aria-selected="true"] { color: var(--mf-tabs-active-color, inherit); font-weight: var(--mf-tabs-active-font-weight, inherit); }
+.mf-tabs-item--active .mf-tabs-trigger { color: var(--mf-tabs-active-color, inherit); font-weight: var(--mf-tabs-active-font-weight, inherit); }
 .mf-tabs-item--active { z-index: 1; background: var(--_mf-tabs-active-background); }
 .mf-tabs-item--active::before,
 .mf-tabs-item--active::after {

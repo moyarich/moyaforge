@@ -31,13 +31,7 @@
   font-size: var(--mf-editor-font-size, 0.8125rem);
 }
 
-/*
- * Match the editor shell from PR #254 by default: quiet toolbar, divided
- * strip, flat tabs with a 2px active underline. All exposed tab/panel
- * variables are still owned by Tabs and may be overridden on any ancestor.
- * Curved tabs opt in by setting --mf-tabs-corner-size and
- * --mf-tabs-active-background, without a React variant.
- */
+/* Editor toolbar uses flat tabs with a 2px active underline by default. */
 .mf-editor-container .mf-tabs {
   --_mf-tabs-surface: var(--mf-tabs-surface, var(--_mf-editor-surface));
   --_mf-tabs-strip: var(--mf-tabs-strip, var(--_mf-editor-toolbar-background));
@@ -75,7 +69,7 @@
   line-height: var(--mf-tabs-trigger-line-height, 1.5);
 }
 
-.mf-editor-toolbar .mf-tabs-trigger[aria-selected="true"] {
+.mf-editor-toolbar .mf-tabs-item--active .mf-tabs-trigger {
   font-weight: var(--mf-tabs-active-font-weight, 600);
 }
 
@@ -137,7 +131,7 @@
   background: var(--mf-tabs-surface, var(--_mf-editor-surface));
 }
 
-.mf-editor-content .mf-monaco-runtime {
+.mf-editor-content .mf-monaco-file-session {
   min-width: 0;
   border: 0;
   border-radius: 0;
@@ -148,7 +142,7 @@
 }
 
 /* The headless Monaco runtime deliberately has no textarea chrome. */
-.mf-editor-content .mf-monaco-runtime > textarea {
+.mf-editor-content .mf-monaco-file-session > textarea {
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -167,7 +161,7 @@
   tab-size: 2;
 }
 
-.mf-editor-content .mf-monaco-runtime > textarea:focus-visible {
+.mf-editor-content .mf-monaco-file-session > textarea:focus-visible {
   outline: 2px solid var(--_mf-editor-focus);
   outline-offset: -2px;
 }
