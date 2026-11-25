@@ -1,17 +1,26 @@
 ---
 title: Monaco Editor TypeFox
-description: The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and editor layout are provided by `moyaforge-ui`.
+description: Set up the TypeFox editor panel in Vite with VS Code-compatible workers and optional language server integration.
 ---
 
 import { TypeFoxEditorPanel as LiveMonacoEditorTypeFox } from "../../../src/components/TypeFoxEditorPanel/index.js";
 
 # Monaco Editor TypeFox
 
-The Monaco editing runtime is provided by `moyaforge-monaco`; tabs, actions and editor layout are provided by `moyaforge-ui`.
+`TypeFoxEditorPanel` provides file tabs, editing, and Save and Copy actions. It uses the VS Code-compatible Monaco runtime from CodinGame and can connect to a language server through TypeFox.
 
-## Installation
+## Install the panel
 
-<CodeGroup label="Install TypeFox editor panel">
+Start with an existing Vite + React + TypeScript app and choose an install method.
+
+<CodeGroup label="Install the TypeFox panel">
+<CodeTab label="npm">
+
+```sh
+npm install @moyarich/moyaforge-ui
+```
+
+</CodeTab>
 <CodeTab label="MoyaForge CLI">
 
 ```sh
@@ -28,24 +37,79 @@ npx shadcn@latest add moyarich/moyaforge/type-fox-editor-panel
 </CodeTab>
 </CodeGroup>
 
-In an existing React app, ensure these runtime dependencies are installed:
+## Install dependencies
+
+Install the runtime and worker dependencies for any of the three methods.
 
 ```sh
-npm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 lucide-react
+npm install @moyarich/moyaforge-monaco @typefox/monaco-editor-react@~8.0.2 monaco-languageclient@~11.0.2 @codingame/monaco-vscode-editor-api@^37.6.1 'lucide-react@^1.56.0'
 npm install @codingame/monaco-vscode-standalone-languages@^37.6.1 @codingame/monaco-vscode-standalone-typescript-language-features@^37.6.1 @codingame/monaco-vscode-standalone-css-language-features@^37.6.1 @codingame/monaco-vscode-standalone-json-language-features@^37.6.1 @codingame/monaco-vscode-standalone-html-language-features@^37.6.1
+npm install -D @types/react @types/react-dom csstype
 ```
 
-For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin` in `vite.config.ts` and call `configureTypeFoxWorkers()` from `@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers` once at application startup. If using React Monaco too, call `initializeMonacoVscodeRuntime()` from `/runtime/initializeMonacoVscodeRuntime` instead. Other bundlers need their own worker setup.
+The examples below use the npm import. For a source install, import
+`TypeFoxEditorPanel` from `./components/ui/TypeFoxEditorPanel/index.js`
+in `src/App.tsx`, or use the directory configured by your installer.
 
-For editor worker architecture and shared initialization details, see [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx).
+## Configure Vite
 
-The editor setup belongs in your application's `main.tsx`, **not** inside the component. For standalone TypeFox applications:
+Add `monacoReactTypesPlugin` to the plugins in your existing `vite.config.ts`.
+Pass the project directory so it can resolve React, React DOM, and `csstype`
+declarations for the editor's TypeScript worker.
 
-```ts
+```ts filename="vite.config.ts"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
+
+export default defineConfig({
+  plugins: [react(), monacoReactTypesPlugin(import.meta.dirname)],
+});
+```
+
+## Configure TypeScript
+
+Add `@moyarich/moyaforge-monaco/vite/react-types` to
+`compilerOptions.types` in the TypeScript config that covers your app.
+Keep the other entries already in the list.
+
+```json filename="tsconfig.json"
+{
+  "compilerOptions": {
+    "types": ["vite/client", "@moyarich/moyaforge-monaco/vite/react-types"]
+  }
+}
+```
+
+## Initialize workers
+
+Choose one startup function and call it in `src/main.tsx` before rendering
+your app. The shared initializer starts VS Code services and gives both
+editors the same Monaco instance.
+
+<CodeGroup label="Choose a Monaco startup function">
+<CodeTab label="TypeFox only">
+
+```ts filename="src/main.tsx"
 import { configureTypeFoxWorkers } from "@moyarich/moyaforge-monaco/workers/configureTypeFoxWorkers";
 
 configureTypeFoxWorkers();
 ```
+
+</CodeTab>
+<CodeTab label="React Monaco and TypeFox">
+
+```ts filename="src/main.tsx"
+import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
+
+await initializeMonacoVscodeRuntime();
+```
+
+</CodeTab>
+</CodeGroup>
+
+See [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx)
+for the worker and dependency setup for both editors.
 
 ## Usage
 
@@ -57,8 +121,6 @@ configureTypeFoxWorkers();
 />
 
 :::
-
-The interactive panel comes from `moyaforge-ui`; the headless `MonacoEditorTypeFox` runtime remains available from `moyaforge-monaco` for custom shells. To install only the runtime source, use `add monaco-editor-typefox`.
 
 ```tsx
 import { TypeFoxEditorPanel } from "@moyarich/moyaforge-ui/components/TypeFoxEditorPanel";
@@ -72,18 +134,17 @@ import { TypeFoxEditorPanel } from "@moyarich/moyaforge-ui/components/TypeFoxEdi
 />;
 ```
 
-The UI panel owns tabs, Save, and Copy actions. Keep files in React state via `onFileChange`; `onSave` receives the active file's latest value.
+Use `onFileChange` to keep edits in your app's file state. Provide `onSave` to show the Save action and receive the active file's name and latest contents.
+
+## Connect a language server
 
 To connect a language server, pass `languageClientConfig` with the same configuration accepted by TypeFox's `MonacoEditorReactComp` (typed as `LanguageClientConfig` from `monaco-languageclient/lcwrapper`):
 
 ```tsx
-<TypeFoxEditorPanel
-  files={files}
-  languageClientConfig={languageClientConfig}
-/>
+<TypeFoxEditorPanel files={files} languageClientConfig={languageClientConfig} />
 ```
 
-The host must provide a running language server and its transport; MoyaForge does not start one. Initialize shared VS Code services once at application startup when mounting both Monaco integrations.
+Provide the running language server and transport in your application. For a custom editor shell, import `MonacoEditorTypeFox` from `@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox`.
 
 ## Examples
 
@@ -106,25 +167,16 @@ See [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.m
 
 ## Styling
 
-Customize the panel using `className`, `--mf-tabs-*`, and `--mf-editor-*` CSS variables. The underlying Monaco runtime is UI-free.
-
-## Customize styling with your CSS
-
 Create `editor.css` **in your application**, import it into your React component, and pass a scoped class to `TypeFoxEditorPanel`:
 
 ```tsx
 import { TypeFoxEditorPanel } from "@moyarich/moyaforge-ui/components/TypeFoxEditorPanel";
 import "./editor.css";
 
-<TypeFoxEditorPanel
-  className="typefox-editor"
-  files={files}
-  height={320}
-/>;
+<TypeFoxEditorPanel className="typefox-editor" files={files} height={320} />;
 ```
 
 ```css
-/* editor.css — user-owned, not a MoyaForge internal stylesheet */
 .typefox-editor {
   --mf-editor-border: #cbd5e1;
   --mf-editor-toolbar-background: #f1f5f9;
@@ -135,4 +187,4 @@ import "./editor.css";
 }
 ```
 
-You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. The CSS variables style the **editor UI**, not the underlying Monaco syntax theme. See [Editor Panel](/ui/components/editor-panel) for an editable, stateful example and curved-tab CSS preset.
+You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. Use the panel’s `theme` prop to change Monaco’s syntax theme. See [Editor Panel](/ui/components/editor-panel) for an editable, stateful example and curved-tab CSS preset.

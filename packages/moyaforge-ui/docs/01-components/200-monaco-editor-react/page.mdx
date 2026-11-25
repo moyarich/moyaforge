@@ -6,25 +6,54 @@ description: Set up a React Monaco panel in Vite with local workers, React types
 # Monaco Editor React
 
 `MonacoEditorPanel` provides file tabs, editor content, Save, and Copy controls.
-The setup below is for an existing **Vite + React + TypeScript** app using React Monaco.
-Complete the configuration and startup steps before mounting the editor.
+It uses the standalone `monaco-editor` runtime when this is the only editor integration in the app.
+
+## Install the panel
+
+Start with an existing Vite + React + TypeScript app and choose an install method.
+
+<CodeGroup label="Install the React Monaco panel">
+<CodeTab label="npm">
+
+```sh
+npm install @moyarich/moyaforge-ui
+```
+
+</CodeTab>
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add monaco-editor-panel
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/monaco-editor-panel
+```
+
+</CodeTab>
+</CodeGroup>
 
 ## Install dependencies
 
-From your Vite project directory:
+Install the runtime and worker dependencies for any of the three methods.
 
 ```sh
-npm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @monaco-editor/react monaco-editor lucide-react
-npm install -D vite @vitejs/plugin-react typescript @types/node @types/react @types/react-dom csstype
+npm install @moyarich/moyaforge-monaco @monaco-editor/react 'monaco-editor@^0.52.0' 'lucide-react@^1.56.0'
+npm install -D @types/react @types/react-dom csstype
 ```
 
-The Vite plugin reads `@types/react`, `@types/react-dom`, and `csstype` from this
-project to provide type checking inside Monaco. They must be installed locally.
+The examples below use the npm import. For a source install, import
+`MonacoEditorPanel` from `./components/ui/MonacoEditorPanel/index.js`
+in `src/App.tsx`, or use the directory configured by your installer.
 
 ## Configure Vite
 
-Use this complete `vite.config.ts` at the project root. If you already have a
-configuration, add `monacoReactTypesPlugin` to its existing `plugins` array.
+Add `monacoReactTypesPlugin` to the plugins in your existing `vite.config.ts`.
+Pass the project directory so it can resolve React, React DOM, and `csstype`
+declarations for the editor's TypeScript worker.
 
 ```ts filename="vite.config.ts"
 import { defineConfig } from "vite";
@@ -36,15 +65,11 @@ export default defineConfig({
 });
 ```
 
-`import.meta.dirname` points at the directory containing `vite.config.ts` and
-`package.json`. The plugin supplies the React declarations; Vite’s built-in
-`?worker` handling bundles the worker scripts used by the runtime.
-
 ## Configure TypeScript
 
-Keep your Vite React template’s existing TypeScript settings. In
-`tsconfig.json`, add the virtual-module types to `compilerOptions.types`:
-This is a settings fragment to merge, not a replacement for your entire tsconfig.
+Add `@moyarich/moyaforge-monaco/vite/react-types` to
+`compilerOptions.types` in the TypeScript config that covers your app.
+Keep the other entries already in the list.
 
 ```json filename="tsconfig.json"
 {
@@ -56,11 +81,7 @@ This is a settings fragment to merge, not a replacement for your entire tsconfig
 
 ## Initialize workers
 
-Configure workers once in `src/main.tsx`, before rendering your app. This keeps
-Monaco and its workers local to your application.
-
-Worker setup runs at startup,
-not inside an editor component or a React effect.
+For React Monaco on its own, call `configureReactWorkers()` in `src/main.tsx` before rendering the app. Vite bundles the editor workers with your application.
 
 ```tsx filename="src/main.tsx"
 import { StrictMode } from "react";
@@ -82,7 +103,7 @@ createRoot(document.getElementById("root")!).render(
 Create `src/App.tsx` with the example below. `onFileChange` updates the files in
 React state, keeping your edits when you switch tabs. Selecting **Save** calls
 `onSave` with the active file’s name and current contents. This example displays
-a confirmation message; to save changes permanently, use that callback to write
+a confirmation message. To save changes permanently, use that callback to write
 to your storage or send the file to your API.
 
 ```tsx filename="src/App.tsx"
@@ -132,29 +153,12 @@ export default function App() {
 ```
 
 Run `npm run dev` and open the Vite URL. The panel renders the supplied
-source as editable text. It does not execute the edited application; use
+source as editable text. To run the edited application, use
 [PreviewCodeEditor](/ui/components/preview-code-editor) for a live rendered preview.
-
-## Copy component source instead
-
-If you prefer editable component files in your project, use one of these commands
-instead of importing `MonacoEditorPanel` from the UI package:
-
-```sh
-npx @moyarich/moyaforge-cli@latest add monaco-editor-panel
-```
-
-```sh
-npx shadcn@latest add moyarich/moyaforge/monaco-editor-panel
-```
-
-Then import from the generated component location, such as
-`@/components/ui/MonacoEditorPanel`. The Vite plugin, type packages, and worker
-initialization above are still required.
 
 ## Using React Monaco and TypeFox together
 
-For an application using both editors, register the Vite plugin and initialize the shared runtime in `main.tsx`:
+For an application using both editors, use the shared initializer as your one startup call in `main.tsx`.
 
 ```ts filename="main.tsx"
 import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
@@ -183,7 +187,6 @@ import "./editor.css";
 ```
 
 ```css
-/* editor.css — user-owned, not a MoyaForge internal stylesheet */
 .react-monaco-editor {
   --mf-editor-border: #cbd5e1;
   --mf-editor-toolbar-background: #f1f5f9;
@@ -194,7 +197,7 @@ import "./editor.css";
 }
 ```
 
-You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. The CSS variables style the **editor UI**, not the underlying Monaco syntax theme. See [Editor Panel](/ui/components/editor-panel) for an editable, stateful example and curved-tab CSS preset.
+You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. Use the panel’s `theme` prop to change Monaco’s syntax theme. See [Editor Panel](/ui/components/editor-panel) for an editable, stateful example and curved-tab CSS preset.
 
 ## Examples
 
