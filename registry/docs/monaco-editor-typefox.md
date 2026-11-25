@@ -9,9 +9,9 @@ npm install @moyarich/moyaforge-ui @moyarich/moyaforge-monaco @typefox/monaco-ed
 ```
 
 ```tsx
-import { TypeFoxEditorWorkspace } from "@moyarich/moyaforge-ui/components/TypeFoxEditorWorkspace";
+import { TypeFoxEditorPanel } from "@moyarich/moyaforge-ui/components/TypeFoxEditorPanel";
 
-<TypeFoxEditorWorkspace
+<TypeFoxEditorPanel
   files={files}
   onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}
   height={320}

@@ -110,14 +110,14 @@ import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoE
 import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
 ```
 
-These components render editor content only; they do not provide tabs, a toolbar, Save or Copy controls. Mount them inside `EditorWorkspace` from `moyaforge-ui`, or import the ready-to-compose `MonacoEditorWorkspace` and `TypeFoxEditorWorkspace` wrappers from that package. File selection is controlled with `activeFile`; external updates arrive through the `files` prop and edits through `onFileChange`.
+These components render editor content only; they do not provide tabs, a toolbar, Save or Copy controls. Mount them inside `EditorPanel` from `moyaforge-ui`, or import the ready-to-compose `MonacoEditorPanel` and `TypeFoxEditorPanel` wrappers from that package. File selection is controlled with `activeFile`; external updates arrive through the `files` prop and edits through `onFileChange`.
 
 For example:
 
 ```tsx
-import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
 
-<MonacoEditorWorkspace
+<MonacoEditorPanel
   files={files}
   onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}
   height={320}

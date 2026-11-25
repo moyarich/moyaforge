@@ -11,9 +11,9 @@ npm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/rea
 Import the visual workspace from `moyaforge-ui`:
 
 ```tsx
-import { MonacoEditorWorkspace } from "@moyarich/moyaforge-ui/components/MonacoEditorWorkspace";
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
 
-<MonacoEditorWorkspace
+<MonacoEditorPanel
   files={files}
   onFileChange={(name, value) => setFiles(current => current.map(file => file.name === name ? { ...file, value } : file))}
   height={320}

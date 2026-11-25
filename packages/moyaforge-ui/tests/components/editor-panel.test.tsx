@@ -1,15 +1,15 @@
 import { expect, test } from "vitest";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { EditorWorkspace } from "../../src/components/EditorWorkspace/EditorWorkspace.js";
+import { EditorPanel } from "../../src/components/EditorPanel/EditorPanel.js";
 
 const files = [
   { name: "App.tsx", path: "src/App.tsx", value: "const app = 1;" },
   { name: "styles.css", value: "body {}" },
 ];
 
-test("editor workspace owns the tabs, panel and toolbar independently of Monaco", () => {
-  const html = renderToStaticMarkup(h(EditorWorkspace, {
+test("editor panel owns the tabs, panel and toolbar independently of Monaco", () => {
+  const html = renderToStaticMarkup(h(EditorPanel, {
     files,
     showBreadcrumbs: true,
     onSave: () => {},
@@ -26,8 +26,8 @@ test("editor workspace owns the tabs, panel and toolbar independently of Monaco"
   expect(html).not.toContain("data-moyaforge-monaco");
 });
 
-test("workspace file selection and locking are host controlled", () => {
-  const html = renderToStaticMarkup(h(EditorWorkspace, {
+test("panel file selection and locking are host controlled", () => {
+  const html = renderToStaticMarkup(h(EditorPanel, {
     files,
     activeFile: "styles.css",
     readOnly: true,
