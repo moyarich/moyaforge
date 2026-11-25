@@ -1,6 +1,5 @@
 import { useEditorTheme } from "../../hooks/useEditorTheme.js";
 import { useEffect, useId, useRef } from "react";
-import type { editor } from "monaco-editor";
 import type { EditorProps, OnMount } from "@monaco-editor/react";
 import { MonacoFileSession, type MonacoFileSessionProps } from "../MonacoFileSession/MonacoFileSession.js";
 import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
@@ -9,18 +8,8 @@ import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
 export interface MonacoEditorReactProps extends Omit<
   MonacoFileSessionProps,
   "renderEditor"
-> {
-  /** Editor height; defaults to 320. */
-  height?: number | string;
-  /** Container width; defaults to 100%. */
-  width?: number | string;
-  /** Omit to follow inherited CSS color-scheme, then system preference. */
-  theme?: string;
-  /** Native Monaco construction options; file locks take precedence. */
-  options?: editor.IStandaloneEditorConstructionOptions;
-  loading?: EditorProps["loading"];
-  beforeMount?: EditorProps["beforeMount"];
-  onMount?: OnMount;
+>, Omit<EditorProps, "value" | "defaultValue" | "path" | "defaultPath" | "language" | "defaultLanguage" | "keepCurrentModel"> {
+  // The file session owns model identity, content, language and disposal.
 }
 
 /** Optional real Monaco editor with independent models, file drafts and host-owned persistence. */
@@ -32,12 +21,18 @@ export function MonacoEditorReact({
   loading,
   beforeMount,
   onMount,
-  ...props
+  onChange: onEditorChange,
+  files,
+  activeFile,
+  onFileChange,
+  readOnly: sessionReadOnly,
+  className,
+  ...editorProps
 }: MonacoEditorReactProps) {
   const id = useId();
   if (
     new Set(
-      props.files.map((file) => (file.path ?? file.name).replaceAll("\\", "/")),
+      files.map((file) => (file.path ?? file.name).replaceAll("\\", "/")),
     ).size !== props.files.length
   )
     throw new Error("Monaco model paths must be unique within a workspace.");
@@ -65,10 +60,14 @@ export function MonacoEditorReact({
       style={{ width, minWidth: 0 }}
     >
       <MonacoFileSession
-        {...props}
-        readOnly={props.readOnly ?? options?.readOnly ?? false}
+        files={files}
+        activeFile={activeFile}
+        onFileChange={onFileChange}
+        className={className}
+        readOnly={sessionReadOnly ?? options?.readOnly ?? false}
         renderEditor={({ file, value, onChange, readOnly }) => (
           <ReactMonacoSourceEditor
+            {...editorProps}
             path={
               prefix +
               (file.path ?? file.name)
@@ -88,8 +87,9 @@ export function MonacoEditorReact({
               runtime.current = monaco;
               onMount?.(editor, monaco);
             }}
-            onChange={(next) => {
+            onChange={(next, event) => {
               if (next !== undefined && !readOnly) onChange(next);
+              onEditorChange?.(next, event);
             }}
             options={{
               fixedOverflowWidgets: true,

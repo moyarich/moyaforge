@@ -1,16 +1,19 @@
 import { expect, test, vi } from "vitest";
 import { createElement as h, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+const nativePropsSpy = vi.hoisted(() => vi.fn());
 vi.mock(
   "../../src/components/MonacoEditorReact/ReactMonacoSourceEditor.js",
   () => ({
-    ReactMonacoSourceEditor: (props) =>
-      h("textarea", {
+    ReactMonacoSourceEditor: (props) => {
+      nativePropsSpy(props);
+      return h("textarea", {
         "data-model-path": props.path,
         "data-language": props.language,
         readOnly: props.options.readOnly,
         defaultValue: props.value,
-      }),
+      });
+    },
   }),
 );
 import { MonacoEditorReact } from "../../src/components/MonacoEditorReact/MonacoEditorReact.js";
@@ -85,4 +88,26 @@ test("duplicate names and model paths fail instead of sharing editable state", (
       }),
     ),
   ).toThrow(/unique/);
+});
+
+
+test("React Monaco forwards native editor options and callbacks while owning file models", () => {
+  nativePropsSpy.mockClear();
+  const onValidate = vi.fn();
+  const wrapperProps = { "aria-label": "Source editor" };
+  renderToStaticMarkup(h(MonacoEditorReact, {
+    files,
+    line: 12,
+    saveViewState: false,
+    onValidate,
+    wrapperProps,
+  }));
+  const native = nativePropsSpy.mock.calls[0][0];
+  expect(native.line).toBe(12);
+  expect(native.saveViewState).toBe(false);
+  expect(native.onValidate).toBe(onValidate);
+  expect(native.wrapperProps).toBe(wrapperProps);
+  expect(native.value).toBe(files[0].value);
+  expect(native.path).toMatch(/App\.tsx$/);
+  expect(native.language).toBeUndefined();
 });
