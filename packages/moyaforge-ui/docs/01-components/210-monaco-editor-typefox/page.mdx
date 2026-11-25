@@ -96,6 +96,7 @@ The host must provide a running language server and its transport; MoyaForge doe
 - `activeFile` and `onActiveFileChange` control the selected file.
 - `theme` overrides the inherited light/dark appearance.
 - `options`, `vscodeApiConfig`, `languageClientConfig`, `onReady`, and `onError` customize TypeFox.
+- The headless `MonacoEditorTypeFox` accepts native `MonacoEditorProps` from `@typefox/monaco-editor-react`, including `editorAppConfig`, lifecycle callbacks, `logLevel`, and `triggerReprocessConfig`. The file session owns the active model URI, text, and read-only state.
 - `showCopyButton`, `showBreadcrumbs`, `tools`, and `renderBreadcrumbs` customize the UI-owned panel.
 - `className` and `--mf-tabs-*` / `--mf-editor-*` CSS variables customize the UI.
 
