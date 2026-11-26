@@ -9,7 +9,7 @@ import {
   resolve,
   sep,
 } from "node:path";
-import { normalizePath, type Plugin } from "vite";
+import type { Plugin } from "vite";
 
 /** A content registry source whose base path is relative to `PreviewCodeOptions.root`. */
 export interface PreviewCodeSource {
@@ -125,6 +125,9 @@ export const codePreviewPluginName = "moyaforge-mdx:preview-code";
 
 const componentModuleId = `\0${codePreviewComponentVirtualModuleId}`;
 const sourceModuleId = `\0${codePreviewSourceVirtualModuleId}`;
+
+// Normalize paths without importing the optional Vite runtime.
+const normalizePath = (path: string): string => sep === "\\" ? path.replace(/\\/g, "/") : path;
 
 const sourceFilePattern = /^[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx|ts|js|md|mdx|css)$/;
 const componentFilePattern = /\.(?:tsx|jsx)$/;

@@ -1,8 +1,8 @@
 import { resolve } from "node:path";
-import { createServer } from "vite";
 import { checkContentLinks, formatLinkIssues } from "./check-links.js";
 
 export async function loadRegistryConfig(root: string, configPath: string) {
+  const { createServer } = await import("vite");
   const server = await createServer({
     root,
     configFile: false,

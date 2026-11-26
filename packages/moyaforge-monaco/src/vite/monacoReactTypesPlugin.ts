@@ -4,9 +4,15 @@ import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { Plugin } from "vite";
 
-/** Virtual module identifier used by both worker integrations. */
+/** Vite virtual module that provides React declaration files to Monaco. */
 const moduleId = "virtual:moyaforge-monaco/react-types";
-/** Declaration packages and entry filenames without the .d.ts suffix. */
+
+/**
+ * Type declaration entry points to expose through the virtual module.
+ *
+ * Keys are package names resolved relative to the consuming project's root.
+ * Values are declaration filenames without the `.d.ts` extension.
+ */
 const declarations = {
   "@types/react": ["index", "global", "jsx-runtime", "jsx-dev-runtime"],
   "@types/react-dom": ["index", "client"],
@@ -14,11 +20,21 @@ const declarations = {
 };
 
 /**
- * Expose the host project's React, React DOM and CSS declarations to Monaco.
- * The Vite virtual module maps file URIs to declaration source text. Changes
- * to watched declarations invalidate the module and reload the development page.
- * @param root - Directory containing the host package.json, used for dependency resolution.
- * @returns A Vite plugin that resolves, loads and watches the declarations.
+ * Creates a Vite plugin that makes installed React TypeScript declarations
+ * available to Monaco through `virtual:moyaforge-monaco/react-types`.
+ *
+ * The virtual module exports a mapping from `file:///node_modules/...`
+ * declaration paths to their UTF-8 source text. Packages are resolved from
+ * the consuming project's `package.json`, so the declarations match the
+ * project's installed dependencies.
+ *
+ * During development, the plugin watches those declaration files and triggers
+ * a full page reload when any of them are added, changed, or removed.
+ *
+ * @param root - Absolute path to the consuming project's root directory,
+ *   containing its `package.json`.
+ * @returns A Vite plugin that resolves, loads, and watches the React types
+ *   virtual module.
  * @example plugins: [monacoReactTypesPlugin(import.meta.dirname)]
  */
 export function monacoReactTypesPlugin(root: string): Plugin {
@@ -28,6 +44,7 @@ export function monacoReactTypesPlugin(root: string): Plugin {
   const watchedFiles = new Set<string>();
   let devServer: import("vite").ViteDevServer | undefined;
 
+  /** Reloads the dev page when a tracked declaration file changes. */
   const reload = (file: string) => {
     if (!watchedFiles.has(resolve(file)) || !devServer) return;
 
