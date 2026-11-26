@@ -1,4 +1,4 @@
-import { Monaco } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
+import { MonacoFileSession } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 const files = [
   {
@@ -17,7 +17,7 @@ const files = [
 
 export default function MonacoExample() {
   return (
-    <Monaco
+    <MonacoFileSession
       files={files}
       renderEditor={({ file, value, onChange, readOnly }) => (
         <textarea
