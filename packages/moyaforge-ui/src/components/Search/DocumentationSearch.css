@@ -1,4 +1,9 @@
+:root {
+  --mf-search-icon-size: 16px;
+}
+
 .mf-search {
+  --_mf-search-icon-size: var(--mf-search-icon-size);
   --_mf-search-focus: var(--mf-documentation-search-focus, var(--_mf-muted, #73737c));
   position: relative;
   width: 290px;
@@ -70,4 +75,10 @@
   position: static;
   width: 100%;
   margin-top: 8px;
+}
+
+.mf-search-icon {
+  width: var(--_mf-search-icon-size);
+  height: var(--_mf-search-icon-size);
+  flex-shrink: 0;
 }

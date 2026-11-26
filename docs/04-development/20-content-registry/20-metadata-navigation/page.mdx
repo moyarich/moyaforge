@@ -1,60 +1,178 @@
 ---
 title: Registry metadata and navigation
-label: Metadata and navigation
-description: Virtual registry modules, page metadata, TOC, sidebar groups, and build-time link validation.
+description: Compare discovered pages, routable pages, and sidebar navigation, then load an article from the generated modules.
 ---
 
-# Metadata, navigation and links
+import PreviewRegistryViews from "../../../../apps/playground/src/components/PreviewMdx/registry/PreviewRegistryViews.js";
 
-`discoverContent()` reads YAML frontmatter, extracts heading IDs, and builds normalized page records **without running the MDX page components**. It returns `registry`, `inputs`, `headings`, and optional `metadata` such as package JSON.
+# Registry metadata and navigation
 
-## Virtual modules
+Once discovery has selected your files, MoyaForge builds several views of the
+same page records. Each view answers a different question. The application uses
+metadata for navigation and a separate loader when it needs to render an article.
 
-The Vite registry adapter exposes three distinct module surfaces:
+## Compare the registry views
 
-| Module | Use |
-| --- | --- |
-| `virtual:moyaforge-mdx/metadata` | Plain page, route, navigation, heading and source metadata; **no React page imports** |
-| `virtual:moyaforge-mdx/lazy-registry` | Source-grouped dynamic page loaders, avoiding eager MDX module imports |
-| `virtual:moyaforge-mdx/registry` | Compatibility module with eager `pages` and lazy `lazyPages` maps |
+Start with the three canonical pages from the
+[source-discovery guide](../10-source-files/page.mdx). Their frontmatter titles
+are Guide, Installation, and Authoring; their source key is `docs`.
 
-~~~ts
-import { pages, routes, navigation, tree } from "virtual:moyaforge-mdx/metadata";
+| View | Contains | Use it for |
+| --- | --- | --- |
+| `pages` | All discovered pages, including hidden and disabled pages | Inspecting the complete inventory and its metadata. |
+| `routes` | Visible and hidden pages; no disabled pages | Route matching and deciding whether a page can be opened. |
+| `navigation` | Visible pages in sidebar display order | Previous/next links or a flat navigation list. |
+| `tree` | Visible navigation with parent/child relationships | Nested navigation, including virtual folders without landing pages. |
+
+**Try it:** hide Installation. It stays in `pages` and `routes`, but leaves
+`navigation`. Disable it next: its page record remains, but its route is removed.
+Changing the source key demonstrates how the route prefix is generated.
+
+<PreviewRegistryViews />
+
+The preview builds an isolated in-memory registry and renders a real sidebar and
+the selected Markdown body. It does not scan your disk. The source-discovery
+configuration determines which files reach this step in an application.
+
+## Read metadata without loading articles
+
+Use the metadata module for application chrome:
+
+```ts filename="src/page-inventory.ts"
+import {
+  pages,
+  routes,
+  navigation,
+  tree,
+  headings,
+  sourceMetadata,
+} from "virtual:moyaforge-mdx/metadata";
+
+export const inventory = { pages, routes, navigation, tree };
+```
+
+`RegistryPage` records include `source`, `file`, `title`, `path`, `parentPath`,
+`order`, `navigation`, and the resolved page options. Frontmatter supplies
+metadata such as description, icon, sidebar settings, and outline settings.
+
+These imports do not import the React page components. `headings` contains the
+compiler-derived heading trees, keyed by `source/file`. `sourceMetadata` contains
+optional JSON files selected with the source’s `metadata` patterns.
+
+## Load an article by its source filename
+
+The lazy registry holds page loaders, grouped by source. A loader key is the
+source-relative filename, not the public URL:
+
+```text
+Source key:       docs
+Source filename:  01-installation/page.md
+Public route:     /docs/installation
+```
+
+Use a route record to select the correct loader:
+
+```ts filename="src/load-article.ts"
+import { routes } from "virtual:moyaforge-mdx/metadata";
 import { sources } from "virtual:moyaforge-mdx/lazy-registry";
 
-const loadPage = sources.docs.lazyPages["04-development/page.mdx"];
-const component = await loadPage();
-~~~
+export async function loadArticle(path: string) {
+  const page = routes.find((candidate) => candidate.path === path);
+  if (!page) return undefined;
 
-Use the types-only `@moyarich/moyaforge-mdx/virtual` entry in your TypeScript `compilerOptions.types` or `vite-env.d.ts`. The `@moyarich/moyaforge-mdx/vite` entry is for the actual Vite plugins. MDX frontmatter is stored in registry metadata; `createMdxOptions({ exportFrontmatter: true })` is only for legacy consumers needing a compiled JS export.
+  const load = sources[page.source]?.lazyPages[page.file];
+  if (!load) throw new Error(`Missing page loader: ${page.source}/${page.file}`);
 
-## Visibility, navigation, and sidebar
+  const { default: Article } = await load();
+  return Article;
+}
+```
 
-- `navigation: visible` (default) produces a route and a navigation entry; `hidden` remains routable without a sidebar entry; `disabled` is omitted from routes and navigation.
-- `buildNavigationTree` and `flattenNavigation` derive nested navigation using ordered filenames. A missing directory landing page can be a **virtual group**, not an invented URL.
-- Frontmatter `sidebar.group: true` allows a source-root `page.mdx` to become a clickable group heading. Its separate disclosure toggle expands children. Use `sidebar.collapsible`, `sidebar.defaultOpen`, or `sidebar.label` to tune behavior.
-- The `icon` field accepts a Lucide kebab-case name, stored as metadata; UI rendering remains optional.
+Calling `loadArticle("/docs/installation")` returns a React component for the
+article when that route exists. Your router decides when to load and render it.
+For the framework’s ready-made route adapter, follow
+[Routing and navigation](../../../01-routing/page.mdx).
 
-~~~yaml
----
-title: UI Components
-label: Overview
-icon: folder-open
-sidebar:
-  group: true
-  collapsible: true
-  defaultOpen: true
----
-~~~
+The third module, `virtual:moyaforge-mdx/registry`, exposes eager `pages` maps
+alongside lazy maps. Import it when you intentionally need eager components;
+metadata plus lazy loaders keeps navigation separate from article loading.
 
-## TOC, heading IDs, and links
+## Render sidebar groups
 
-`extractPageHeadings` recognizes Markdown and MDX syntax, including static JSX surrounding headings, using the shared remark/rehype slug pipeline. Duplicates retain their canonical generated IDs. Headings rendered **later by React components** cannot be discovered at build time.
+A navigation tree describes hierarchy; source configuration supplies group
+presentation. Combine them using `buildDocumentationGroups`:
 
-`resolveTocOptions`, `filterTableOfContents`, and `getTableOfContents` apply project defaults and page-specific `toc` overrides. `toc: false` disables the outline, and an outline with no matching headings is omitted.
+```ts filename="src/navigation.ts"
+import { buildDocumentationGroups } from "@moyarich/moyaforge-mdx/navigation";
+import { routes } from "virtual:moyaforge-mdx/metadata";
+import registry from "../registry.config";
 
-`validateInternalLinks` checks page links against registered public routes and heading anchors. `checkContentLinks` and `formatLinkIssues` support CI diagnostics for missing pages, missing anchors, and invalid references. The checker handles Markdown links and literal MDX anchor `href` values; dynamic JSX expressions cannot be statically validated. Run `npm run check:links` after moving documentation.
+export const groups = buildDocumentationGroups(routes, registry.sources);
+```
 
-See [Routing and navigation](../../../01-routing/page.mdx) for host React Router integration, and [Development](../../page.mdx) for source-file links versus public routes.
+Pass `groups` to Sidebar V1 or its `Navigation` component. A visible source-root
+page with `sidebar.group: true` becomes the linked heading, with child pages
+below it. Otherwise the source’s configured `navigation.label` supplies the
+group label. The live example uses a promoted Guide landing page.
 
-[Content registry overview](../page.mdx) · [Source files](../10-source-files/page.mdx)
+Missing ancestor landing pages can still produce virtual directory nodes. Those
+nodes organize children without inventing a routable article for the directory.
+For the author-facing options, see
+[frontmatter configuration](../../../02-mdx/10-markdown-and-mdx/page.mdx#frontmatter).
+
+## Render an article’s outline
+
+Look up headings with the source key and original filename, then apply the page’s
+`toc` setting:
+
+```ts filename="src/page-outline.ts"
+import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
+import { routes, headings } from "virtual:moyaforge-mdx/metadata";
+
+export function getPageOutline(path: string) {
+  const page = routes.find((candidate) => candidate.path === path);
+  if (!page) return undefined;
+
+  return getTableOfContents(
+    headings[`${page.source}/${page.file}`] ?? [],
+    page.toc,
+  );
+}
+```
+
+The result provides filtered headings and resolved display options. An outline
+is omitted when disabled or when no headings match its depth range.
+
+Heading extraction uses the same slug pipeline as page compilation, including
+duplicate-heading IDs. It can read authored Markdown and static MDX headings;
+it cannot discover headings created later inside a rendered React component.
+
+## Configure TypeScript and check links
+
+In your app’s existing TypeScript configuration, include the virtual module types:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["vite/client", "@moyarich/moyaforge-mdx/virtual"]
+  }
+}
+```
+
+Merge that fragment with existing settings. The types-only `/virtual` entry
+provides declarations; `/vite` exports the actual Vite plugins. Registry metadata
+already contains frontmatter, so compiled JavaScript frontmatter exports are only
+needed when another consumer explicitly imports them.
+
+In this repository, run the documentation link checker after moving pages or
+changing route titles:
+
+```sh
+npm run check:links
+```
+
+It checks Markdown links and literal MDX `href` values against registered routes
+and heading anchors. Diagnostics distinguish missing pages, missing anchors, and
+invalid references. Dynamic JSX link expressions cannot be checked statically.
+
+[Content registry overview](../) · [Source discovery](../10-source-files/page.mdx)

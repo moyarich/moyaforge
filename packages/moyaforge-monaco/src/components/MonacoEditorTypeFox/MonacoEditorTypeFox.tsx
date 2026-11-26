@@ -1,5 +1,5 @@
-import "../MonacoEditorCore/MonacoLoading.css";
-import { useEditorTheme } from "../MonacoEditorCore/useEditorTheme.js";
+import "../../styles/MonacoLoading.css";
+import { useEditorTheme } from "../../hooks/useEditorTheme.js";
 import { useEffect, useId, useRef, useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { MonacoEditorReactComp } from "@typefox/monaco-editor-react";
@@ -7,25 +7,25 @@ import type { MonacoEditorProps } from "@typefox/monaco-editor-react";
 import type { editor } from "@codingame/monaco-vscode-editor-api";
 import type { MonacoVscodeApiConfig } from "monaco-languageclient/vscodeApiWrapper";
 import {
-  Monaco,
-  type MonacoProps,
-  type MonacoEditorRenderProps,
-} from "../MonacoEditorCore/Monaco.js";
-import { languageForPath } from "../MonacoEditorCore/languages.js";
+  MonacoFileSession,
+  type MonacoFileSessionProps,
+  type MonacoFileRenderProps,
+} from "../MonacoFileSession/MonacoFileSession.js";
 
+/** Configuration for the headless editor runtime. */
 export interface MonacoEditorTypeFoxProps extends Omit<
-  MonacoProps,
+  MonacoFileSessionProps,
   "renderEditor"
-> {
+>, MonacoEditorProps {
+  /** Editor height; defaults to 320. */
   height?: number | string;
+  /** Container width; defaults to 100%. */
   width?: number | string;
   theme?: string;
+  /** Native Monaco construction options; file locks take precedence. */
   options?: editor.IStandaloneEditorConstructionOptions;
-  vscodeApiConfig?: MonacoVscodeApiConfig;
-  /** Optional TypeFox language-server connection; the host owns its transport. */
-  languageClientConfig?: MonacoEditorProps["languageClientConfig"];
+  /** Called when the editor starts. */
   onReady?: MonacoEditorProps["onEditorStartDone"];
-  onError?: MonacoEditorProps["onError"];
 }
 const defaultApiConfig: MonacoVscodeApiConfig = {
   $type: "classic",
@@ -47,7 +47,18 @@ function TypeFoxEditor({
   onReady,
   onError,
   uri,
-}: MonacoEditorRenderProps & MonacoEditorTypeFoxProps & { uri: string }) {
+  editorAppConfig,
+  triggerReprocessConfig,
+  onEditorStartDone,
+  onTextChanged,
+  style,
+  files: _files,
+  activeFile: _activeFile,
+  onFileChange: _onFileChange,
+  className: _className,
+  width: _width,
+  ...nativeProps
+}: MonacoFileRenderProps & MonacoEditorTypeFoxProps & { uri: string }) {
   const current = useRef(value);
   const [revision, setRevision] = useState(0);
   const [ready, setReady] = useState(false);
@@ -60,7 +71,7 @@ function TypeFoxEditor({
   }, [value]);
   useEffect(() => {
     setRevision((previous) => previous + 1);
-  }, [theme, options, readOnly]);
+  }, [theme, options, readOnly, editorAppConfig, file.language, triggerReprocessConfig]);
   return (
     <div style={{ height, minHeight: 0, position: "relative" }}>
       {!ready && !error && (
@@ -76,17 +87,19 @@ function TypeFoxEditor({
       )}
       {error && <p role="alert">{error.message}</p>}
       <MonacoEditorReactComp
-        style={{ height: "100%" }}
+        {...nativeProps}
+        style={{ height: "100%", ...style }}
         vscodeApiConfig={vscodeApiConfig ?? defaultApiConfig}
         languageClientConfig={languageClientConfig}
         editorAppConfig={{
+          ...editorAppConfig,
           id: uri,
           codeResources: {
+            ...editorAppConfig?.codeResources,
             modified: {
               text: value,
               uri,
-              enforceLanguageId:
-                file.language ?? languageForPath(file.path ?? file.name),
+              ...(file.language !== undefined && { enforceLanguageId: file.language }),
             },
           },
           editorOptions: {
@@ -98,8 +111,9 @@ function TypeFoxEditor({
             automaticLayout: true,
             fixedOverflowWidgets: true,
             wordWrap: "on",
+            ...editorAppConfig?.editorOptions,
             ...options,
-            theme,
+            ...(theme !== undefined && { theme }),
             readOnly,
             domReadOnly: readOnly,
           },
@@ -107,17 +121,20 @@ function TypeFoxEditor({
         triggerReprocessConfig={revision}
         onEditorStartDone={(app) => {
           setReady(true);
+          onEditorStartDone?.(app);
           onReady?.(app);
         }}
         onError={(next) => {
           setError(next);
           onError?.(next);
         }}
-        onTextChanged={({ modified }) => {
+        onTextChanged={(changes) => {
+          const { modified } = changes;
           if (modified !== undefined && !readOnly) {
             current.current = modified;
             onChange(modified);
           }
+          onTextChanged?.(changes);
         }}
       />
     </div>
@@ -150,9 +167,9 @@ export function MonacoEditorTypeFox({
       data-moyaforge-monaco-workspace=""
       style={{ width, minWidth: 0 }}
     >
-      <Monaco
+      <MonacoFileSession
         {...props}
-        readOnly={props.readOnly ?? options?.readOnly ?? false}
+        readOnly={props.readOnly ?? options?.readOnly ?? props.editorAppConfig?.editorOptions?.readOnly ?? false}
         renderEditor={(state) => (
           <TypeFoxEditor
             key={state.file.name}

@@ -4,6 +4,7 @@ export interface DirectiveHeader {
   title?: string;
   flags: string[];
   component?: string;
+  preview?: string;
   code?: string;
   language?: string;
   sources?: string;

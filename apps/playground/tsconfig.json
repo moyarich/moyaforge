@@ -14,7 +14,7 @@
       "vite/client",
       "node",
       "@moyarich/moyaforge-mdx/virtual",
-      "@moyarich/moyaforge-monaco/virtual"
+      "@moyarich/moyaforge-monaco/vite/react-types"
     ]
   },
   "include": [

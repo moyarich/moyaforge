@@ -1,0 +1,66 @@
+---
+title: moyaforge add
+---
+
+# `moyaforge add`
+
+Install one or more components from the registry.
+
+Run from your React application root. Configure the CLI and browse available names first:
+
+```sh
+npx @moyarich/moyaforge-cli@latest add search
+npx @moyarich/moyaforge-cli@latest add code-block code-group
+```
+
+The `add` command copies editable source for the selected components and their dependencies into your configured UI directory. Installed components import their own CSS.
+
+The same component source can be installed using the shadcn-compatible registry:
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/code-group
+```
+
+## Use an installed component
+
+```sh
+npx @moyarich/moyaforge-cli@latest add copy-button
+```
+
+In `src/App.tsx`:
+
+```tsx
+import { CopyButton } from "./components/ui/CopyButton/CopyButton.js";
+
+export default function App() {
+  return <CopyButton value="npm install">Copy command</CopyButton>;
+}
+```
+
+Adjust the relative import when your application file is in another folder.
+
+`search` installs the reusable UI input. It does not install or configure the SQLite index by itself; `init --template playground --search` also enables the search adapter and generates the app-specific result wiring.
+
+## Preserve local changes
+
+Local edits are preserved by default. `--overwrite` explicitly permits replacement, while `--no-install` copies files without running npm.
+
+```sh
+npx @moyarich/moyaforge-cli@latest add code-group --dry-run --diff
+npx @moyarich/moyaforge-cli@latest add code-group --overwrite
+```
+
+## Choose the component destination
+
+`--directory` changes the component installation root. `--registry` accepts a local repository directory, a `registry.json` file, or its URL. Use `--cwd <path>` to target another project.
+
+Save a destination for future installations:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init --directory src/ui
+npx @moyarich/moyaforge-cli@latest add code-group copy-button
+```
+
+The button is now at `src/ui/CopyButton/CopyButton.tsx`. From `src/App.tsx`, import it with `./ui/CopyButton/CopyButton.js`.
+
+If dependency installation fails after files are copied, run `npm install` in the project directory before starting your app.

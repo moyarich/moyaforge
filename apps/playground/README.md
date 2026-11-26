@@ -33,6 +33,6 @@ npm run preview --workspace @moyarich/moyaforge-playground
 - The sidebar and outline use explicit slots with registry-driven navigation, version information, and page-specific feedback.
 - `src/mdx-provider.tsx` registers reusable components and common Lucide icons for authored MDX.
 - `../../docs/page.mdx` and package-owned `page.mdx` files own visible documentation and examples.
-- `../../docs/04-development/page.mdx` owns maintainer setup and tests; its nested pages document content discovery, package integrations, and code-preview internals.
+- `../../docs/04-development/page.mdx` owns maintainer setup and tests; its nested pages document content discovery, package integrations, and preview-code internals.
 
 The private app is not a published package and its maintenance belongs in Development docs, not a public package changelog.

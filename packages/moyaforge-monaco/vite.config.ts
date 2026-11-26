@@ -14,10 +14,11 @@ const componentEntries = Object.fromEntries(
     ]),
 );
 const entry = {
-  react: resolve(root, "src/react.ts"),
-  typefox: resolve(root, "src/typefox.ts"),
-  shared: resolve(root, "src/shared.ts"),
-  vite: resolve(root, "src/vite.ts"),
+  "workers/configureReactWorkers": resolve(root, "src/workers/configureReactWorkers.ts"),
+  "workers/configureTypeFoxWorkers": resolve(root, "src/workers/configureTypeFoxWorkers.ts"),
+  "workers/createMonacoVscodeWorkerConfig": resolve(root, "src/workers/createMonacoVscodeWorkerConfig.ts"),
+  "runtime/initializeMonacoVscodeRuntime": resolve(root, "src/runtime/initializeMonacoVscodeRuntime.ts"),
+  "vite/monacoReactTypesPlugin": resolve(root, "src/vite/monacoReactTypesPlugin.ts"),
   ...componentEntries,
 };
 

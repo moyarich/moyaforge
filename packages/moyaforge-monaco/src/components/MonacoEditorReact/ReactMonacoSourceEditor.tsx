@@ -1,10 +1,12 @@
-import "../MonacoEditorCore/MonacoLoading.css";
-import "../MonacoEditorCore/Monaco.css";
+import "../../styles/MonacoLoading.css";
+import "../MonacoFileSession/MonacoFileSession.css";
 import { Editor, type EditorProps } from "@monaco-editor/react";
 import { LoaderCircle } from "lucide-react";
 
+/** Native React Monaco editor options. */
 export type ReactMonacoSourceEditorProps = EditorProps;
 
+/** Render React Monaco with default options and an accessible loading state. */
 export function ReactMonacoSourceEditor(props: ReactMonacoSourceEditorProps) {
   return (
     <Editor

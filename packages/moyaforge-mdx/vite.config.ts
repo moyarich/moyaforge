@@ -14,8 +14,9 @@ export default defineConfig({
         "src/index.ts",
         "src/vite/plugin.ts",
         "src/content/source-files.ts",
-        "src/navigation/toc.ts",
-        "src/navigation/tree.ts",
+        "src/navigation/toc/index.ts",
+        "src/navigation/tree/index.ts",
+        "src/registry/create-page-id.ts",
       ],
       treeshake: false,
       output: {

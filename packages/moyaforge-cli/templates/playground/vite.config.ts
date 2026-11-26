@@ -1,4 +1,4 @@
-import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -10,7 +10,7 @@ import {
   createMdxOptions,
   remarkRewriteSourceLinks,
 } from "@moyarich/moyaforge-mdx";
-import { createCodePreviewPlugin, createCodePreviewRegistry, mdxRegistryPlugin, resolveCodePreviewSource } from "@moyarich/moyaforge-mdx/vite";
+import { createPreviewCodePlugin, createPreviewCodeRegistry, mdxRegistryPlugin, resolvePreviewCodeSource } from "@moyarich/moyaforge-mdx/vite";
 __SEARCH_PLUGIN_IMPORT__
 import registry from "./registry.config.js";
 
@@ -18,7 +18,7 @@ const contentRoot = import.meta.dirname;
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
 
-const codePreview = createCodePreviewRegistry({
+const codePreview = createPreviewCodeRegistry({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
@@ -35,14 +35,15 @@ const compileMdx = mdx(createMdxOptions({
     routes: discovered.routes,
   }]],
   componentMappings: {
-    "code-preview": {
-      component: "InlineCodePreview",
+    "preview-code": {
+      component: "PreviewCodeInline",
+        booleanProps: ["refresh"],
       titleProp: "title",
       sourceProp: "code",
       filesProp: "sourceFiles",
       localSources: true,
       registerInlineReact: codePreview.inlineReact.register,
-      resolveCodePreviewComponent: (reference, authoredFile) => resolveCodePreviewSource({ context: codePreview, reference, authoredFile }),
+      resolvePreviewCodeComponent: (reference, authoredFile) => resolvePreviewCodeSource({ context: codePreview, reference, authoredFile }),
     },
     "*": { component: "CustomBlock", typeProp: "type", titleProp: "title" },
     "code-group": { component: "CodeGroup", childType: "tab", childComponent: "CodeTab" },
@@ -66,7 +67,7 @@ export default defineConfig({
   },
   plugins: [
     monacoReactTypesPlugin(contentRoot),
-    createCodePreviewPlugin({ codePreview }),
+    createPreviewCodePlugin({ codePreview }),
     mdxRegistryPlugin({ discovery, registry, root: contentRoot }),
     __SEARCH_PLUGIN__
     {

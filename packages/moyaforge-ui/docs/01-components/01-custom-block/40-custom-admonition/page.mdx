@@ -1,6 +1,5 @@
 ---
 title: Custom admonition
-label: Custom admonition
 description: Create distinctive Markdown alerts and notifications with inline CSS and optional scripts.
 ---
 
@@ -12,7 +11,7 @@ Each example is written as Markdown with a raw inline CSS block. The Code view s
 
 ## Success — mint notification
 
-::::code-preview[Success alert]
+::::preview-code[Success alert]
 
 <style>
 .custom-block.ui-success {
@@ -55,7 +54,7 @@ Your settings have been updated successfully.
 
 ## Information — soft blue notification
 
-::::code-preview[Information alert]
+::::preview-code[Information alert]
 
 <style>
 .custom-block.ui-information {
@@ -99,7 +98,7 @@ You can now export your reports as CSV files.
 
 ## Warning — warm yellow notification
 
-::::code-preview[Warning alert]
+::::preview-code[Warning alert]
 
 <style>
 .custom-block.ui-warning {
@@ -141,7 +140,7 @@ You have less than 10% of your storage remaining.
 
 ## Error — blush notification
 
-::::code-preview[Error alert]
+::::preview-code[Error alert]
 
 <style>
 .custom-block.ui-error {
@@ -184,7 +183,7 @@ We could not upload your file. Check your connection and try again.
 
 ## Dark — high-contrast alert
 
-::::code-preview[Dark notification]
+::::preview-code[Dark notification]
 
 <style>
 .custom-block.ui-dark-alert {
@@ -229,7 +228,7 @@ The dashboard will be unavailable for approximately 15 minutes tonight.
 
 The raw `<script>` is visible in the Source tab, but it does not execute in the preview. The native `<details>` element below supplies a working interaction without JavaScript.
 
-::::code-preview[Dismissible notification]
+::::preview-code[Dismissible notification]
 
 <style>
 .custom-block.ui-dismissible {
@@ -256,7 +255,10 @@ The raw `<script>` is visible in the Source tab, but it does not execute in the 
 
 ::: ui-dismissible Your download is ready
 
-<details className="ui-notification-details"><summary>Show download information</summary><p>Your file has been prepared and is ready to download.</p></details>
+<details className="ui-notification-details">
+  <summary>Show download information</summary>
+  <p>Your file has been prepared and is ready to download.</p>
+</details>
 
 :::
 

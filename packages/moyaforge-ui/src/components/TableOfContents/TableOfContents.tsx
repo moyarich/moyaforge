@@ -37,12 +37,20 @@ export function TableOfContents({
       : []);
 
   return (
-    <nav {...props} aria-label="Table of contents" className={["mf-toc", className].filter(Boolean).join(" ")}>
+    <nav
+      {...props}
+      aria-label="Table of contents"
+      className={["mf-toc", className].filter(Boolean).join(" ")}
+    >
       <ul>
         {headings.map((heading) => {
           const item = heading;
           return (
-            <li key={item.id} data-level={item.level} className={item.level === 3 ? "mf-level-3" : undefined}>
+            <li
+              key={item.id}
+              data-level={item.level}
+              className={`mf-level-${item.level}`}
+            >
               {renderLink ? (
                 renderLink(item)
               ) : (

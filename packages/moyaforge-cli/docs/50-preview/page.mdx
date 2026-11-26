@@ -1,0 +1,38 @@
+---
+title: moyaforge preview
+---
+
+# `moyaforge preview`
+
+Serve your production build locally to check it before deploying. Run the build command first.
+
+```sh
+npm run build
+npx @moyarich/moyaforge-cli@latest preview --port 4173
+```
+
+Run this from a project with Vite installed, or pass `--cwd <path>` to select the project directory. Other flags are passed to Vite.
+
+## Check a generated site
+
+```sh
+npm run typecheck
+npm run build
+npm run preview
+```
+
+For the `existing` template, use the documentation scripts:
+
+```sh
+npm run docs:typecheck
+npm run docs:build
+npm run docs:preview
+```
+
+Open the URL printed in your terminal. Rebuild after editing source files to preview your latest changes.
+
+To preview a different project, run the build in that project first, then select it:
+
+```sh
+npx @moyarich/moyaforge-cli@latest preview --cwd ./my-docs --port 4174
+```

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { initializeSharedMonaco } from "@moyarich/moyaforge-monaco/shared";
-import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
-import { MonacoEditorTypeFox } from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
+import { MonacoEditorPanel } from "../src/components/MonacoEditorPanel/index.js";
+import { TypeFoxEditorPanel } from "../src/components/TypeFoxEditorPanel/index.js";
 
 const reactFiles = [
   {
@@ -46,7 +46,7 @@ const meta = {
   // mounting the story, and the shared initializer caches its promise.
   loaders: [
     async () => {
-      await initializeSharedMonaco();
+      await initializeMonacoVscodeRuntime();
       return {};
     },
   ],
@@ -58,7 +58,7 @@ type Story = StoryObj<typeof meta>;
 export const ReactMonaco: Story = {
   render: () => (
     <div style={{ maxWidth: 880 }}>
-      <MonacoEditorReact files={reactFiles} height={340} />
+      <MonacoEditorPanel files={reactFiles} height={340} />
     </div>
   ),
 };
@@ -66,7 +66,7 @@ export const ReactMonaco: Story = {
 export const TypeFoxMonaco: Story = {
   render: () => (
     <div style={{ maxWidth: 880 }}>
-      <MonacoEditorTypeFox files={typefoxFiles} height={340} />
+      <TypeFoxEditorPanel files={typefoxFiles} height={340} />
     </div>
   ),
 };
@@ -83,11 +83,11 @@ export const SideBySide: Story = {
     >
       <section aria-label="React Monaco editor">
         <h3>React Monaco</h3>
-        <MonacoEditorReact files={reactFiles} height={340} />
+        <MonacoEditorPanel files={reactFiles} height={340} />
       </section>
       <section aria-label="TypeFox Monaco editor">
         <h3>TypeFox</h3>
-        <MonacoEditorTypeFox files={typefoxFiles} height={340} />
+        <TypeFoxEditorPanel files={typefoxFiles} height={340} />
       </section>
     </div>
   ),

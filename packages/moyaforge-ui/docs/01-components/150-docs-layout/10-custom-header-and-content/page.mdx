@@ -1,14 +1,20 @@
 ---
 title: Custom header and content
-label: Custom header and content
 ---
-
 
 # Docs Layout · Custom header and content
 
-::::code-preview[Docs Layout]{component="./Example.tsx"}
+Select **Guide** or **Release notes** in the custom header. The example changes
+its article and footer while keeping the same layout, without leaving this page.
 
-::code-preview-sources{files="./Example.tsx" replacements="portable"}
+Pass your own React content to `header` and `footer`, and render the article as
+children. `sidebar={null}` and `outline={null}` remove those optional regions.
+The example’s CSS styles the supplied content and contains the full-page shell
+inside the preview.
+
+::::preview-code[Custom header and content]{component="./CustomDocsLayout.tsx"}
+
+::preview-code-sources{files="./CustomDocsLayout.tsx,./CustomDocsLayout.css" replacements="portable"}
 
 ::::
 

@@ -1,23 +1,15 @@
-import { useEditorTheme } from "../MonacoEditorCore/useEditorTheme.js";
+import { useEditorTheme } from "../../hooks/useEditorTheme.js";
 import { useEffect, useId, useRef } from "react";
-import type { editor } from "monaco-editor";
 import type { EditorProps, OnMount } from "@monaco-editor/react";
-import { Monaco, type MonacoProps } from "../MonacoEditorCore/Monaco.js";
+import { MonacoFileSession, type MonacoFileSessionProps } from "../MonacoFileSession/MonacoFileSession.js";
 import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
-import { languageForPath } from "../MonacoEditorCore/languages.js";
 
+/** Configuration for the headless editor runtime. */
 export interface MonacoEditorReactProps extends Omit<
-  MonacoProps,
+  MonacoFileSessionProps,
   "renderEditor"
-> {
-  height?: number | string;
-  width?: number | string;
-  /** Omit to follow inherited CSS color-scheme, then system preference. */
-  theme?: string;
-  options?: editor.IStandaloneEditorConstructionOptions;
-  loading?: EditorProps["loading"];
-  beforeMount?: EditorProps["beforeMount"];
-  onMount?: OnMount;
+>, Omit<EditorProps, "value" | "defaultValue" | "path" | "defaultPath" | "language" | "defaultLanguage" | "keepCurrentModel"> {
+  // The file session owns model identity, content, language and disposal.
 }
 
 /** Optional real Monaco editor with independent models, file drafts and host-owned persistence. */
@@ -29,13 +21,19 @@ export function MonacoEditorReact({
   loading,
   beforeMount,
   onMount,
-  ...props
+  onChange: onEditorChange,
+  files,
+  activeFile,
+  onFileChange,
+  readOnly: sessionReadOnly,
+  className,
+  ...editorProps
 }: MonacoEditorReactProps) {
   const id = useId();
   if (
     new Set(
-      props.files.map((file) => (file.path ?? file.name).replaceAll("\\", "/")),
-    ).size !== props.files.length
+      files.map((file) => (file.path ?? file.name).replaceAll("\\", "/")),
+    ).size !== files.length
   )
     throw new Error("Monaco model paths must be unique within a workspace.");
   const prefix = `inmemory://moyaforge/${encodeURIComponent(id)}/`;
@@ -61,11 +59,15 @@ export function MonacoEditorReact({
       data-moyaforge-monaco-workspace=""
       style={{ width, minWidth: 0 }}
     >
-      <Monaco
-        {...props}
-        readOnly={props.readOnly ?? options?.readOnly ?? false}
+      <MonacoFileSession
+        files={files}
+        activeFile={activeFile}
+        onFileChange={onFileChange}
+        className={className}
+        readOnly={sessionReadOnly ?? options?.readOnly ?? false}
         renderEditor={({ file, value, onChange, readOnly }) => (
           <ReactMonacoSourceEditor
+            {...editorProps}
             path={
               prefix +
               (file.path ?? file.name)
@@ -74,7 +76,7 @@ export function MonacoEditorReact({
                 .map(encodeURIComponent)
                 .join("/")
             }
-            language={file.language ?? languageForPath(file.path ?? file.name)}
+            language={file.language}
             value={value}
             height={height}
             keepCurrentModel
@@ -85,8 +87,9 @@ export function MonacoEditorReact({
               runtime.current = monaco;
               onMount?.(editor, monaco);
             }}
-            onChange={(next) => {
+            onChange={(next, event) => {
               if (next !== undefined && !readOnly) onChange(next);
+              onEditorChange?.(next, event);
             }}
             options={{
               fixedOverflowWidgets: true,

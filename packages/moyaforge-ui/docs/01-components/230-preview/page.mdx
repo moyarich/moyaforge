@@ -1,6 +1,5 @@
 ---
 title: Preview
-label: Preview
 order: 230
 description: Slot-based live React previews with source viewing and copy actions.
 ---
@@ -32,7 +31,7 @@ The `preview` registry item includes the Preview slots, CopyButton, and their st
 React, `lucide-react`, and Shiki. These preview dependencies belong to the documentation
 frame; the component being demonstrated may have its own dependencies.
 
-Use [CodePreview](/ui/components/code-preview) for named source files, or [CodePreviewEditor](/ui/components/code-preview-editor) for editable Monaco files with a host-supplied preview renderer.
+Use [PreviewCode](/ui/components/preview-code) for named source files, or [PreviewCodeEditor](/ui/components/preview-code-editor) for editable Monaco files with a host-supplied preview renderer.
 
 ## Usage
 
@@ -78,6 +77,5 @@ Use `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius`,
 
 ## Examples
 
-- [Counter with source code](/ui/components/preview/live-preview) uses the standard toolbar and a footer.
-- [Source files in tabs](/ui/components/preview/source-tabs) shows the React component and stylesheet in separate tabs.
-
+- [Counter with source code](/ui/components/preview/counter-with-source-code) uses the standard toolbar and a footer.
+- [Source files in tabs](/ui/components/preview/source-files-in-tabs) shows the React component and stylesheet in separate tabs.

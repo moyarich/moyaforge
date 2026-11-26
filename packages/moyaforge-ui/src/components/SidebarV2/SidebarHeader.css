@@ -1,0 +1,5 @@
+.mf-sidebar-v2-header {
+  padding: var(--mf-sidebar-padding);
+  border-bottom: 1px solid var(--mf-sidebar-border-color);
+  font-weight: 600;
+}

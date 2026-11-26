@@ -1,0 +1,56 @@
+---
+title: Slide
+description: Slide a notification into place while keeping it opaque.
+---
+
+# Slide
+
+Slide a notification into place while keeping it opaque. Use **Refresh** to replay the animation.
+
+::::preview-code[Slide]{refresh preview="SlideNotice.tsx" replacements="portable"}
+
+```tsx filename="SlideNotice.tsx"
+import { Animation } from "../../../../src/components/Animation/index.js";
+import "./SlideNotice.css";
+
+export default function SlideNotice() {
+  return (
+    <Animation effect="slide" duration={0.9} wait={0.4} distance={24} className="animation-slide-example">
+      <h2>Delivery scheduled</h2>
+      <p>Your weekly digest arrives every Monday morning.</p>
+    </Animation>
+  );
+}
+```
+
+```css filename="SlideNotice.css"
+.animation-slide-example {
+  width: min(100%, 26rem);
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, currentColor 3%, transparent);
+  text-align: start;
+}
+
+.animation-slide-example h2 {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.animation-slide-example p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+```
+
+::::
+
+`duration` and `wait` are measured in seconds. Reduced-motion preferences show
+the finished content immediately.
+
+[Animation documentation](/ui/components/animation)

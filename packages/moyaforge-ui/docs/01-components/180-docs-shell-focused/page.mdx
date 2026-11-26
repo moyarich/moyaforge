@@ -1,57 +1,86 @@
 ---
 title: Docs Shell Focused
-label: Docs Shell Focused
-description: Canonical Docs Shell Focused example in the MoyaForge component gallery.
+description: A centered reading layout with a heading, article actions, and an optional footer.
 ---
 
 # Docs Shell Focused
 
-Use `header={null}` or `navigation={null}` to suppress those slots. Omit a prop to use its default.
+Use `DocsShellFocused` for articles and guides that need a readable content width
+without a sidebar. Supply the article as children; add navigation, actions, and
+footer content only when the page needs them.
 
 ## Installation
-
-<CodeGroup label="Install Docs Shell Focused">
-<CodeTab label="MoyaForge CLI">
 
 ```sh
 npx @moyarich/moyaforge-cli@latest add docs-shell-focused
 ```
 
-</CodeTab>
-<CodeTab label="shadcn">
+Or install with the shadcn CLI:
 
 ```sh
 npx shadcn@latest add moyarich/moyaforge/docs-shell-focused
 ```
 
-</CodeTab>
-</CodeGroup>
-
-Install `docs-shell-focused` from the MoyaForge component registry to obtain editable source and related styles. UI remains separate from the headless framework package.
-
-[All UI components](/ui)
+Both commands copy the component and its CSS into your project.
 
 ## Usage
 
-The examples use `@/` as an alias for `src/`. Use a relative import if your app has no alias configured.
+The example uses `@/` as an alias for `src/`. Adjust the import to match your
+installation directory.
 
 ```tsx
-import { DocsShellFocused } from "@/components/ui/DocsShellFocused/DocsShellFocused";
+import { DocsShellFocused } from "@/components/ui/DocsShellFocused";
 
-<DocsShellFocused
-  title="Focused reading"
-  subtitle="A distraction-free documentation layout"
-  header={<strong>Focused shell preview</strong>}
-  navigation={null}
->
-  <p>Reading content with independently replaceable slots.</p>
-</DocsShellFocused>;
+export default function WritingGuide() {
+  return (
+    <DocsShellFocused
+      title="Write for the next reader"
+      subtitle="A practical guide to useful documentation · 3 min read"
+      backHref="/guides"
+      footer={<p>Continue with the next guide when you are ready.</p>}
+    >
+      <h2>Begin with a real task</h2>
+      <p>Give the page a clear purpose and a complete, working example.</p>
+    </DocsShellFocused>
+  );
+}
 ```
 
-## Examples
+`backHref` creates a normal back link. Your application owns routing; the shell
+does not load pages or change the article for you.
 
-- [Focused reading layout](/ui/components/docs-shell-focused/focused-reading-layout)
+## Slots
+
+| Prop | What it renders |
+| --- | --- |
+| `title`, `subtitle` | Default heading and introduction. |
+| `header` | Replaces the default heading. Leave it undefined to use `title` and `subtitle`; pass `null` to omit it. |
+| `navigation` | Replaces the `backHref` link. Pass `null` to hide it. |
+| `articleActions` | Actions alongside the heading, such as saving an article. |
+| `children` | The article content. |
+| `footer` | Optional chapter navigation or related content. |
+
+Passing a custom `header` replaces the title and subtitle display, so include
+those elements in your custom content if you still want them visible.
+
+## Example
+
+[Article reader](/ui/components/docs-shell-focused/article-reader) demonstrates
+chapter navigation, a save action, and the default heading. The source tabs
+include the component and its example stylesheet.
 
 ## Styling
 
-Set `--mf-focused-width` to change the centered content width and `--mf-focused-border` to theme the shell border.
+The component imports its own structural CSS. Set `--mf-focused-width` to change
+the centered reading width and `--mf-focused-border` for header and footer dividers.
+Style your supplied article and actions with your own classes.
+
+```css
+.my-reading-page {
+  --mf-focused-width: 44rem;
+  --mf-focused-border: light-dark(#e4e4e7, #3f3f46);
+}
+```
+
+Apply these overrides on a wrapper around `DocsShellFocused`. Public variables
+use `--mf-*`; component-private variables use `--_mf-*`.

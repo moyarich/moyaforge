@@ -7,7 +7,7 @@ import {
 import {
   collectPreviewContent,
   type PreviewComponentOptions,
-} from "../plugins/remark/code-preview/collect-preview-content.js";
+} from "../plugins/remark/preview-code/collect-preview-content.js";
 
 export interface DirectiveComponent
   extends ComponentMapping, PreviewComponentOptions, NestedDirectiveOptions {}

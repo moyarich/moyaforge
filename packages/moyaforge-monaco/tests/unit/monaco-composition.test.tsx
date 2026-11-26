@@ -61,3 +61,31 @@ test("TypeFox forwards the language-client config unchanged to the underlying ed
     languageClientConfig,
   );
 });
+
+
+test("TypeFox forwards native lifecycle, logging and editor configuration", () => {
+  typefoxPropsSpy.mockClear();
+  const onVscodeApiInitDone = vi.fn();
+  const onLanguageClientsStartDone = vi.fn();
+  const onEditorStartDone = vi.fn();
+  const onTextChanged = vi.fn();
+  const onDisposeEditor = vi.fn();
+  renderToStaticMarkup(h(MonacoEditorTypeFox, {
+    files: [{ name: "example.ts", value: "const x = 1;", readOnly: true }],
+    onVscodeApiInitDone,
+    onLanguageClientsStartDone,
+    onEditorStartDone,
+    onTextChanged,
+    onDisposeEditor,
+    logLevel: 2,
+    editorAppConfig: { editorOptions: { fontSize: 18, readOnly: false } },
+  }));
+  const native = typefoxPropsSpy.mock.calls[0][0];
+  expect(native.onVscodeApiInitDone).toBe(onVscodeApiInitDone);
+  expect(native.onLanguageClientsStartDone).toBe(onLanguageClientsStartDone);
+  expect(native.onDisposeEditor).toBe(onDisposeEditor);
+  expect(native.logLevel).toBe(2);
+  expect(native.editorAppConfig.editorOptions.fontSize).toBe(18);
+  expect(native.editorAppConfig.editorOptions.readOnly).toBe(true);
+  expect(native.editorAppConfig.codeResources.modified.text).toBe("const x = 1;");
+});

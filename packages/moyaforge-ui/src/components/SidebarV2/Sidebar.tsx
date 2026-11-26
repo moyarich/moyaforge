@@ -11,7 +11,16 @@ import { SidebarSection } from "./SidebarSection.js";
 function SidebarRoot({ as = "nav", children, ...props }: PolymorphicProps) {
   return createElement(
     as,
-    { "data-moyaforge-sidebar": "", ...props, className: ["mf-sidebar-v2", typeof props.className === "string" ? props.className : ""].filter(Boolean).join(" ") },
+    {
+      "data-moyaforge-sidebar": "",
+      ...props,
+      className: [
+        "mf-sidebar-v2",
+        typeof props.className === "string" ? props.className : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
+    },
     children,
   );
 }

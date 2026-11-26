@@ -1,0 +1,11 @@
+.mf-sidebar-v2-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: var(--mf-sidebar-gap);
+  padding: var(--mf-sidebar-padding);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mf-sidebar-border-color) transparent;
+}

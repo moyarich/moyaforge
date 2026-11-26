@@ -1,0 +1,37 @@
+---
+title: Inline source fences
+---
+
+# Inline source fences
+
+Each named fence adds a file to the Code view. The `inline-source-fences-usage.mdx` tab shows the full directive and its inline source fences.
+
+:::preview-code[Greeting with source files]
+
+::preview-code-sources{files="./inline-source-fences-usage.mdx"}
+
+<div
+  style={{
+    width: "min(100%, 28rem)",
+    padding: "clamp(1rem, 5vw, 2rem)",
+    border: "1px solid color-mix(in srgb, currentColor 18%, transparent)",
+    borderRadius: "0.75rem",
+    background: "color-mix(in srgb, currentColor 4%, transparent)",
+    textAlign: "center",
+  }}
+>
+  <strong style={{ fontSize: "1.25rem" }}>Hello from the playground.</strong>
+</div>
+
+```ts filename="greeting.ts"
+export const greeting = "Hello from the playground.";
+```
+
+```json filename="settings.json"
+{
+  "language": "en",
+  "showGreeting": true
+}
+```
+
+:::

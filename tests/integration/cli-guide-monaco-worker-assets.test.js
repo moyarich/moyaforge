@@ -5,7 +5,7 @@ import { expect, test } from "vitest";
 const monacoRoot = resolve(import.meta.dirname, "../../packages/moyaforge-monaco");
 
 test("TypeFox workers use Vite URLs with monaco-languageclient's Worker metadata", async () => {
-  const source = await readFile(resolve(monacoRoot, "src/typefox.ts"), "utf8");
+  const source = await readFile(resolve(monacoRoot, "src/workers/configureTypeFoxWorkers.ts"), "utf8");
   const packages = [
     "@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker.js",
     "@codingame/monaco-vscode-standalone-typescript-language-features/worker",

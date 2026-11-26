@@ -67,7 +67,7 @@ export async function planProject({
     __DOCS_BASE__: template === "existing" ? "../docs" : "docs",
     __MONACO_TYPES__:
       template === "playground"
-        ? ', "@moyarich/moyaforge-monaco/virtual"'
+        ? ', "@moyarich/moyaforge-monaco/vite/react-types"'
         : "",
     __PLAYGROUND_ENABLED__: String(
       template === "hybrid" || template === "playground",
@@ -122,7 +122,7 @@ export async function planProject({
 
   const docsFolder = join(templates, "docs");
   const codePreviewExample = template === "playground"
-    ? await readFile(join(templates, "playground-code-preview.mdx"), "utf8")
+    ? await readFile(join(templates, "playground-preview-code.mdx"), "utf8")
     : "";
   for await (const file of filesIn(docsFolder)) {
     const content = await readFile(file, "utf8");

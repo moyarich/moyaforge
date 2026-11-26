@@ -1,6 +1,6 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 import { fileURLToPath } from "node:url";
-import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
 
 const workspaceRoot = fileURLToPath(new URL("../../../", import.meta.url));
 

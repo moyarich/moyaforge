@@ -1,7 +1,7 @@
 import { HashRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { MDXProvider } from "@mdx-js/react";
 import { BookOpen, Camera, Check } from "lucide-react";
-import { DocsShell } from "__UI__/docs-shell.js";
+import { DocsShell } from "__UI__/DocsShell/DocsShell.js";
 import { CodeBlock } from "__UI__/CodeBlock/CodeBlock.js";
 import { CodeGroup, CodeTab } from "__UI__/CodeGroup/CodeGroup.js";
 import { SearchPanel } from "./SearchPanel.js";

@@ -1,0 +1,7 @@
+.mf-sidebar-v2-footer {
+  margin-top: auto;
+  padding: var(--mf-sidebar-padding);
+  border-top: 1px solid var(--mf-sidebar-border-color);
+  color: var(--mf-sidebar-muted-color);
+  font-size: 0.8125rem;
+}

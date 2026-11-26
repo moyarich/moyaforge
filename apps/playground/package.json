@@ -12,12 +12,14 @@
     "@codingame/monaco-vscode-standalone-languages": "^37.6.1",
     "@codingame/monaco-vscode-standalone-typescript-language-features": "^37.6.1",
     "@fontsource-variable/inter": "^5.3.0",
+    "@mdx-js/mdx": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@monaco-editor/react": "^4.7.0",
     "@moyarich/colorshower": "github:moyarich/colorshower",
     "@moyarich/console": "^0.1.0",
     "@moyarich/moyaforge": "*",
     "@moyarich/moyaforge-mdx": "*",
+    "@moyarich/moyaforge-monaco": "*",
     "@moyarich/moyaforge-search-sqlite": "*",
     "@typefox/monaco-editor-react": "^8.0.2",
     "csstype": "^3.2.3",
@@ -27,8 +29,10 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.4",
-    "shiki": "^4.5.0",
-    "@moyarich/moyaforge-monaco": "*"
+    "rehype-slug": "^6.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "shiki": "^4.5.0"
   },
   "scripts": {
     "dev": "npm run build --workspace @moyarich/moyaforge-monaco && npm run build --workspace @moyarich/moyaforge && npm run build --workspace @moyarich/moyaforge-mdx && npm run build --workspace @moyarich/moyaforge-search-sqlite && vite --host 0.0.0.0",

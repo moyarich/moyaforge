@@ -1,6 +1,5 @@
 ---
 title: Documentation Site
-label: Documentation Site
 description: Live demonstration of the canonical Documentation Site component.
 ---
 
@@ -40,12 +39,31 @@ import { DocumentationSite } from "@/components/ui/Layout/DocumentationSite/Docu
 
 <DocumentationSite
   title="Example site"
-  pages={[{ path: "/ui", label: "Overview" }]}
+  pages={[{ path: "/ui", title: "Overview" }]}
   currentPath="/ui"
   sidebar={null}
   outline={null}
 >
   <p>Standalone documentation chrome with host-owned routing.</p>
+</DocumentationSite>;
+```
+
+Pass registry `routes` directly as `pages`. The shell uses `title` for display,
+`navigation` to filter sidebar and adjacent-page links, `parentPath` for breadcrumbs,
+and `sourcePath` for repository edit links. Hidden pages retain their breadcrumbs
+and edit links. For standalone pages, only `path` and `title` are required.
+
+```tsx
+import { routes } from "virtual:moyaforge-mdx/metadata";
+
+<DocumentationSite
+  title="My documentation"
+  pages={routes}
+  currentPath={currentPage.path}
+  repository="https://github.com/example/docs"
+  repositoryBranch="main"
+>
+  <CurrentPage />
 </DocumentationSite>;
 ```
 

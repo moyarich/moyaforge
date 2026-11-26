@@ -126,3 +126,57 @@ test("encoded and multi-hash anchors validate the complete fragment", () => {
     ],
   );
 });
+
+test("source-file links resolve title-based routes independently of directory names", () => {
+  const titled = buildPageRegistry({
+    docs: [
+      { file: "page.md", frontmatter: { title: "Home" } },
+      { file: "01-old-name/page.mdx", frontmatter: { title: "New guide" } },
+    ],
+  });
+  assert.deepEqual(
+    validateInternalLinks(
+      [
+        {
+          source: "docs",
+          file: "page.md",
+          content: "[Guide](./01-old-name/page.mdx#start)",
+        },
+      ],
+      titled,
+      {
+        "docs/01-old-name/page.mdx": [
+          { id: "start", value: "Start", depth: 2 },
+        ],
+      },
+    ),
+    [],
+  );
+});
+test("source-file links can cross registered content roots", () => {
+  const titled = buildPageRegistry({
+    docs: [{ file: "page.md", frontmatter: { title: "Home" } }],
+    ui: [{ file: "button/page.mdx", frontmatter: { title: "Button" } }],
+  });
+  assert.deepEqual(
+    validateInternalLinks(
+      [
+        {
+          source: "docs",
+          file: "page.md",
+          filename: "/repo/docs/page.md",
+          content: "[Button](../packages/ui/button/page.mdx)",
+        },
+        {
+          source: "ui",
+          file: "button/page.mdx",
+          filename: "/repo/packages/ui/button/page.mdx",
+          content: "",
+        },
+      ],
+      titled,
+      {},
+    ),
+    [],
+  );
+});

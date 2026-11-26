@@ -1,54 +1,121 @@
 ---
 title: Source discovery and README exclusion
-label: Source files
-description: Configure registered page files and prevent README files from becoming routes.
+description: Choose which Markdown files become documentation pages with source globs and page-file policies.
 ---
 
 # Source discovery and README exclusion
 
-The `sources` in `registry.config.ts` define filesystem roots and glob patterns. The compiler does not treat the root installable-component `registry.config.ts` as a documentation registry; that separate file generates `registry.json`.
+A source defines **where to look**, **which files match**, and **which matching
+files count as pages**. Use the small `docs` tree from the
+[registry overview](../page.mdx) to choose one of the following policies.
 
-## Canonical pages versus all Markdown
+All examples assume `registry.config.ts` is at your app root, alongside `docs/`.
+The `docs` source key supplies the `/docs` URL prefix.
 
-- `pageFiles: "canonical"` (also the default) registers only files named `page.md` or `page.mdx`, even when `include` is broad.
-- `pageFiles: "all"` registers every matching `.md`/`.mdx` file, including `README.md` **unless you exclude it**.
-- `exclude` accepts tinyglobby patterns, including brace expansion such as `**/{README,readme}.{md,mdx}`, applied before page discovery. Other authored `.md` content, such as `docs/mdx-conventions.md`, can remain routable.
-- Directory names with numeric prefixes provide ordering, while normalized public routes omit those prefixes. A source directory must exist; an empty one is valid.
+## Start with canonical page files
 
-Use this pattern for a docs tree that intentionally exposes ordinary Markdown:
+Use this complete configuration when each page lives in `page.md` or `page.mdx`:
 
-~~~ts
-const docs = {
-  base: "../../docs",
-  include: ["**/*.{md,mdx}"],
-  pageFiles: "all",
-  exclude: ["**/{README,readme}.{md,mdx}"],
-};
-~~~
+```ts filename="registry.config.ts"
+import type { RegistryConfiguration } from "@moyarich/moyaforge-mdx/vite";
 
-Use an explicit canonical glob for package-owned documentation instead of `*/README.md`:
+export default {
+  sources: {
+    docs: {
+      base: "./docs",
+      include: ["**/page.{md,mdx}"],
+      pageFiles: "canonical",
+    },
+  },
+} satisfies RegistryConfiguration;
+```
 
-~~~ts
-const packages = {
-  base: "../../packages",
+`canonical` is the default, so you may omit `pageFiles` here. Even with a broader
+`include`, this policy only registers files named `page.md` and `page.mdx`.
+
+| File in the source | Registered |
+| --- | --- |
+| `page.md` | Yes |
+| `01-installation/page.md` | Yes |
+| `02-authoring/page.md` | Yes |
+| `notes.md` | No |
+| `README.md` | No |
+
+This is a good default for folders that also contain example source or supporting
+Markdown. The `base` directory must exist, but it may be empty.
+
+## Include ordinary Markdown deliberately
+
+If `notes.md` should also be a page, change the source to:
+
+```ts filename="registry.config.ts"
+import type { RegistryConfiguration } from "@moyarich/moyaforge-mdx/vite";
+
+export default {
+  sources: {
+    docs: {
+      base: "./docs",
+      include: ["**/*.{md,mdx}"],
+      pageFiles: "all",
+      exclude: ["**/{README,readme}.{md,mdx}"],
+    },
+  },
+} satisfies RegistryConfiguration;
+```
+
+Now the three canonical pages and `notes.md` are registered. README files remain
+available on disk without becoming documentation routes. If you remove the
+exclusion, matching README files become pages too.
+
+Discovery applies these rules together:
+
+1. `base` establishes the source directory.
+2. `include` finds candidate files relative to that directory.
+3. `exclude` removes matching candidates.
+4. `pageFiles` applies the canonical-only or all-Markdown policy.
+
+`all` does not override `include`. For example, an include pattern of
+`**/page.{md,mdx}` still selects only canonical page files, even with `pageFiles: "all"`.
+Patterns support brace expansion, as used in the README exclusion above.
+
+## Keep page selection separate from page visibility
+
+An excluded file never reaches the page registry. By contrast, a discovered
+page with `navigation: hidden` still has metadata and a route. A page with
+`navigation: disabled` retains its page record but is absent from routes.
+See the [live registry example](../20-metadata-navigation/page.mdx#compare-the-registry-views)
+to compare those views.
+
+Numeric prefixes control ordering when frontmatter does not specify `order`.
+Public route segments come from page titles, so `01-installation/page.md` with
+`title: Quick setup` becomes `/docs/quick-setup`, not `/docs/01-installation`.
+
+## Add non-page source metadata
+
+A source may also read JSON files through `metadata`:
+
+```ts
+const packageDocs = {
+  base: "./packages",
   include: ["**/page.{md,mdx}"],
-  pageFiles: "all",
-  exclude: [
-    "**/node_modules/**",
-    "**/dist/**",
-    "moyaforge-ui/docs/**",
-    "moyaforge-cli/templates/**",
-  ],
+  exclude: ["**/node_modules/**", "**/dist/**"],
   metadata: ["*/package.json"],
 };
-~~~
+```
 
-The package JSON files supply **source metadata**, not extra documentation routes. Package README files are still published to npm and available on GitHub. CLI-generated registries also exclude README files explicitly.
+Here `packageDocs` is a source-options fragment to add under `sources`.
+The package JSON data is exposed as source metadata; it does not create extra
+routes. For a monorepo, add exclusions for any templates or docs trees that
+belong to a different registered source.
 
-## Regression contract
+## Verify changes
 
-`packages/moyaforge-mdx/tests/content/content.test.js` exercises the real playground and CLI template source rules against a temporary tree containing `page.mdx`, `notes.md`, and several README variants. The routes must include the first two and exclude all READMEs.
+In this repository, run `npm run check:links` after changing source rules or moving
+pages. The discovery regression tests in
+`packages/moyaforge-mdx/tests/content/content.test.js` also check the playground
+and generated-template policies against canonical pages, notes, and README files.
 
-When changing registry globs, verify that source pages, UI component examples, package CLI docs, and metadata still load. Avoid changing `isContentPageFile` globally merely to fix a particular application's configuration: other consumers may intentionally choose different source policies.
+Keep application-specific exclusions in its source configuration rather than
+changing the shared definition of a canonical page.
 
-[Content registry overview](../page.mdx) · [Metadata and navigation](../20-metadata-navigation/page.mdx)
+[Content registry overview](../) · [Metadata and navigation](../20-metadata-navigation/page.mdx)

@@ -1,0 +1,27 @@
+---
+title: Counter preview in MDX
+description: Show a live React counter and its source files in an MDX page.
+---
+
+import { PreviewCode } from "../../../../src/components/PreviewCode/index.js";
+import CounterExample from "../../CounterExample.tsx";
+import counterSource from "../../CounterExample.tsx?raw";
+import counterStyles from "../../counterExample.css?raw";
+import previewMarkup from "./counter-in-mdx-usage.mdx?raw";
+
+# Counter preview in MDX
+
+Click the counter to try it. Open **Code** to see the React component and stylesheet.
+
+<PreviewCode
+  title="Counter"
+  files={[
+    { label: "counter-in-mdx-usage.mdx", code: previewMarkup, language: "mdx" },
+    { label: "CounterExample.tsx", code: counterSource },
+    { label: "counterExample.css", code: counterStyles },
+  ]}
+>
+  <CounterExample />
+</PreviewCode>
+
+[PreviewCode documentation](/ui/components/preview-code)

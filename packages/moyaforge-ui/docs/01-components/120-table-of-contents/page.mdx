@@ -1,6 +1,5 @@
 ---
 title: Table of Contents
-label: Table of Contents
 description: Canonical MoyaForge Table of Contents component example.
 ---
 
@@ -48,3 +47,12 @@ import { TableOfContents } from "@/components/ui/TableOfContents/TableOfContents
 ## Styling
 
 Set `--mf-toc-indent` for nested headings, `--mf-toc-gap` for vertical spacing, and `--mf-toc-color` for link text.
+
+Link spacing, indentation, hover, focus, and active-heading styles are included in
+the component. Public defaults live in `:root`; override `--mf-toc-accent`,
+`--mf-toc-active-background`, `--mf-toc-font-size`, or `--mf-toc-link-padding`
+on a wrapper or the component. Private variables use the `--_mf-*` prefix.
+
+For custom links returned by `renderLink`, set `aria-current="location"` on the
+active heading to use the built-in selected styling. The example’s CSS only
+controls its two-column layout and scrollable article.

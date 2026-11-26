@@ -1,0 +1,31 @@
+---
+title: moyaforge dev
+---
+
+# `moyaforge dev`
+
+Start your project’s Vite development server. Open the URL printed in the terminal.
+
+```sh
+npx @moyarich/moyaforge-cli@latest dev --port 5173
+```
+
+Run this from a project with Vite installed, or pass `--cwd <path>` to select the project directory. Other flags are passed to Vite.
+
+## Work on a generated site
+
+Generated projects already have a development script:
+
+```sh
+npm run dev
+```
+
+For the `existing` template, use `npm run docs:dev`. The CLI automatically selects `moyaforge/vite.config.ts` when that file exists.
+
+## Choose the project and port
+
+```sh
+npx @moyarich/moyaforge-cli@latest dev --cwd ./my-docs --port 5174
+```
+
+The target directory must contain the project's installed dependencies. If you see “Vite is not installed”, run `npm install` there. Save your documentation or component files to see changes in the browser. Press Ctrl+C to stop the server.

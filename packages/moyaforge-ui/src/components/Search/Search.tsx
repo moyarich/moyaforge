@@ -1,4 +1,5 @@
 import "./Search.css";
+import { Search as SearchIcon } from "lucide-react";
 import type {
   ChangeEventHandler,
   ComponentPropsWithoutRef,
@@ -18,14 +19,18 @@ export interface SearchProps extends Omit<
 export function Search({
   value,
   onChange,
-  icon,
+  icon = <SearchIcon aria-hidden="true" focusable="false" />,
   inputProps,
   children,
   className,
   ...props
 }: SearchProps) {
   return (
-    <label {...props} data-moyaforge-search="" className={["mf-search-control", className].filter(Boolean).join(" ")}>
+    <label
+      {...props}
+      data-moyaforge-search=""
+      className={["mf-search-control", className].filter(Boolean).join(" ")}
+    >
       {icon}
       <input type="search" value={value} onChange={onChange} {...inputProps} />
       {children}

@@ -13,6 +13,7 @@ export async function checkContentLinks(
     registry.pages.map(async (page) => ({
       source: page.source,
       file: page.file,
+      filename: resolve(root, config.sources[page.source].base, page.file),
       content: await readFile(
         resolve(root, config.sources[page.source].base, page.file),
         "utf8",

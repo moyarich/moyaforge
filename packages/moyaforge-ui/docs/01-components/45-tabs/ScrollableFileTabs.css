@@ -1,0 +1,16 @@
+/* These are application-owned overrides, not internal MoyaForge styles. */
+.tabs-overflow-example {
+  max-width: 32rem;
+  --mf-tabs-strip: color-mix(in srgb, currentColor 3%, transparent);
+  --mf-tabs-surface: transparent;
+  --mf-tabs-accent: currentColor;
+  --mf-tabs-scroll-fade-width: 2.5rem;
+  --mf-tabs-scroll-button-width: 1.75rem;
+  --mf-tabs-list-border-width: 1px;
+  --mf-tabs-border: color-mix(in srgb, currentColor 15%, transparent);
+}
+
+.tabs-overflow-panel {
+  min-height: 5rem;
+  padding: 1.25rem;
+}

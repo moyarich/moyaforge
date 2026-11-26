@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import {
-  MonacoEditorReact,
-} from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
-import {
-  MonacoEditorTypeFox,
-} from "@moyarich/moyaforge-monaco/components/MonacoEditorTypeFox";
+import { MonacoEditorPanel } from "../../packages/moyaforge-ui/src/components/MonacoEditorPanel/index.ts";
+import { TypeFoxEditorPanel } from "../../packages/moyaforge-ui/src/components/TypeFoxEditorPanel/index.ts";
 
 const reactFiles = [
   {
@@ -38,7 +34,7 @@ export default function SharedMonacoFixture() {
           <output data-testid="react-ready">
             {reactReady ? "ready" : "loading"}
           </output>
-          <MonacoEditorReact
+          <MonacoEditorPanel
             files={reactFiles}
             height={260}
             onMount={() => setReactReady(true)}
@@ -52,7 +48,7 @@ export default function SharedMonacoFixture() {
           <output data-testid="typefox-ready">
             {typefoxReady ? "ready" : "loading"}
           </output>
-          <MonacoEditorTypeFox
+          <TypeFoxEditorPanel
             files={typefoxFiles}
             height={260}
             onReady={() => setTypefoxReady(true)}

@@ -1,0 +1,161 @@
+---
+title: Fade in
+description: Start with a simple opacity fade, then apply it to a confirmation card.
+---
+
+# Fade in
+
+Use `effect="fade"` to animate opacity without moving the content.
+
+## Simple fade
+
+::::preview-code[Simple fade]{refresh preview="SimpleFade.tsx" replacements="portable"}
+
+```tsx filename="SimpleFade.tsx"
+import { Animation } from "../../../../src/components/Animation/index.js";
+
+export default function SimpleFade() {
+  return (
+    <Animation effect="fade" duration={1.6} wait={1}>
+      <p>Hello, welcome to your workspace.</p>
+    </Animation>
+  );
+}
+```
+
+::::
+
+## Fade in a confirmation card
+
+Reveal a confirmation card without moving it.
+The dotted background stays visible while the card fades from transparent to opaque over `1.6` seconds.
+
+Set `duration` and `wait` in seconds to tune the reveal.
+
+::::preview-code[Fade in a confirmation card]{refresh preview="FadeInCard.tsx" replacements="portable"}
+
+```tsx filename="FadeInCard.tsx"
+import { Check, FileText } from "lucide-react";
+import { Animation } from "../../../../src/components/Animation/index.js";
+import "./FadeInCard.css";
+
+export default function FadeInCard() {
+  return (
+    <div className="fade-in-stage">
+      <Animation
+        effect="fade"
+        duration={1.6}
+        wait={1}
+        className="fade-in-reveal"
+      >
+        <section className="fade-in-card" aria-label="Workspace confirmation">
+          <span className="fade-in-card-icon" aria-hidden="true">
+            <Check size={22} strokeWidth={2} />
+          </span>
+          <p className="fade-in-card-eyebrow">All set</p>
+          <h2>Your workspace is ready.</h2>
+          <p className="fade-in-card-description">
+            A place for your ideas, guides, and everything you build next.
+          </p>
+          <div className="fade-in-card-footer">
+            <FileText size={16} aria-hidden="true" />
+            Start with your first page
+          </div>
+        </section>
+      </Animation>
+    </div>
+  );
+}
+```
+
+```css filename="FadeInCard.css"
+:root {
+  --mf-fade-card-surface: light-dark(#ffffff, #222226);
+  --mf-fade-card-border: light-dark(#e5e7e7, #3b3b40);
+  --mf-fade-card-accent: light-dark(#0f766e, #5eead4);
+}
+
+.fade-in-stage {
+  --_mf-fade-surface: var(--mf-fade-card-surface);
+  --_mf-fade-border: var(--mf-fade-card-border);
+  --_mf-fade-accent: var(--mf-fade-card-accent);
+  display: grid;
+  place-items: center;
+  width: min(100%, 32rem);
+  min-height: 21rem;
+  box-sizing: border-box;
+  padding: clamp(1rem, 4vw, 2rem);
+  border-radius: 1rem;
+  background-image: radial-gradient(
+    color-mix(in srgb, currentColor 12%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 16px 16px;
+}
+
+.fade-in-reveal {
+  width: min(100%, 21rem);
+}
+
+.fade-in-card {
+  padding: 1.5rem;
+  border: 1px solid var(--_mf-fade-border);
+  border-radius: 1rem;
+  background: var(--_mf-fade-surface);
+  box-shadow: 0 12px 32px color-mix(in srgb, currentColor 7%, transparent);
+}
+
+.fade-in-card-icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 1.25rem;
+  border-radius: 50%;
+  color: var(--_mf-fade-accent);
+  background: color-mix(in srgb, var(--_mf-fade-accent) 12%, transparent);
+}
+
+.fade-in-card .fade-in-card-eyebrow {
+  margin: 0 0 0.375rem;
+  color: var(--_mf-fade-accent);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.fade-in-card h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1.375rem;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.fade-in-card .fade-in-card-description {
+  margin: 0.75rem 0 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  opacity: 0.75;
+}
+
+.fade-in-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--_mf-fade-border);
+  font-size: 0.75rem;
+}
+
+.fade-in-card-footer svg {
+  flex-shrink: 0;
+  color: var(--_mf-fade-accent);
+}
+```
+
+::::
+
+[Animation options and installation](/ui/components/animation)

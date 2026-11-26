@@ -1,4 +1,5 @@
 import "./DocumentationSearch.css";
+import { Search } from "lucide-react";
 import { isKeyHotkey } from "is-hotkey";
 import { useEffect, useRef, useState } from "react";
 
@@ -70,7 +71,7 @@ export function DocumentationSearch({
   return (
     <div className={["mf-search", resultsPosition === "inline" && "is-inline"].filter(Boolean).join(" ")}>
       <label>
-        <span aria-hidden="true">⌕</span>
+        <Search className="mf-search-icon" aria-hidden="true" focusable="false" />
         <input
           ref={input}
           aria-label="Search documentation"

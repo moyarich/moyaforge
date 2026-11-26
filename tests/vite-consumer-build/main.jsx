@@ -16,10 +16,10 @@ import {
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 
 const SharedMonacoFixture = lazy(async () => {
-  const { initializeSharedMonaco } = await import(
-    "@moyarich/moyaforge-monaco/shared"
+  const { initializeMonacoVscodeRuntime } = await import(
+    "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime"
   );
-  await initializeSharedMonaco();
+  await initializeMonacoVscodeRuntime();
   return import("../fixtures/monaco-shared.jsx");
 });
 
@@ -40,7 +40,7 @@ const hostSource = createMoyaForgeSource({
             <Link to="/docs/guide">Back to guide</Link>
           </article>
         ),
-        frontmatter: { title: "Embedded reference" },
+        frontmatter: { title: "Reference" },
       },
       "guide/page.mdx": {
         default: () => (
@@ -51,7 +51,7 @@ const hostSource = createMoyaForgeSource({
             <Link to="/host">Return to host</Link>
           </article>
         ),
-        frontmatter: { title: "Embedded guide" },
+        frontmatter: { title: "Guide" },
       },
     },
   },

@@ -10,19 +10,19 @@ import {
   remarkRewriteSourceLinks,
 } from "@moyarich/moyaforge-mdx";
 import {
-  createCodePreviewPlugin,
-  createCodePreviewRegistry,
+  createPreviewCodePlugin,
+  createPreviewCodeRegistry,
   mdxRegistryPlugin,
-  resolveCodePreviewSource,
+  resolvePreviewCodeSource,
 } from "@moyarich/moyaforge-mdx/vite";
-import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
 import registry from "./registry.config.ts";
 import { sqliteSearchPlugin } from "@moyarich/moyaforge-search-sqlite/vite";
 
 const contentRoot = fileURLToPath(new URL(".", import.meta.url));
 const discovery = createContentDiscovery(registry, contentRoot);
 const { registry: discovered } = await discovery.get();
-const codePreview = createCodePreviewRegistry({
+const codePreview = createPreviewCodeRegistry({
   root: contentRoot,
   sources: registry.sources,
   pages: discovered.pages,
@@ -45,15 +45,16 @@ const compileMdx = mdx(
       ],
     ],
     componentMappings: {
-      "code-preview": {
-        component: "InlineCodePreview",
+      "preview-code": {
+        component: "PreviewCodeInline",
+        booleanProps: ["refresh"],
         titleProp: "title",
         sourceProp: "code",
         filesProp: "sourceFiles",
         localSources: true,
         registerInlineReact: codePreview.inlineReact.register,
-        resolveCodePreviewComponent: (reference, authoredFile) =>
-          resolveCodePreviewSource({
+        resolvePreviewCodeComponent: (reference, authoredFile) =>
+          resolvePreviewCodeSource({
             context: codePreview,
             reference,
             authoredFile,
@@ -96,11 +97,16 @@ const compileMdx = mdx(
 export default defineConfig({
   plugins: [
     monacoReactTypesPlugin(contentRoot),
-    createCodePreviewPlugin({
+    createPreviewCodePlugin({
       codePreview,
       componentRoots: [
         ...codePreview.componentRoots,
-        fileURLToPath(new URL("../../packages/moyaforge-ui/src/components", import.meta.url)),
+        fileURLToPath(
+          new URL(
+            "../../packages/moyaforge-ui/src/components",
+            import.meta.url,
+          ),
+        ),
       ],
     }),
     mdxRegistryPlugin({
@@ -129,5 +135,24 @@ export default defineConfig({
   server: { port: 5174 },
   worker: { format: "es" },
   base: process.env.VITE_BASE_PATH || process.env.PAGES_BASE_PATH || "/",
-  build: { outDir: "dist", emptyOutDir: true },
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+    rolldownOptions: {
+      onLog(level, log, handler) {
+        // These dependencies emit empty directives, which have no runtime effect.
+        if (
+          level === "warn" &&
+          log.code === "MODULE_LEVEL_DIRECTIVE" &&
+          log.message.includes('module level directive "" in ') &&
+          /[\\/]node_modules[\\/](?:@mdx-js[\\/]mdx|hast-util-to-estree)[\\/]/.test(
+            log.id ?? "",
+          )
+        ) {
+          return;
+        }
+        handler(level, log);
+      },
+    },
+  },
 });

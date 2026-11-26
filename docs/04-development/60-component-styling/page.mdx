@@ -1,6 +1,5 @@
 ---
 title: Component styling conventions
-label: Styling conventions
 description: CSS class hooks, state classes, and public/private custom properties across UI and Monaco components.
 ---
 
@@ -19,27 +18,28 @@ The `CodeGroup`, `Preview`, and `Monaco` components already expose test/behavior
 
 ## CSS custom properties
 
-| Purpose | Prefix | Example |
-| --- | --- | --- |
-| Public component override or shared theme token | `--mf-*` | `--mf-doc-outline-top`, `--mf-copy-button-padding` |
-| Derived, component-private value | `--_mf-*` | `--_mf-doc-outline-top`, `--_mf-copy-button-padding` |
-| Third-party external tokens | Keep vendor contract | Shiki's `--shiki-dark` |
+| Purpose                                         | Prefix               | Example                                              |
+| ----------------------------------------------- | -------------------- | ---------------------------------------------------- |
+| Public component override or shared theme token | `--mf-*`             | `--mf-doc-outline-top`, `--mf-copy-button-padding`   |
+| Derived, component-private value                | `--_mf-*`            | `--_mf-doc-outline-top`, `--_mf-copy-button-padding` |
+| Third-party external tokens                     | Keep vendor contract | Shiki's `--shiki-dark`                               |
 
 Derive a private variable from the public input at the component root and use the private value in declarations:
 
-~~~css
-.mf-demo {
+```css
+:root {
   --_mf-demo-background: var(--mf-demo-background, transparent);
   --_mf-demo-padding: var(--mf-demo-padding, 0);
+}
+.mf-demo {
   padding: var(--_mf-demo-padding);
   background: var(--_mf-demo-background);
 }
-~~~
+```
 
 Applications should override **only public** `--mf-*` properties. Private properties are implementation details and may change. The old unprefixed names such as `--demo-padding`, `--docs-sidebar-width` and `--wide-panel-width` have been renamed to `--mf-demo-padding`, `--mf-docs-sidebar-width` and `--mf-wide-panel-width`. Update consuming styles when migrating.
 
 ## Safeguards
 
-The architecture test `tests/architecture/component-style-conventions.test.js` scans **all repository CSS files** and rejects data-attribute selectors and nonconforming custom property names. It exempts only third-party namespace inputs such as Shiki. UI render tests in `packages/moyaforge-ui/tests/unit/component-style-hooks.test.tsx` verify class names and conditional states. Run both workspaces' tests and Playwright after any class or variable migration.
-
-See [Code preview rendering and highlighting](../10-code-preview-internals/50-rendering/page.mdx) for Shiki color tokens, and [Development](../page.mdx) for the full test commands.
+The architecture test `tests/architecture/component-style-conventions.test.js` scans **all repository CSS files** and rejects data-attribute selectors and nonconforming custom property names.
+It exempts only third-party namespace inputs such as Shiki. UI render tests in `packages/moyaforge-ui/tests/unit/component-style-hooks.test.tsx` verify class names and conditional states.

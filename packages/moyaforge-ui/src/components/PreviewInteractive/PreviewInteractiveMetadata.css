@@ -1,0 +1,10 @@
+.preview-interactive-metadata {
+  min-width: 0;
+  font-size: 0.8125rem;
+}
+
+.preview-interactive-metadata-title {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+}
