@@ -26,7 +26,7 @@ The CLI installs component source from the MoyaForge registry. Components own th
 
 The generated Vite and TypeScript configs resolve `@/` to your project's
 `src/` directory. With the default component destination, use imports such as
-`import { CodePreview } from "@/components/ui/CodePreview";`.
+`import { PreviewCode } from "@/components/ui/PreviewCode";`.
 
 The playground template provides `virtual:monaco-react-types` for Monaco
 worker setups. It resolves the installed React and CSS type packages from the

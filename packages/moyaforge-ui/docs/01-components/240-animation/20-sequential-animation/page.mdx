@@ -1,0 +1,78 @@
+---
+title: Sequential animation
+description: Run animation entries one after another.
+---
+
+# Sequential animation
+
+Place each `Animation` directly inside `AnimationGroup`. With `sequence`, each entry finishes before the next starts. `stagger` sets the pause between entries. Copy **SequentialMessages.tsx** and **SequentialMessages.css** together. The component imports its stylesheet.
+
+::::preview-code[Sequential animation]{refresh preview="SequentialMessages.tsx" replacements="portable"}
+
+```tsx filename="SequentialMessages.tsx"
+import "./SequentialMessages.css";
+import {
+  Animation,
+  AnimationGroup,
+} from "../../../../src/components/Animation/index.js";
+
+export default function SequentialMessages() {
+  return (
+    <AnimationGroup className="sequential-messages" sequence stagger={0.15}>
+      <Animation effect="fade-slide">
+        <h2>Build your documentation</h2>
+      </Animation>
+      <Animation effect="typewriter" duration={1}>
+        <p>Start with a Markdown page.</p>
+      </Animation>
+    </AnimationGroup>
+  );
+}
+```
+
+```css filename="SequentialMessages.css"
+.sequential-messages {
+  display: grid;
+  gap: 0.75rem;
+  width: min(100%, 28rem);
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, currentColor 3%, transparent);
+}
+
+.sequential-messages h2,
+.sequential-messages p {
+  margin: 0;
+}
+
+.sequential-messages h2 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.sequential-messages p {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+```
+
+::::
+
+---
+
+# Terminal initialization sequence
+
+The **TerminalInitialization.tsx** source tab contains the complete terminal component and replay button. `sequence` runs each step in order; `expand` lets the terminal grow as steps appear. The matching CSS is included in its own source tab. This is a simulated transcript and does not execute a command.
+
+::::preview-code[Terminal initialization sequence]{refresh component="./TerminalInitialization.tsx"}
+
+::preview-code-sources{files="./TerminalInitialization.tsx,./TerminalInitialization.css" replacements="portable"}
+
+::::
+
+Use **Refresh preview** in the toolbar to restart this example.
+
+[Animation options and installation](/ui/components/animation)
+
+[Animation options and installation](../)

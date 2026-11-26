@@ -1,0 +1,17 @@
+.preview-interactive .sidebar-frontmatter-result.mf-sidebar {
+  display: flex;
+  position: static;
+  height: auto;
+  min-height: 13rem;
+  width: min(100%, 22rem);
+  padding-top: 0;
+  border: 1px solid var(--_mf-frontmatter-border);
+  border-radius: 0.5rem;
+  background: var(--mf-bg, light-dark(#fff, #18181b));
+}
+.sidebar-frontmatter-result .mf-sidebar-scroll-content {
+  padding-top: 0.5rem;
+}
+.preview-interactive-code {
+  --mf-code-group-margin: 0;
+}

@@ -6,7 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+import type { RegistryPage } from "@moyarich/moyaforge-mdx";
 
 import { createContentRouting } from "./createContentRouting.js";
 
@@ -20,7 +20,7 @@ export function MoyaForgeRouting({
   pages,
   children,
 }: {
-  pages: readonly NormalizedPage[];
+  pages: readonly RegistryPage[];
   children: ReactNode;
 }) {
   return (
@@ -37,7 +37,7 @@ export function MoyaForgeRouter({
   mode = "browser",
   basename,
 }: {
-  pages: readonly NormalizedPage[];
+  pages: readonly RegistryPage[];
   children: ReactNode;
   mode?: "browser" | "hash";
   basename?: string;

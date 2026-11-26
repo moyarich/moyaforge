@@ -1,22 +1,83 @@
 ---
 title: MoyaForge CLI
-label: CLI
-description: Create documentation applications and install editable MoyaForge UI components.
+description: Build your first documentation site and install editable UI components.
 ---
 
 # MoyaForge CLI
 
-`@moyarich/moyaforge-cli` provides the `moyaforge` executable for generating documentation projects and installing UI component source. It requires Node.js 24.11+ and npm.
+Use the CLI to create a React/Vite documentation site or copy editable UI components into an existing React project. You need Node.js 24.11+ and npm. The examples use `npx`, so you can run them without a global installation.
+
+## Create your first site
+
+Run these commands from the folder where you keep your projects:
 
 ```sh
-npx @moyarich/moyaforge-cli@latest init --template docs
+mkdir my-docs
+cd my-docs
+npx @moyarich/moyaforge-cli@latest init --template playground
 npm run dev
 ```
 
-## Commands
+`init` generates the application and installs its dependencies. Open the local URL printed by Vite. Edit `docs/page.mdx` to change the landing page, then save to see the result in your browser.
 
-- [`init`](/packages/moyaforge-cli/docs/init) Configure components or scaffold a documentation project.
-- [`list`](/packages/moyaforge-cli/docs/list) Browse available registry items.
-- [`add`](/packages/moyaforge-cli/docs/add) Install editable components.
-- [`dev`](/packages/moyaforge-cli/docs/dev) Start the local development server.
-- [`preview`](/packages/moyaforge-cli/docs/preview) Serve a production build locally.
+The playground template includes navigation, code previews, syntax highlighting, and starter documentation. Add `--search` to the `init` command to enable SQLite search.
+
+### Find your files
+
+| File or directory           | What to change                                        |
+| --------------------------- | ----------------------------------------------------- |
+| `docs/`                     | Write documentation in Markdown or MDX.               |
+| `registry.config.ts`        | Configure the site's content sources.                 |
+| `src/mdx-provider.tsx`      | Register components used by your MDX pages.           |
+| `src/components/ui/`        | Customize installed UI component source and CSS.      |
+| `moyaforge.components.json` | Configure the CLI registry and component destination. |
+| `vite.config.ts`            | Configure the development server and content plugins. |
+
+Before publishing, check and build the site:
+
+```sh
+npm run typecheck
+npm run build
+npm run preview
+```
+
+The production output is in `dist/`. `preview` lets you inspect that build locally.
+
+## Add components to an existing React app
+
+Run these commands in the folder containing your application's `package.json`:
+
+```sh
+npx @moyarich/moyaforge-cli@latest init
+npx @moyarich/moyaforge-cli@latest list
+npx @moyarich/moyaforge-cli@latest add copy-button
+```
+
+Plain `init` creates the CLI configuration. `add` copies the selected component and its required component files into `src/components/ui/`, then installs its npm dependencies.
+
+For example, use the installed button in `src/App.tsx`:
+
+```tsx
+import { CopyButton } from "./components/ui/CopyButton/CopyButton.js";
+
+export default function App() {
+  return <CopyButton value="npm install">Copy command</CopyButton>;
+}
+```
+
+The component imports its own CSS. You own the installed files and can edit them directly.
+
+## Choose your next step
+
+- [Initialize a project](/packages/moyaforge-cli/moyaforge-cli/moyaforge-init): choose a template, enable search, or add a separate docs entry to an existing app.
+- [Install components](/packages/moyaforge-cli/moyaforge-cli/moyaforge-add): change the destination and update files safely.
+- [Browse the registry](/packages/moyaforge-cli/moyaforge-cli/moyaforge-list): find component names and use a custom registry.
+- [Run development](/packages/moyaforge-cli/moyaforge-cli/moyaforge-dev): select a project and forward Vite options.
+- [Preview production](/packages/moyaforge-cli/moyaforge-cli/moyaforge-preview): build and inspect your site locally.
+
+Get command-specific help at any time:
+
+```sh
+npx @moyarich/moyaforge-cli@latest --help
+npx @moyarich/moyaforge-cli@latest init --help
+```

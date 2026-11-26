@@ -1,8 +1,8 @@
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+import type { RegistryPage } from "@moyarich/moyaforge-mdx";
 
-export function createContentRouting(pages: readonly NormalizedPage[]) {
+export function createContentRouting(pages: readonly RegistryPage[]) {
   const routes = pages.filter((page) => page.navigation !== "disabled");
-  const pagesByKey = new Map<string, NormalizedPage>();
+  const pagesByKey = new Map<string, RegistryPage>();
   for (const page of routes) {
     const key = `${page.source}/${page.file}`;
     if (!pagesByKey.has(key)) pagesByKey.set(key, page);

@@ -1,4 +1,7 @@
 import "./CodeGroup.css";
+import "./CodeGroupTabs.css";
+import { CodeTab, type CodeTabProps } from "./CodeTab.js";
+export { CodeTab, type CodeTabProps } from "./CodeTab.js";
 import { CodeCopyIcon } from "../CodeBlock/CodeCopyIcon.js";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 import { CodeGroupContext } from "../CodeBlock/CodeBlock.js";
@@ -12,14 +15,6 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-
-export interface CodeTabProps {
-  label: string;
-  children: ReactNode;
-}
-export function CodeTab({ children }: CodeTabProps) {
-  return <>{children}</>;
-}
 
 export interface CodeGroupProps {
   children: ReactNode;

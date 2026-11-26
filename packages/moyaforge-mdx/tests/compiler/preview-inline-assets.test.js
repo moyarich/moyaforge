@@ -3,11 +3,11 @@ import { resolve } from "node:path";
 import { expect, test } from "vitest";
 import { compile } from "@mdx-js/mdx";
 import { createMdxOptions } from "../../dist/index.js";
-import { createInlineReactModules } from "../../dist/vite/code-preview/inline-react-modules.js";
-import { maskInlinePreviewAssets } from "../../dist/plugins/remark/code-preview/mask-inline-preview-assets.js";
+import { createInlineReactModules } from "../../dist/vite/preview-code/inline-react-modules.js";
+import { maskInlinePreviewAssets } from "../../dist/plugins/remark/preview-code/mask-inline-preview-assets.js";
 
 const preview = [
-  "::::code-preview[Custom success]",
+  "::::preview-code[Custom success]",
   "",
   "<style>",
   ".custom-block.ui-success {",
@@ -39,8 +39,8 @@ test("trusted Markdown CSS renders while script source stays visible without exe
       createMdxOptions({
         allowInlinePreviewStyles: true,
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             titleProp: "title",
             sourceProp: "code",
             registerInlineReact(source, authoredFile) {
@@ -85,8 +85,8 @@ test("untrusted previews preserve CSS and JavaScript source, without rendering e
       { value: preview, path: "/docs/untrusted/page.mdx" },
       createMdxOptions({
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             titleProp: "title",
             sourceProp: "code",
             registerInlineReact(source) {
@@ -113,7 +113,7 @@ test("untrusted previews preserve CSS and JavaScript source, without rendering e
 test("script source never becomes executable even when CSS is trusted", async () => {
   const registrations = [];
   const source = [
-    ":::code-preview[Unsafe]",
+    ":::preview-code[Unsafe]",
     "",
     "<script>",
     'window.__PWNED__ = document.cookie;',
@@ -129,8 +129,8 @@ test("script source never becomes executable even when CSS is trusted", async ()
       createMdxOptions({
         allowInlinePreviewStyles: true,
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             sourceProp: "code",
             registerInlineReact(source) {
               registrations.push(source);
@@ -155,7 +155,7 @@ test("external and attributed scripts cannot bypass the source-only policy", asy
   ]) {
     await expect(
       compile(
-        { value: ":::code-preview[Unsafe]\n\n" + open + "\n\n:::", path: "page.mdx" },
+        { value: ":::preview-code[Unsafe]\n\n" + open + "\n\n:::", path: "page.mdx" },
         createMdxOptions({ allowInlinePreviewStyles: true }),
       ),
     ).rejects.toThrow(/standalone, attribute-free/);
@@ -168,7 +168,7 @@ test("only standalone raw tags within Markdown previews are masked", () => {
     "body { color: red; }",
     "</style>",
     "",
-    "::::code-preview[Source]",
+    "::::preview-code[Source]",
     "",
     "~~~css",
     "<style>",
@@ -187,7 +187,7 @@ test("unclosed preview-local style or script has a useful error", async () => {
   for (const tag of ["style", "script"]) {
     await expect(
       compile(
-        { value: ":::code-preview[Missing]\n<" + tag + ">\nbody { color: red; }\n:::", path: "page.mdx" },
+        { value: ":::preview-code[Missing]\n<" + tag + ">\nbody { color: red; }\n:::", path: "page.mdx" },
         createMdxOptions(),
       ),
     ).rejects.toThrow("Unclosed <" + tag + ">");
@@ -197,7 +197,7 @@ test("unclosed preview-local style or script has a useful error", async () => {
 test("plain Markdown and React previews keep their existing parsing", async () => {
   const registrations = [];
   const source = [
-    ":::code-preview[React]{react}",
+    ":::preview-code[React]{react}",
     "",
     'import Demo from "./Demo.js";',
     "",
@@ -210,8 +210,8 @@ test("plain Markdown and React previews keep their existing parsing", async () =
       { value: source, path: "/docs/page.mdx" },
       createMdxOptions({
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             sourceProp: "code",
             registerInlineReact(code, path) {
               registrations.push([code, path]);
@@ -241,8 +241,8 @@ test("custom-admonition examples expose complete authored Markdown, CSS and scri
       createMdxOptions({
         allowInlinePreviewStyles: true,
         componentMappings: {
-          "code-preview": {
-            component: "InlineCodePreview",
+          "preview-code": {
+            component: "PreviewCodeInline",
             titleProp: "title",
             sourceProp: "code",
             filesProp: "sourceFiles",
@@ -275,7 +275,7 @@ test("custom-admonition examples expose complete authored Markdown, CSS and scri
     expect(code).toContain("</style>");
     expect(code).toContain("::: " + variant + " ");
     expect(code).toContain("--mf-custom-block-bg");
-    expect(code).not.toContain("::::code-preview[");
+    expect(code).not.toContain("::::preview-code[");
     expect(code).not.toMatch(/\n::::\s*$/);
   }
   // <summary> must be a direct child of <details>, never inside an

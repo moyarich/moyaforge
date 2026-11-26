@@ -1,3 +1,4 @@
+import "./SidebarItem.css";
 import { createElement } from "react";
 import type { PolymorphicProps } from "../Page/index.js";
 
@@ -21,6 +22,12 @@ export function SidebarItem({
       "aria-current": active ? current : undefined,
       ...(as === "button" ? { type: "button", onClick: onSelect } : {}),
       ...props,
+      className: [
+        "mf-sidebar-v2-item",
+        typeof props.className === "string" ? props.className : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
     },
     children,
   );

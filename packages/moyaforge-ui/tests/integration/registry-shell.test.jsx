@@ -5,9 +5,9 @@ import { DocumentationSite } from "../../../../packages/moyaforge-ui/src/compone
 
 test("canonical documentation shell renders host-provided navigation and article", () => {
   const pages = [
-    { path: "/packages", label: "Libraries" },
-    { path: "/docs/topic/nested", label: "Nested guide" },
-    { path: "/docs", label: "Handbook" },
+    { path: "/packages", title: "Libraries" },
+    { path: "/docs/topic/nested", title: "Nested guide" },
+    { path: "/docs", title: "Handbook" },
   ];
   const html = renderToStaticMarkup(
     createElement(DocumentationSite, {

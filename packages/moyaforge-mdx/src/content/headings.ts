@@ -10,7 +10,7 @@ import remarkRehype from "remark-rehype";
 import rehypeSlug from "rehype-slug";
 import rehypeExtractToc from "@stefanprobst/rehype-extract-toc";
 import { VFile } from "vfile";
-import type { TocHeading } from "../navigation/toc.js";
+import type { TocHeading } from "../navigation/toc/index.js";
 
 /**
  * Extract headings using the same rehype-slug + rehype-extract-toc combination
@@ -26,7 +26,9 @@ export async function extractPageHeadings(
     .use(remarkGfm)
     .use(remarkMdx)
     .use(remarkDirective)
-    .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules, { allowInlinePreviewStyles: true })
+    .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules, {
+      allowInlinePreviewStyles: true,
+    })
     .use(remarkRehype)
     .use(rehypeSlug)
     .use(rehypeExtractToc);

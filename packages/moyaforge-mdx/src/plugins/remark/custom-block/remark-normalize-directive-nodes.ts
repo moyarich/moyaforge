@@ -28,6 +28,7 @@ export function remarkNormalizeDirectiveNodes() {
             (key) => attrs[key] === "" || attrs[key] === null,
           ),
           component: attrs.component ?? undefined,
+          preview: attrs.preview ?? undefined,
           code: attrs.code ?? undefined,
           language: attrs.language ?? undefined,
           sources: attrs.files ?? undefined,

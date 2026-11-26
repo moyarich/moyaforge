@@ -1,0 +1,43 @@
+.mf-sidebar-v2-group {
+  min-width: 0;
+}
+.mf-sidebar-v2-group-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--mf-sidebar-gap);
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 0;
+  border-radius: var(--mf-sidebar-radius);
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+}
+.mf-sidebar-v2-group-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.mf-sidebar-v2-group-trigger:hover {
+  background: var(--mf-sidebar-hover-background);
+}
+.mf-sidebar-v2-group-trigger:focus-visible {
+  outline: 2px solid var(--mf-sidebar-focus-color);
+  outline-offset: -2px;
+}
+.mf-sidebar-v2-group-trigger > svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+.mf-sidebar-v2-children {
+  display: grid;
+  gap: 0.125rem;
+  margin-inline-start: 0.625rem;
+  padding-inline-start: 0.5rem;
+  border-inline-start: 1px solid var(--mf-sidebar-border-color);
+}

@@ -71,7 +71,7 @@ test("custom destinations retain portable relative imports", async () => {
     run(root, "add", "docs-shell", "--directory", "ui/docs", "--no-install")
       .status,
   ).toBe(0);
-  expect(await read(root, "ui/docs/docs-shell.tsx")).toContain(
+  expect(await read(root, "ui/docs/DocsShell/DocsShell.tsx")).toContain(
     "./Layout/DocsLayout/DocsLayout.js",
   );
   expect(
@@ -100,7 +100,7 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(manifest.dependencies["react-dom"]).toBe("^18.3.1");
   expect(manifest.dependencies).not.toHaveProperty("@moyarich/moyaforge");
   const existingApp = await read(root, "moyaforge/src/App.tsx");
-  expect(existingApp).toContain("../../src/components/ui/docs-shell.js");
+  expect(existingApp).toContain("../../src/components/ui/DocsShell/DocsShell.js");
   expect(existingApp).toContain("sidebar={sidebar}");
   expect(existingApp).not.toContain("components/Routing/content-routing.js");
   expect(await read(root, "moyaforge/vite.config.ts")).toContain(
@@ -155,7 +155,7 @@ test("init produces source/package/hybrid starters and preserves existing app co
   expect(searchViteConfig).not.toContain("__SEARCH_PLUGIN_IMPORT__");
   expect(searchViteConfig).toContain("sqliteSearchPlugin({");
   expect(searchViteConfig).toContain('import registry from "./registry.config"');
-  expect(await read(packageRoot, "src/components/ui/docs-shell.tsx")).toContain(
+  expect(await read(packageRoot, "src/components/ui/DocsShell/DocsShell.tsx")).toContain(
     "DocsShell",
   );
   expect(await read(packageRoot, "package.json")).not.toMatch(
@@ -242,9 +242,9 @@ test("monaco installation reports setup notes without copying README files", asy
   expect(dry.stdout).toContain("@monaco-editor/react");
   expect(dry.stdout).toContain("monaco-editor");
   expect(dry.stdout).toContain(
-    "npm install @monaco-editor/react monaco-editor lucide-react",
+    "npm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/react monaco-editor",
   );
-  expect(dry.stdout).toContain("Monaco workers");
+  expect(dry.stdout).toContain("Configure workers once");
   await expect(
     read(root, "src/components/ui/MonacoEditorReact/README.md"),
   ).rejects.toThrow();
@@ -383,12 +383,12 @@ test("Monaco integration is installed only for the playground starter", async ()
   const docsManifest = JSON.parse(await read(docsRoot, "package.json"));
   expect(docsManifest.devDependencies).not.toHaveProperty("@moyarich/moyaforge-monaco");
   const docsTsconfig = await read(docsRoot, "tsconfig.json");
-  expect(docsTsconfig).not.toContain("@moyarich/moyaforge-monaco/virtual");
+  expect(docsTsconfig).not.toContain("@moyarich/moyaforge-monaco/vite/react-types");
 
   const playgroundRoot = await project();
   expect(run(playgroundRoot, "init", "--template", "playground", "--no-install").status).toBe(0);
   const playgroundManifest = JSON.parse(await read(playgroundRoot, "package.json"));
   expect(playgroundManifest.devDependencies["@moyarich/moyaforge-monaco"]).toBe("^0.1.0");
   const playgroundTsconfig = await read(playgroundRoot, "tsconfig.json");
-  expect(playgroundTsconfig).toContain("@moyarich/moyaforge-monaco/virtual");
+  expect(playgroundTsconfig).toContain("@moyarich/moyaforge-monaco/vite/react-types");
 });

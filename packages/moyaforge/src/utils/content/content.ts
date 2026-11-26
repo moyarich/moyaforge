@@ -1,10 +1,9 @@
+import { createPageId } from "@moyarich/moyaforge-mdx/page-id";
 import type { ComponentType } from "react";
 
 const ORDER_PREFIX = /^\d+[-_. ]*/;
 
 export interface PageFrontmatter {
-  id?: string;
-  label?: string;
   title?: string;
   hidden?: boolean;
   /** visible: menu and route, hidden: route only, disabled: omit. */
@@ -58,13 +57,14 @@ export function createPageDescriptor(
 ): PageDescriptor {
   const segments = pagePathParts(path);
   const frontmatter = module.frontmatter ?? {};
-  const fallbackId = segments.join("/") || "index";
+  if ("label" in frontmatter)
+    throw new Error(`${path}: use title instead of label in page frontmatter`);
+  const title =
+    frontmatter.title?.trim() || labelFromSegment(segments.at(-1) ?? "Home");
 
   return {
-    id: frontmatter.id ?? fallbackId,
-    label:
-      frontmatter.label ??
-      labelFromSegment(segments.at(-1) ?? frontmatter.title ?? "Home"),
+    id: createPageId(title),
+    label: title,
     navPath: segments.map(labelFromSegment),
     path,
     frontmatter,

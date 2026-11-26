@@ -1,0 +1,53 @@
+.preview-interactive-controls select {
+  --_mf-preview-interactive-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  appearance: none;
+  height: var(--mf-preview-interactive-control-height);
+  padding-block: 0.375rem;
+  padding-inline: 0.75rem 2.25rem;
+  background-image: var(--_mf-preview-interactive-select-chevron);
+  background-position: right 0.625rem center;
+  background-size: 1rem;
+  background-repeat: no-repeat;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.preview-interactive-controls select:dir(rtl) {
+  background-position: left 0.625rem center;
+}
+
+.preview-interactive-controls select:not(:disabled):hover {
+  border-color: var(--mf-preview-interactive-muted);
+}
+
+.preview-interactive-controls select:disabled {
+  background-color: var(--mf-preview-interactive-soft);
+  color: var(--mf-preview-interactive-muted);
+  opacity: 0.65;
+}
+
+.preview-interactive-controls select option {
+  color: var(--mf-text, light-dark(#27272a, #e4e4e7));
+  background: var(--mf-bg, light-dark(#fff, #18181b));
+}
+
+.preview-interactive-controls select:focus-visible {
+  border-color: var(--mf-preview-interactive-accent);
+  outline: 2px solid
+    color-mix(in srgb, var(--mf-preview-interactive-accent) 25%, transparent);
+  outline-offset: 1px;
+}
+
+@media (forced-colors: active) {
+  .preview-interactive-controls select {
+    appearance: auto;
+    background-image: none;
+    padding-inline-end: 0.75rem;
+  }
+  .preview-interactive-controls select:focus-visible {
+    outline-color: Highlight;
+  }
+}

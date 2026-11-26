@@ -1,0 +1,27 @@
+---
+title: Inline greeting
+---
+
+# Inline greeting
+
+Open **Code** and copy **greeting-preview.md** for the complete `preview-code` usage. **greeting-content.md** contains only the Markdown rendered in the preview.
+
+:::::preview-code[Inline greeting]{preview="greeting-content.md"}
+
+````md filename="greeting-preview.md"
+::::preview-code[Inline greeting]{preview="greeting-content.md"}
+
+```md filename="greeting-content.md"
+**Hello** from `Markdown`.
+```
+
+::::
+````
+
+```md filename="greeting-content.md"
+**Hello** from `Markdown`.
+```
+
+:::::
+
+`preview="greeting-content.md"` renders that named fence. The source-only **greeting-preview.md** tab shows how to reproduce the whole example in your documentation. No imports or helper files are needed.

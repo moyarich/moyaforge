@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { buildPageRegistry } from "../../dist/index.js";
-import { buildDocumentationGroups } from "../../dist/navigation/tree.js";
+import { buildDocumentationGroups } from "../../dist/navigation/tree/index.js";
 
 function groups(frontmatter) {
   const registry = buildPageRegistry({
@@ -9,7 +9,6 @@ function groups(frontmatter) {
         file: "page.mdx",
         frontmatter: {
           title: "UI Components",
-          label: "Overview",
           ...frontmatter,
         },
       },
@@ -29,13 +28,13 @@ test("frontmatter promotes a landing page to a linked, collapsible source headin
   expect(group.collapsible).toBe(true);
   expect(group.defaultOpen).toBe(false);
   expect(group.nodes.map((node) => node.path)).toEqual(["/ui/components"]);
-  expect(
-    groups({ sidebar: { group: true, label: "Custom heading" } })[0].label,
-  ).toBe("Custom heading");
+  expect(() =>
+    groups({ sidebar: { group: true, label: "Custom heading" } }),
+  ).toThrow(/page title/);
 });
 test("ordinary and hidden landing pages retain existing navigation behavior", () => {
   expect(groups({})[0].page).toBeUndefined();
-  expect(groups({})[0].nodes[0].page.label).toBe("Overview");
+  expect(groups({})[0].nodes[0].page.title).toBe("UI Components");
   const [hidden] = groups({ navigation: "hidden", sidebar: { group: true } });
   expect(hidden.page).toBeUndefined();
   expect(hidden.nodes[0].path).toBe("/ui/components");

@@ -1,14 +1,17 @@
 ---
 title: Sidebar with page links
-label: Sidebar with page links
 ---
-
 
 # Sidebar V1 · Sidebar with page links
 
-::::code-preview[Sidebar V1]{component="./Example.tsx"}
+The `groups` prop renders Guide and Components sections. Nested `children` show
+Installation → Frameworks → Vite and Sidebar V1 → Navigation → Nested groups.
+Guide can be collapsed.
+The demo controls `currentUrl` so links update the active selection without leaving this page.
 
-::code-preview-sources{files="./Example.tsx,./Example.css" replacements="portable"}
+::::preview-code[Sidebar with page links]{component="./SidebarPageLinks.tsx"}
+
+::preview-code-sources{files="./SidebarPageLinks.tsx,./SidebarPageLinks.css" replacements="portable"}
 
 ::::
 

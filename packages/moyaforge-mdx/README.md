@@ -43,7 +43,7 @@ export default {
 } as const;
 ```
 
-Paths use numeric prefixes for ordering; these prefixes disappear from public routes. Markdown and MDX pages use YAML frontmatter to override `title`, `label`, `description`, `order`, `navigation`, `sidebar` and `toc`. Pages with `navigation: hidden` remain routable; `navigation: disabled` pages do not. Per-page `toc` overrides the project-wide default. Missing source directories produce an error; empty existing directories are valid.
+Paths use numeric prefixes for ordering; these prefixes disappear from public routes. Markdown and MDX pages use YAML frontmatter to override `title`, `description`, `order`, `navigation`, `sidebar` and `toc`. Pages with `navigation: hidden` remain routable; `navigation: disabled` pages do not. Per-page `toc` overrides the project-wide default. Missing source directories produce an error; empty existing directories are valid.
 
 ## Optional Vite registry discovery
 
@@ -64,7 +64,7 @@ These modules use the same configured content roots and reload when content file
 
 ## Build-time page metadata
 
-`discoverContent(registry, projectRoot)` reads authored YAML from `page.md` and `page.mdx`, validates the schema through the headless page registry and derives routable pages, visible navigation, labels and ordering without executing MDX.
+`discoverContent(registry, projectRoot)` reads authored YAML from `page.md` and `page.mdx`, validates the schema through the headless page registry and derives routable pages, visible navigation, titles and ordering without executing MDX.
 
 When using `mdxRegistryPlugin`, applications can import the metadata-only virtual module:
 
@@ -108,7 +108,7 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 
 ## Internal link validation
 
-`validateInternalLinks(documents, registry, headings)` checks authored Markdown links against the normalized route inventory and extracted heading IDs. It returns structured diagnostics with source file, original href, and `missing-page`, `missing-anchor`, or `invalid-link` reason. Relative URLs resolve from the page's canonical directory route. External links, images, and fenced code are excluded. The helper is opt-in for consumers. The playground runs link checking in CI, including static `href` attributes on MDX anchor elements. Dynamic JSX expressions cannot be resolved statically.
+`validateInternalLinks(documents, registry, headings)` checks authored Markdown links against the normalized route inventory and extracted heading IDs. It returns structured diagnostics with source file, original href, and `missing-page`, `missing-anchor`, or `invalid-link` reason. Relative route URLs resolve from the page's canonical directory route. Relative Markdown source links resolve from the authored file location. External links, images, and fenced code are excluded. The helper is opt-in for consumers. The playground runs link checking in CI, including static `href` attributes on MDX anchor elements. Dynamic JSX expressions cannot be resolved statically.
 
 ## Validate links during checks
 
@@ -126,7 +126,6 @@ of appearing as a separate Overview child. Configure its frontmatter:
 ```yaml
 ---
 title: UI Components
-label: Overview
 icon: folder-open
 sidebar:
   group: true
@@ -200,3 +199,7 @@ registry and code preview modules.
   }
 }
 ```
+
+### Page title and URL identity
+
+Declare a single `title` in page frontmatter. Page IDs and URL segments are generated from that title with `createPageId(title)`: lowercase, hyphenated, accent-normalized, and retaining non-Latin letters. Parent page titles determine ancestor segments; source landing pages retain their source route. Numeric filenames still determine order. Duplicate sibling URLs fail validation. Page `label` and `sidebar.label` overrides are no longer supported.

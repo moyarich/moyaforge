@@ -3,7 +3,7 @@ export interface SidebarNavigationNode {
   path: string;
   page?: {
     path: string;
-    label: string;
+    title: string;
     icon?: string;
   };
   children: SidebarNavigationNode[];

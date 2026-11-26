@@ -14,7 +14,7 @@ function findExamplePages(folder: string): string[] {
     });
 }
 
-test("component example pages include a live CodePreview", () => {
+test("component example pages include a live PreviewCode", () => {
   const docs = fileURLToPath(
     new URL("../../docs/01-components/", import.meta.url),
   );
@@ -46,7 +46,7 @@ test("component example pages include a live CodePreview", () => {
   for (const page of examples) {
     expect(
       readFileSync(page, "utf8"),
-      `${page}: should include CodePreview or ::: code-preview`,
-    ).toMatch(/::: ?code-preview|<CodePreview(?:Editor)?\b/);
+      `${page}: should include PreviewCode or ::: preview-code`,
+    ).toMatch(/::: ?preview-code|<PreviewCode(?:Editor)?\b/);
   }
 });

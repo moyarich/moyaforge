@@ -1,14 +1,26 @@
 ---
 title: Workspace with an inspector
-label: Workspace with an inspector
 ---
-
 
 # Docs Shell Wide · Workspace with an inspector
 
-::::code-preview[Docs Shell Wide]{component="./Example.tsx"}
+Select a page in the navigation, then edit its title, summary, or status in the
+inspector. The center preview updates immediately. Use **Inspector** in the
+toolbar to hide or restore the properties panel. Edits stay local to this demo.
 
-::code-preview-sources{files="./Example.tsx,./Example.css" replacements="portable"}
+The documentation layout supplies the page navigation and surrounding controls.
+The center pane uses `PreviewInspector` with React content and a controlled
+`PageInspector` in its optional inspector slot. On narrow previews, the panel
+moves below the content. The shell also accepts toolbar and footer slots.
+
+Use the `preview-inspector` registry item or import
+`@moyarich/moyaforge-ui/components/PreviewInspector` and
+`@moyarich/moyaforge-ui/components/PreviewInspector/styles.css`.
+The host application supplies the preview renderer, selection, and editable state.
+
+::::preview-code[Workspace with an inspector]{component="./InspectorDocsShell.tsx"}
+
+::preview-code-sources{files="./InspectorDocsShell.tsx,./PageInspector.tsx,./InspectorDocsShell.css" replacements="portable"}
 
 ::::
 

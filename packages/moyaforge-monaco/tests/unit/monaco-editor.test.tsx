@@ -1,45 +1,40 @@
 import { expect, test, vi } from "vitest";
 import { createElement as h, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+const nativePropsSpy = vi.hoisted(() => vi.fn());
 vi.mock(
   "../../src/components/MonacoEditorReact/ReactMonacoSourceEditor.js",
   () => ({
-    ReactMonacoSourceEditor: (props) =>
-      h("textarea", {
+    ReactMonacoSourceEditor: (props) => {
+      nativePropsSpy(props);
+      return h("textarea", {
         "data-model-path": props.path,
         "data-language": props.language,
         readOnly: props.options.readOnly,
         defaultValue: props.value,
-      }),
+      });
+    },
   }),
 );
 import { MonacoEditorReact } from "../../src/components/MonacoEditorReact/MonacoEditorReact.js";
-import { MonacoCodeGroup } from "../../src/components/MonacoEditorReact/MonacoCodeGroup.js";
-import { languageForPath } from "../../src/components/MonacoEditorCore/languages.js";
 const files = [
   { name: "App.tsx", value: "const app = true;" },
   { name: "locked.json", value: "{}", readOnly: true },
 ];
-test("real editor infers language and enforces workspace, file and options read-only settings", () => {
+test("real editor delegates language inference and enforces workspace, file and options read-only settings", () => {
   const render = (props = {}) =>
     renderToStaticMarkup(h(MonacoEditorReact, { files, ...props }));
-  expect(render()).toContain('data-language="typescript"');
-  expect(render()).not.toContain('readonly=""');
-  expect(render({ readOnly: true })).toContain('readonly=""');
-  expect(render({ options: { readOnly: true } })).toContain('readonly=""');
+  expect(render()).not.toContain('data-language=');
+  expect(render({ files: [{ name: "example.txt", value: "", language: "typescript" }] })).toContain('data-language="typescript"');
+  expect(render()).not.toContain('readOnly=""');
+  expect(render({ readOnly: true })).toContain('readOnly=""');
+  expect(render({ options: { readOnly: true } })).toContain('readOnly=""');
   expect(
     render({ options: { readOnly: true }, readOnly: false }),
-  ).not.toContain('readonly=""');
-  expect(render({ activeFile: "locked.json" })).toContain('readonly=""');
-  expect(render({ activeFile: "locked.json" })).toContain(
-    'data-language="json"',
-  );
-  expect(renderToStaticMarkup(h(MonacoCodeGroup, { files }))).toContain(
-    'readonly=""',
-  );
-  expect(
-    renderToStaticMarkup(h(MonacoCodeGroup, { files, editable: true })),
-  ).not.toContain('readonly=""');
+  ).not.toContain('readOnly=""');
+  expect(render({ activeFile: "locked.json" })).toContain('readOnly=""');
+  expect(render({ activeFile: "locked.json" })).not.toContain('data-language=');
+  expect(render()).not.toContain('role="tablist"');
 });
 test("separate editor instances isolate identical filenames", () => {
   const html = renderToStaticMarkup(
@@ -57,16 +52,10 @@ test("separate editor instances isolate identical filenames", () => {
   expect(paths[0]).not.toBe(paths[1]);
   expect(paths.every((path) => path.endsWith("App.tsx"))).toBe(true);
 });
-test("language inference handles common extensions, query suffixes and unknown files", () => {
-  expect(languageForPath("src/APP.TSX?raw")).toBe("typescript");
-  expect(languageForPath("src/main.jsx")).toBe("javascript");
-  expect(languageForPath("settings.jsonc")).toBe("json");
-  expect(languageForPath("Makefile")).toBe("plaintext");
-});
 
 test("explicit host updates replace changed values while preserving other drafts and removing old files", async () => {
   const { reconcileFileDrafts } =
-    await import("../../src/components/MonacoEditorCore/drafts.js");
+    await import("../../src/components/MonacoFileSession/reconcileFileDrafts.js");
   const previous = new Map([
     ["a.ts", "original a"],
     ["b.ts", "original b"],
@@ -99,4 +88,26 @@ test("duplicate names and model paths fail instead of sharing editable state", (
       }),
     ),
   ).toThrow(/unique/);
+});
+
+
+test("React Monaco forwards native editor options and callbacks while owning file models", () => {
+  nativePropsSpy.mockClear();
+  const onValidate = vi.fn();
+  const wrapperProps = { "aria-label": "Source editor" };
+  renderToStaticMarkup(h(MonacoEditorReact, {
+    files,
+    line: 12,
+    saveViewState: false,
+    onValidate,
+    wrapperProps,
+  }));
+  const native = nativePropsSpy.mock.calls[0][0];
+  expect(native.line).toBe(12);
+  expect(native.saveViewState).toBe(false);
+  expect(native.onValidate).toBe(onValidate);
+  expect(native.wrapperProps).toBe(wrapperProps);
+  expect(native.value).toBe(files[0].value);
+  expect(native.path).toMatch(/App\.tsx$/);
+  expect(native.language).toBeUndefined();
 });

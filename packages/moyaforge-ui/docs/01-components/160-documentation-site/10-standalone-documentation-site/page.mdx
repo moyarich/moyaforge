@@ -1,14 +1,21 @@
 ---
 title: Standalone documentation site
-label: Standalone documentation site
 ---
-
 
 # Documentation Site · Standalone documentation site
 
-::::code-preview[Documentation Site]{component="./Example.tsx"}
+Switch pages through the sidebar, search, breadcrumbs, or previous/next links.
+The example keeps `currentPath` in React state and passes `onNavigate` to the
+shell, so navigation stays inside the preview without a router.
 
-::code-preview-sources{files="./Example.tsx" replacements="portable"}
+The default sidebar and breadcrumbs read `path`, `title`, and `parentPath` from
+the supplied pages. `onSearch` searches those same pages. `outline={null}` omits
+the optional outline. The example CSS contains the full-page layout inside this
+preview; the component supplies the navigation and control styling.
+
+::::preview-code[Standalone documentation site]{component="./StandaloneDocumentationSite.tsx"}
+
+::preview-code-sources{files="./StandaloneDocumentationSite.tsx,./StandaloneDocumentationSite.css" replacements="portable"}
 
 ::::
 

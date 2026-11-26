@@ -1,20 +1,42 @@
 .mf-doc-outline {
   --_mf-doc-outline-top: var(--mf-doc-outline-top, 5rem);
-  --_mf-doc-outline-max-height: var(--mf-doc-outline-max-height, calc(100vh - 6rem));
-  --_mf-doc-outline-title-font-size: var(--mf-doc-outline-title-font-size, 0.8rem);
-  --_mf-doc-outline-title-font-weight: var(--mf-doc-outline-title-font-weight, 700);
+  --_mf-doc-outline-max-height: var(
+    --mf-doc-outline-max-height,
+    calc(100vh - 6rem)
+  );
+  --_mf-doc-outline-title-font-size: var(
+    --mf-doc-outline-title-font-size,
+    0.8rem
+  );
+  --_mf-doc-outline-title-font-weight: var(
+    --mf-doc-outline-title-font-weight,
+    700
+  );
   --_mf-doc-outline-border-width: var(--mf-doc-outline-border-width, 1px);
   --_mf-doc-outline-border-color: var(--mf-doc-outline-border-color, #e5e7eb);
   --_mf-doc-outline-marker-width: var(--mf-doc-outline-marker-width, 2px);
-  --_mf-doc-outline-marker-color: var(--mf-doc-outline-marker-color, currentColor);
+  --_mf-doc-outline-marker-color: var(
+    --mf-doc-outline-marker-color,
+    currentColor
+  );
   --_mf-doc-outline-marker-inset: var(--mf-doc-outline-marker-inset, 0.1rem);
-  --_mf-doc-outline-link-padding: var(--mf-doc-outline-link-padding, 0.35rem 0.5rem);
+  --_mf-doc-outline-link-padding: var(
+    --mf-doc-outline-link-padding,
+    0.35rem 0.5rem
+  );
   --_mf-doc-outline-level-indent: var(--mf-doc-outline-level-indent, 1rem);
   --_mf-doc-outline-link-opacity: var(--mf-doc-outline-link-opacity, 0.75);
-  --_mf-doc-outline-active-font-weight: var(--mf-doc-outline-active-font-weight, 700);
+  --_mf-doc-outline-active-font-weight: var(
+    --mf-doc-outline-active-font-weight,
+    700
+  );
   --_mf-doc-outline-marker-offset: calc(
     0px - var(--_mf-doc-outline-border-width) -
-      (var(--_mf-doc-outline-marker-width) - var(--_mf-doc-outline-border-width)) / 2
+      (
+        var(--_mf-doc-outline-marker-width) -
+          var(--_mf-doc-outline-border-width)
+      ) /
+      2
   );
 
   position: sticky;
@@ -63,4 +85,28 @@
 
 .mf-doc-outline .mf-level-3 {
   padding-left: var(--_mf-doc-outline-level-indent);
+}
+
+.mf-doc-outline > button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 1rem;
+  width: 100%;
+  padding: var(--_mf-doc-outline-link-padding);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--_mf-doc-outline-title-font-size);
+  font-weight: var(--_mf-doc-outline-title-font-weight);
+  text-align: start;
+  cursor: pointer;
+}
+.mf-doc-outline > button::after {
+  content: "+";
+}
+.mf-doc-outline > button[aria-expanded="true"]::after {
+  content: "−";
 }

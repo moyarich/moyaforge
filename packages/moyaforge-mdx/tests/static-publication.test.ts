@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildPageRegistry } from "../src/registry/registry.js";
+import { buildPageRegistry } from "../src/registry/index.js";
 import { createContentManifest } from "../src/content/manifest.js";
 import { createStaticPublication } from "../src/content/static-publication.js";
 

@@ -1,0 +1,90 @@
+---
+title: Tabs
+description: Composable tab panels with CSS-variable theming.
+---
+
+# Tabs
+
+`Tabs`, `TabsList`, `TabsTrigger`, and `TabsContent` are reusable, editor-independent components. **The tab strip and its content panel share CSS tokens**, rather than requiring a React theme or variant prop.
+
+## Live example
+
+::::preview-code[Tab panel CSS themes]{component="./TabThemes.tsx"}
+
+::preview-code-sources{files="./TabThemes.tsx,./TabThemes.css" replacements="portable"}
+
+::::
+
+Switch between the existing tab style, curved workspace tabs, and a Fluent-inspired tab panel based on the [DevExpress HtmlEditor demo](https://js.devexpress.com/React/Demos/WidgetsGallery/Demo/HtmlEditor/Overview/FluentBlueLight/).
+
+## Overflow navigation
+
+Set `tabsScroll` on `TabsList` to enable overflow navigation (disabled by default). When the tab strip is wider than its container, it shows **left/right navigation arrows** and **faded edges** to indicate more tabs are available. Arrows disappear at the corresponding scroll boundary. Mouse wheel or trackpad scrolling and keyboard selection remain supported.
+
+::::preview-code[Overflowing file tabs]{component="./ScrollableFileTabs.tsx"}
+
+::preview-code-sources{files="./ScrollableFileTabs.tsx,./ScrollableFileTabs.css" replacements="portable"}
+
+::::
+
+You can customize the controls from your own CSS with `--mf-tabs-scroll-fade-width`, `--mf-tabs-scroll-button-width`, `--mf-tabs-scroll-button-background`, `--mf-tabs-scroll-button-color`, and `--mf-tabs-scroll-button-hover-background`. The buttons and fades appear only when the tabs overflow.
+
+## Usage
+
+```tsx
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@moyarich/moyaforge-ui/components/Tabs";
+
+<Tabs defaultValue="content" className="my-tabs">
+  <TabsList aria-label="Panels">
+    <TabsTrigger value="content">Content</TabsTrigger>
+    <TabsTrigger value="source">Source</TabsTrigger>
+  </TabsList>
+  <TabsContent value="content">Editor content</TabsContent>
+  <TabsContent value="source">Source content</TabsContent>
+</Tabs>;
+```
+
+## Theme tokens
+
+Public CSS tokens start with `--mf-`. Supported customization points include `--mf-tabs-surface`, `--mf-tabs-strip`, `--mf-tabs-border`, `--mf-tabs-accent`, `--mf-tabs-active-background`, `--mf-tabs-corner-size`, `--mf-tabs-radius`, `--mf-tabs-indicator-size`, `--mf-tabs-indicator-inset`, `--mf-tabs-content-padding`, and `--mf-tabs-panel-border-width`.
+
+Resolved component-private variables start with `--_mf-`. You can override public tokens on any parent element or through a className.
+
+For controlled selection, use `value` and `onValueChange`. Tabs support arrow keys and Home/End, optional close callbacks, and `forceMount` for panel persistence.
+
+## Style tabs from your own CSS
+
+Import your stylesheet alongside the component that renders `Tabs`. The `className` scopes the CSS-variable overrides to this tab group:
+
+```tsx
+import "./tabs.css";
+
+<Tabs defaultValue="preview" className="project-tabs">
+  <TabsList aria-label="Views">
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="source">Source</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">Preview panel</TabsContent>
+  <TabsContent value="source">Source panel</TabsContent>
+</Tabs>;
+```
+
+```css
+/* tabs.css — your application's stylesheet */
+.project-tabs {
+  --mf-tabs-strip: #f1f5f9;
+  --mf-tabs-surface: #fff;
+  --mf-tabs-border: #cbd5e1;
+  --mf-tabs-accent: #2563eb;
+  --mf-tabs-list-border-width: 1px;
+  --mf-tabs-indicator-size: 3px;
+  --mf-tabs-content-padding: 1rem;
+}
+```
+
+These variables customize **both the tab strip and the content panel**. No theme prop is required. Keep `--_mf-*` implementation variables out of user stylesheets.

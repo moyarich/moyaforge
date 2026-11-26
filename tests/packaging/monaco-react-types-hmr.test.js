@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import { resolve } from "node:path";
 import { expect, test, vi } from "vitest";
-import { monacoReactTypesPlugin } from "../../packages/moyaforge-monaco/src/vite.ts";
+import { monacoReactTypesPlugin } from "../../packages/moyaforge-monaco/src/vite/monacoReactTypesPlugin.ts";
 
 const virtualId = "virtual:moyaforge-monaco/react-types";
 const resolvedId = String.fromCharCode(0) + virtualId;

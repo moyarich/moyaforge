@@ -1,3 +1,6 @@
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import type { DirectiveNode } from "../plugins/remark/remark-directive/directive-node.js";
 import { directiveHeaderRules } from "../plugins/remark/directive-header-rules.js";
 import remarkDirective from "remark-directive";
 import { remarkNormalizeDirectiveNodes } from "../plugins/remark/custom-block/remark-normalize-directive-nodes.js";
@@ -21,7 +24,7 @@ import {
 import {
   type FilePreviewOptions,
   remarkMapFilePreviewDirectives,
-} from "../plugins/remark/code-preview/remark-map-file-preview-directives.js";
+} from "../plugins/remark/preview-code/remark-map-file-preview-directives.js";
 
 /** Host-specific remark/rehype plugins are supplied by each consuming app. */
 export interface MdxToolingOptions {
@@ -31,7 +34,7 @@ export interface MdxToolingOptions {
   /** Transform file-backed ::: preview references into host-resolved PreviewDirective components. */
   filePreviewOptions?: boolean | FilePreviewOptions;
   additionalRehypePlugins?: PluggableList;
-  /** Enable raw CSS in code-preview only for reviewed, repository-controlled MDX. Defaults to false. Never enables scripts. */
+  /** Enable raw CSS in preview-code only for reviewed, repository-controlled MDX. Defaults to false. Never enables scripts. */
   allowInlinePreviewStyles?: boolean;
   /** Opt into a compiled MDX frontmatter export for older module consumers. YAML registry metadata does not require it. */
   exportFrontmatter?: boolean;
@@ -59,7 +62,11 @@ export function createMdxOptions({
     remarkFrontmatter,
     remarkGfm,
     remarkDirective,
-    [remarkNormalizeDirectiveHeaders, directiveHeaderRules, { allowInlinePreviewStyles }],
+    [
+      remarkNormalizeDirectiveHeaders,
+      directiveHeaderRules,
+      { allowInlinePreviewStyles },
+    ],
     [remarkFlexibleContainers, customBlockOptions],
     remarkNormalizeDirectiveNodes,
   ];
@@ -69,8 +76,31 @@ export function createMdxOptions({
       filePreviewOptions === true ? {} : filePreviewOptions,
     ]);
   }
-  if (componentMappings) {
-    remarkPlugins.push([remarkMapDirectivesToComponents, componentMappings]);
+  const previewMappings =
+    componentMappings &&
+    Object.fromEntries(
+      Object.entries(componentMappings).map(([name, mapping]) => [
+        name,
+        {
+          ...mapping,
+          renderPreviewMarkdown(source: string, authoredFile?: string) {
+            const processor = unified().use(remarkParse).use(remarkPlugins);
+            const file = { value: source, path: authoredFile };
+            return (
+              processor.runSync(processor.parse(file), file) as unknown as {
+                children: DirectiveNode[];
+              }
+            ).children;
+          },
+          previewMdxOptions: {
+            providerImportSource: "@mdx-js/react",
+            remarkPlugins,
+          } as import("@mdx-js/mdx").CompileOptions,
+        },
+      ]),
+    );
+  if (previewMappings) {
+    remarkPlugins.push([remarkMapDirectivesToComponents, previewMappings]);
   }
   remarkPlugins.push(...additionalRemarkPlugins);
   if (exportFrontmatter) {
@@ -85,6 +115,10 @@ export function createMdxOptions({
   ];
   if (highlightingPlugin) rehypePlugins.push(highlightingPlugin);
   rehypePlugins.push(...additionalRehypePlugins);
+
+  for (const mapping of Object.values(previewMappings ?? {})) {
+    mapping.previewMdxOptions.rehypePlugins = rehypePlugins;
+  }
 
   return {
     providerImportSource: "@mdx-js/react",

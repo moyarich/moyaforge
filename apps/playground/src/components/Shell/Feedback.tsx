@@ -1,6 +1,6 @@
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+import type { RegistryPage } from "@moyarich/moyaforge-mdx";
 
-export function Feedback({ page }: { page?: NormalizedPage }) {
+export function Feedback({ page }: { page?: RegistryPage }) {
   const issue = new URL("https://github.com/moyarich/moyaforge/issues/new");
   issue.searchParams.set(
     "title",

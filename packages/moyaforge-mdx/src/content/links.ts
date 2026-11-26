@@ -1,14 +1,14 @@
 import { directiveHeaderRules } from "../plugins/remark/directive-header-rules.js";
 import remarkDirective from "remark-directive";
 import { remarkNormalizeDirectiveHeaders } from "../plugins/remark/remark-directive/remark-normalize-directive-headers.js";
-import { posix } from "node:path";
+import { dirname, resolve, posix } from "node:path";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkMdx from "remark-mdx";
 import remarkFrontmatter from "remark-frontmatter";
-import type { PageRegistry } from "../registry/registry.js";
-import type { TocHeading } from "../navigation/toc.js";
+import type { PageRegistry } from "../registry/index.js";
+import type { TocHeading } from "../navigation/toc/index.js";
 
 export interface LinkIssue {
   file: string;
@@ -19,6 +19,8 @@ export interface LinkDocument {
   source: string;
   file: string;
   content: string;
+  /** Absolute authored filename, used for source links across content sources. */
+  filename?: string;
 }
 
 function anchors(nodes: readonly TocHeading[]): Set<string> {
@@ -43,6 +45,14 @@ export function validateInternalLinks(
   const bySourceFile = new Map(
     registry.pages.map((page) => [page.source + "/" + page.file, page]),
   );
+  const byFilename = new Map(
+    documents
+      .filter((document) => document.filename)
+      .map((document) => [
+        resolve(document.filename!),
+        bySourceFile.get(document.source + "/" + document.file),
+      ]),
+  );
   for (const document of documents) {
     const key = document.source + "/" + document.file;
     const current = bySourceFile.get(key);
@@ -53,7 +63,9 @@ export function validateInternalLinks(
       .use(remarkGfm)
       .use(remarkMdx)
       .use(remarkDirective)
-      .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules, { allowInlinePreviewStyles: true })
+      .use(remarkNormalizeDirectiveHeaders, directiveHeaderRules, {
+        allowInlinePreviewStyles: true,
+      })
       .parse(document.content);
     const visit = (node: any) => {
       const mdxAnchor =
@@ -80,7 +92,7 @@ export function validateInternalLinks(
             const clean = decodeURIComponent(pathPart.split("?")[0]);
             if (
               !clean ||
-              /(?:^|\/)page\.mdx?$/.test(clean) ||
+              /\.mdx?$/.test(clean) ||
               !/\.[a-z\d]+$/i.test(clean)
             ) {
               let path = clean
@@ -92,7 +104,23 @@ export function validateInternalLinks(
                 path
                   .replace(/\/(?:page\.mdx?|index\.html?)$/, "")
                   .replace(/\/$/, "") || "/";
-              const target = registry.byPath.get(path);
+              const sourceTarget = /\.mdx?$/.test(clean)
+                ? document.filename && !clean.startsWith("/")
+                  ? byFilename.get(resolve(dirname(document.filename), clean))
+                  : bySourceFile.get(
+                      clean.startsWith("/")
+                        ? clean.slice(1)
+                        : document.source +
+                            "/" +
+                            posix.normalize(
+                              posix.join(posix.dirname(document.file), clean),
+                            ),
+                    )
+                : undefined;
+              const target =
+                sourceTarget?.navigation !== "disabled" && sourceTarget
+                  ? sourceTarget
+                  : registry.byPath.get(path);
               if (!target)
                 diagnostics.push({ file: key, href, reason: "missing-page" });
               else if (

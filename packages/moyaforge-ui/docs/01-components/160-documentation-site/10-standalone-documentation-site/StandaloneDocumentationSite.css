@@ -1,0 +1,111 @@
+.standalone-site-example {
+  --mf-h1-font-size: 1.75rem;
+  --mf-h2-font-size: 1.125rem;
+  --mf-h3-font-size: 1rem;
+  --mf-body-font-size: 0.875rem;
+  --mf-nav-font-size: 0.8125rem;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--mf-border-color, light-dark(#e4e4e7, #3f3f46));
+  border-radius: 0.75rem;
+  overflow: hidden;
+  container: standalone-site / inline-size;
+  text-align: start;
+}
+/* Keep a full-page component contained inside an article preview. */
+.standalone-site-example .mf-docs {
+  min-height: 0;
+}
+.standalone-site-example .mf-header {
+  position: static;
+  height: auto;
+  min-height: 3.5rem;
+  padding: 0.75rem 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.standalone-site-example .mf-brand {
+  min-width: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+.standalone-site-example .mf-header > nav {
+  gap: 1rem;
+}
+.standalone-site-example .mf-search {
+  width: 13rem;
+}
+.standalone-site-example .mf-results {
+  width: 100%;
+  z-index: 2;
+}
+.standalone-site-example .mf-sidebar {
+  position: static;
+  top: auto;
+  height: 100%;
+}
+.standalone-site-example .mf-docs-sidebar-panel {
+  display: block;
+}
+.standalone-site-example .mf-article {
+  padding: 1.5rem;
+}
+.standalone-site-example .mf-article h1 {
+  margin: 0.75rem 0;
+}
+.standalone-site-example .mf-article h2 {
+  margin-top: 1.5rem;
+}
+.standalone-site-example .mf-page-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+}
+.standalone-site-example .mf-page-footer > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.standalone-site-summary {
+  color: var(--mf-muted, #73737c);
+}
+.standalone-site-example .standalone-site-tip {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--mf-border-color, light-dark(#e4e4e7, #3f3f46));
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+}
+.standalone-site-example .standalone-site-tip p {
+  margin: 0.5rem 0 0;
+}
+.standalone-site-example .standalone-site-note {
+  margin: 0;
+  font-size: 0.6875rem;
+  line-height: 1.6;
+}
+.standalone-site-example .mf-menu {
+  display: none;
+}
+@container standalone-site (max-width: 36rem) {
+  .standalone-site-example .mf-docs-grid.mf-docs-resizable {
+    display: block;
+  }
+  .standalone-site-example .mf-docs-sidebar-handle {
+    display: none;
+  }
+  .standalone-site-example .mf-sidebar {
+    display: flex;
+  }
+  .standalone-site-example .mf-sidebar nav ul {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .standalone-site-example .mf-sidebar nav a {
+    margin: 0;
+  }
+  .standalone-site-example .mf-sidebar-footer {
+    display: none;
+  }
+}

@@ -1,9 +1,9 @@
-import type { TocHeading } from "../navigation/toc.js";
-import type { NormalizedPage } from "../registry/registry.js";
+import type { TocHeading } from "../navigation/toc/index.js";
+import type { RegistryPage } from "../registry/index.js";
 import type { DiscoveredContent } from "./discovery.js";
 
 /** One canonical page record for routing, navigation, TOC and search consumers. */
-export interface ContentManifestEntry extends NormalizedPage {
+export interface ContentManifestEntry extends RegistryPage {
   headings: TocHeading[];
 }
 

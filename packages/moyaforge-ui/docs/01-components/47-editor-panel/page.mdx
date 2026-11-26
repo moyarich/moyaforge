@@ -1,0 +1,120 @@
+---
+title: Editor Panel
+description: Editor-agnostic tabs, toolbar and panels with Monaco or TypeFox runtimes.
+---
+
+# Editor Panel
+
+The UI components own tabs, Copy/Save buttons, breadcrumbs and CSS themes. The engine packages only render editable content. Use `EditorPanel` to integrate any renderer, or choose `MonacoEditorPanel` / `TypeFoxEditorPanel` for ready-made runtime adapters.
+
+## React Monaco
+
+```tsx
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
+
+const [files, setFiles] = useState([
+  { name: "App.tsx", path: "src/App.tsx", value: "export const answer = 42;" },
+  { name: "styles.css", value: "body { margin: 0; }" },
+]);
+
+<MonacoEditorPanel
+  files={files}
+  height={320}
+  showBreadcrumbs
+  onFileChange={(name, value) =>
+    setFiles((current) =>
+      current.map((file) => (file.name === name ? { ...file, value } : file)),
+    )
+  }
+  onSave={(name, value) => saveFile(name, value)}
+/>;
+```
+
+## Custom editor
+
+```tsx
+import { EditorPanel } from "@moyarich/moyaforge-ui/components/EditorPanel";
+
+<EditorPanel
+  files={files}
+  onFileChange={updateFile}
+  renderEditor={({ activeFile, onFileChange, readOnly }) => (
+    <textarea
+      value={activeFile.value}
+      readOnly={readOnly || activeFile.readOnly}
+      onChange={(event) => onFileChange(activeFile.name, event.target.value)}
+    />
+  )}
+/>;
+```
+
+## Use your own stylesheet
+
+Theme styles belong in **your application**, not in the MoyaForge component source. Create a CSS file next to your editor component and import it yourself. Pass a class to the editor's root `className` so the variables apply only to that editor.
+
+**MyEditor.tsx**
+
+```tsx
+import { useState } from "react";
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
+import "./my-editor.css";
+
+export function MyEditor() {
+  const [files, setFiles] = useState([
+    { name: "App.tsx", value: "export const answer = 42;" },
+    { name: "styles.css", value: "body { margin: 0; }" },
+  ]);
+
+  return (
+    <MonacoEditorPanel
+      className="my-editor"
+      files={files}
+      height={320}
+      onFileChange={(name, value) =>
+        setFiles((current) =>
+          current.map((file) =>
+            file.name === name ? { ...file, value } : file,
+          ),
+        )
+      }
+    />
+  );
+}
+```
+
+**my-editor.css** (user-owned)
+
+```css
+.my-editor {
+  /* Editor frame, toolbar, and content surface */
+  --mf-editor-border: #c7d2e0;
+  --mf-editor-radius: 0.75rem;
+  --mf-editor-toolbar-background: #eff4fa;
+  --mf-editor-surface: #fff;
+
+  /* File tabs and associated panel */
+  --mf-tabs-accent: #2563eb;
+  --mf-tabs-active-color: #1d4ed8;
+  --mf-tabs-indicator-size: 3px;
+  --mf-tabs-content-padding: 0;
+}
+```
+
+Only the **public `--mf-*` CSS variables** are intended for application overrides; `--_mf-*` variables are component-private. The default editor UI stays intact if you don't supply a stylesheet. Changing these tokens affects only the visual shell; Monaco's syntax-highlight theme is a separate runtime option.
+
+### Curved tab panel with CSS only
+
+Add these declarations to your `.my-editor` rule to switch from the original underline tabs to the curved panel style, without a React theme or variant prop:
+
+```css
+.my-editor {
+  --mf-tabs-strip: #e9edf2;
+  --mf-tabs-surface: #fff;
+  --mf-tabs-active-background: #fff;
+  --mf-tabs-corner-size: 0.75rem;
+  --mf-tabs-radius: 0.65rem 0.65rem 0 0;
+  --mf-tabs-indicator-size: 0px;
+}
+```
+
+The `EditorPanel` and `TypeFoxEditorPanel` components use the same UI tokens. See [Tabs](/ui/components/tabs) for the tab and panel variables.

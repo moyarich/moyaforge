@@ -1,0 +1,402 @@
+---
+title: Preview Code
+---
+
+import { PreviewCode as PreviewCodeLive } from "../../../src/components/PreviewCode/index.js";
+
+# PreviewCode
+
+Use `:::preview-code` to show a live example and `::preview-code-sources` to list its source files.
+
+Maintainers: see [Code preview internals](../../../../../docs/04-development/10-preview-code-internals/page.mdx) for parsing, Vite modules, source tabs, CSS/JS security, and syntax highlighting.
+
+## Installation
+
+<CodeGroup label="Install PreviewCode">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add preview-code
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/preview-code
+```
+
+</CodeTab>
+</CodeGroup>
+
+## Usage
+
+::: preview-code Named source files
+
+<PreviewCodeLive
+  title="Greeting"
+  files={[
+    {
+      label: "Greeting.tsx",
+      language: "tsx",
+      code: "export function Greeting() {\n  return <p>Hello from React.</p>;\n}",
+    },
+  ]}
+>
+  <p>Hello from React.</p>
+</PreviewCodeLive>
+
+:::
+
+Use `PreviewCode` when you want to provide named source files and control the
+rendered preview. The Code tab shows the first file by default; multiple files
+appear as tabs.
+
+```tsx
+import { PreviewCode } from "@/components/ui/PreviewCode";
+
+<PreviewCode
+  title="Greeting"
+  files={[
+    {
+      label: "Greeting.tsx",
+      language: "tsx",
+      code: "export function Greeting() {\n  return <p>Hello from React.</p>;\n}",
+    },
+  ]}
+>
+  <p>Hello from React.</p>
+</PreviewCode>;
+```
+
+Use the `:::preview-code` directive when you want MDX to capture authored
+Markdown and JSX automatically. Save this as `example.md` in a docs site with
+the mapping below:
+
+```md filename="example.md"
+:::preview-code[Greeting]
+
+**Hello** from `Markdown`.
+
+:::
+```
+
+Add the following mapping to `createMdxOptions` and register
+`PreviewCodeInline` from `@moyarich/moyaforge-ui/components/PreviewCode` in
+your MDX provider. Write the example once inside the directive. MDX renders the
+body in the preview and shows the authored Markdown and JSX in the **Code** tab.
+
+```ts
+createMdxOptions({
+  componentMappings: {
+    "preview-code": {
+      component: "PreviewCodeInline",
+      booleanProps: ["refresh"],
+      titleProp: "title",
+      sourceProp: "code",
+      filesProp: "sourceFiles",
+    },
+  },
+});
+```
+
+Use a unique `filename="..."` on each top-level fence to add a source tab.
+For a selected-fence preview, include the stylesheet filename in `preview` to apply scoped CSS. For a file-backed component, import its stylesheet from the component.
+
+### File-backed previews with Vite
+
+Register your docs directory first. This registry discovers Markdown and MDX pages under `docs/`.
+
+```ts filename="registry.config.ts"
+import type { RegistryConfiguration } from "@moyarich/moyaforge-mdx/vite";
+
+export default {
+  sources: {
+    docs: {
+      base: "docs",
+      include: ["**/*.md", "**/*.mdx"],
+      pageFiles: "all",
+      navigation: { label: "Docs" },
+    },
+  },
+} satisfies RegistryConfiguration;
+```
+
+Add the preview plugin to your Vite config after discovering the content registry. The CLI playground template already includes this setup.
+
+```ts
+import {
+  createPreviewCodeRegistry,
+  createPreviewCodePlugin,
+  resolvePreviewCodeSource,
+} from "@moyarich/moyaforge-mdx/vite";
+
+import { createContentDiscovery } from "@moyarich/moyaforge-mdx";
+import registry from "./registry.config.js";
+
+const contentRoot = import.meta.dirname;
+const discovery = createContentDiscovery(registry, contentRoot);
+const { registry: discovered } = await discovery.get();
+const codePreview = createPreviewCodeRegistry({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+});
+```
+
+Add `createPreviewCodePlugin({ codePreview })` to Vite’s `plugins` array. Extend the
+`preview-code` mapping above with these options.
+
+```ts
+localSources: true,
+registerInlineReact: codePreview.inlineReact.register,
+resolvePreviewCodeComponent: (reference, authoredFile) =>
+  resolvePreviewCodeSource({ context: codePreview, reference, authoredFile }),
+```
+
+In your MDX provider, use the loader map from
+`virtual:moyaforge-mdx/preview-code-components` to render the component selected
+by the directive. The plugin also exposes
+`virtual:moyaforge-mdx/preview-code-sources` for lazy raw-source imports.
+The nested source directive supplies the files shown in the Code view.
+
+```md
+::::preview-code[Greeting]{component="./Greeting.tsx"}
+
+::preview-code-sources{files="./Greeting.tsx,./styles.css" replacements="portable"}
+
+::::
+```
+
+Save the component and stylesheet beside the Markdown page.
+
+```tsx filename="Greeting.tsx"
+import "./styles.css";
+
+export default function Greeting() {
+  return <p className="greeting">Hello from React.</p>;
+}
+```
+
+```css filename="styles.css"
+.greeting {
+  font-weight: 600;
+}
+```
+
+The `component` attribute renders a registered `.tsx` or `.jsx` file. Sibling examples are discovered automatically, and shared component directories can be explicitly registered.
+
+#### Register component roots
+
+The `createPreviewCodeRegistry()` context exposes `componentRoots`, containing the unique directories of discovered documentation pages. Extend those directories when configuring the Vite plugin to find React components outside the docs folders. Additional roots are absolute directories or paths relative to `root`; nested `.tsx` and `.jsx` files under those roots are registered recursively. Existing sibling examples are not rescanned.
+
+```ts filename="vite.config.ts"
+const codePreview = createPreviewCodeRegistry({
+  root: contentRoot,
+  sources: registry.sources,
+  pages: discovered.pages,
+});
+
+export default defineConfig({
+  plugins: [
+    createPreviewCodePlugin({
+      codePreview,
+      componentRoots: [
+        ...codePreview.componentRoots,
+        "../../packages/moyaforge-ui/src/components",
+      ],
+    }),
+    // Your existing MDX and other plugins
+  ],
+});
+```
+
+For example, with that root registered, a Warning page can reference the shared CodeBlock source file directly:
+
+```mdx
+::::preview-code[CodeBlock]{component="../../../../src/components/CodeBlock/CodeBlock.tsx#CodeBlock"}
+
+::::
+```
+
+Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same lazy Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or `{react}` when you need configured component usage.
+
+Roots are an explicit allowlist: only files in those directories can be resolved, symlinked files are not followed, and unregistered paths are rejected. Vite watches the roots for added and deleted components. For source tabs, `preview-code-sources` still requires sibling local files.
+
+For examples that need children or props, use a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly:
+
+```mdx
+::::preview-code[Warning callout]{react}
+
+import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
+
+<CustomBlock type="warning" title="Before you continue">
+  Save a backup before changing your settings.
+</CustomBlock>
+
+::::
+```
+
+Use the `code` attribute to preview a source file without rendering it as a React component:
+
+```md
+:::preview-code[Greeting source]{code="./Greeting.tsx" language="typescript"}
+:::
+```
+
+The source file is shown in the preview area and remains available in the **Code** view.
+
+## Inline Markdown CSS and script source
+
+A Markdown code preview can include standalone, attribute-free `<style>` and `<script>` blocks. Both are **preserved verbatim in the Code/Source tab**, even when neither is allowed to run.
+
+**Security defaults:**
+
+- Inline JavaScript is **source-only** and never executes in the live preview.
+- Inline CSS is also **source-only by default**. For reviewed repository-controlled documentation, set `allowInlinePreviewStyles: true` in `createMdxOptions` to render that CSS.
+- Both tags must open and close on their own lines. Scripts with attributes or external sources are rejected.
+- This does **not** sandbox arbitrary MDX, `{react}` previews, or file-backed React components. Compile those only when their authors are trusted; run untrusted interactive content in a separately hosted sandbox.
+
+```ts
+createMdxOptions({
+  allowInlinePreviewStyles: true, // Only for trusted, reviewed documentation.
+  componentMappings: {
+    "preview-code": {
+      component: "PreviewCodeInline",
+      booleanProps: ["refresh"],
+      sourceProp: "code",
+      registerInlineReact: codePreview.inlineReact.register,
+    },
+  },
+});
+```
+
+```mdx
+::::preview-code[Styled notification]
+
+<style>
+.custom-block.ui-notice {
+  --mf-custom-block-bg: #ebf3f8;
+  --mf-custom-block-border: #6292c4;
+}
+</style>
+
+::: ui-notice Good to know
+
+Your report is available to download.
+
+:::
+
+<script>console.log("Visible in Source, but never executed.");</script>
+
+::::
+```
+
+The live preview shows the Markdown callout and, when CSS is enabled, the corresponding styles. The Source tab shows the complete `<style>` and `<script>` blocks, including their original CSS and JavaScript. Use native HTML controls for interactions that need no script.
+
+See the [custom callout gallery](/ui/components/custom-block/custom-admonition) for English notification examples.
+
+## Inline React imports
+
+Use `:::preview-code[Title]{react}` in an MDX page to compile imports and JSX in a
+separate module. Relative imports resolve from the page's directory. Add named
+fences anywhere in the block for extra source tabs. The fences are displayed as
+source, so any files used by the live example must be imported separately.
+
+Use `{react replacements="portable"}` to apply `CODE_REPLACEMENTS` to the Code
+view. An empty `replacements=` leaves the source as written.
+
+Save this as `example.mdx`. The live preview renders the greeting and the Code
+view includes both the React body and the `styles.css` snippet.
+
+````mdx filename="example.mdx"
+::::preview-code[Greeting]{react replacements="portable"}
+
+import { Fragment } from "react";
+
+<Fragment>
+  <strong>Hello from React.</strong>
+</Fragment>
+
+```css filename="styles.css"
+strong {
+  font-weight: 600;
+}
+```
+
+::::
+````
+
+## Examples
+
+- [Markdown with inline CSS](/ui/components/preview-code/markdown-with-inline-css): directives, scoped CSS, and a shell command.
+- [React with inline dependencies](/ui/components/preview-code/react-with-inline-dependencies): an interactive component importing TypeScript and JSON fences.
+- [MDX with an inline component](/ui/components/preview-code/mdx-with-an-inline-component): prose and a component compiled together.
+- [HTML with inline CSS](/ui/components/preview-code/html-with-inline-css): native HTML interaction with scoped styles.
+- [Inline greeting](/ui/components/preview-code/inline-greeting)
+- [Inline preview with multiple files](/ui/components/preview-code/inline-multiple-files)
+- [Inline React previews](/ui/components/preview-code/inline-react-previews)
+- [Inline source fences](/ui/components/preview-code/inline-source-fences)
+- [Counter preview in MDX](/ui/components/preview-code/counter-preview-in-mdx)
+- [Markdown file preview](/ui/components/preview-code/markdown-file-preview)
+
+## Styling
+
+Set `--mf-preview-border`, `--mf-preview-radius`, or `--mf-preview-padding` on a containing element to style the preview frame.
+
+For a custom toolbar or source panel, use the individual [Preview slots](/ui/components/preview) and install them with `add preview`.
+
+## Render selected source fences
+
+Use `preview="example.md,example.css"` to render a named Markdown fence with selected CSS fences. Styles are scoped to the preview. Every named fence stays available in the source tabs. Selecting only `preview="example.md"` renders the Markdown without applying CSS fences.
+
+````md
+::::preview-code[Warning]{preview="example.md,example.css"}
+
+```css filename="example.css"
+.custom-block.warning {
+  --mf-custom-block-border: #b45309;
+}
+```
+
+```md filename="example.md"
+::: warning Before you continue
+
+Save a **backup** before changing your settings.
+
+:::
+```
+
+::::
+````
+
+Select one or more filenames, separated by commas. Each filename must match exactly one named fence. Content renders in the selected order:
+
+| Fence language           | Preview behavior                                                                  |
+| ------------------------ | --------------------------------------------------------------------------------- |
+| `md`, `markdown`         | Parse with your configured remark plugins, including custom directives.           |
+| `mdx`                    | Compile an isolated MDX component with your configured remark and rehype plugins. |
+| `jsx`, `tsx`, `js`, `ts` | Compile a React module with a default component export.                           |
+| `html`                   | Render HTML markup.                                                               |
+| `css`                    | Apply styles scoped to the preview.                                               |
+| Other languages          | Render a highlighted code block.                                                  |
+
+React and MDX entry fences can import sibling named fences, including TypeScript, JavaScript, JSON, CSS, and other component files. Relative imports that do not match an inline file resolve from the authored documentation file. React and MDX previews require the Vite preview-code plugin.
+
+For example, `preview="App.tsx,styles.css"` renders a React entry with scoped CSS; `preview="intro.md,example.sh"` renders Markdown followed by a shell code block.
+
+The CSS is contained with native CSS `@scope`. Combine this with source fences as needed. Use one preview selection mechanism per directive: `preview`, `component`, `code`, or `react`.
+
+### Full React modules
+
+A `{react}` body can contain imports and a complete JSX/TSX module with a default component export. The module compiles independently of the surrounding MDX page, so function bodies and TypeScript annotations stay out of the MDX expression parser. Bodies containing imports followed by JSX also continue to work.
+
+## Refresh a preview
+
+Add `{refresh}` to show a refresh button in the toolbar. It remounts the rendered example, resetting its local state and replaying animations. It also switches back to the rendered preview when the source view is open.
+
+```md
+::::preview-code[Fade in]{refresh preview="FadeMessage.tsx"}
+```
+
+Include `booleanProps: ["refresh"]` in your `preview-code` component mapping. With JSX, use `<PreviewCode title="Fade in" files={files} refresh>...</PreviewCode>`. Refresh is off by default.

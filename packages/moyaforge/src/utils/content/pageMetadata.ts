@@ -6,8 +6,7 @@ export interface MoyaForgeTocOptions {
   label?: string;
 }
 export interface MoyaForgePageMetadata {
-  label: string;
-  title?: string;
+  title: string;
   description?: string;
   navigation?: "visible" | "hidden" | "disabled";
   toc?: boolean | MoyaForgeTocOptions;
@@ -27,7 +26,7 @@ export function parseMoyaForgePageMetadata(
 ): MoyaForgePageMetadata {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
     throw new Error(
-      `Missing frontmatter metadata in ${sourcePath}. Expected at least a non-empty "label" or "title".`,
+      `Missing frontmatter metadata in ${sourcePath}. Expected a non-empty "title".`,
     );
   }
   const metadata = value as Record<string, unknown>;
@@ -36,20 +35,13 @@ export function parseMoyaForgePageMetadata(
       `Invalid frontmatter metadata in ${sourcePath}: "${field}" must be ${expectation}.`,
     );
   };
-  for (const field of [
-    "label",
-    "title",
-    "description",
-    "outlineLabelPrefix",
-  ] as const) {
+  for (const field of ["title", "description", "outlineLabelPrefix"] as const) {
     if (metadata[field] !== undefined && typeof metadata[field] !== "string")
       fail(field, "a string when provided");
   }
-  const label =
-    (metadata.label as string | undefined)?.trim() ||
-    (metadata.title as string | undefined)?.trim();
-  if (!label)
-    fail("label", 'a non-empty string (or provide a non-empty "title")');
+  if ("label" in metadata) fail("label", 'removed; use "title" instead');
+  const title = (metadata.title as string | undefined)?.trim();
+  if (!title) fail("title", "a non-empty string");
   if (
     metadata.navigation !== undefined &&
     !["visible", "hidden", "disabled"].includes(String(metadata.navigation))
@@ -73,7 +65,7 @@ export function parseMoyaForgePageMetadata(
     if (config.label !== undefined && typeof config.label !== "string")
       fail("toc.label", "a string");
   }
-  return { ...metadata, label } as MoyaForgePageMetadata;
+  return { ...metadata, title } as MoyaForgePageMetadata;
 }
 export function resolveMoyaForgeTocOptions(
   meta: Pick<MoyaForgePageMetadata, "toc">,

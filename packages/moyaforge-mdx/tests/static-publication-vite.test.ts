@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { mdxRegistryPlugin } from "../src/vite/plugin.js";
-import { buildPageRegistry } from "../src/registry/registry.js";
+import { buildPageRegistry } from "../src/registry/index.js";
 
 test("Vite emits deterministic publication assets from canonical registry", async () => {
   const root = await mkdtemp(join(tmpdir(), "moyaforge-publication-"));

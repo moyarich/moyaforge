@@ -1,6 +1,6 @@
 import { useMemo, type PropsWithChildren } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import type { NormalizedPage } from "@moyarich/moyaforge-mdx";
+import type { RegistryPage } from "@moyarich/moyaforge-mdx";
 import { buildDocumentationGroups } from "@moyarich/moyaforge-mdx/navigation";
 import { getTableOfContents } from "@moyarich/moyaforge-mdx/toc";
 import { routes, headings } from "virtual:moyaforge-mdx/metadata";
@@ -13,25 +13,17 @@ import { SearchAdapter } from "./SearchAdapter.js";
 export function PlaygroundShell({
   page,
   children,
-}: PropsWithChildren<{ page?: NormalizedPage }>) {
+}: PropsWithChildren<{ page?: RegistryPage }>) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const groups = useMemo(() => buildDocumentationGroups(routes, registry.sources), []);
-  const pages = useMemo(() => routes
-    .filter(item => item.navigation === "visible")
-    .map(item => ({
-      path: item.path,
-      label: item.label ?? item.title,
-      source: item.source,
-      sourcePath: item.sourcePath,
-    })), []);
   const toc = page
     ? getTableOfContents(headings[`${page.source}/${page.file}`] ?? [], page.toc)
     : null;
   return (
     <DocumentationSite
       title="My Playground"
-      pages={pages}
+      pages={routes}
       currentPath={page?.path}
       onNavigate={navigate}
       onSearch={SearchAdapter}

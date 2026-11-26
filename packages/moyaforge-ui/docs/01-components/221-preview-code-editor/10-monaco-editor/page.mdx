@@ -1,0 +1,88 @@
+---
+title: Editable source with Monaco
+description: Open an editable source panel inside a Preview.
+---
+
+# Editable source with Monaco
+
+Select **Code** to edit the TSX or CSS, then select **Preview** to see the updated counter. TSX edits restart the component. Select **Reset code** to restore the original TSX and CSS.
+
+## Installation
+
+<CodeGroup label="Install PreviewCodeEditor">
+<CodeTab label="MoyaForge CLI">
+
+```sh
+npx @moyarich/moyaforge-cli@latest add preview-code-editor
+```
+
+</CodeTab>
+<CodeTab label="shadcn">
+
+```sh
+npx shadcn@latest add moyarich/moyaforge/preview-code-editor
+```
+
+</CodeTab>
+</CodeGroup>
+
+Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#install-dependencies) to configure the editor workers.
+
+::::preview-code[Editable source with Monaco]{react replacements="portable"}
+
+::preview-code-sources{files="./PreviewMonacoExample.tsx" replacements="portable"}
+
+import { PreviewCodeEditor } from "../../../../src/components/PreviewCodeEditor/index.js";
+import PreviewMonacoExample from "./PreviewMonacoExample.tsx";
+import counterSource from "../../CounterExample.tsx?raw";
+import counterStyles from "../../counterExample.css?raw";
+export const workerSource =
+  'import { configureReactWorkers } from "@moyarich/moyaforge-monaco/workers/configureReactWorkers";\nconfigureReactWorkers();\n';
+
+<PreviewCodeEditor
+  title="Monaco source editor"
+  files={[
+    {
+      name: "CounterExample.tsx",
+      language: "typescript",
+      value: counterSource,
+    },
+    { name: "counterExample.css", language: "css", value: counterStyles },
+    {
+      name: "setup-react-monaco-worker.ts",
+      language: "typescript",
+      value: workerSource,
+      readOnly: true,
+    },
+  ]}
+  height={320}
+  renderPreview={(files) => (
+    <PreviewMonacoExample
+      source={
+        files.find((file) => file.name === "CounterExample.tsx")?.value ?? ""
+      }
+      styles={
+        files.find((file) => file.name === "counterExample.css")?.value ?? ""
+      }
+    />
+  )}
+/>
+::::
+
+## Styling
+
+The example styles live alongside its TSX source; use the `--mf-preview-*` variables for the outer preview frame.
+
+## Workspace tabs
+
+`PreviewCodeEditor` always uses the UI-owned editor workspace. Style tabs and their panels using `--mf-tabs-*` CSS variables. `showBreadcrumbs` enables the file path, `renderBreadcrumbs` customizes it, and `tools` accepts app-provided React buttons.
+
+```tsx
+<PreviewCodeEditor
+  title="Editor"
+  files={files}
+  showBreadcrumbs
+  tools={<button onClick={openSearch}>Search</button>}
+  renderPreview={renderPreview}
+/>
+```

@@ -4,7 +4,10 @@ import { searchPages } from "@moyarich/moyaforge-search-sqlite/client";
 import { resolveSearchPages } from "./Routing.js";
 
 async function findMatchingPages(query: string) {
-  return resolveSearchPages(await searchPages(query));
+  return resolveSearchPages(await searchPages(query)).map((page) => ({
+    path: page.path,
+    label: page.title,
+  }));
 }
 
 export function SearchPanel() {

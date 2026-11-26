@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { buildPageRegistry } from "../../dist/registry/registry.js";
+import { buildPageRegistry } from "../../dist/registry/index.js";
 import { createContentManifest } from "../../dist/content/manifest.js";
 import { createStaticPageMetadata } from "../../dist/content/static-metadata.js";
 

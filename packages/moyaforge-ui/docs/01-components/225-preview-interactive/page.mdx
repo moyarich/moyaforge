@@ -1,0 +1,81 @@
+---
+title: Preview Interactive
+description: Compose controls, resolved metadata, a rendered example, and highlighted source files.
+---
+
+import PreviewMessage from "./PreviewMessage.js";
+
+# Preview Interactive
+
+Use `PreviewInteractive` to show how configuration affects a rendered component.
+Your application owns the state and rendering; the component supplies the layout,
+resizable controls/metadata columns, and source tabs. It does not parse or execute
+source files.
+
+## Installation
+
+```sh
+npx @moyarich/moyaforge-cli@latest add preview-interactive
+```
+
+Or import from `@moyarich/moyaforge-ui/components/PreviewInteractive`. Package
+consumers should also import
+`@moyarich/moyaforge-ui/components/PreviewInteractive/styles.css`.
+
+## Example
+
+Edit the message and resize the divider between Controls and Resolved metadata.
+The preview and JSON source update from the same React state.
+
+<PreviewMessage />
+
+## Usage
+
+```tsx
+import { useState, type ChangeEvent } from "react";
+import { PreviewInteractive } from "@/components/ui/PreviewInteractive";
+
+export default function MessageExample() {
+  const [message, setMessage] = useState("Hello, workspace.");
+
+  function updateMessage(event: ChangeEvent<HTMLInputElement>) {
+    setMessage(event.currentTarget.value);
+  }
+
+  return (
+    <PreviewInteractive
+      title="Configure a message"
+      files={{ "message.json": JSON.stringify({ message }, null, 2) }}
+      controls={<label>Message<input value={message} onChange={updateMessage} /></label>}
+      metadata={<p>{message.length} characters</p>}
+    >
+      <p>{message}</p>
+    </PreviewInteractive>
+  );
+}
+```
+
+Adjust the import to match your installation directory. Copied component source
+imports its CSS; published package consumers load the stylesheet separately.
+
+## Slots and source files
+
+`controls` and `metadata` are optional. When both are supplied, their divider
+supports dragging and keyboard resizing. On small screens, they stack. `children`
+is the rendered preview, independently of either configuration column.
+
+`files` maps filenames to source text. Highlighting follows each extension, and
+`primaryFile` puts one file first. Use `metadataTitle`, `previewDescription`, and
+`sourceDescription` to label the regions. `description` adds introductory content
+beneath the main heading.
+
+For MDX demonstrations, compile and render the document in the consumer, then pass
+that result as children. Virtual registries and compiler setup stay outside this
+UI component.
+
+## Styling
+
+Public defaults are defined in `:root`. Override `--mf-preview-interactive-border`,
+`--mf-preview-interactive-muted`, `--mf-preview-interactive-soft`,
+`--mf-preview-interactive-accent`, and `--mf-preview-interactive-control-height`
+on the component or a wrapper.

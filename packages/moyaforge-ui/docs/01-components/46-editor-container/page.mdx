@@ -1,0 +1,79 @@
+---
+title: Editor Container
+description: Compose a tabbed editor workspace with optional toolbar and breadcrumbs.
+---
+
+# Editor Container
+
+## Usage
+
+Use these lightweight layout components with the reusable [Tabs](/ui/components/tabs) primitives. None of them requires Monaco.
+
+```tsx
+import { FileCode2, Search } from "lucide-react";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@moyarich/moyaforge-ui/components/Tabs";
+import {
+  EditorContainer,
+  EditorToolbar,
+  EditorTools,
+  EditorBreadcrumbs,
+  EditorContent,
+} from "@moyarich/moyaforge-ui/components/EditorContainer";
+
+<EditorContainer>
+  <Tabs defaultValue="app" className="workspace-tabs">
+    <EditorToolbar>
+      <TabsList aria-label="Editor files">
+        <TabsTrigger value="app" icon={<FileCode2 size={16} />}>
+          App.tsx
+        </TabsTrigger>
+      </TabsList>
+      <EditorTools>
+        <button type="button" aria-label="Search" onClick={openSearch}>
+          <Search size={16} />
+        </button>
+      </EditorTools>
+    </EditorToolbar>
+    <EditorBreadcrumbs>src / App.tsx</EditorBreadcrumbs>
+    <EditorContent>
+      <TabsContent value="app">Editor goes here</TabsContent>
+    </EditorContent>
+  </Tabs>
+</EditorContainer>;
+```
+
+`EditorToolbar`, `EditorTools`, and `EditorBreadcrumbs` are optional. The toolbar is application-controlled and does not invent actions.
+
+## Style the editor with your own CSS
+
+Keep your theme overrides in an application-owned file such as `editor.css`, not in `EditorContainer.css`. Import it in the component that renders the editor:
+
+```tsx
+import "./editor.css";
+
+<EditorContainer className="project-editor">
+  <Tabs defaultValue="app">
+    {/* EditorToolbar, TabsList, TabsTrigger and EditorContent */}
+  </Tabs>
+</EditorContainer>;
+```
+
+```css
+/* editor.css — owned by your application */
+.project-editor {
+  --mf-editor-border: #bac7d5;
+  --mf-editor-toolbar-background: #e9edf2;
+  --mf-editor-surface: white;
+  --mf-tabs-accent: #2563eb;
+  --mf-tabs-indicator-size: 2px;
+}
+```
+
+The custom properties inherit into the toolbar, tab strip and associated panel. The original flat tab style remains the default. For curved tabs, also set `--mf-tabs-active-background`, `--mf-tabs-corner-size`, `--mf-tabs-radius`, and `--mf-tabs-indicator-size: 0px`.
+
+See [Monaco Editor React](/ui/components/monaco-editor-react) for a complete working editor example with an application-owned stylesheet.

@@ -1,26 +1,132 @@
+:root {
+  --mf-search-color: var(--mf-text, light-dark(#27272a, #e4e4e7));
+  --mf-search-background: var(--mf-bg, light-dark(#ffffff, #18181b));
+  --mf-search-border-color: light-dark(#d4d4d8, #3f3f46);
+  --mf-search-border-radius: 0.625rem;
+  --mf-search-padding: 0.625rem 0.75rem;
+  --mf-search-gap: 0.625rem;
+  --mf-search-muted-color: light-dark(#71717a, #a1a1aa);
+  --mf-search-hover-border-color: light-dark(#a1a1aa, #71717a);
+  --mf-search-focus-color: var(--mf-accent, light-dark(#52525b, #a1a1aa));
+  --mf-search-hint-background: light-dark(#f4f4f5, #27272a);
+}
+
 .mf-search-control {
-  --_mf-search-color: var(--mf-search-color, inherit);
-  --_mf-search-background: var(--mf-search-background, transparent);
-  --_mf-search-border-color: var(--mf-search-border-color, currentColor);
-  --_mf-search-border-radius: var(--mf-search-border-radius, 0);
-  --_mf-search-padding: var(--mf-search-padding, 0.5rem 0.625rem);
-  --_mf-search-gap: var(--mf-search-gap, 0.5rem);
+  --_mf-search-color: var(--mf-search-color);
+  --_mf-search-background: var(--mf-search-background);
+  --_mf-search-border-color: var(--mf-search-border-color);
+  --_mf-search-border-radius: var(--mf-search-border-radius);
+  --_mf-search-padding: var(--mf-search-padding);
+  --_mf-search-gap: var(--mf-search-gap);
 
   display: flex;
   align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
   gap: var(--_mf-search-gap);
   border: 1px solid var(--_mf-search-border-color);
   border-radius: var(--_mf-search-border-radius);
   padding: var(--_mf-search-padding);
   background: var(--_mf-search-background);
   color: var(--_mf-search-color);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  cursor: text;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.mf-search-control:hover {
+  border-color: var(--mf-search-hover-border-color);
+}
+
+.mf-search-control:focus-within {
+  border-color: var(--mf-search-focus-color);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--mf-search-focus-color) 18%, transparent);
+}
+
+.mf-search-control > svg {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--mf-search-muted-color);
+  pointer-events: none;
 }
 
 .mf-search-control input {
+  flex: 1;
   min-width: 0;
   width: 100%;
+  margin: 0;
+  padding: 0;
   border: 0;
+  border-radius: 0;
   outline: 0;
   background: transparent;
   color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-overflow: ellipsis;
+}
+
+.mf-search-control input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.mf-search-control input::placeholder {
+  color: var(--mf-search-muted-color);
+  opacity: 1;
+}
+
+.mf-search-control input::-webkit-search-decoration {
+  appearance: none;
+}
+
+.mf-search-control input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.mf-search-control > kbd {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--mf-search-border-color);
+  border-radius: 0.25rem;
+  background: var(--mf-search-hint-background);
+  color: var(--mf-search-muted-color);
+  font: inherit;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.mf-search-control:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--_mf-search-border-color);
+  box-shadow: none;
+}
+
+.mf-search-control input:disabled {
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mf-search-control {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .mf-search-control:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
 }

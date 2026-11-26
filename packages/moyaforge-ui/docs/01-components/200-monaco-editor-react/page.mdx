@@ -1,85 +1,208 @@
 ---
 title: Monaco Editor React
-label: Monaco Editor React
-description: A multi-file code editor with read-only mode and copy support.
+description: Set up a React Monaco panel in Vite with local workers, React types, and editable files.
 ---
-
-import { MonacoEditorReact as LiveMonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
 # Monaco Editor React
 
-import { MonacoEditorReact } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
+`MonacoEditorPanel` provides file tabs, editor content, Save, and Copy controls.
+It uses the standalone `monaco-editor` runtime when this is the only editor integration in the app.
 
-A multi-file code editor with read-only mode and copy support.
+## Install the panel
 
-## Installation
+Start with an existing Vite + React + TypeScript app and choose an install method.
 
-<CodeGroup label="Install Monaco Editor React">
+<CodeGroup label="Install the React Monaco panel">
+<CodeTab label="npm">
+
+```sh
+npm install @moyarich/moyaforge-ui
+```
+
+</CodeTab>
 <CodeTab label="MoyaForge CLI">
 
 ```sh
-npx @moyarich/moyaforge-cli@latest add monaco-editor-react
+npx @moyarich/moyaforge-cli@latest add monaco-editor-panel
 ```
 
 </CodeTab>
 <CodeTab label="shadcn">
 
 ```sh
-npx shadcn@latest add moyarich/moyaforge/monaco-editor-react
+npx shadcn@latest add moyarich/moyaforge/monaco-editor-panel
 ```
 
 </CodeTab>
 </CodeGroup>
 
-In an existing React app, ensure these runtime dependencies are installed:
+## Install dependencies
+
+Install the runtime and worker dependencies for any of the three methods.
 
 ```sh
-npm install @moyarich/moyaforge-monaco @monaco-editor/react monaco-editor lucide-react
+npm install @moyarich/moyaforge-monaco @monaco-editor/react 'monaco-editor@^0.52.0' 'lucide-react@^1.56.0'
+npm install -D @types/react @types/react-dom csstype
 ```
 
-For Vite, register `monacoReactTypesPlugin(import.meta.dirname)` from `@moyarich/moyaforge-monaco/vite` in `vite.config.ts` and call `configureReactWorkers()` from `@moyarich/moyaforge-monaco/react` once at application startup. If using TypeFox too, call `initializeSharedMonaco()` from `/shared` instead. Other bundlers need their own worker setup.
+The examples below use the npm import. For a source install, import
+`MonacoEditorPanel` from `./components/ui/MonacoEditorPanel/index.js`
+in `src/App.tsx`, or use the directory configured by your installer.
 
-For editor worker architecture and shared initialization details, see [Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx).
+## Configure Vite
 
-The editor setup belongs in your application's `main.tsx`, **not** inside the component. For standalone React Monaco applications:
+Add `monacoReactTypesPlugin` to the plugins in your existing `vite.config.ts`.
+Pass the project directory so it can resolve React, React DOM, and `csstype`
+declarations for the editor's TypeScript worker.
 
-```ts
-import { configureReactWorkers } from "@moyarich/moyaforge-monaco/react";
+```ts filename="vite.config.ts"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { monacoReactTypesPlugin } from "@moyarich/moyaforge-monaco/vite/monacoReactTypesPlugin";
+
+export default defineConfig({
+  plugins: [react(), monacoReactTypesPlugin(import.meta.dirname)],
+});
+```
+
+## Configure TypeScript
+
+Add `@moyarich/moyaforge-monaco/vite/react-types` to
+`compilerOptions.types` in the TypeScript config that covers your app.
+Keep the other entries already in the list.
+
+```json filename="tsconfig.json"
+{
+  "compilerOptions": {
+    "types": ["vite/client", "@moyarich/moyaforge-monaco/vite/react-types"]
+  }
+}
+```
+
+## Initialize workers
+
+For React Monaco on its own, call `configureReactWorkers()` in `src/main.tsx` before rendering the app. Vite bundles the editor workers with your application.
+
+```tsx filename="src/main.tsx"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { configureReactWorkers } from "@moyarich/moyaforge-monaco/workers/configureReactWorkers";
+import App from "./App";
 
 configureReactWorkers();
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
 ```
 
 ## Usage
 
-::: code-preview Editable TypeScript workspace
+Create `src/App.tsx` with the example below. `onFileChange` updates the files in
+React state, keeping your edits when you switch tabs. Selecting **Save** calls
+`onSave` with the active file’s name and current contents. This example displays
+a confirmation message. To save changes permanently, use that callback to write
+to your storage or send the file to your API.
 
-<LiveMonacoEditorReact
-  files={[{ name: "index.ts", value: "const answer = 42;" }]}
-  height={320}
-/>
+```tsx filename="src/App.tsx"
+import { useState } from "react";
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
 
-:::
+export default function App() {
+  const [files, setFiles] = useState([
+    {
+      name: "App.tsx",
+      value: `export default function App() {
+  return <h1>Hello!</h1>;
+}
+`,
+    },
+    {
+      name: "styles.css",
+      value: `h1 { color: royalblue; }
+`,
+    },
+    { name: "index.ts", value: "const answer = 42;" },
+  ]);
+  const [message, setMessage] = useState("");
 
-For source installs, the `@/` path maps to your configured UI directory. Package consumers can import from `@moyarich/moyaforge-monaco/components/MonacoEditorReact` or `/MonacoEditorTypeFox` instead.
+  function updateFile(name: string, value: string) {
+    setFiles((current) =>
+      current.map((file) => (file.name === name ? { ...file, value } : file)),
+    );
+  }
+
+  function onSaveHandler(name: string, value: string) {
+    setMessage(`${name}: received ${value.length} characters.`);
+  }
+
+  return (
+    <>
+      <MonacoEditorPanel
+        files={files}
+        onFileChange={updateFile}
+        onSave={onSaveHandler}
+        height={320}
+      />
+      <p role="status">{message || "Edit a file, then select Save."}</p>
+    </>
+  );
+}
+```
+
+Run `npm run dev` and open the Vite URL. The panel renders the supplied
+source as editable text. To run the edited application, use
+[PreviewCodeEditor](/ui/components/preview-code-editor) for a live rendered preview.
+
+## Using React Monaco and TypeFox together
+
+For an application using both editors, use the shared initializer as your one startup call in `main.tsx`.
+
+```ts filename="main.tsx"
+import { initializeMonacoVscodeRuntime } from "@moyarich/moyaforge-monaco/runtime/initializeMonacoVscodeRuntime";
+
+await initializeMonacoVscodeRuntime();
+```
+
+Call it before `createRoot(...).render(...)`.
+Use one initialization strategy per application. See
+[Monaco runtime](../../../../../docs/04-development/30-monaco-runtime/page.mdx)
+for the TypeFox dependencies and shared-runtime setup.
+
+## Styling
+
+Create `editor.css` **in your application**, import it into your React component, and pass a scoped class to `MonacoEditorPanel`:
 
 ```tsx
-import { MonacoEditorReact } from "@/components/ui/MonacoEditorReact/MonacoEditorReact";
+import { MonacoEditorPanel } from "@moyarich/moyaforge-ui/components/MonacoEditorPanel";
+import "./editor.css";
 
-<MonacoEditorReact
-  files={[
-    { name: "index.ts", value: "const answer = 42;" },
-    { name: "styles.css", value: "body { margin: 0; }" },
-  ]}
+<MonacoEditorPanel
+  className="react-monaco-editor"
+  files={files}
   height={320}
 />;
 ```
 
-Use `onSave` to handle Save or Ctrl/Cmd+S and persist changes. Use `onFileChange` to track edits.
+```css
+.react-monaco-editor {
+  --mf-editor-border: #cbd5e1;
+  --mf-editor-toolbar-background: #f1f5f9;
+  --mf-editor-surface: #fff;
+  --mf-tabs-accent: #2563eb;
+  --mf-tabs-indicator-size: 3px;
+  --mf-tabs-active-color: #1d4ed8;
+}
+```
+
+You can also set `--mf-tabs-corner-size`, `--mf-tabs-active-background`, and `--mf-tabs-radius` to customize the tab shape and panel surface. Use the panel’s `theme` prop to change Monaco’s syntax theme. See [Editor Panel](/ui/components/editor-panel) for an editable, stateful example and curved-tab CSS preset.
 
 ## Examples
 
-- [Editable workspace](/ui/components/monaco-editor-react/editable-workspace)
-- [Read-only workspace](/ui/components/monaco-editor-react/read-only)
+- [Editable panel](/ui/components/monaco-editor-react/editable-panel)
+- [Read-only panel](/ui/components/monaco-editor-react/read-only-panel)
 
 <details>
 <summary>Advanced options</summary>
@@ -87,13 +210,10 @@ Use `onSave` to handle Save or Ctrl/Cmd+S and persist changes. Use `onFileChange
 - `activeFile` and `onActiveFileChange` control the selected file.
 - `theme` overrides the inherited light/dark appearance.
 - `options`, `beforeMount`, and `onMount` customize Monaco.
-- `showCopyButton` and `showFileTabs` control toolbar visibility.
-- `className` and `--mf-monaco-*` CSS variables customize styling.
+- `showCopyButton`, `showBreadcrumbs`, `tools`, and `renderBreadcrumbs` customize the UI-owned panel.
+- `className` and `--mf-tabs-*` / `--mf-editor-*` CSS variables customize the UI.
 
-The installed `components/MonacoEditorReact/README.md` includes additional dependency and setup guidance.
+For an editor without tabs or toolbar, import `MonacoEditorReact` from
+`@moyarich/moyaforge-monaco/components/MonacoEditorReact`.
 
 </details>
-
-## Styling
-
-Customize the editor using `className` and the public `--mf-monaco-*` CSS variables described in Advanced options.

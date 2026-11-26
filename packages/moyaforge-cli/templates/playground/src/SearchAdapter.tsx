@@ -8,14 +8,14 @@ export async function SearchAdapter(query: string) {
   return routes
     .filter((page) => {
       if (page.navigation !== "visible") return false;
-      const text = [page.title, page.label, page.description, page.path]
+      const text = [page.title, page.description, page.path]
         .join(" ")
         .toLowerCase();
       return terms.every((term) => text.includes(term));
     })
     .map((page) => ({
       path: page.path,
-      label: page.label ?? page.title,
+      label: page.title,
       source: page.source,
       sourcePath: page.sourcePath,
     }));

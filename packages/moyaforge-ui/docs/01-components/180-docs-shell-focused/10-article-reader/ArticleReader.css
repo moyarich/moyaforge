@@ -1,0 +1,100 @@
+.article-reader-example {
+  --mf-focused-width: 44rem;
+  --mf-focused-border: light-dark(#e4e4e7, #3f3f46);
+  --_mf-reader-muted: var(--mf-muted, light-dark(#71717a, #a1a1aa));
+  --_mf-reader-accent: var(--mf-accent, #e35454);
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--mf-focused-border);
+  border-radius: 0.75rem;
+  text-align: start;
+}
+.article-reader-example .mf-focused-header {
+  padding-block: 0 1.5rem;
+  flex-wrap: wrap;
+}
+.article-reader-example .mf-focused-header > div {
+  flex: 1 1 16rem;
+}
+.article-reader-example .mf-focused-header h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.25;
+}
+.article-reader-example .mf-focused-header p {
+  margin: 0;
+  color: var(--_mf-reader-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+.article-reader-example .mf-focused-article {
+  padding-block: 1.5rem 2rem;
+}
+.article-reader-example .article-reader-eyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--_mf-reader-muted);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.article-reader-example h2 {
+  margin: 0 0 0.75rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.25rem;
+}
+.article-reader-example p {
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+.article-reader-example blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-inline-start: 2px solid var(--_mf-reader-accent);
+  color: inherit;
+  background: color-mix(in srgb, var(--_mf-reader-accent) 5%, transparent);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+}
+.article-reader-example .article-reader-hint {
+  margin-bottom: 0;
+  color: var(--_mf-reader-muted);
+  font-size: 0.75rem;
+}
+.article-reader-save,
+.article-reader-pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--mf-focused-border);
+  border-radius: 0.375rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.article-reader-save svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+.article-reader-save[aria-pressed="true"] {
+  color: var(--_mf-reader-accent);
+  background: color-mix(in srgb, var(--_mf-reader-accent) 7%, transparent);
+}
+.article-reader-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--_mf-reader-muted);
+}
+.article-reader-pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

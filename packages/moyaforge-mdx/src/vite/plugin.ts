@@ -1,13 +1,13 @@
 export * from "./registry-plugin/plugin.js";
 export {
-  createCodePreviewRegistry,
-  createCodePreviewPlugin,
-  resolveCodePreviewSource,
-} from "./code-preview/code-preview.js";
+  createPreviewCodeRegistry,
+  createPreviewCodePlugin,
+  resolvePreviewCodeSource,
+} from "./preview-code/preview-code.js";
 
 
 export type {
-  CodePreviewOptions,
-  CodePreviewContext,
-  CodePreviewPluginOptions,
-} from "./code-preview/code-preview.js";
+  PreviewCodeOptions,
+  PreviewCodeContext,
+  PreviewCodePluginOptions,
+} from "./preview-code/preview-code.js";

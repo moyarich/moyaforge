@@ -2,32 +2,37 @@
   "name": "@moyarich/moyaforge-monaco",
   "version": "0.1.0",
   "type": "module",
-  "description": "Monaco React and TypeFox editor components, shared workspace UI, and Vite worker integrations.",
+  "description": "Headless React Monaco and TypeFox runtimes, editor models, and Vite worker integrations.",
   "license": "MIT",
   "sideEffects": true,
   "exports": {
-    "./vite": {
-      "types": "./dist/vite.d.ts",
-      "import": "./dist/vite.js",
-      "default": "./dist/vite.js"
+    "./vite/monacoReactTypesPlugin": {
+      "types": "./dist/vite/monacoReactTypesPlugin.d.ts",
+      "import": "./dist/vite/monacoReactTypesPlugin.js",
+      "default": "./dist/vite/monacoReactTypesPlugin.js"
     },
-    "./react": {
-      "types": "./dist/react.d.ts",
-      "import": "./dist/react.js",
-      "default": "./dist/react.js"
+    "./workers/configureReactWorkers": {
+      "types": "./dist/workers/configureReactWorkers.d.ts",
+      "import": "./dist/workers/configureReactWorkers.js",
+      "default": "./dist/workers/configureReactWorkers.js"
     },
-    "./typefox": {
-      "types": "./dist/typefox.d.ts",
-      "import": "./dist/typefox.js",
-      "default": "./dist/typefox.js"
+    "./workers/configureTypeFoxWorkers": {
+      "types": "./dist/workers/configureTypeFoxWorkers.d.ts",
+      "import": "./dist/workers/configureTypeFoxWorkers.js",
+      "default": "./dist/workers/configureTypeFoxWorkers.js"
     },
-    "./virtual": {
-      "types": "./dist/virtual-modules.d.ts"
+    "./vite/react-types": {
+      "types": "./dist/vite/react-types.d.ts"
     },
-    "./shared": {
-      "types": "./dist/shared.d.ts",
-      "import": "./dist/shared.js",
-      "default": "./dist/shared.js"
+    "./workers/createMonacoVscodeWorkerConfig": {
+      "types": "./dist/workers/createMonacoVscodeWorkerConfig.d.ts",
+      "import": "./dist/workers/createMonacoVscodeWorkerConfig.js",
+      "default": "./dist/workers/createMonacoVscodeWorkerConfig.js"
+    },
+    "./runtime/initializeMonacoVscodeRuntime": {
+      "types": "./dist/runtime/initializeMonacoVscodeRuntime.d.ts",
+      "import": "./dist/runtime/initializeMonacoVscodeRuntime.js",
+      "default": "./dist/runtime/initializeMonacoVscodeRuntime.js"
     },
     "./components/MonacoEditorReact": {
       "types": "./dist/components/MonacoEditorReact/index.d.ts",
@@ -46,7 +51,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly && node -e \"require('node:fs').copyFileSync('src/virtual-modules.d.ts', 'dist/virtual-modules.d.ts')\" && node scripts/copy-component-css.ts",
+    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly && node -e \"require('node:fs').copyFileSync('src/vite/react-types.d.ts', 'dist/vite/react-types.d.ts')\" && node scripts/copy-component-css.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prepack": "npm run build",
     "test": "vitest run tests"

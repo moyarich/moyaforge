@@ -17,11 +17,11 @@ test("unnumbered folders are valid and can own nested landing pages", () => {
   const pages = createPages({
     "./guides/page.mdx": {
       default: () => null,
-      frontmatter: { label: "Guides" },
+      frontmatter: { title: "Guides" },
     },
     "./guides/configuration/page.mdx": {
       default: () => null,
-      frontmatter: { label: "Configuration" },
+      frontmatter: { title: "Configuration" },
     },
   });
 
@@ -36,11 +36,11 @@ test("createPages preserves numeric folder order and frontmatter", () => {
   const pages = createPages({
     "./02-guides/page.mdx": {
       default: () => null,
-      frontmatter: { label: "Guides" },
+      frontmatter: { title: "Guides" },
     },
     "./01-getting-started/page.mdx": {
       default: () => null,
-      frontmatter: { label: "Start" },
+      frontmatter: { title: "Start" },
     },
   });
 
@@ -54,7 +54,7 @@ test("buildNavigation creates nested ordinary data", () => {
   const pages = createPages({
     "./01-guides/01-config/page.mdx": {
       default: () => null,
-      frontmatter: { label: "Configuration" },
+      frontmatter: { title: "Configuration" },
     },
   });
 
@@ -68,7 +68,7 @@ test("filterPages searches labels and navigation paths", () => {
   const pages = createPages({
     "./01-guides/01-config/page.mdx": {
       default: () => null,
-      frontmatter: { label: "Configuration" },
+      frontmatter: { title: "Configuration" },
     },
   });
 
@@ -78,9 +78,9 @@ test("filterPages searches labels and navigation paths", () => {
 
 test("root page.mdx resolves to the index page", () => {
   const pages = createPages({
-    "./page.mdx": { default: () => null, frontmatter: { label: "Home" } },
+    "./page.mdx": { default: () => null, frontmatter: { title: "Home" } },
   });
 
-  assert.equal(pages[0].id, "index");
+  assert.equal(pages[0].id, "home");
   assert.deepEqual(pages[0].navPath, []);
 });

@@ -1,6 +1,5 @@
 ---
 title: Sidebar V2
-label: Sidebar V2
 description: Live demonstration of the canonical Sidebar V2 component.
 ---
 
@@ -59,6 +58,12 @@ import { Sidebar } from "@/components/ui/SidebarV2/Sidebar";
         <SidebarItem>Components</SidebarItem>
       </SidebarGroup>
     </SidebarSection>
+    <SidebarSection>
+      <SidebarGroup label="Components">
+        <SidebarItem>Sidebar</SidebarItem>
+        <SidebarItem>Search</SidebarItem>
+      </SidebarGroup>
+    </SidebarSection>
   </SidebarContent>
   <SidebarFooter>Component registry</SidebarFooter>
 </Sidebar>;
@@ -71,3 +76,20 @@ import { Sidebar } from "@/components/ui/SidebarV2/Sidebar";
 ## Styling
 
 Set `--mf-sidebar-background` and `--mf-sidebar-color` on the sidebar, and use `--mf-sidebar-padding` and `--mf-sidebar-gap` to adjust spacing.
+
+Styles load with the component imports. Public theme defaults are defined in
+`:root`; override `--mf-sidebar-*` variables on a sidebar or an ancestor.
+Variables beginning with `--_mf-*` are private implementation details.
+
+```css
+.my-sidebar {
+  --mf-sidebar-padding: 0.75rem;
+  --mf-sidebar-gap: 0.5rem;
+  --mf-sidebar-radius: 0.5rem;
+  --mf-sidebar-hover-background: light-dark(#f4f4f5, #27272a);
+  --mf-sidebar-active-background: light-dark(#e4e4e7, #3f3f46);
+}
+```
+
+Use `active` on `SidebarItem` to mark the selected page. Control group disclosure
+with `expanded` and `onToggle`; use `count` to display a trailing item count.

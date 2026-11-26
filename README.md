@@ -152,7 +152,7 @@ The GitHub Pages site is built from the private `apps/playground` workspace; pac
 
 ## Content discovery vs. component installation
 
-`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge-ui/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](registry/README.md) and [UI component examples](packages/moyaforge-ui/docs/page.mdx).
+`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge-ui/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](README-registry.md) and [UI component examples](packages/moyaforge-ui/docs/page.mdx).
 
 ## CLI and editable components
 
@@ -161,7 +161,7 @@ and installs editable components from this repository. The React framework stays
 publicly available on npm; it no longer owns the CLI executable.
 
 See [CLI installation and publishing](packages/moyaforge-cli/README.md) and
-[registry architecture](registry/README.md). These commands require the matching
+[registry architecture](README-registry.md). These commands require the matching
 CLI/framework releases to be published; merging source alone does not publish npm packages.
 
 ## Run the CLI directly from GitHub (unpublished source)

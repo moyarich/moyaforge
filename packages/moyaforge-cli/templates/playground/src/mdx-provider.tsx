@@ -1,5 +1,5 @@
 import { lazy, type ReactNode } from "react";
-import { CODE_REPLACEMENTS, CodePreview, type PreviewFile } from "__UI__/CodePreview/index.js";
+import { CODE_REPLACEMENTS, PreviewCode, type PreviewFile } from "__UI__/PreviewCode/index.js";
 import { HighlightedCode, previewLanguage } from "__UI__/HighlightedCode/HighlightedCode.js";
 import { BookOpen } from "lucide-react";
 import { MDXProvider } from "@mdx-js/react";
@@ -8,7 +8,7 @@ import { CodeBlock } from "__UI__/CodeBlock/index.js";
 import { CodeGroup, CodeTab } from "__UI__/CodeGroup/index.js";
 import { CustomBlock } from "__UI__/CustomBlock/index.js";
 
-import componentModules from "virtual:moyaforge-mdx/code-preview-components";
+import componentModules from "virtual:moyaforge-mdx/preview-code-components";
 
 const examples = new Map<string, ReturnType<typeof lazy>>();
 
@@ -34,8 +34,8 @@ function resolvePreviewExample(reference: string) {
   return Example;
 }
 
-// Use the registry's CodePreview with source collected by the MDX compiler.
-function InlineCodePreview({ title = "Example", code, sourceFiles, component, sourceOnly, replacementPreset, children }: {
+// Use the registry's PreviewCode with source collected by the MDX compiler.
+function PreviewCodeInline({ title = "Example", code, sourceFiles, component, sourceOnly, replacementPreset, children }: {
   title?: string;
   code: string;
   sourceFiles?: string;
@@ -53,14 +53,14 @@ function InlineCodePreview({ title = "Example", code, sourceFiles, component, so
     ? <pre><HighlightedCode code={source.code} language={source.language ?? previewLanguage(source.label)} /></pre>
     : Example ? <Example /> : children;
   return (
-    <CodePreview title={title} files={files} replacements={replacementPreset === "portable" ? CODE_REPLACEMENTS : undefined}>
+    <PreviewCode title={title} files={files} replacements={replacementPreset === "portable" ? CODE_REPLACEMENTS : undefined}>
       {previewContent}
-    </CodePreview>
+    </PreviewCode>
   );
 }
 
 const components = {
-  InlineCodePreview,
+  PreviewCodeInline,
   a: DocumentationLink,
   BookOpen,
   pre: CodeBlock,
