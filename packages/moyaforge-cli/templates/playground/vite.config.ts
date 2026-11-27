@@ -35,9 +35,9 @@ const compileMdx = mdx(createMdxOptions({
     routes: discovered.routes,
   }]],
   componentMappings: {
+    card: { component: "Card", titleProp: "title" },
     "preview-code": {
       component: "PreviewCodeInline",
-        booleanProps: ["refresh"],
       titleProp: "title",
       sourceProp: "code",
       filesProp: "sourceFiles",

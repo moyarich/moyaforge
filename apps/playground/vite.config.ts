@@ -45,6 +45,7 @@ const compileMdx = mdx(
       ],
     ],
     componentMappings: {
+      card: { component: "Card", titleProp: "title" },
       "preview-code": {
         component: "PreviewCodeInline",
         titleProp: "title",

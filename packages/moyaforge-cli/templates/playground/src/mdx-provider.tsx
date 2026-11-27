@@ -6,6 +6,7 @@ import { MDXProvider } from "@mdx-js/react";
 import { DocumentationLink } from "@moyarich/moyaforge/headless";
 import { CodeBlock } from "__UI__/CodeBlock/index.js";
 import { CodeGroup, CodeTab } from "__UI__/CodeGroup/index.js";
+import { Card } from "__UI__/Card/index.js";
 import { CustomBlock } from "__UI__/CustomBlock/index.js";
 
 import componentModules from "virtual:moyaforge-mdx/preview-code-components";
@@ -68,6 +69,7 @@ const components = {
   CodeGroup,
   CodeTab,
   CustomBlock,
+  Card,
 };
 
 export function PlaygroundMdxProvider({ children }: { children: ReactNode }) {

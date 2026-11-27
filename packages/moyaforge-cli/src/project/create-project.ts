@@ -19,12 +19,13 @@ export async function createProject(options: InstallOptions): Promise<void> {
             "sidebar-v1",
             "doc-outline",
             "custom-block",
+            "card",
             "code-block",
             "code-group",
             "preview-code",
             ...(options.search ? ["search"] : []),
           ]
-        : ["docs-shell", "code-group", ...(options.search ? ["search"] : [])],
+        : ["docs-shell", "code-group", "card", ...(options.search ? ["search"] : [])],
   });
   const project = await planProject({
     root,

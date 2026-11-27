@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { MDXProvider } from "@mdx-js/react";
 import { Console, Terminal } from "@moyarich/console";
+import { Card } from "../../../packages/moyaforge-ui/src/components/Card/index.js";
 import { CustomBlock } from "../../../packages/moyaforge-ui/src/components/CustomBlock/index.ts";
 import { CodeBlock } from "../../../packages/moyaforge-ui/src/components/CodeBlock/index.ts";
 import {
@@ -97,6 +98,7 @@ const components = {
   pre: CodeBlock,
   CodeBlock,
   CustomBlock,
+  Card,
   CodeGroup,
   CodeTab,
   CopyButton,
