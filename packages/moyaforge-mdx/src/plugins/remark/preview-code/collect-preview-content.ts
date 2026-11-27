@@ -1,3 +1,4 @@
+import { directivePropAttribute } from "../remark-directive/directive-attributes.js";
 import { parseImportsExports } from "parse-imports-exports";
 import type { InlinePreviewOptions } from "./inline-preview-options.js";
 import { renderPreviewStyles } from "./render-preview-styles.js";
@@ -19,6 +20,8 @@ import {
 } from "../preview-code-sources/read-preview-sources.js";
 
 export interface PreviewComponentOptions {
+  /** Emit the public PreviewCode contract (typed files, children and replacements). */
+  directPreviewCode?: boolean;
   sourceProp?: string;
   filesProp?: string;
   localSources?: boolean;
@@ -48,6 +51,8 @@ export function collectPreviewContent(
   container?: Node,
 ) {
   const inlineReact = header?.flags.includes("react");
+  const direct = selected.directPreviewCode === true;
+  let bodySource = "";
   if (header?.preview && (inlineReact || header.component || header.code))
     throw new Error(
       "preview-code preview cannot be combined with react, component, or code.",
@@ -103,7 +108,7 @@ export function collectPreviewContent(
       replacements ??= sources.replacements;
       return false;
     }
-    const block = selected.filesProp && namedCodeBlock(child);
+    const block = (direct || selected.filesProp) && namedCodeBlock(child);
     if (!block) return true;
     files.push(block);
     fences.push(block);
@@ -227,7 +232,7 @@ export function collectPreviewContent(
       name: "replacementPreset",
       value: replacements,
     });
-  if (selected.sourceProp || inlineReact) {
+  if (direct || selected.sourceProp || inlineReact) {
     const groups: Node[][] = [];
     let group: Node[] = [];
     for (const child of children) {
@@ -257,6 +262,13 @@ export function collectPreviewContent(
             : source.slice(start, end);
         })
         .join("\n\n");
+    bodySource = header?.preview || (hasLocalSources && !inlineReact) ? "" : body;
+    if (direct) {
+      const sourceFiles = bodySource || !files.length
+        ? [{ label: "Example.mdx", code: bodySource, language: "mdx" }, ...files]
+        : files;
+      attributes.push(directivePropAttribute("files", sourceFiles.map(f => ({ label: f.label, code: f.code, ...(f.language ? { language: f.language } : {}) }))));
+    }
     if (selected.sourceProp)
       attributes.push({
         type: "mdxJsxAttribute",
