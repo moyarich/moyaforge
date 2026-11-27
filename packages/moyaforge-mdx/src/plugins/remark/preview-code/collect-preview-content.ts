@@ -64,7 +64,7 @@ export function collectPreviewContent(
         header.component,
       )
     )
-      throw directiveDiagnostic(new Error(`Invalid preview-code component: ${header.component}`), source, filePath ?? "<input>", container?.position?.start.offset, "preview-code", {
+      throw directiveDiagnostic(new Error(`Invalid preview-code component: ${header.component}`), source, filePath ?? "<input>", header.offset ?? container?.position?.start.offset, "preview-code", {
         code: "MDX_INVALID_COMPONENT_REFERENCE", phase: "resolve", attribute: "component",
         expected: "Relative .tsx or .jsx path, optionally followed by #ExportName",
         suggestion: 'Use component="./Example.tsx" or component="./Example.tsx#Example".',
@@ -73,7 +73,7 @@ export function collectPreviewContent(
       filePath &&
       selected.resolvePreviewCodeComponent?.(header.component, filePath);
     if (!component)
-      throw directiveDiagnostic(new Error(`Unregistered preview component: ${header.component}`), source, filePath ?? "<input>", container?.position?.start.offset, "preview-code", {
+      throw directiveDiagnostic(new Error(`Unregistered preview component: ${header.component}`), source, filePath ?? "<input>", header.offset ?? container?.position?.start.offset, "preview-code", {
         code: "MDX_COMPONENT_NOT_REGISTERED", phase: "resolve", attribute: "component",
         related: filePath ? [{ file: resolve(dirname(filePath), header.component.split("#")[0]) }] : undefined,
         suggestion: "Check the path and casing, or register the containing directory in createPreviewCodePlugin({ componentRoots: [...] }).",
@@ -254,7 +254,7 @@ export function collectPreviewContent(
     // use the filtered child ranges, so extra source tabs stay separate.
     const fromContainer =
       content.length === children.length
-        ? sourceFromPreviewContainer(source, container)
+        ? sourceFromPreviewContainer(source, container, header?.offset)
         : undefined;
     const body =
       fromContainer ??
@@ -325,11 +325,30 @@ function inlineAssetModule(asset: InlinePreviewAsset): string {
 function sourceFromPreviewContainer(
   source: string,
   container?: Node,
+  authoredOffset?: number,
 ): string | undefined {
-  const start = container?.position?.start.offset;
-  const end = container?.position?.end.offset;
-  if (start === undefined || end === undefined || end <= start)
-    return undefined;
+  const start = authoredOffset ?? container?.position?.start.offset;
+  if (start === undefined) return undefined;
+  let end = container?.position?.end.offset;
+  if (end === undefined) {
+    const width = /^ {0,3}(:{3,})/.exec(source.slice(start))?.[1].length;
+    if (!width) return undefined;
+    const lines = source.slice(start).split(/(?<=\n)/);
+    let offset = start + lines[0].length;
+    let fence: string | undefined;
+    for (const line of lines.slice(1)) {
+      const match = /^ {0,3}(`{3,}|~{3,})(.*)/.exec(line);
+      if (match) {
+        if (!fence) fence = match[1];
+        else if (match[1].startsWith(fence) && !match[2].trim()) fence = undefined;
+      } else if (!fence && new RegExp("^ {0,3}:{" + width + "}\\s*$").test(line)) {
+        end = offset + line.trimEnd().length;
+        break;
+      }
+      offset += line.length;
+    }
+  }
+  if (end === undefined || end <= start) return undefined;
 
   const openerEnd = source.indexOf("\n", start);
   if (openerEnd < 0 || openerEnd >= end) return undefined;

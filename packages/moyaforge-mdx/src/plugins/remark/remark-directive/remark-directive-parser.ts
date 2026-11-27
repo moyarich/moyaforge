@@ -24,7 +24,10 @@ export function remarkDirectiveParser(
     file.data.inlinePreviewAssets = inlineAssets.assets;
     const stack: number[] = [];
     let codeFence: string | undefined;
+    let authoredOffset = 0;
     const normalized = lines.map((_originalLine, index) => {
+      const offset = authoredOffset;
+      authoredOffset += lines[index].length;
       let line = inlineAssets.lines[index];
       const fence = /^ {0,3}(`{3,}|~{3,})(.*)/.exec(line);
       if (fence) {
@@ -75,7 +78,7 @@ export function remarkDirectiveParser(
       stack.push(width);
       const { type, ...metadata } = header;
       const marker = `mf-header-${headers.size}`;
-      headers.set(marker, metadata);
+      headers.set(marker, { ...metadata, offset });
       if (type === "preview-code" && Object.hasOwn(metadata.props ?? {}, "react"))
         file.fail("The react preview flag was removed. Use preview=\"Example.tsx\" with a named TSX fence.", { line: index + 1, column: 1 });
       const opener =

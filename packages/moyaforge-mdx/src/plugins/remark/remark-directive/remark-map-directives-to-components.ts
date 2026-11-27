@@ -80,7 +80,7 @@ function transform<Mapping extends DirectiveComponent>(
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       const attribute = /Invalid preview-code (\w+) attribute/.exec(message)?.[1];
-      throw directiveDiagnostic(error, source, filePath ?? "<input>", node.position?.start.offset, type, {
+      throw directiveDiagnostic(error, source, filePath ?? "<input>", authoredHeader?.offset ?? node.position?.start.offset, type, {
         code: "MDX_INVALID_DIRECTIVE_ATTRIBUTE",
         phase: "directive",
         attribute,
@@ -122,6 +122,9 @@ function transform<Mapping extends DirectiveComponent>(
       if (index < 0) attributes.push(attribute);
       else attributes[index] = attribute;
     }
+    if (header?.offset !== undefined && node.position?.start.offset === undefined) {
+      node.position = { start: { offset: header.offset }, end: {} };
+    }
     let content: Node[];
     try {
       content = definition
@@ -138,7 +141,7 @@ function transform<Mapping extends DirectiveComponent>(
       : children;
     } catch (error) {
       if (error instanceof MdxDiagnosticError) throw error;
-      throw directiveDiagnostic(error, source, filePath ?? "<input>", node.position?.start.offset, type, {
+      throw directiveDiagnostic(error, source, filePath ?? "<input>", authoredHeader?.offset ?? node.position?.start.offset, type, {
         code: "MDX_DIRECTIVE_FAILED", phase: "directive",
       });
     }
