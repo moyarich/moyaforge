@@ -26,6 +26,7 @@ import {
   Console,
   createConsoleEventEmitter,
   createConsoleProxy,
+  type ConsoleMessageData,
 } from "@moyarich/console";
 import "@moyarich/console/styles.css";
 
@@ -41,7 +42,7 @@ const source = [
   outputLabel="Console"
   files={[{ name: "example.js", language: "javascript", value: source }]}
   runSource={(files) => {
-    const messages = [];
+    const messages: ConsoleMessageData[] = [];
     const events = createConsoleEventEmitter();
     events.on("message", (message) => messages.push(message));
     events.on("clear", () => { messages.length = 0; });

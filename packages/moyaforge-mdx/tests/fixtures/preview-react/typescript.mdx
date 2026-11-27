@@ -1,0 +1,13 @@
+# Typed preview
+
+::::preview-code[Typed example]{react}
+
+type Item = { name: string };
+const items: Item[] = [{ name: "Example" }];
+const identity = <T,>(value: T): T => value;
+
+<p>{identity(items[0].name) as string}</p>
+
+::::
+
+## After preview
