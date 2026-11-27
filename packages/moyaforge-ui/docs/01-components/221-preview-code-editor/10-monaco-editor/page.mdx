@@ -28,10 +28,9 @@ npx shadcn@latest add moyarich/moyaforge/preview-code-editor
 
 Follow the [Monaco Editor React setup](/ui/components/monaco-editor-react#install-dependencies) to configure the editor workers.
 
-::::preview-code[Editable source with Monaco]{react replacements="portable"}
+::::preview-code[Editable source with Monaco]{preview="Example.tsx" replacements="portable"}
 
-::preview-code-sources{files="./PreviewMonacoExample.tsx" replacements="portable"}
-
+```tsx filename="Example.tsx"
 import { PreviewCodeEditor } from "../../../../src/components/PreviewCodeEditor/index.js";
 import PreviewMonacoExample from "./PreviewMonacoExample.tsx";
 import counterSource from "../../CounterExample.tsx?raw";
@@ -39,34 +38,42 @@ import counterStyles from "../../counterExample.css?raw";
 export const workerSource =
   'import { configureReactWorkers } from "@moyarich/moyaforge-monaco/workers/configureReactWorkers";\nconfigureReactWorkers();\n';
 
-<PreviewCodeEditor
-  title="Monaco source editor"
-  files={[
-    {
-      name: "CounterExample.tsx",
-      language: "typescript",
-      value: counterSource,
-    },
-    { name: "counterExample.css", language: "css", value: counterStyles },
-    {
-      name: "setup-react-monaco-worker.ts",
-      language: "typescript",
-      value: workerSource,
-      readOnly: true,
-    },
-  ]}
-  height={320}
-  renderPreview={(files) => (
-    <PreviewMonacoExample
-      source={
-        files.find((file) => file.name === "CounterExample.tsx")?.value ?? ""
-      }
-      styles={
-        files.find((file) => file.name === "counterExample.css")?.value ?? ""
-      }
+export default function Example() {
+  return (
+    <PreviewCodeEditor
+      title="Monaco source editor"
+      files={[
+        {
+          name: "CounterExample.tsx",
+          language: "typescript",
+          value: counterSource,
+        },
+        { name: "counterExample.css", language: "css", value: counterStyles },
+        {
+          name: "setup-react-monaco-worker.ts",
+          language: "typescript",
+          value: workerSource,
+          readOnly: true,
+        },
+      ]}
+      height={320}
+      renderPreview={(files) => (
+        <PreviewMonacoExample
+          source={
+            files.find((file) => file.name === "CounterExample.tsx")?.value ?? ""
+          }
+          styles={
+            files.find((file) => file.name === "counterExample.css")?.value ?? ""
+          }
+        />
+      )}
     />
-  )}
-/>
+  );
+}
+```
+
+::preview-code-sources{files="./PreviewMonacoExample.tsx" replacements="portable"}
+
 ::::
 
 ## Styling

@@ -11,24 +11,30 @@ Use a note for information readers may want to know while following the main ins
 
 A simple left-accented note with a subtle blue background.
 
-::::preview-code[Minimal blue note]{react replacements="portable"}
+::::preview-code[Minimal blue note]{preview="Example.tsx" replacements="portable"}
 
+```tsx filename="Example.tsx"
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
-<div className="note-preview-blue">
-  <style>{`
-    .note-preview-blue .custom-block.note {
-      --mf-custom-block-bg: color-mix(in srgb, #2563eb 8%, transparent);
-      --mf-custom-block-border: #2563eb;
-      --mf-custom-block-border-width: 4px;
-      --mf-custom-block-radius: 8px;
-    }
-  `}</style>
-
-  <CustomBlock type="note" title="Where drafts are saved">
-    Drafts are saved in your browser.
-  </CustomBlock>
-</div>
+export default function Example() {
+  return (
+    <div className="note-preview-blue">
+      <style>{`
+        .note-preview-blue .custom-block.note {
+          --mf-custom-block-bg: color-mix(in srgb, #2563eb 8%, transparent);
+          --mf-custom-block-border: #2563eb;
+          --mf-custom-block-border-width: 4px;
+          --mf-custom-block-radius: 8px;
+        }
+      `}</style>
+    
+      <CustomBlock type="note" title="Where drafts are saved">
+        Drafts are saved in your browser.
+      </CustomBlock>
+    </div>
+  );
+}
+```
 
 ::::
 
@@ -36,32 +42,38 @@ import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
 A full-border card with a rounded shape and soft shadow.
 
-::::preview-code[Elevated purple note]{react replacements="portable"}
+::::preview-code[Elevated purple note]{preview="Example.tsx" replacements="portable"}
 
+```tsx filename="Example.tsx"
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
-<div className="note-preview-purple">
-  <style>{`
-    .note-preview-purple .custom-block.note {
-      --mf-custom-block-bg: color-mix(in srgb, #804ec2 8%, transparent);
-      --mf-custom-block-border-width: 0px;
-      --mf-custom-block-radius: 16px;
-      border: 1px solid color-mix(in srgb, #804ec2 40%, transparent);
-      box-shadow: 0 4px 16px color-mix(in srgb, #804ec2 12%, transparent);
-      padding: 1.5rem;
-    }
-
-    .note-preview-purple .custom-block-title {
-      color: #804ec2;
-      font-weight: 700;
-    }
-
-`}</style>
-
-  <CustomBlock type="note" title="Before you continue">
-    Save a backup before changing your settings.
-  </CustomBlock>
-</div>
+export default function Example() {
+  return (
+    <div className="note-preview-purple">
+      <style>{`
+        .note-preview-purple .custom-block.note {
+          --mf-custom-block-bg: color-mix(in srgb, #804ec2 8%, transparent);
+          --mf-custom-block-border-width: 0px;
+          --mf-custom-block-radius: 16px;
+          border: 1px solid color-mix(in srgb, #804ec2 40%, transparent);
+          box-shadow: 0 4px 16px color-mix(in srgb, #804ec2 12%, transparent);
+          padding: 1.5rem;
+        }
+    
+        .note-preview-purple .custom-block-title {
+          color: #804ec2;
+          font-weight: 700;
+        }
+    
+    `}</style>
+    
+      <CustomBlock type="note" title="Before you continue">
+        Save a backup before changing your settings.
+      </CustomBlock>
+    </div>
+  );
+}
+```
 
 ::::
 
