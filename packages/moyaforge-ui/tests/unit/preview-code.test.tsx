@@ -1,7 +1,6 @@
 import { expect, test } from "vitest";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { PreviewCodeInline } from "../../src/components/PreviewCode/PreviewCodeInline.js";
 import { HighlightedCode } from "../../src/components/HighlightedCode/HighlightedCode.js";
 import {
   PreviewCode,
@@ -111,9 +110,9 @@ test("inline callout preview Code tab displays Markdown, CSS and source-only scr
     "</script>",
   ].join("\n");
   const html = renderToStaticMarkup(
-    h(PreviewCodeInline, {
+    h(PreviewCode, {
       title: "Success alert",
-      code: source,
+      files: [{ label: "Example.mdx", code: source, language: "mdx" }],
       children: h("p", null, "Your changes are saved."),
     }),
   );
@@ -231,4 +230,15 @@ test("real Shiki highlighter assigns distinct CSS token colors inside MDX style 
     .replaceAll("&quot;", '"')
     .replaceAll("&amp;", "&");
   expect(displayed).toBe(source);
+});
+
+ test("source-only previews apply portable replacements without rendering live children", () => {
+  const html = renderToStaticMarkup(h(PreviewCode, {
+    files: [{ label: "Example.tsx", code: 'import "../setup";' }],
+    sourceOnly: true,
+    replacementPreset: "portable",
+    children: h("button", null, "Do not render"),
+  }));
+  expect(html).not.toContain("Do not render");
+  expect(html.replace(/<[^>]*>/g, "")).toContain("./setup");
 });

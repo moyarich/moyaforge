@@ -16,7 +16,7 @@ export const greeting = "Hello from the playground.";
 
 Use `{react}` to keep imports scoped to the preview. Named fences add source tabs.
 
-:::preview-code[Inline React greeting]{react}
+:::preview-code[Inline React greeting]{react refresh}
 
 import Greeting from "./Greeting.tsx";
 
@@ -30,7 +30,7 @@ export const message = "Hello from a React component.";
 
 ### Preview a React component from a file
 
-The `component` attribute loads `Greeting.tsx` through `virtual:moyaforge-mdx/preview-code-components`. The `preview-code-sources` directive lists the files shown in the Code view. This works in plain Markdown pages too.
+The `component` attribute imports the registered `Greeting.tsx` at build time. The `preview-code-sources` directive lists the files shown in the Code view. This works in plain Markdown pages too.
 
 ::::preview-code[Greeting component]{component="./Greeting.tsx"}
 

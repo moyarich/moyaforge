@@ -82,7 +82,7 @@ the mapping below:
 ```
 
 Add the following mapping to `createMdxOptions` and register
-`PreviewCodeInline` from `@moyarich/moyaforge-ui/components/PreviewCode` in
+`PreviewCode` from `@moyarich/moyaforge-ui/components/PreviewCode` in
 your MDX provider. Write the example once inside the directive. MDX renders the
 body in the preview and shows the authored Markdown and JSX in the **Code** tab.
 
@@ -90,11 +90,9 @@ body in the preview and shows the authored Markdown and JSX in the **Code** tab.
 createMdxOptions({
   componentMappings: {
     "preview-code": {
-      component: "PreviewCodeInline",
-      booleanProps: ["refresh"],
+      component: "PreviewCode",
+      directPreviewCode: true,
       titleProp: "title",
-      sourceProp: "code",
-      filesProp: "sourceFiles",
     },
   },
 });
@@ -154,10 +152,7 @@ resolvePreviewCodeComponent: (reference, authoredFile) =>
   resolvePreviewCodeSource({ context: codePreview, reference, authoredFile }),
 ```
 
-In your MDX provider, use the loader map from
-`virtual:moyaforge-mdx/preview-code-components` to render the component selected
-by the directive. The plugin also exposes
-`virtual:moyaforge-mdx/preview-code-sources` for lazy raw-source imports.
+Register `PreviewCode` in your MDX provider. The compiler imports the selected registered component through the Vite plugin; no provider adapter or loader map is required. The plugin retains the raw-source virtual module for other integrations.
 The nested source directive supplies the files shown in the Code view.
 
 ```md
@@ -219,7 +214,7 @@ For example, with that root registered, a Warning page can reference the shared 
 ::::
 ```
 
-Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same lazy Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or `{react}` when you need configured component usage.
+Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or `{react}` when you need configured component usage.
 
 Roots are an explicit allowlist: only files in those directories can be resolved, symlinked files are not followed, and unregistered paths are rejected. Vite watches the roots for added and deleted components. For source tabs, `preview-code-sources` still requires sibling local files.
 
@@ -262,9 +257,8 @@ createMdxOptions({
   allowInlinePreviewStyles: true, // Only for trusted, reviewed documentation.
   componentMappings: {
     "preview-code": {
-      component: "PreviewCodeInline",
-      booleanProps: ["refresh"],
-      sourceProp: "code",
+      component: "PreviewCode",
+      directPreviewCode: true,
       registerInlineReact: codePreview.inlineReact.register,
     },
   },
@@ -339,6 +333,10 @@ strong {
 - [Inline source fences](/ui/components/preview-code/inline-source-fences)
 - [Counter preview in MDX](/ui/components/preview-code/counter-preview-in-mdx)
 - [Markdown file preview](/ui/components/preview-code/markdown-file-preview)
+
+## Migrating existing integrations
+
+`PreviewCodeInline` and `PreviewSources` have been removed. Register `PreviewCode` in the MDX provider and set `directPreviewCode: true` on the directive mapping, removing the old `sourceProp` and `filesProp` settings. Use the `files` array for explicit React source tabs. Existing Markdown directive syntax is unchanged.
 
 ## Styling
 

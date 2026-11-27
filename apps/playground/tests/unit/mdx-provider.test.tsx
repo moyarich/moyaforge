@@ -192,3 +192,17 @@ test("wildcard directive mapping emits semantic components with type/title and s
   expect(html).toContain("Custom");
   expect(html).not.toContain('class="custom-block');
 });
+
+ test("Markdown preview directives render the public PreviewCode through the provider", async () => {
+  const { createMdxOptions } = await import("@moyarich/moyaforge-mdx");
+  const { default: Content } = await evaluate(":::preview-code[Greeting]{refresh}\n\nHello from Markdown\n\n:::", {
+    ...runtime, useMDXComponents,
+    ...createMdxOptions({ componentMappings: {
+      "preview-code": { component: "PreviewCode", directPreviewCode: true, titleProp: "title" },
+    } }),
+  });
+  const html = renderToStaticMarkup(createElement(PlaygroundMdxProvider, null, createElement(Content)));
+  expect(html).toContain("Hello from Markdown");
+  expect(html).toContain('aria-label="Refresh preview"');
+  expect(html).toContain("data-moyaforge-preview-source");
+});

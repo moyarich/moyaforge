@@ -1,3 +1,4 @@
+import { directivePropAttribute } from "../remark-directive/directive-attributes.js";
 import { parseImportsExports } from "parse-imports-exports";
 import type { InlinePreviewOptions } from "./inline-preview-options.js";
 import { renderPreviewStyles } from "./render-preview-styles.js";
@@ -19,6 +20,8 @@ import {
 } from "../preview-code-sources/read-preview-sources.js";
 
 export interface PreviewComponentOptions {
+  /** Emit the public PreviewCode contract (typed files, children and replacements). */
+  directPreviewCode?: boolean;
   sourceProp?: string;
   filesProp?: string;
   localSources?: boolean;
@@ -48,6 +51,8 @@ export function collectPreviewContent(
   container?: Node,
 ) {
   const inlineReact = header?.flags.includes("react");
+  const direct = selected.directPreviewCode === true;
+
   if (header?.preview && (inlineReact || header.component || header.code))
     throw new Error(
       "preview-code preview cannot be combined with react, component, or code.",
@@ -56,6 +61,7 @@ export function collectPreviewContent(
     throw new Error(
       "A {react} preview takes its component and source from the directive body.",
     );
+  let example: Node | undefined;
   if (header?.component) {
     if (
       !/^(?:\.\/|\.\.\/)+(?:[\w-]+\/)*[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)(?:#[A-Za-z_$][\w$]*)?$/.test(
@@ -72,11 +78,15 @@ export function collectPreviewContent(
       throw new Error(
         `Unregistered preview component: ${header.component}. Register its directory in createPreviewCode({ componentRoots: [...] }), or use a sibling .tsx/.jsx example. Check the path and casing.`,
       );
-    attributes.push({
-      type: "mdxJsxAttribute",
-      name: "component",
-      value: component,
-    });
+    if (direct) {
+      example = importInlineReactExample(file, "virtual:moyaforge-mdx/preview-example/" + encodeURIComponent(component));
+    } else {
+      attributes.push({
+        type: "mdxJsxAttribute",
+        name: "component",
+        value: component,
+      });
+    }
   }
 
   const files: PreviewFile[] = [];
@@ -103,7 +113,7 @@ export function collectPreviewContent(
       replacements ??= sources.replacements;
       return false;
     }
-    const block = selected.filesProp && namedCodeBlock(child);
+    const block = (direct || selected.filesProp) && namedCodeBlock(child);
     if (!block) return true;
     files.push(block);
     fences.push(block);
@@ -214,7 +224,7 @@ export function collectPreviewContent(
         : rendered),
     );
   }
-  if (selected.filesProp && files.length) {
+  if (!direct && selected.filesProp && files.length) {
     attributes.push({
       type: "mdxJsxAttribute",
       name: selected.filesProp,
@@ -227,7 +237,7 @@ export function collectPreviewContent(
       name: "replacementPreset",
       value: replacements,
     });
-  if (selected.sourceProp || inlineReact) {
+  if (direct || selected.sourceProp || inlineReact) {
     const groups: Node[][] = [];
     let group: Node[] = [];
     for (const child of children) {
@@ -257,7 +267,14 @@ export function collectPreviewContent(
             : source.slice(start, end);
         })
         .join("\n\n");
-    if (selected.sourceProp)
+    const bodySource = header?.preview || (hasLocalSources && !inlineReact) ? "" : body;
+    if (direct) {
+      const sourceFiles = bodySource || !files.length
+        ? [{ label: "Example.mdx", code: bodySource, language: "mdx" }, ...files]
+        : files;
+      attributes.push(directivePropAttribute("files", sourceFiles.map(f => ({ label: f.label, code: f.code, ...(f.language ? { language: f.language } : {}) }))));
+    }
+    if (!direct && selected.sourceProp)
       attributes.push({
         type: "mdxJsxAttribute",
         name: selected.sourceProp,
@@ -287,6 +304,7 @@ export function collectPreviewContent(
       ];
     }
   }
+  if (example) return [example];
   const assets = file.data.inlinePreviewAssets ?? [];
   return content.flatMap((child): Node[] => {
     // The parser restores positions to offsets in the unmodified MDX source.
