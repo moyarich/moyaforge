@@ -11,3 +11,11 @@
   --mf-editor-radius: 0;
   --mf-editor-border: transparent;
 }
+
+.mf-preview-code-editor-workspace { min-inline-size: 0; }
+.mf-preview-code-editor-output {
+  min-inline-size: 0;
+  padding: var(--mf-preview-padding, 1.5rem);
+  overflow-wrap: anywhere;
+}
+.mf-preview-code-editor-output > [role="status"] { margin-block-start: 0; font-size: 0.875rem; }

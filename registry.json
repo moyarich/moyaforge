@@ -174,67 +174,6 @@
       ]
     },
     {
-      "name": "code-runner",
-      "type": "registry:component",
-      "title": "Code Runner",
-      "description": "Editable MoyaForge code-runner source. Components import their own CSS.",
-      "dependencies": [
-        "react@>=18"
-      ],
-      "files": [
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeRunner/CodeRunner.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeRunner/CodeRunner.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeRunner/CodeRunner.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeRunner/CodeRunner.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/CodeRunner/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/CodeRunner/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/EditorContainer.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/EditorContainer.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/EditorContainer.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/EditorContainer/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/EditorContainer/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.css",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.css"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.tsx"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/index.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/index.ts"
-        },
-        {
-          "path": "packages/moyaforge-ui/src/components/ResizablePanel/resize-panel-pair.ts",
-          "type": "registry:file",
-          "target": "~/src/components/ui/ResizablePanel/resize-panel-pair.ts"
-        }
-      ]
-    },
-    {
       "name": "copy-button",
       "type": "registry:component",
       "title": "Copy Button",
@@ -1539,6 +1478,26 @@
           "path": "packages/moyaforge-ui/src/components/PreviewCodeEditor/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/PreviewCodeEditor/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.css",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.css"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/ResizablePanel.tsx",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/ResizablePanel.tsx"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/index.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/index.ts"
+        },
+        {
+          "path": "packages/moyaforge-ui/src/components/ResizablePanel/resize-panel-pair.ts",
+          "type": "registry:file",
+          "target": "~/src/components/ui/ResizablePanel/resize-panel-pair.ts"
         },
         {
           "path": "packages/moyaforge-ui/src/components/Tabs/Tabs.css",
