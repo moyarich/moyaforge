@@ -10,7 +10,7 @@ import {
 } from "../../dist/index.js";
 
 test("diagnostics preserve authored CRLF positions and original error details", async () => {
-  const source = await readFile(new URL("../fixtures/diagnostics/crlf.mdx", import.meta.url), "utf8");
+  const source = await readFile(new URL("../fixtures/diagnostics/positions/crlf.mdx", import.meta.url), "utf8");
   const error = Object.assign(new Error("Invalid expression"), {
     line: 3, column: 6, source: "micromark", ruleId: "acorn",
   });
@@ -51,9 +51,9 @@ test("collector counts errors and warnings separately", () => {
 });
 
 test("discovery reports multiple malformed pages, with authored filenames", async () => {
-  const root = fileURLToPath(new URL("../fixtures/diagnostics/", import.meta.url));
+  const root = fileURLToPath(new URL("../fixtures/diagnostics/discovery/", import.meta.url));
   const config = {
-    sources: { docs: { base: ".", include: ["invalid-a.mdx", "invalid-b.mdx", "valid.mdx"], pageFiles: "all" } },
+    sources: { docs: { base: ".", include: ["*.mdx"], pageFiles: "all" } },
     githubActionsAnnotations: false,
   };
   await assert.rejects(discoverContent(config, root), error => {

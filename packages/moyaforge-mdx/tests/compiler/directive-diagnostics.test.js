@@ -12,9 +12,9 @@ const options = createMdxOptions({
 });
 
 for (const [fixture, code] of [
-  ["invalid-attribute.mdx", "MDX_INVALID_DIRECTIVE_ATTRIBUTE"],
-  ["invalid-reference.mdx", "MDX_INVALID_COMPONENT_REFERENCE"],
-  ["missing-component.mdx", "MDX_COMPONENT_NOT_REGISTERED"],
+  ["directives/invalid-attribute.mdx", "MDX_INVALID_DIRECTIVE_ATTRIBUTE"],
+  ["resolution/invalid-reference.mdx", "MDX_INVALID_COMPONENT_REFERENCE"],
+  ["resolution/missing-component.mdx", "MDX_COMPONENT_NOT_REGISTERED"],
 ]) {
   test("preview diagnostic: " + code, async () => {
     const path = fileURLToPath(new URL("../fixtures/diagnostics/" + fixture, import.meta.url));
