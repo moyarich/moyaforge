@@ -3,6 +3,7 @@ import { maskInlinePreviewAssets } from "../preview-code/mask-inline-preview-ass
 import type { Root } from "mdast";
 import type { Processor } from "unified";
 
+import { previewOpening } from "./directive-attributes.js";
 import type { DirectiveHeader } from "./directive-node.js";
 
 export type DirectiveHeaderRule = (
@@ -63,12 +64,9 @@ export function remarkDirectiveParser(
           reactBodies.at(-1)?.code.push(line);
         }
       } else {
-        const reactOpener =
-          /^ {0,3}(:{3,})preview-code(?:\[[^\]]*\])?\{([^{}]*)\}\s*$/.exec(
-            line,
-          );
-        if (reactOpener?.[2].split(/\s+/).includes("react")) {
-          reactFenceWidth = reactOpener[1].length;
+        const reactOpener = previewOpening(line);
+        if (reactOpener?.react) {
+          reactFenceWidth = reactOpener.width;
           reactBodies.push({ start: index + 1, code: [] });
         }
       }

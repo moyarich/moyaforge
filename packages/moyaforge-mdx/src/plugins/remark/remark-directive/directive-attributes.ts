@@ -108,3 +108,11 @@ export function authoredAttributeText(line: string): string | undefined {
   // The opening line's final brace group is attributes, not the label.
   return /^(?: {0,3}):{2,}\s*[\w-]+(?:\[[^\]]*\]|[^{}]*?)?\s*\{(.*)\}\s*$/.exec(line)?.[1];
 }
+
+/** Match preview opening syntax consistently in the parser and asset masker. */
+export function previewOpening(line: string) {
+  const match = /^ {0,3}(:{3,})\s*preview-code(?=\[|\{|\s|$)/.exec(line);
+  if (!match) return;
+  const text = authoredAttributeText(line.trimEnd());
+  return { width: match[1].length, react: text !== undefined && readDirectiveAttributes(text).flags.includes("react") };
+}

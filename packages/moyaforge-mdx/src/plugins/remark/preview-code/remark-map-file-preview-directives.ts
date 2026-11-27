@@ -40,6 +40,7 @@ export function remarkMapFilePreviewDirectives({
       }
       const children = [...(node.children ?? [])];
       const label = directiveTitle(children[0]);
+      const header = (node as DirectiveNode).directiveHeader ?? directiveHeader(children[0] as DirectiveNode, file);
       if (label !== undefined) children.shift();
       const refs: Record<string, string> = {};
       for (const child of children) {
@@ -85,7 +86,6 @@ export function remarkMapFilePreviewDirectives({
         !/\.(?:tsx|jsx|ts|js|css)$/.test(refs.source)
       )
         throw new Error("Invalid preview source reference.");
-      const header = (node as DirectiveNode).directiveHeader ?? directiveHeader(children[0] as DirectiveNode, file);
       const attributes: Attribute[] = [
         ...(label
           ? [{ type: "mdxJsxAttribute" as const, name: "title", value: label }]

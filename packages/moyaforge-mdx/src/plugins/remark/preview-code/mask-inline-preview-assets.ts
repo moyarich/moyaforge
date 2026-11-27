@@ -1,3 +1,5 @@
+import { previewOpening } from "../remark-directive/directive-attributes.js";
+
 export interface InlinePreviewAsset {
   /** Only preview-local raw style and script elements are transformed. */
   tag: "style" | "script";
@@ -110,12 +112,8 @@ export function maskInlinePreviewAssets(
         }
       }
     } else {
-      const preview =
-        /^ {0,3}(:{3,})\s*preview-code(?:\[[^\]]*\])?(?:\{([^{}]*)\})?(?:\s+[^\r\n]*)?$/.exec(
-          text,
-        );
-      if (preview && !preview[2]?.split(/\s+/).includes("react"))
-        previewWidth = preview[1].length;
+      const preview = previewOpening(text);
+      if (preview && !preview.react) previewWidth = preview.width;
     }
 
     offset += line.length;

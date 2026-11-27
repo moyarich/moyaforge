@@ -85,6 +85,10 @@ export function previewHeader(header: DirectiveHeader | undefined): DirectiveHea
   if (!header) return;
   const props = header.props ?? {};
   const string = (name: string) => typeof props[name] === "string" ? props[name] as string : undefined;
+  for (const name of ["component", "preview", "code", "language", "files"]) {
+    if (Object.hasOwn(props, name) && typeof props[name] !== "string")
+      throw new Error("Invalid preview-code " + name + " attribute: expected a string.");
+  }
   const result = { ...header, component: string("component"), preview: string("preview"), code: string("code"), language: string("language"), sources: string("files"), replacements: string("replacements") === "portable" ? "portable" : undefined };
   if (result.component && result.code) throw new Error("preview-code accepts either a component or code source, not both.");
   if (result.language && !result.code) throw new Error("The preview-code language attribute requires a code source.");
