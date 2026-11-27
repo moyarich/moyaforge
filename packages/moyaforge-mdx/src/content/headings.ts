@@ -33,8 +33,16 @@ export async function extractPageHeadings(
     .use(rehypeSlug)
     .use(rehypeExtractToc);
   const markdownFile = new VFile({ value: markdownSource, path: filename });
-  const markdownTree = headingProcessor.parse(markdownFile);
-  await headingProcessor.run(markdownTree, markdownFile);
+  try {
+    const markdownTree = headingProcessor.parse(markdownFile);
+    await headingProcessor.run(markdownTree, markdownFile);
+  } catch (error) {
+    // Vite prints the error message when loading its config; a VFileMessage
+    // can have a line and column but an empty file property.
+    throw new Error(`Failed to extract headings from ${filename}: ${String(error)}`, {
+      cause: error,
+    });
+  }
 
   type ExtractedHeading = {
     id?: string;

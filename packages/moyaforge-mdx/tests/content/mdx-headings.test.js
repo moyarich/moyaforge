@@ -29,3 +29,15 @@ test("MDX syntax can coexist with Markdown headings without becoming TOC entries
     ["api", "api-1"],
   );
 });
+
+ test("heading discovery reports the authored filename for malformed MDX", async () => {
+  await assert.rejects(
+    extractPageHeadings("# Heading\n\n{value=1 other=2}", "docs/broken/page.mdx"),
+    error => {
+      assert.match(error.message, /docs\/broken\/page\.mdx/);
+      assert.match(error.message, /3:\d+/);
+      assert.ok(error.cause);
+      return true;
+    },
+  );
+});

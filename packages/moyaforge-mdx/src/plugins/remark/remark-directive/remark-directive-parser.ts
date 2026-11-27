@@ -123,7 +123,17 @@ export function remarkDirectiveParser(
       normalizedOffset += line.length;
     });
     file.data.directiveHeaders = headers;
-    const tree = parse(normalized.join(""), file) as Root;
+    let tree: Root;
+    try {
+      tree = parse(normalized.join(""), file) as Root;
+    } catch (error) {
+      // Micromark errors do not always carry the VFile path. Preserve the
+      // original diagnostic, including its line, column and rule identifier.
+      if (error instanceof Error && file.path && "file" in error && !error.file) {
+        Object.assign(error, { file: file.path });
+      }
+      throw error;
+    }
     if (insertions.length) {
       function restore(node: {
         position?: Root["position"];
