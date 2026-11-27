@@ -23,16 +23,14 @@ export function PreviewCodeInline({
   sourceFiles,
   replacementPreset,
   sourceOnly = false,
-  refresh = false,
   children,
-}: {
+  ...previewProps
+}: Omit<PreviewCodeProps, "title" | "files" | "replacements"> & {
   title?: string;
   code: string;
   sourceFiles?: string;
   replacementPreset?: "portable";
   sourceOnly?: boolean;
-  refresh?: boolean;
-  children: ReactNode;
 }) {
   const content = Children.toArray(children);
   const sources = content.find(
@@ -42,7 +40,7 @@ export function PreviewCodeInline({
   );
   if (isValidElement<PreviewSourcesProps>(sources)) {
     return (
-      <PreviewCode title={title} refresh={refresh} {...sources.props}>
+      <PreviewCode title={title} {...previewProps} {...sources.props}>
         {content.filter((child) => child !== sources)}
       </PreviewCode>
     );
@@ -67,7 +65,7 @@ export function PreviewCodeInline({
   return (
     <PreviewCode
       title={title}
-      refresh={refresh}
+      {...previewProps}
       files={files}
       replacements={
         replacementPreset === "portable" ? CODE_REPLACEMENTS : undefined

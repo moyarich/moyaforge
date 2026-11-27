@@ -1,7 +1,12 @@
 import {
   directiveTitle,
+  directiveHeader,
+  type DirectiveNode,
+  type DirectiveAttribute,
   directiveType,
 } from "../remark-directive/directive-node.js";
+import { directivePropAttribute } from "../remark-directive/directive-attributes.js";
+import type { VFile } from "vfile";
 import type { Root } from "mdast";
 
 /** Resolve an example path to a trusted, host-registered component at render time. */
@@ -20,14 +25,14 @@ type Node = {
   value?: string;
   data?: { hProperties?: Record<string, unknown> };
 };
-type Attribute = { type: "mdxJsxAttribute"; name: string; value: string };
+type Attribute = DirectiveAttribute;
 
 /** Parse a deliberately small, declarative file reference format. No dynamic execution. */
 export function remarkMapFilePreviewDirectives({
   component = "PreviewDirective",
   resolveReference,
 }: FilePreviewOptions = {}) {
-  return (tree: Root, file: { path?: string }) => {
+  return (tree: Root, file: VFile) => {
     const visit = (node: Node): Node => {
       if (directiveType(node) !== "preview") {
         if (node.children) node.children = node.children.map(visit);
@@ -80,6 +85,7 @@ export function remarkMapFilePreviewDirectives({
         !/\.(?:tsx|jsx|ts|js|css)$/.test(refs.source)
       )
         throw new Error("Invalid preview source reference.");
+      const header = (node as DirectiveNode).directiveHeader ?? directiveHeader(children[0] as DirectiveNode, file);
       const attributes: Attribute[] = [
         ...(label
           ? [{ type: "mdxJsxAttribute" as const, name: "title", value: label }]
@@ -90,6 +96,12 @@ export function remarkMapFilePreviewDirectives({
           value,
         })),
       ];
+      for (const [name, value] of Object.entries(header?.props ?? {})) {
+        if (["example", "source", "no-title"].includes(name)) continue;
+        const index = attributes.findIndex(attribute => attribute.name === name);
+        const attribute = directivePropAttribute(name, value);
+        if (index < 0) attributes.push(attribute); else attributes[index] = attribute;
+      }
       return {
         type: "mdxJsxFlowElement",
         name: component,

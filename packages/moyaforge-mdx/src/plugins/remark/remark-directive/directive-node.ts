@@ -1,8 +1,10 @@
 import type { VFile } from "vfile";
+import type { DirectiveProps, directivePropAttribute } from "./directive-attributes.js";
 
 export interface DirectiveHeader {
   title?: string;
   flags: string[];
+  props?: DirectiveProps;
   component?: string;
   preview?: string;
   code?: string;
@@ -76,8 +78,16 @@ export type DirectiveNode = {
   meta?: string;
   position?: { start: { offset?: number }; end: { offset?: number } };
 };
-export type DirectiveAttribute = {
-  type: "mdxJsxAttribute";
-  name: string;
-  value: string | null;
-};
+export type DirectiveAttribute = ReturnType<typeof directivePropAttribute>;
+
+/** Compiler-owned preview syntax is interpreted only for preview directives. */
+export function previewHeader(header: DirectiveHeader | undefined): DirectiveHeader | undefined {
+  if (!header) return;
+  const props = header.props ?? {};
+  const string = (name: string) => typeof props[name] === "string" ? props[name] as string : undefined;
+  const result = { ...header, component: string("component"), preview: string("preview"), code: string("code"), language: string("language"), sources: string("files"), replacements: string("replacements") === "portable" ? "portable" : undefined };
+  if (result.component && result.code) throw new Error("preview-code accepts either a component or code source, not both.");
+  if (result.language && !result.code) throw new Error("The preview-code language attribute requires a code source.");
+  if (result.language && !/^[a-zA-Z0-9_-]+$/.test(result.language)) throw new Error("Invalid preview-code language.");
+  return result;
+}

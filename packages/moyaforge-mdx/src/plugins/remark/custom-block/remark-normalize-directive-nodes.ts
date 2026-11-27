@@ -1,10 +1,13 @@
 import type { Root } from "mdast";
+import type { VFile } from "vfile";
+import { authoredAttributeText, readDirectiveAttributes } from "../remark-directive/directive-attributes.js";
 import { customBlockOptions } from "./custom-blocks.js";
 import type { DirectiveNode } from "../remark-directive/directive-node.js";
 
 /** Adapt native directive nodes to the shared container representation. */
 export function remarkNormalizeDirectiveNodes() {
-  return (tree: Root) => {
+  return (tree: Root, file: VFile) => {
+    const source = file.toString();
     const visit = (node: DirectiveNode): void => {
       if (
         (node.type === "containerDirective" || node.type === "leafDirective") &&
@@ -22,18 +25,15 @@ export function remarkNormalizeDirectiveNodes() {
           };
           label.data.hName = customBlockOptions.titleTagName;
         }
+        const start = node.position?.start.offset;
+        const line = start === undefined ? "" : source.slice(start).split(/\r?\n/, 1)[0];
+        const authored = authoredAttributeText(line);
+        const parsed = authored === undefined
+          ? { props: Object.fromEntries(Object.entries(attrs).map(([key, value]) => [key, value === null || value === "" ? true : value])), flags: Object.keys(attrs).filter(key => attrs[key] === "" || attrs[key] === null) }
+          : readDirectiveAttributes(authored);
         node.directiveHeader = {
           title,
-          flags: Object.keys(attrs).filter(
-            (key) => attrs[key] === "" || attrs[key] === null,
-          ),
-          component: attrs.component ?? undefined,
-          preview: attrs.preview ?? undefined,
-          code: attrs.code ?? undefined,
-          language: attrs.language ?? undefined,
-          sources: attrs.files ?? undefined,
-          replacements:
-            attrs.replacements === "portable" ? "portable" : undefined,
+          ...parsed,
         };
         node.type = "container";
         node.data = {

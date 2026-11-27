@@ -5,7 +5,9 @@ import {
   type DirectiveNode as Node,
   type DirectiveAttribute as Attribute,
   normalizeDirectiveType,
+  previewHeader,
 } from "./directive-node.js";
+import { directivePropAttribute } from "./directive-attributes.js";
 import type { VFile } from "vfile";
 import type { Root } from "mdast";
 
@@ -16,7 +18,7 @@ export interface DirectiveComponent {
   titleProp?: string;
   /** Forward the authored directive type to a generic component. */
   typeProp?: string;
-  /** Bare attributes to forward as boolean JSX props. */
+  /** @deprecated Bare attributes are forwarded automatically. */
   booleanProps?: readonly string[];
 }
 
@@ -68,7 +70,9 @@ function transform<Mapping extends DirectiveComponent>(
     const children = [...(node.children ?? [])];
     const first = children[0];
     const parsedTitle = directiveTitle(first);
-    const header = node.directiveHeader ?? directiveHeader(first, file);
+    const authoredHeader = node.directiveHeader ?? directiveHeader(first, file);
+    const isPreview = type === "preview-code" || type === "preview-code-sources";
+    const header = isPreview ? previewHeader(authoredHeader) : authoredHeader;
     if (parsedTitle !== undefined) children.shift();
     const title = header
       ? header.flags.includes("no-title")
@@ -92,9 +96,16 @@ function transform<Mapping extends DirectiveComponent>(
         value: normalizeDirectiveType(type),
       });
     }
-    for (const flag of selected.booleanProps ?? []) {
-      if (header?.flags.includes(flag))
-        attributes.push({ type: "mdxJsxAttribute", name: flag, value: null });
+    const reserved = new Set(["no-title"]);
+    if (isPreview) for (const name of ["react", "component", "preview", "code", "language", "files", "replacements", "sourceFiles", "replacementPreset", "sourceOnly"]) reserved.add(name);
+    for (const [name, value] of Object.entries(header?.props ?? {})) {
+      if (reserved.has(name)) continue;
+      // Explicit props override the optional heading, not compiler-owned type.
+      if (name === selected.typeProp) continue;
+      const index = attributes.findIndex(attribute => attribute.name === name);
+      const attribute = directivePropAttribute(name, value);
+      if (index < 0) attributes.push(attribute);
+      else attributes[index] = attribute;
     }
     const content = definition
       ? transformContent(
