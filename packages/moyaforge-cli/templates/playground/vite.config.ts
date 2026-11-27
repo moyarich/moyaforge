@@ -35,12 +35,11 @@ const compileMdx = mdx(createMdxOptions({
     routes: discovered.routes,
   }]],
   componentMappings: {
+    card: { component: "Card", titleProp: "title" },
     "preview-code": {
-      component: "PreviewCodeInline",
-        booleanProps: ["refresh"],
+      component: "PreviewCode",
+      directPreviewCode: true,
       titleProp: "title",
-      sourceProp: "code",
-      filesProp: "sourceFiles",
       localSources: true,
       registerInlineReact: codePreview.inlineReact.register,
       resolvePreviewCodeComponent: (reference, authoredFile) => resolvePreviewCodeSource({ context: codePreview, reference, authoredFile }),

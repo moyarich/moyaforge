@@ -1,3 +1,5 @@
+import { directiveDiagnostic } from "../../../diagnostics/directive-diagnostic.js";
+import { MdxDiagnosticError } from "../../../diagnostics/create-diagnostic.js";
 import {
   directiveHeader,
   directiveTitle,
@@ -5,7 +7,9 @@ import {
   type DirectiveNode as Node,
   type DirectiveAttribute as Attribute,
   normalizeDirectiveType,
+  previewHeader,
 } from "./directive-node.js";
+import { directivePropAttribute } from "./directive-attributes.js";
 import type { VFile } from "vfile";
 import type { Root } from "mdast";
 
@@ -16,7 +20,7 @@ export interface DirectiveComponent {
   titleProp?: string;
   /** Forward the authored directive type to a generic component. */
   typeProp?: string;
-  /** Bare attributes to forward as boolean JSX props. */
+  /** @deprecated Bare attributes are forwarded automatically. */
   booleanProps?: readonly string[];
 }
 
@@ -68,7 +72,22 @@ function transform<Mapping extends DirectiveComponent>(
     const children = [...(node.children ?? [])];
     const first = children[0];
     const parsedTitle = directiveTitle(first);
-    const header = node.directiveHeader ?? directiveHeader(first, file);
+    const authoredHeader = node.directiveHeader ?? directiveHeader(first, file);
+    const isPreview = type === "preview-code" || type === "preview-code-sources";
+    let header: ReturnType<typeof directiveHeader>;
+    try {
+      header = isPreview ? previewHeader(authoredHeader) : authoredHeader;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const attribute = /Invalid preview-code (\w+) attribute/.exec(message)?.[1];
+      throw directiveDiagnostic(error, source, filePath ?? "<input>", authoredHeader?.offset ?? node.position?.start.offset, type, {
+        code: "MDX_INVALID_DIRECTIVE_ATTRIBUTE",
+        phase: "directive",
+        attribute,
+        expected: attribute ? "A quoted string" : undefined,
+        suggestion: attribute ? `Use ${attribute}="value".` : undefined,
+      });
+    }
     if (parsedTitle !== undefined) children.shift();
     const title = header
       ? header.flags.includes("no-title")
@@ -92,11 +111,23 @@ function transform<Mapping extends DirectiveComponent>(
         value: normalizeDirectiveType(type),
       });
     }
-    for (const flag of selected.booleanProps ?? []) {
-      if (header?.flags.includes(flag))
-        attributes.push({ type: "mdxJsxAttribute", name: flag, value: null });
+    const reserved = new Set(["no-title"]);
+    if (isPreview) for (const name of ["react", "component", "preview", "code", "language", "files", "replacements", "sourceFiles", "replacementPreset", "sourceOnly"]) reserved.add(name);
+    for (const [name, value] of Object.entries(header?.props ?? {})) {
+      if (reserved.has(name)) continue;
+      // Explicit props override the optional heading, not compiler-owned type.
+      if (name === selected.typeProp) continue;
+      const index = attributes.findIndex(attribute => attribute.name === name);
+      const attribute = directivePropAttribute(name, value);
+      if (index < 0) attributes.push(attribute);
+      else attributes[index] = attribute;
     }
-    const content = definition
+    if (header?.offset !== undefined && node.position?.start.offset === undefined) {
+      node.position = { start: { offset: header.offset }, end: {} };
+    }
+    let content: Node[];
+    try {
+      content = definition
       ? transformContent(
           definition,
           children,
@@ -108,6 +139,12 @@ function transform<Mapping extends DirectiveComponent>(
           node,
         )
       : children;
+    } catch (error) {
+      if (error instanceof MdxDiagnosticError) throw error;
+      throw directiveDiagnostic(error, source, filePath ?? "<input>", authoredHeader?.offset ?? node.position?.start.offset, type, {
+        code: "MDX_DIRECTIVE_FAILED", phase: "directive",
+      });
+    }
     return jsx(
       selected.component,
       content.map((child) =>

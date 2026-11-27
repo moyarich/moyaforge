@@ -7,16 +7,22 @@ description: Show a shortcut readers can try.
 
 Use a tip to offer an optional shortcut, such as duplicating a template to save time.
 
-::::preview-code[Tip callout]{react}
+::::preview-code[Tip callout]{preview="Example.tsx"}
 
+```tsx filename="Example.tsx"
 import "./TipCallout.css";
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
-<div className="tip-example">
-  <CustomBlock type="tip" title="Save time">
-    Duplicate an existing template when you need a similar layout.
-  </CustomBlock>
-</div>
+export default function Example() {
+  return (
+    <div className="tip-example">
+      <CustomBlock type="tip" title="Save time">
+        Duplicate an existing template when you need a similar layout.
+      </CustomBlock>
+    </div>
+  );
+}
+```
 
 ::preview-code-sources{files="./TipCallout.css" replacements="portable"}
 

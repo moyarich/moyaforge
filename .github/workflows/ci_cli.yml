@@ -36,6 +36,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 permissions:
   contents: read
+  packages: read
 jobs:
   workflow-call-input-summary:
     name: "job: Reusable workflow parameters"

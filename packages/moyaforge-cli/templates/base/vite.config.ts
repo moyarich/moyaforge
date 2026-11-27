@@ -23,6 +23,7 @@ export default defineConfig({
       ...mdx(
         createMdxOptions({
           componentMappings: {
+            card: { component: "Card", titleProp: "title" },
             "code-group": {
               component: "CodeGroup",
               childType: "tab",

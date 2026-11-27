@@ -1,3 +1,4 @@
+import { createDiagnostic, MdxDiagnosticError } from "../diagnostics/index.js";
 import { directiveHeaderRules } from "../plugins/remark/directive-header-rules.js";
 import remarkDirective from "remark-directive";
 import { remarkNormalizeDirectiveHeaders } from "../plugins/remark/remark-directive/remark-normalize-directive-headers.js";
@@ -33,8 +34,17 @@ export async function extractPageHeadings(
     .use(rehypeSlug)
     .use(rehypeExtractToc);
   const markdownFile = new VFile({ value: markdownSource, path: filename });
-  const markdownTree = headingProcessor.parse(markdownFile);
-  await headingProcessor.run(markdownTree, markdownFile);
+  try {
+    const markdownTree = headingProcessor.parse(markdownFile);
+    await headingProcessor.run(markdownTree, markdownFile);
+  } catch (error) {
+    throw new MdxDiagnosticError(createDiagnostic(error, {
+      code: "MDX_HEADING_PARSE_FAILED",
+      phase: "discovery",
+      location: { file: filename },
+      source: markdownSource,
+    }), error);
+  }
 
   type ExtractedHeading = {
     id?: string;

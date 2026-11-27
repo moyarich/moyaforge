@@ -101,8 +101,10 @@ The repository's `.npmrc` routes `@moyarich` packages to the public npm registry
 
 The installable UI source of truth is `packages/moyaforge-ui/src/components/`.
 `bin/build-registry.ts` generates `registry.json` for component installs.
-Components import their own CSS, which stays beside their source; there is no
-separate registry stylesheet entry. The manifest is committed to this repository.
+Components import their own CSS. Component-local styles stay beside their source;
+shared stylesheets, hooks and utilities install into sibling `styles/`, `hooks/`
+and `utils/` directories. The registry includes these files through the importing
+component's source graph, without requiring separate stylesheet installation. The manifest is committed to this repository.
 
 To regenerate locally before submitting a PR:
 

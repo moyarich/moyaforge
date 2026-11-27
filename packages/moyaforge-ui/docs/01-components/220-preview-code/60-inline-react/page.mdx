@@ -4,38 +4,69 @@ title: Inline React previews
 
 # Inline React previews
 
-Add `{react}` to write imports and JSX inside a preview. Each block imports its
-own component, so multiple examples can use the same component name. Each preview keeps its imports separate from the page and from other previews.
+Select a named TSX fence with `preview` to render its default-exported component. Each module keeps its imports separate from the page and other previews.
 
-::::preview-code[Counter with isolated imports]{react}
+::::preview-code[Counter with isolated imports]{preview="Example.tsx"}
 
-::preview-code-sources{files="./scope-usage.mdx"}
-
+```tsx filename="Example.tsx"
 import Counter from "../../CounterExample.tsx";
 
-<Counter />
+export default function Example() {
+  return (
+    <Counter />
+  );
+}
+```
+
+::preview-code-sources{files="./scope-usage.mdx"}
 
 ::::
 
 ## Inline React previews with Named fences
 
-Named fences appear in the Code view and can go before or after the JSX.
+Every named fence appears in the Code view. Select the entry module with `preview`.
 
-::::preview-code[React with source tabs]{react}
+::::preview-code[React with source tabs]{preview="Example.tsx"}
 
-::preview-code-sources{files="./usage.mdx"}
+```tsx filename="Example.tsx"
+import Greeting from "../30-inline-multiple-files/GreetingCard.tsx";
+
+export default function Example() {
+  return (
+    <Greeting />
+  );
+}
+```
 
 ```ts filename="config.ts"
 export const message = "Hello from React.";
 ```
 
-import Greeting from "../30-inline-multiple-files/GreetingCard.tsx";
-
-<Greeting />
-
 ```css filename="styles.css"
 .greeting {
   font-weight: 600;
+}
+```
+
+::preview-code-sources{files="./usage.mdx"}
+
+::::
+
+## TypeScript previews
+
+React previews support TypeScript annotations, type declarations, generics, and assertions. The preview body is compiled as TSX, so these features work without changing the surrounding MDX syntax. The default-exported component renders the example, and the Code view retains the original TypeScript.
+
+::::preview-code[TypeScript example]{preview="Example.tsx"}
+
+```tsx filename="Example.tsx"
+type Item = { name: string };
+const items: Item[] = [{ name: "Example" }];
+const identity = <T,>(value: T): T => value;
+
+export default function Example() {
+  return (
+    <p>{identity(items[0].name) as string}</p>
+  );
 }
 ```
 

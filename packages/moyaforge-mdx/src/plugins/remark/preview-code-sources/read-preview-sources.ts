@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import type { VFile } from "vfile";
 import {
   directiveHeader,
+  previewHeader,
   type DirectiveNode,
 } from "../remark-directive/directive-node.js";
 
@@ -43,7 +44,7 @@ export function readPreviewSources(
   filePath?: string,
 ) {
   const refs =
-    child.directiveHeader ?? directiveHeader(child.children?.[0], file);
+    previewHeader(child.directiveHeader ?? directiveHeader(child.children?.[0], file));
   if (!refs?.sources || !filePath)
     throw new Error(
       "preview-code-sources requires local files and an MDX filename.",

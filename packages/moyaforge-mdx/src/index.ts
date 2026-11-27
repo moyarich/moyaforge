@@ -14,3 +14,5 @@ export * from "./mdx/remark-map-directives-to-components.js";
 export * from "./plugins/remark/preview-code/remark-map-file-preview-directives.js";
 
 export * from "./vite/preview-code/preview-code.js";
+
+export * from "./diagnostics/index.js";

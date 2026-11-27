@@ -235,23 +235,25 @@ test("registry targets install directly under the configured component directory
   ).toContain("CodeBlock");
 });
 
-test("monaco installation reports setup notes without copying README files", async () => {
+test("monaco source installation copies its declared dependencies and shared assets without README files", async () => {
   const root = await project();
   const dry = run(root, "add", "monaco-editor-react", "--dry-run");
   expect(dry.status).toBe(0);
   expect(dry.stdout).toContain("@monaco-editor/react");
   expect(dry.stdout).toContain("monaco-editor");
-  expect(dry.stdout).toContain(
-    "npm install @moyarich/moyaforge-monaco @moyarich/moyaforge-ui @monaco-editor/react monaco-editor",
-  );
-  expect(dry.stdout).toContain("Configure workers once");
+  expect(dry.stdout).toContain("npm dependencies:");
+  expect(dry.stdout).toContain("@monaco-editor/react@>=4");
+  expect(dry.stdout).toContain("react@>=18");
+  expect(dry.stdout).toContain("src/components/hooks/useEditorTheme.ts");
+  expect(dry.stdout).toContain("src/components/styles/MonacoLoading.css");
   await expect(
     read(root, "src/components/ui/MonacoEditorReact/README.md"),
   ).rejects.toThrow();
   const installed = run(root, "add", "monaco-editor-react", "--no-install");
   expect(installed.status).toBe(0);
-  expect(installed.stdout).toContain("Setup notes:");
-  expect(installed.stdout).toContain("MonacoEditorReact setup");
+  expect(installed.stdout).toContain("src/components/styles/MonacoLoading.css");
+  expect(await read(root, "src/components/hooks/useEditorTheme.ts")).toMatch(/\S/);
+  expect(await read(root, "src/components/styles/MonacoLoading.css")).toMatch(/\S/);
   await expect(
     read(root, "src/components/ui/MonacoEditorReact/README.md"),
   ).rejects.toThrow();
@@ -283,6 +285,19 @@ test("shared registry utilities remain siblings of UI files, including custom de
       file.path.includes("src/custom-components/ui/"),
     ),
   ).toBe(true);
+});
+
+test("shared CSS and hooks remain siblings of custom UI destinations", async () => {
+  const root = await project();
+  const plan = await planComponentInstallation({
+    root,
+    names: ["monaco-editor-react"],
+    registry: repository,
+    directory: "src/custom-components/ui",
+  });
+  const targets = plan.files.map(file => file.path.replaceAll("\\", "/"));
+  expect(targets.some(path => path.endsWith("/src/custom-components/styles/MonacoLoading.css"))).toBe(true);
+  expect(targets.some(path => path.endsWith("/src/custom-components/hooks/useEditorTheme.ts"))).toBe(true);
 });
 
 test("init without a template configures only; init --template scaffolds the app", async () => {

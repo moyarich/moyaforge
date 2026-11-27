@@ -16,4 +16,5 @@ test("malformed MDX reports the source file and position", async () => {
   expect(failure).toBeDefined();
   expect(String(failure.message)).not.toBe("");
   expect(failure.line).toBeGreaterThan(0);
+  expect(failure.file).toBe("docs/broken/page.mdx");
 });

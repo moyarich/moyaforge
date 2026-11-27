@@ -1,11 +1,11 @@
 ---
 title: Preview rendering and highlighting
-description: How PreviewCodeInline renders live examples, Code tabs, and CSS/JavaScript syntax highlighting with Shiki.
+description: How PreviewCode renders live examples, Code tabs, and CSS/JavaScript syntax highlighting with Shiki.
 ---
 
 # Rendering and highlighting
 
-The MDX provider supplies `PreviewCodeInline`. It assembles the inline `Example.mdx` source tab plus any file tabs, then renders `PreviewCode` and the shared `Preview` components.
+The compiler assembles the inline `Example.mdx` source tab and additional files into a typed array. The MDX provider supplies `PreviewCode`, which renders the shared `Preview` components.
 
 - `PreviewContent` owns the live React example.
 - `PreviewSource` owns the Code view; `CodeGroup` handles multiple files.

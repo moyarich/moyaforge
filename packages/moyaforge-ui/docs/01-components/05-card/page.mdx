@@ -1,0 +1,100 @@
+---
+title: Card
+description: Group related content into a reusable card in React or Markdown.
+---
+
+# Card
+
+Cards group related content without implying a warning or admonition. They support optional titles, descriptions, compact spacing and visual variants.
+
+## Installation
+
+```sh
+npx @moyarich/moyaforge-cli@latest add card
+```
+
+Or use `npx shadcn@latest add moyarich/moyaforge/card`.
+
+## Markdown directive
+
+::::preview-code[Markdown card]
+
+:::card[Getting started]{variant="outline" compact description="Start here"}
+Install the package and follow the [installation guide](/ui/components/card#installation).
+:::
+
+::::
+
+## React
+
+::::preview-code[React cards]{preview="Example.tsx" replacements="portable"}
+
+```tsx filename="Example.tsx"
+import { Card } from "../../../src/components/Card/index.js";
+
+export default function Example() {
+  return (
+    <div style={{ display: "grid", gap: "1rem", width: "100%" }}>
+      <Card title="Outline" description="Default variant">
+        <p>Group related content.</p>
+      </Card>
+      <Card title="Filled" variant="filled" compact>
+        <p>Use a subtle surface and reduced spacing.</p>
+      </Card>
+      <Card title="Ghost" variant="ghost">
+        <p>Use a card layout without a visible border.</p>
+      </Card>
+    </div>
+  );
+}
+```
+
+::::
+
+## Nested content
+
+:::::preview-code[Nested cards]
+
+::::card[Workspace]{variant="filled"}
+
+:::card[Configuration]{compact}
+- Markdown lists and links work normally.
+- Nested directives retain their own props.
+:::
+
+::::
+
+:::::
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| title | ReactNode | — |
+| description | ReactNode | — |
+| variant | outline, filled, ghost | outline |
+| compact | boolean | false |
+| children | ReactNode | — |
+
+Standard div attributes such as className, id and aria-label are forwarded. The directive uses the generic attribute parser, so new declarative props do not need a parser update.
+
+## Configure Markdown in your app
+
+Register the component once in your MDX provider and compiler configuration.
+
+```tsx
+import { Card } from "@/components/ui/Card";
+// Include Card in your MDXProvider components.
+```
+
+```ts
+createMdxOptions({
+  componentMappings: {
+    card: { component: "Card", titleProp: "title" },
+  },
+});
+```
+
+## Styling
+
+Override `--mf-card-padding`, `--mf-card-gap`, `--mf-card-radius`, `--mf-card-border`, `--mf-card-background`, `--mf-card-filled-background` or the compact spacing tokens in your CSS. Package consumers can import `@moyarich/moyaforge-ui/components/Card/styles.css` when using the published component.

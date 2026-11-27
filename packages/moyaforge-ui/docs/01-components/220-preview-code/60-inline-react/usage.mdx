@@ -1,12 +1,18 @@
-:::preview-code[React with source tabs]{react}
+:::preview-code[React with source tabs]{preview="Example.tsx"}
+
+```tsx filename="Example.tsx"
+import Greeting from "../30-inline-multiple-files/GreetingCard.tsx";
+
+export default function Example() {
+  return (
+    <Greeting />
+  );
+}
+```
 
 ```ts filename="config.ts"
 export const message = "Hello from React.";
 ```
-
-import Greeting from "../30-inline-multiple-files/GreetingCard.tsx";
-
-<Greeting />
 
 ```css filename="styles.css"
 .greeting {

@@ -75,13 +75,19 @@ test("registered component roots resolve nested files and named exports without 
       assert.match(code, /component-root-0\/CodeBlock\/CodeBlock\.tsx/);
       assert.doesNotMatch(code, /Hidden\.tsx|Secret\.tsx/);
 
+      const directId = plugin.resolveId("virtual:moyaforge-mdx/preview-example/" + encodeURIComponent("component-root-0/CodeBlock/CodeBlock.tsx#CodeBlock"));
+      assert.ok(plugin.load.filter.id.test(directId));
+      assert.match(await plugin.load.handler(directId), /export \{ CodeBlock as default \}/);
+      await assert.rejects(() => plugin.load.handler(plugin.resolveId("virtual:moyaforge-mdx/preview-example/" + encodeURIComponent("private/Hidden.tsx"))), /Unknown preview component/);
+
       const compiled = String(
         await compile(
           { path: page, value: '::::preview-code[Shared]{component="../../ui/components/CodeBlock/CodeBlock.tsx#CodeBlock"}\n\n::::' },
           createMdxOptions({
             componentMappings: {
               "preview-code": {
-                component: "PreviewCodeInline",
+                component: "PreviewCode",
+                directPreviewCode: true,
                 resolvePreviewCodeComponent: (reference, authoredFile) =>
                   resolvePreviewCodeSource({ context, reference, authoredFile }),
               },
@@ -89,7 +95,7 @@ test("registered component roots resolve nested files and named exports without 
           }),
         ),
       );
-      assert.match(compiled, /component-root-0\/CodeBlock\/CodeBlock\.tsx#CodeBlock/);
+      assert.ok(compiled.includes("virtual:moyaforge-mdx/preview-example/" + encodeURIComponent("component-root-0/CodeBlock/CodeBlock.tsx#CodeBlock")));
     }
 
     // Explicitly registering a documentation root keeps its pre-existing

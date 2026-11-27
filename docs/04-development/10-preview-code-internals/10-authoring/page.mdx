@@ -42,12 +42,12 @@ Standalone, attribute-free `<style>` and `<script>` opening and closing tags mus
 | `:::preview-code[Title]` with Markdown/JSX body               | Compiled Markdown/JSX                       | Original body                |
 | `<style>` in a Markdown preview                               | CSS only with trusted opt-in                | Original CSS and tags        |
 | `<script>` in a Markdown preview                              | Never runs                                  | Original JavaScript and tags |
-| `{react}` flag with imports and JSX                           | Separately compiled React module            | Authored React source        |
+| named React fences flag with imports and JSX                           | Separately compiled React module            | Authored React source        |
 | `{component="./Example.tsx"}`                                 | Registered TSX/JSX component                | Source files as configured   |
 | `{code="./Example.tsx" language="typescript"}`                | Highlighted source, not component execution | Source file                  |
 | `::preview-code-sources{files="./Example.tsx,./example.css"}` | Does not itself import or apply the files   | Extra file tabs              |
 
-`{react}`, file-backed component previews, and arbitrary JSX are **trusted executable code**; they do not inherit the raw `<script>` restriction.
+named React fences, file-backed component previews, and arbitrary JSX are **trusted executable code**; they do not inherit the raw `<script>` restriction.
 
 ## Valid HTML and hydration
 

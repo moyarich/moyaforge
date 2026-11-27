@@ -1,3 +1,5 @@
+import { previewOpening } from "../remark-directive/directive-attributes.js";
+
 export interface InlinePreviewAsset {
   /** Only preview-local raw style and script elements are transformed. */
   tag: "style" | "script";
@@ -18,10 +20,10 @@ declare module "vfile" {
 /**
  * Mask raw CSS/JS bodies before the MDX parser sees their braces or syntax.
  *
- * Like inline {react} imports, only the *parse copy* is masked. The original
+ * Only the *parse copy* is masked. The original
  * source remains available for preview-code source tabs and virtual modules.
  * Both style and script are preserved in source. Only reviewed CSS renders.
- * Fenced source blocks and React previews remain untouched.
+ * Fenced source blocks remain untouched.
  */
 export function maskInlinePreviewAssets(
   lines: readonly string[],
@@ -110,12 +112,8 @@ export function maskInlinePreviewAssets(
         }
       }
     } else {
-      const preview =
-        /^ {0,3}(:{3,})\s*preview-code(?:\[[^\]]*\])?(?:\{([^{}]*)\})?(?:\s+[^\r\n]*)?$/.exec(
-          text,
-        );
-      if (preview && !preview[2]?.split(/\s+/).includes("react"))
-        previewWidth = preview[1].length;
+      const preview = previewOpening(text);
+      if (preview) previewWidth = preview.width;
     }
 
     offset += line.length;

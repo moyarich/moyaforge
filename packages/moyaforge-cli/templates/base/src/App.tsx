@@ -2,6 +2,7 @@ import { HashRouter, Link, Navigate, Route, Routes, useLocation } from "react-ro
 import { MDXProvider } from "@mdx-js/react";
 import { BookOpen, Camera, Check } from "lucide-react";
 import { DocsShell } from "__UI__/DocsShell/DocsShell.js";
+import { Card } from "__UI__/Card/index.js";
 import { CodeBlock } from "__UI__/CodeBlock/CodeBlock.js";
 import { CodeGroup, CodeTab } from "__UI__/CodeGroup/CodeGroup.js";
 import { SearchPanel } from "./SearchPanel.js";
@@ -9,7 +10,7 @@ import { Playground } from "./Playground.js";
 import { routes } from "virtual:moyaforge-mdx/metadata";
 import { ContentPage, documentationLinkComponents } from "./Routing.js";
 
-const components = { ...documentationLinkComponents, pre: CodeBlock, CodeGroup, CodeTab, BookOpen, Camera, Check };
+const components = { ...documentationLinkComponents, pre: CodeBlock, Card, CodeGroup, CodeTab, BookOpen, Camera, Check };
 const pages = routes.map(page => ({
   url: page.path,
   title: page.title,

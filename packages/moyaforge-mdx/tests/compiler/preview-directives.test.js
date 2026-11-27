@@ -208,10 +208,12 @@ test("uses native directives for code groups and their nested tabs", async () =>
 test("isolates repeated import names and keeps named fences as preview sources", async () => {
   const registered = [];
   const page = [
-    "::::preview-code[First]{react replacements=}",
+    '::::preview-code[First]{preview="First.tsx"}',
+    '```tsx filename="First.tsx"',
     'import {\n  First as Greeting,\n} from "./first.js";',
     "",
-    "<Greeting />",
+    "export default function Example() { return <Greeting />; }",
+    "```",
     "",
     '```css filename="styles.css"',
     "p { color: red; }",
@@ -219,11 +221,12 @@ test("isolates repeated import names and keeps named fences as preview sources",
     "",
     "::::",
     "",
-    ":::preview-code[Second]{react replacements=portable}",
-    "",
+    ':::preview-code[Second]{preview="Second.tsx" replacements="portable"}',
+    '```tsx filename="Second.tsx"',
     'import { Second as Greeting } from "./second.js";',
     "",
-    "<Greeting />",
+    "export default function Example() { return <Greeting />; }",
+    "```",
     "",
     ":::",
   ].join("\n");
@@ -248,12 +251,12 @@ test("isolates repeated import names and keeps named fences as preview sources",
   expect(registered).toEqual([
     {
       source:
-        'import {\n  First as Greeting,\n} from "./first.js";\n\n<Greeting />',
+        'import {\n  First as Greeting,\n} from "./first.js";\n\nexport default function Example() { return <Greeting />; }',
       file: "/docs/page.mdx",
     },
     {
       source:
-        'import { Second as Greeting } from "./second.js";\n\n<Greeting />',
+        'import { Second as Greeting } from "./second.js";\n\nexport default function Example() { return <Greeting />; }',
       file: "/docs/page.mdx",
     },
   ]);
@@ -287,10 +290,10 @@ test("file-backed preview errors describe opt-in component root registration", a
 
   await expect(
     compilePreview("../../../../src/components/CodeBlock/CodeBlock.tsx"),
-  ).rejects.toThrow(/Unregistered preview component.*componentRoots/);
+  ).rejects.toThrow(/Unregistered preview component[\s\S]*componentRoots/);
 
   await expect(compilePreview("./Missing.tsx")).rejects.toThrow(
-    /Unregistered preview component.*componentRoots/,
+    /Unregistered preview component[\s\S]*componentRoots/,
   );
 
   await expect(

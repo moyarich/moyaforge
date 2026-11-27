@@ -19,6 +19,59 @@ const plugin = mdx(options);
 
 Shared defaults cover GFM, YAML frontmatter parsing in the compiler, heading slugs, and table-of-contents extraction/export. A compiled JavaScript `frontmatter` export is **opt-in**. Consumers supply optional compiler plugins and own application routing and rendering.
 
+## Directive component props
+
+Map a directive to a React component once. New props require no compiler configuration change.
+
+```ts
+createMdxOptions({
+  componentMappings: {
+    card: { component: "Card", titleProp: "title" },
+  },
+});
+```
+
+```md
+:::card[Example]{compact count=3 enabled=false variant="outline" options='json:{"gap":8}'}
+Content
+:::
+```
+
+The component receives compact=true, count=3, enabled=false, variant="outline", options={ gap: 8 }, and title="Example". Quoted values are strings unless explicitly prefixed with `json:`; unquoted booleans, null and finite numbers are typed. Bare names are true. The spaced form `::: card Example {compact}` also works. No prop allowlist is needed; legacy booleanProps configuration is accepted but unnecessary.
+
+Use MDX JSX for callbacks, React elements, spreads and other executable expressions. Directive attributes are declarative data only. Compiler-owned preview references, generated source props and directive metadata retain their special meaning and validation. Duplicate prop names and unsafe structural or executable props are rejected.
+
+## React preview syntax
+
+Select a named TSX fence with `preview="Example.tsx"`. The fence must default-export a React component. TypeScript, JSX and sibling named dependencies use the existing Vite compilation pipeline. Ordinary MDX continues to use JavaScript expressions.
+
+## Build diagnostics
+
+Content discovery reports malformed pages together, with authored filenames, line and column when available, and source excerpts. Builds still fail when errors are present. GitHub Actions receives escaped file annotations automatically; no workflow changes are required.
+
+Use `collectDiagnostics: false` in the content registry configuration to stop after the first page error, or `githubActionsAnnotations: false` to disable annotations. Diagnostics are available independently of the build output:
+
+```ts
+import {
+  discoverContent,
+  MdxDiagnosticsError,
+  formatJsonDiagnostics,
+} from "@moyarich/moyaforge-mdx";
+
+try {
+  await discoverContent(registryConfig, projectRoot);
+} catch (error) {
+  if (error instanceof MdxDiagnosticsError) {
+    console.error(formatJsonDiagnostics(error.diagnostics));
+  }
+  throw error;
+}
+```
+
+A diagnostic includes a code, severity, processing phase, message and source location. Directive and component reference errors can also include the directive, attribute, expected syntax, correction hint and related source paths. Use `formatTerminalDiagnostic` for human-readable output and `formatGitHubActionsDiagnostic` for annotations. Individual compiler errors expose their structured diagnostic through `MdxDiagnosticError.diagnostic` and retain the original exception as their cause.
+
+Source excerpts are bounded and intended for developer logs. Do not publish build logs containing private source material.
+
 ## Registry authoring and source discovery
 
 The consuming application's `registry.config.ts` owns source roots and globs. Each source is ordinary content: docs, blogs, examples, and workspace packages follow the same `page.md`/`page.mdx` convention. By default (`pageFiles: "canonical"`), only `page.md` and `page.mdx` become pages. With `pageFiles: "all"`, every matching `.md`/`.mdx` file becomes a route, so exclude package and directory README files explicitly.

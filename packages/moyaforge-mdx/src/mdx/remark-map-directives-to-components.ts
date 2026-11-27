@@ -19,7 +19,10 @@ export function remarkMapDirectivesToComponents(
 ) {
   const render = remarkRenderMappedDirectives<DirectiveComponent>(
     mappings,
-    collectPreviewContent,
+    (mapping, children, header, file, source, attributes, path, container) =>
+      mapping.directPreviewCode || mapping.sourceProp || mapping.filesProp || mapping.localSources || mapping.resolvePreviewCodeComponent || mapping.registerInlineReact
+        ? collectPreviewContent(mapping, children, header, file, source, attributes, path, container)
+        : children,
     resolveNestedDirective,
   );
   return (...args: Parameters<typeof render>) => {

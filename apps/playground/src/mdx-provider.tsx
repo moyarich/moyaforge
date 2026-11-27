@@ -1,4 +1,4 @@
-import { lazy, type ComponentProps, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import type { MDXComponents } from "mdx/types.js";
 import {
   BookOpen,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { MDXProvider } from "@mdx-js/react";
 import { Console, Terminal } from "@moyarich/console";
+import { Card } from "../../../packages/moyaforge-ui/src/components/Card/index.js";
 import { CustomBlock } from "../../../packages/moyaforge-ui/src/components/CustomBlock/index.ts";
 import { CodeBlock } from "../../../packages/moyaforge-ui/src/components/CodeBlock/index.ts";
 import {
@@ -46,57 +47,15 @@ import { DocumentationSite } from "../../../packages/moyaforge-ui/src/components
 import { DocsShellFocused } from "../../../packages/moyaforge-ui/src/components/DocsShellFocused/index.ts";
 import { DocsShellWide } from "../../../packages/moyaforge-ui/src/components/DocsShellWide/index.ts";
 import { DocumentationLink } from "@moyarich/moyaforge/headless";
-import { PreviewCodeInline } from "../../../packages/moyaforge-ui/src/components/PreviewCode/PreviewCodeInline.js";
 import { PreviewCode } from "../../../packages/moyaforge-ui/src/components/PreviewCode/PreviewCode.tsx";
-
-import componentModules from "virtual:moyaforge-mdx/preview-code-components";
-
-const examples = new Map<string, ReturnType<typeof lazy>>();
-
-/** Stable lazy component for the registered file and optional #NamedExport. */
-function resolvePreviewExample(reference: string) {
-  const hash = reference.lastIndexOf("#");
-  const moduleKey = hash < 0 ? reference : reference.slice(0, hash);
-  const exportName = hash < 0 ? "default" : reference.slice(hash + 1);
-  const load = componentModules[moduleKey];
-  if (!load) return undefined;
-
-  let Example = examples.get(reference);
-  if (!Example) {
-    Example = lazy(async () => {
-      const module = await load();
-      const component = module[exportName];
-      if (!component)
-        throw new Error(`Missing preview export "${exportName}" in "${moduleKey}".`);
-      return { default: component };
-    });
-    examples.set(reference, Example);
-  }
-  return Example;
-}
-
-function PreviewCodeInlinePlayground({
-  component,
-  children,
-  ...preview
-}: ComponentProps<typeof PreviewCodeInline> & { component?: string }) {
-  const Example = component ? resolvePreviewExample(component) : undefined;
-  if (component && !Example)
-    throw new Error(`Unknown preview component: ${component}`);
-  return (
-    <PreviewCodeInline {...preview}>
-      {Example ? <Example /> : children}
-    </PreviewCodeInline>
-  );
-}
 
 const components = {
   a: DocumentationLink,
-  PreviewCodeInline: PreviewCodeInlinePlayground,
   PreviewCode,
   pre: CodeBlock,
   CodeBlock,
   CustomBlock,
+  Card,
   CodeGroup,
   CodeTab,
   CopyButton,
