@@ -214,20 +214,26 @@ For example, with that root registered, a Warning page can reference the shared 
 ::::
 ```
 
-Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or `{react}` when you need configured component usage.
+Append `#CodeBlock` to select a **named export**. Omit the suffix for a default export. Both forms use the same Vite component registry, and the chosen file must be inside a registered root or an automatically discovered example directory. Registration does not automatically pass props or children; use a small example wrapper or a named TSX fence when you need configured component usage.
 
 Roots are an explicit allowlist: only files in those directories can be resolved, symlinked files are not followed, and unregistered paths are rejected. Vite watches the roots for added and deleted components. For source tabs, `preview-code-sources` still requires sibling local files.
 
-For examples that need children or props, use a sibling `Example.tsx` that default-exports a configured example, or use the `{react}` form to import that component directly:
+For examples that need children or props, use a sibling `Example.tsx` that default-exports a configured example, or select a named TSX fence that imports that component:
 
 ```mdx
-::::preview-code[Warning callout]{react}
+::::preview-code[Warning callout]{preview="Example.tsx"}
 
+```tsx filename="Example.tsx"
 import { CustomBlock } from "../../../../src/components/CustomBlock/index.js";
 
-<CustomBlock type="warning" title="Before you continue">
-  Save a backup before changing your settings.
-</CustomBlock>
+export default function Example() {
+  return (
+    <CustomBlock type="warning" title="Before you continue">
+      Save a backup before changing your settings.
+    </CustomBlock>
+  );
+}
+```
 
 ::::
 ```
@@ -250,7 +256,7 @@ A Markdown code preview can include standalone, attribute-free `<style>` and `<s
 - Inline JavaScript is **source-only** and never executes in the live preview.
 - Inline CSS is also **source-only by default**. For reviewed repository-controlled documentation, set `allowInlinePreviewStyles: true` in `createMdxOptions` to render that CSS.
 - Both tags must open and close on their own lines. Scripts with attributes or external sources are rejected.
-- This does **not** sandbox arbitrary MDX, `{react}` previews, or file-backed React components. Compile those only when their authors are trusted; run untrusted interactive content in a separately hosted sandbox.
+- This does **not** sandbox arbitrary MDX, selected React module previews, or file-backed React components. Compile those only when their authors are trusted; run untrusted interactive content in a separately hosted sandbox.
 
 ```ts
 createMdxOptions({
@@ -292,25 +298,25 @@ See the [custom callout gallery](/ui/components/custom-block/custom-admonition) 
 
 ## Inline React imports
 
-Use `:::preview-code[Title]{react}` in an MDX page to compile imports and JSX in a
-separate module. Relative imports resolve from the page's directory. Add named
-fences anywhere in the block for extra source tabs. The fences are displayed as
-source, so any files used by the live example must be imported separately.
-
-Use `{react replacements="portable"}` to apply `CODE_REPLACEMENTS` to the Code
-view. An empty `replacements=` leaves the source as written.
+Select a named TSX fence with `preview="Example.tsx"`. Its default export renders the example, and relative imports resolve from the page directory. Additional named fences appear as source tabs. Use `replacements="portable"` to apply source replacements.
 
 Save this as `example.mdx`. The live preview renders the greeting and the Code
-view includes both the React body and the `styles.css` snippet.
+view includes both the TSX module and the `styles.css` snippet.
 
 ````mdx filename="example.mdx"
-::::preview-code[Greeting]{react replacements="portable"}
+::::preview-code[Greeting]{preview="Example.tsx" replacements="portable"}
 
+```tsx filename="Example.tsx"
 import { Fragment } from "react";
 
-<Fragment>
-  <strong>Hello from React.</strong>
-</Fragment>
+export default function Example() {
+  return (
+    <Fragment>
+      <strong>Hello from React.</strong>
+    </Fragment>
+  );
+}
+```
 
 ```css filename="styles.css"
 strong {
@@ -383,11 +389,11 @@ React and MDX entry fences can import sibling named fences, including TypeScript
 
 For example, `preview="App.tsx,styles.css"` renders a React entry with scoped CSS; `preview="intro.md,example.sh"` renders Markdown followed by a shell code block.
 
-The CSS is contained with native CSS `@scope`. Combine this with source fences as needed. Use one preview selection mechanism per directive: `preview`, `component`, `code`, or `react`.
+The CSS is contained with native CSS `@scope`. Combine this with source fences as needed. Use one preview selection mechanism per directive: `preview`, `component`, or `code`.
 
 ### Full React modules
 
-A `{react}` body can contain imports and a complete JSX/TSX module with a default component export. The module compiles independently of the surrounding MDX page, so function bodies and TypeScript annotations stay out of the MDX expression parser. Bodies containing imports followed by JSX also continue to work.
+Use a named TSX fence containing a default-exported component. TypeScript syntax is compiled by Vite independently of the surrounding MDX page.
 
 ## Refresh a preview
 

@@ -4,6 +4,8 @@ import type { DirectiveProps, directivePropAttribute } from "./directive-attribu
 export interface DirectiveHeader {
   title?: string;
   flags: string[];
+  /** Original authored opening offset, even when a container plugin drops positions. */
+  offset?: number;
   props?: DirectiveProps;
   component?: string;
   preview?: string;

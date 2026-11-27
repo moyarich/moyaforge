@@ -1,0 +1,19 @@
+# Typed preview
+
+::::preview-code[Typed example]{preview="Example.tsx"}
+
+```tsx filename="Example.tsx"
+type Item = { name: string };
+const items: Item[] = [{ name: "Example" }];
+const identity = <T,>(value: T): T => value;
+
+export default function Example() {
+  return (
+    <p>{identity(items[0].name) as string}</p>
+  );
+}
+```
+
+::::
+
+## After preview

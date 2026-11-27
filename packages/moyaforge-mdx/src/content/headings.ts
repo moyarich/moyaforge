@@ -1,3 +1,4 @@
+import { createDiagnostic, MdxDiagnosticError } from "../diagnostics/index.js";
 import { directiveHeaderRules } from "../plugins/remark/directive-header-rules.js";
 import remarkDirective from "remark-directive";
 import { remarkNormalizeDirectiveHeaders } from "../plugins/remark/remark-directive/remark-normalize-directive-headers.js";
@@ -37,11 +38,12 @@ export async function extractPageHeadings(
     const markdownTree = headingProcessor.parse(markdownFile);
     await headingProcessor.run(markdownTree, markdownFile);
   } catch (error) {
-    // Vite prints the error message when loading its config; a VFileMessage
-    // can have a line and column but an empty file property.
-    throw new Error(`Failed to extract headings from ${filename}: ${String(error)}`, {
-      cause: error,
-    });
+    throw new MdxDiagnosticError(createDiagnostic(error, {
+      code: "MDX_HEADING_PARSE_FAILED",
+      phase: "discovery",
+      location: { file: filename },
+      source: markdownSource,
+    }), error);
   }
 
   type ExtractedHeading = {

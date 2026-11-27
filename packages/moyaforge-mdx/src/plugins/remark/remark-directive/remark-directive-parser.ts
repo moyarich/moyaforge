@@ -1,9 +1,7 @@
-import { maskInlineReactImports } from "../preview-code/mask-inline-react-imports.js";
 import { maskInlinePreviewAssets } from "../preview-code/mask-inline-preview-assets.js";
 import type { Root } from "mdast";
 import type { Processor } from "unified";
 
-import { previewOpening } from "./directive-attributes.js";
 import type { DirectiveHeader } from "./directive-node.js";
 
 export type DirectiveHeaderRule = (
@@ -25,14 +23,13 @@ export function remarkDirectiveParser(
     const inlineAssets = maskInlinePreviewAssets(lines, options);
     file.data.inlinePreviewAssets = inlineAssets.assets;
     const stack: number[] = [];
-    let reactFenceWidth: number | undefined;
-    const reactBodies: { start: number; code: string[] }[] = [];
     let codeFence: string | undefined;
+    let authoredOffset = 0;
     const normalized = lines.map((_originalLine, index) => {
+      const offset = authoredOffset;
+      authoredOffset += lines[index].length;
       let line = inlineAssets.lines[index];
       const fence = /^ {0,3}(`{3,}|~{3,})(.*)/.exec(line);
-      if (reactFenceWidth !== undefined && (fence || codeFence))
-        reactBodies.at(-1)?.code.push(line.replace(/[^\r\n]/g, " "));
       if (fence) {
         if (!codeFence) codeFence = fence[1];
         else if (fence[1].startsWith(codeFence) && !fence[2].trim())
@@ -56,21 +53,6 @@ export function remarkDirectiveParser(
           },
         );
       }
-      // Keep imports local to the compiled preview. Preserve offsets for source extraction.
-      if (reactFenceWidth !== undefined) {
-        if (new RegExp(`^ {0,3}:{${reactFenceWidth},}\\s*$`).test(line)) {
-          reactFenceWidth = undefined;
-        } else {
-          reactBodies.at(-1)?.code.push(line);
-        }
-      } else {
-        const reactOpener = previewOpening(line);
-        if (reactOpener?.react) {
-          reactFenceWidth = reactOpener.width;
-          reactBodies.push({ start: index + 1, code: [] });
-        }
-      }
-
       // An empty replacement preset is equivalent to omitting it.
       if (/^ {0,3}:{3,}preview-code(?:\[[^\]]*\])?\{/.test(line)) {
         line = line.replace(/(\sreplacements)=(?=[\t ]*\})/, "$1 ");
@@ -96,21 +78,13 @@ export function remarkDirectiveParser(
       stack.push(width);
       const { type, ...metadata } = header;
       const marker = `mf-header-${headers.size}`;
-      headers.set(marker, metadata);
+      headers.set(marker, { ...metadata, offset });
+      if (type === "preview-code" && Object.hasOwn(metadata.props ?? {}, "react"))
+        file.fail("The react preview flag was removed. Use preview=\"Example.tsx\" with a named TSX fence.", { line: index + 1, column: 1 });
       const opener =
         indent + ":".repeat(Math.max(3, width)) + " " + type + " " + marker;
       return opener.padEnd(line.length - newline.length) + newline;
     });
-    for (const { start, code } of reactBodies) {
-      const original = lines.slice(start, start + code.length).join("");
-      const masked =
-        maskInlineReactImports(original, code.join("")).match(
-          /[^\n]*\n|[^\n]+$/g,
-        ) ?? [];
-      for (const [index, line] of masked.entries()) {
-        if (line !== lines[start + index]) normalized[start + index] = line;
-      }
-    }
     const insertions: { offset: number; length: number }[] = [];
     let normalizedOffset = 0;
     normalized.forEach((line, index) => {

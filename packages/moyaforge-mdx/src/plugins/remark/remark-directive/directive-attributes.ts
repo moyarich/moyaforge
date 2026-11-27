@@ -113,6 +113,5 @@ export function authoredAttributeText(line: string): string | undefined {
 export function previewOpening(line: string) {
   const match = /^ {0,3}(:{3,})\s*preview-code(?=\[|\{|\s|$)/.exec(line);
   if (!match) return;
-  const text = authoredAttributeText(line.trimEnd());
-  return { width: match[1].length, react: text !== undefined && readDirectiveAttributes(text).flags.includes("react") };
+  return { width: match[1].length };
 }

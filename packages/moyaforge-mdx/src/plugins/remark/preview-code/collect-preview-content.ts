@@ -1,5 +1,6 @@
+import { directiveDiagnostic } from "../../../diagnostics/directive-diagnostic.js";
+import { resolve, dirname } from "node:path";
 import { directivePropAttribute } from "../remark-directive/directive-attributes.js";
-import { parseImportsExports } from "parse-imports-exports";
 import type { InlinePreviewOptions } from "./inline-preview-options.js";
 import { renderPreviewStyles } from "./render-preview-styles.js";
 import { renderMarkdownFence } from "./render-markdown-fence.js";
@@ -50,16 +51,11 @@ export function collectPreviewContent(
   filePath?: string,
   container?: Node,
 ) {
-  const inlineReact = header?.flags.includes("react");
   const direct = selected.directPreviewCode === true;
 
-  if (header?.preview && (inlineReact || header.component || header.code))
+  if (header?.preview && (header.component || header.code))
     throw new Error(
-      "preview-code preview cannot be combined with react, component, or code.",
-    );
-  if (inlineReact && (header?.component || header?.code))
-    throw new Error(
-      "A {react} preview takes its component and source from the directive body.",
+      "preview-code preview cannot be combined with component or code.",
     );
   let example: Node | undefined;
   if (header?.component) {
@@ -68,16 +64,20 @@ export function collectPreviewContent(
         header.component,
       )
     )
-      throw new Error(
-        `Invalid preview-code component: ${header.component}. Use a relative .tsx/.jsx file under a registered component root; append #ExportName for a named export.`,
-      );
+      throw directiveDiagnostic(new Error(`Invalid preview-code component: ${header.component}`), source, filePath ?? "<input>", header.offset ?? container?.position?.start.offset, "preview-code", {
+        code: "MDX_INVALID_COMPONENT_REFERENCE", phase: "resolve", attribute: "component",
+        expected: "Relative .tsx or .jsx path, optionally followed by #ExportName",
+        suggestion: 'Use component="./Example.tsx" or component="./Example.tsx#Example".',
+      });
     const component =
       filePath &&
       selected.resolvePreviewCodeComponent?.(header.component, filePath);
     if (!component)
-      throw new Error(
-        `Unregistered preview component: ${header.component}. Register its directory in createPreviewCode({ componentRoots: [...] }), or use a sibling .tsx/.jsx example. Check the path and casing.`,
-      );
+      throw directiveDiagnostic(new Error(`Unregistered preview component: ${header.component}`), source, filePath ?? "<input>", header.offset ?? container?.position?.start.offset, "preview-code", {
+        code: "MDX_COMPONENT_NOT_REGISTERED", phase: "resolve", attribute: "component",
+        related: filePath ? [{ file: resolve(dirname(filePath), header.component.split("#")[0]) }] : undefined,
+        suggestion: "Check the path and casing, or register the containing directory in createPreviewCodePlugin({ componentRoots: [...] }).",
+      });
     if (direct) {
       example = importInlineReactExample(file, "virtual:moyaforge-mdx/preview-example/" + encodeURIComponent(component));
     } else {
@@ -237,7 +237,7 @@ export function collectPreviewContent(
       name: "replacementPreset",
       value: replacements,
     });
-  if (direct || selected.sourceProp || inlineReact) {
+  if (direct || selected.sourceProp) {
     const groups: Node[][] = [];
     let group: Node[] = [];
     for (const child of children) {
@@ -253,8 +253,8 @@ export function collectPreviewContent(
     // File-backed source directives and named source fences continue to
     // use the filtered child ranges, so extra source tabs stay separate.
     const fromContainer =
-      !inlineReact && content.length === children.length
-        ? sourceFromPreviewContainer(source, container)
+      content.length === children.length
+        ? sourceFromPreviewContainer(source, container, header?.offset)
         : undefined;
     const body =
       fromContainer ??
@@ -267,7 +267,7 @@ export function collectPreviewContent(
             : source.slice(start, end);
         })
         .join("\n\n");
-    const bodySource = header?.preview || (hasLocalSources && !inlineReact) ? "" : body;
+    const bodySource = header?.preview || hasLocalSources ? "" : body;
     if (direct) {
       const sourceFiles = bodySource || !files.length
         ? [{ label: "Example.mdx", code: bodySource, language: "mdx" }, ...files]
@@ -278,31 +278,8 @@ export function collectPreviewContent(
       attributes.push({
         type: "mdxJsxAttribute",
         name: selected.sourceProp,
-        value: header?.preview || (hasLocalSources && !inlineReact) ? "" : body,
+        value: header?.preview || hasLocalSources ? "" : body,
       });
-    if (inlineReact) {
-      if (!filePath || !selected.registerInlineReact)
-        throw new Error(
-          "{react} previews require the Vite code preview plugin.",
-        );
-      if (!body.trim())
-        throw new Error("A {react} preview requires a JSX body.");
-      return [
-        importInlineReactExample(
-          file,
-          selected.registerInlineReact(
-            body,
-            filePath,
-            parseImportsExports(body, {
-              ignoreDynamicImports: true,
-              ignoreRequires: true,
-            }).defaultExport
-              ? { format: "tsx", filename: "preview.tsx", files }
-              : undefined,
-          ),
-        ),
-      ];
-    }
   }
   if (example) return [example];
   const assets = file.data.inlinePreviewAssets ?? [];
@@ -348,11 +325,30 @@ function inlineAssetModule(asset: InlinePreviewAsset): string {
 function sourceFromPreviewContainer(
   source: string,
   container?: Node,
+  authoredOffset?: number,
 ): string | undefined {
-  const start = container?.position?.start.offset;
-  const end = container?.position?.end.offset;
-  if (start === undefined || end === undefined || end <= start)
-    return undefined;
+  const start = authoredOffset ?? container?.position?.start.offset;
+  if (start === undefined) return undefined;
+  let end = container?.position?.end.offset;
+  if (end === undefined) {
+    const width = /^ {0,3}(:{3,})/.exec(source.slice(start))?.[1].length;
+    if (!width) return undefined;
+    const lines = source.slice(start).split(/(?<=\n)/);
+    let offset = start + lines[0].length;
+    let fence: string | undefined;
+    for (const line of lines.slice(1)) {
+      const match = /^ {0,3}(`{3,}|~{3,})(.*)/.exec(line);
+      if (match) {
+        if (!fence) fence = match[1];
+        else if (match[1].startsWith(fence) && !match[2].trim()) fence = undefined;
+      } else if (!fence && new RegExp("^ {0,3}:{" + width + "}\\s*$").test(line)) {
+        end = offset + line.trimEnd().length;
+        break;
+      }
+      offset += line.length;
+    }
+  }
+  if (end === undefined || end <= start) return undefined;
 
   const openerEnd = source.indexOf("\n", start);
   if (openerEnd < 0 || openerEnd >= end) return undefined;

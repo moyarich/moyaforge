@@ -23,4 +23,6 @@ title: My new page
 ## Customize components
 
 See [Components](/docs/components) for code blocks, tabs, and custom callouts.
+Installed registry components own their CSS imports. Component-local styles live beside their source in `src/components/ui/`; shared dependencies are installed automatically in sibling `hooks/`, `utils/`, and `styles/` directories when needed. Edit these files in your project to customize the components, or set public CSS tokens in your application stylesheet. You do not need to import every component stylesheet in the application entry point.
+
 Return to [Welcome](/docs) to review your installation instructions.

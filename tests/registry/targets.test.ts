@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { readFile } from "node:fs/promises";
 
-test("every registry target uses the canonical component or shared utility location", async () => {
+test("every registry target uses the canonical component or shared asset location", async () => {
   const registry = JSON.parse(
     await readFile(new URL("../../registry.json", import.meta.url), "utf8"),
   );
@@ -10,7 +10,7 @@ test("every registry target uses the canonical component or shared utility locat
     expect(item.files.length, item.name).toBeGreaterThan(0);
     for (const file of item.files) {
       expect(file.target, item.name).toMatch(
-        /^~\/src\/components\/(?:ui|utils)\//,
+        /^~\/src\/components\/(?:ui|utils|hooks|styles)\//,
       );
       expect(file.target, item.name).not.toContain("/ui/components/");
       expect(file.target, item.name).not.toContain("/moyaforge/");

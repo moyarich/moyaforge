@@ -27,21 +27,28 @@ Install the package and follow the [installation guide](/ui/components/card#inst
 
 ## React
 
-::::preview-code[React cards]{react replacements="portable"}
+::::preview-code[React cards]{preview="Example.tsx" replacements="portable"}
 
+```tsx filename="Example.tsx"
 import { Card } from "../../../src/components/Card/index.js";
 
-<div style={{ display: "grid", gap: "1rem", width: "100%" }}>
-  <Card title="Outline" description="Default variant">
-    <p>Group related content.</p>
-  </Card>
-  <Card title="Filled" variant="filled" compact>
-    <p>Use a subtle surface and reduced spacing.</p>
-  </Card>
-  <Card title="Ghost" variant="ghost">
-    <p>Use a card layout without a visible border.</p>
-  </Card>
-</div>
+export default function Example() {
+  return (
+    <div style={{ display: "grid", gap: "1rem", width: "100%" }}>
+      <Card title="Outline" description="Default variant">
+        <p>Group related content.</p>
+      </Card>
+      <Card title="Filled" variant="filled" compact>
+        <p>Use a subtle surface and reduced spacing.</p>
+      </Card>
+      <Card title="Ghost" variant="ghost">
+        <p>Use a card layout without a visible border.</p>
+      </Card>
+    </div>
+  );
+}
+```
+
 ::::
 
 ## Nested content

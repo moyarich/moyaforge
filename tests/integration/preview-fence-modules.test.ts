@@ -127,10 +127,10 @@ test("Vite bundles a TSX fence with inline TypeScript, JSON, and CSS dependencie
   expect(code).not.toContain(": string");
 });
 
-test("react directive bodies support complete typed modules without leaking exports into MDX", async () => {
+test("named TSX fences support complete typed modules without leaking exports into MDX", async () => {
   const modules = createInlineReactModules();
   const value =
-    '::::preview-code[Module]{react replacements="portable"}\n\nexport default function Example() {\n  const label: string = "Hello";\n  return <strong>{label}</strong>;\n}\n\n::::';
+    '::::preview-code[Module]{preview="Example.tsx" replacements="portable"}\n\n```tsx filename="Example.tsx"\nexport default function Example() {\n  const label: string = "Hello";\n  return <strong>{label}</strong>;\n}\n```\n\n::::';
   const options = createMdxOptions({
     componentMappings: {
       "preview-code": {
