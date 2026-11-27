@@ -1,7 +1,6 @@
 import { directiveDiagnostic } from "../../../diagnostics/directive-diagnostic.js";
 import { resolve, dirname } from "node:path";
 import { directivePropAttribute } from "../remark-directive/directive-attributes.js";
-import { parseImportsExports } from "parse-imports-exports";
 import type { InlinePreviewOptions } from "./inline-preview-options.js";
 import { renderPreviewStyles } from "./render-preview-styles.js";
 import { renderMarkdownFence } from "./render-markdown-fence.js";
@@ -276,7 +275,7 @@ export function collectPreviewContent(
     const bodySource = header?.preview || (hasLocalSources && !inlineReact) ? "" : body;
     if (direct) {
       const sourceFiles = bodySource || !files.length
-        ? [{ label: "Example.mdx", code: bodySource, language: "mdx" }, ...files]
+        ? [{ label: inlineReact ? "Example.tsx" : "Example.mdx", code: bodySource, language: inlineReact ? "tsx" : "mdx" }, ...files]
         : files;
       attributes.push(directivePropAttribute("files", sourceFiles.map(f => ({ label: f.label, code: f.code, ...(f.language ? { language: f.language } : {}) }))));
     }
@@ -299,12 +298,7 @@ export function collectPreviewContent(
           selected.registerInlineReact(
             body,
             filePath,
-            parseImportsExports(body, {
-              ignoreDynamicImports: true,
-              ignoreRequires: true,
-            }).defaultExport
-              ? { format: "tsx", filename: "preview.tsx", files }
-              : undefined,
+            { format: "tsx", filename: "preview.tsx", files, reactBody: true },
           ),
         ),
       ];

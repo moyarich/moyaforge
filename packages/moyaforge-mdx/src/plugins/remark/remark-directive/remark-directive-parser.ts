@@ -1,4 +1,3 @@
-import { maskInlineReactImports } from "../preview-code/mask-inline-react-imports.js";
 import { maskInlinePreviewAssets } from "../preview-code/mask-inline-preview-assets.js";
 import type { Root } from "mdast";
 import type { Processor } from "unified";
@@ -26,13 +25,10 @@ export function remarkDirectiveParser(
     file.data.inlinePreviewAssets = inlineAssets.assets;
     const stack: number[] = [];
     let reactFenceWidth: number | undefined;
-    const reactBodies: { start: number; code: string[] }[] = [];
     let codeFence: string | undefined;
     const normalized = lines.map((_originalLine, index) => {
       let line = inlineAssets.lines[index];
       const fence = /^ {0,3}(`{3,}|~{3,})(.*)/.exec(line);
-      if (reactFenceWidth !== undefined && (fence || codeFence))
-        reactBodies.at(-1)?.code.push(line.replace(/[^\r\n]/g, " "));
       if (fence) {
         if (!codeFence) codeFence = fence[1];
         else if (fence[1].startsWith(codeFence) && !fence[2].trim())
@@ -61,13 +57,16 @@ export function remarkDirectiveParser(
         if (new RegExp(`^ {0,3}:{${reactFenceWidth},}\\s*$`).test(line)) {
           reactFenceWidth = undefined;
         } else {
-          reactBodies.at(-1)?.code.push(line);
+          // Keep named source directives visible to the Markdown parser.
+          // All other React body text is opaque, preserving authored offsets.
+          if (!/^ {0,3}:{2,}\s*preview-code-sources(?=\[|\{|\s|$)/.test(line) && !/^ {0,3}:{2,}\s*$/.test(line)) {
+            return line.replace(/\S/g, "x");
+          }
         }
       } else {
         const reactOpener = previewOpening(line);
         if (reactOpener?.react) {
           reactFenceWidth = reactOpener.width;
-          reactBodies.push({ start: index + 1, code: [] });
         }
       }
 
@@ -101,16 +100,6 @@ export function remarkDirectiveParser(
         indent + ":".repeat(Math.max(3, width)) + " " + type + " " + marker;
       return opener.padEnd(line.length - newline.length) + newline;
     });
-    for (const { start, code } of reactBodies) {
-      const original = lines.slice(start, start + code.length).join("");
-      const masked =
-        maskInlineReactImports(original, code.join("")).match(
-          /[^\n]*\n|[^\n]+$/g,
-        ) ?? [];
-      for (const [index, line] of masked.entries()) {
-        if (line !== lines[start + index]) normalized[start + index] = line;
-      }
-    }
     const insertions: { offset: number; length: number }[] = [];
     let normalizedOffset = 0;
     normalized.forEach((line, index) => {
