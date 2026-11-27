@@ -46,7 +46,7 @@ If `allowInlinePreviewStyles` is omitted, raw CSS stays **source-only**. This op
 
 ## Security boundary
 
-Only compile executable MDX, `{react}` examples, and registered React components from **trusted sources**. In particular, do not compile untrusted user-submitted Markdown as executable MDX in the host application. A preview-local element or React effect does not restrict `window`, `document`, cookies, or authenticated requests. For untrusted interactive content, use a separately hosted sandboxed iframe with a restrictive CSP; merely wrapping an example in `<div>` is not isolation.
+Only compile executable MDX, named React fences examples, and registered React components from **trusted sources**. In particular, do not compile untrusted user-submitted Markdown as executable MDX in the host application. A preview-local element or React effect does not restrict `window`, `document`, cookies, or authenticated requests. For untrusted interactive content, use a separately hosted sandboxed iframe with a restrictive CSP; merely wrapping an example in `<div>` is not isolation.
 
 Raw scripts with attributes, external sources, or unsupported tag formatting are rejected instead of being run as JSX. These checks protect the **raw Markdown preview path**, not the general MDX/React execution surface.
 

@@ -194,38 +194,11 @@ test("unclosed preview-local style or script has a useful error", async () => {
   }
 });
 
-test("plain Markdown and React previews keep their existing parsing", async () => {
-  const registrations = [];
-  const source = [
-    ":::preview-code[React]{react}",
-    "",
-    'import Demo from "./Demo.js";',
-    "",
-    "<Demo />",
-    "",
-    ":::",
-  ].join("\n");
-  const output = String(
-    await compile(
-      { value: source, path: "/docs/page.mdx" },
-      createMdxOptions({
-        componentMappings: {
-          "preview-code": {
-            component: "PreviewCodeInline",
-            sourceProp: "code",
-            registerInlineReact(code, path) {
-              registrations.push([code, path]);
-              return "virtual:react-demo";
-            },
-          },
-        },
-      }),
-    ),
-  );
-  expect(registrations).toEqual([
-    ['import Demo from "./Demo.js";\n\n<Demo />', "/docs/page.mdx"],
-  ]);
-  expect(output).toContain("virtual:react-demo");
+test("removed React shorthand fails with migration guidance", async () => {
+  await expect(compile(
+    { value: ":::preview-code[React]{react}\n\n<Demo />\n\n:::", path: "/docs/page.mdx" },
+    createMdxOptions(),
+  )).rejects.toThrow(/react preview flag was removed/);
 });
 
 test("custom-admonition examples expose complete authored Markdown, CSS and script in the Code tab", async () => {

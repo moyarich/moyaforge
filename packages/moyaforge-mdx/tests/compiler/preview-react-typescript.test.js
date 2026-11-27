@@ -24,9 +24,10 @@ test("isolates TypeScript in React previews while retaining original source", as
   })));
   expect(captured).toContain("const items: Item[]");
   expect(captured).toContain("<T,>");
+  expect(captured).not.toContain("::::");
   expect(output).toContain(id);
   const compiled = await registry.inlineReact.load(registry.inlineReact.resolve(id));
-  expect(compiled).toContain("export default function MoyaForgePreview");
+  expect(compiled).toContain("function Example");
   expect(compiled).not.toContain("type Item");
   const headings = await extractPageHeadings(source, path);
   expect(JSON.stringify(headings)).toContain("after-preview");
