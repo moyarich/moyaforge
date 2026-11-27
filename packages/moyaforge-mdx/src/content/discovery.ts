@@ -1,3 +1,4 @@
+import { createDiagnostic, DiagnosticCollector, formatGitHubActionsDiagnostic } from "../diagnostics/index.js";
 import { extractPageHeadings } from "./headings.js";
 import { isContentPageFile } from "./source-files.js";
 import type { TocHeading } from "../navigation/toc/index.js";
@@ -28,6 +29,10 @@ export interface ContentSourcesConfig {
   sources: Record<string, ContentSource>;
   /** Default TOC configuration, overridden by per-page YAML frontmatter. */
   toc?: TocSetting;
+  /** Collect errors across pages before failing. Defaults to true. */
+  collectDiagnostics?: boolean;
+  /** Emit GitHub Actions annotations when running in CI. Defaults to auto. */
+  githubActionsAnnotations?: boolean;
 }
 
 /** Parse authored YAML exactly once without requiring compiled MDX JavaScript exports. */
@@ -67,6 +72,7 @@ export async function discoverContent(
   config: ContentSourcesConfig,
   root: string,
 ): Promise<DiscoveredContent> {
+  const diagnostics = new DiagnosticCollector();
   const inputs: Record<string, PageInput[]> = {};
   const headings: Record<string, TocHeading[]> = {};
   const metadata: Record<string, Record<string, unknown>> = {};
@@ -104,9 +110,30 @@ export async function discoverContent(
       )
         continue;
       const name = relative(base, file).split(sep).join("/");
-      const raw = await readFile(file, "utf8");
-      pages.push({ file: name, frontmatter: parsePageFrontmatter(raw, file) });
-      headings[`${sourceName}/${name}`] = await extractPageHeadings(raw, file);
+      let raw: string | undefined;
+      let phase: "discovery" | "frontmatter" = "discovery";
+      try {
+        raw = await readFile(file, "utf8");
+        phase = "frontmatter";
+        const frontmatter = parsePageFrontmatter(raw, file);
+        phase = "discovery";
+        headings[`${sourceName}/${name}`] = await extractPageHeadings(raw, file);
+        pages.push({ file: name, frontmatter });
+      } catch (error) {
+        const diagnostic = createDiagnostic(error, {
+          code: phase === "frontmatter" ? "MDX_INVALID_FRONTMATTER" : "MDX_DISCOVERY_FAILED",
+          phase,
+          location: { file },
+          source: raw,
+        });
+        diagnostics.add(diagnostic);
+        if (config.githubActionsAnnotations ?? process.env.GITHUB_ACTIONS === "true") {
+          const workspace = process.env.GITHUB_WORKSPACE;
+          const annotation = workspace ? { ...diagnostic, location: { ...diagnostic.location, file: relative(workspace, diagnostic.location.file).split(sep).join("/") } } : diagnostic;
+          console.error(formatGitHubActionsDiagnostic(annotation));
+        }
+        if (config.collectDiagnostics === false) diagnostics.throwIfErrors();
+      }
     }
     inputs[sourceName] = pages;
     const sourceMetadata: Record<string, unknown> = {};
@@ -130,6 +157,7 @@ export async function discoverContent(
     }
     metadata[sourceName] = sourceMetadata;
   }
+  diagnostics.throwIfErrors();
   return {
     inputs,
     headings,
