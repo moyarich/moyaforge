@@ -1,7 +1,7 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import {
   createDiagnostic, createCodeFrame, DiagnosticCollector,
@@ -9,8 +9,8 @@ import {
   discoverContent, MdxDiagnosticsError,
 } from "../../dist/index.js";
 
-test("diagnostics preserve authored CRLF positions and original error details", () => {
-  const source = "# Title\r\n\r\n{bad expression}\r\n";
+test("diagnostics preserve authored CRLF positions and original error details", async () => {
+  const source = await readFile(new URL("../fixtures/positions/crlf.mdx", import.meta.url), "utf8");
   const error = Object.assign(new Error("Invalid expression"), {
     line: 3, column: 6, source: "micromark", ruleId: "acorn",
   });
@@ -51,28 +51,20 @@ test("collector counts errors and warnings separately", () => {
 });
 
 test("discovery reports multiple malformed pages, with authored filenames", async () => {
-  const root = await mkdtemp(join(tmpdir(), "moyaforge-diagnostics-"));
-  try {
-    for (const name of ["a", "b"]) {
-      await mkdir(join(root, name));
-      await writeFile(join(root, name, "page.mdx"), "# Heading\n\n{a=1 b=2}");
-    }
-    const config = {
-      sources: { docs: { base: ".", include: ["**/*.mdx"] } },
-      githubActionsAnnotations: false,
-    };
-    await assert.rejects(discoverContent(config, root), error => {
-      assert.ok(error instanceof MdxDiagnosticsError);
-      assert.equal(error.diagnostics.length, 2);
-      assert.deepEqual(error.diagnostics.map(d => d.location.file), [
-        join(root, "a", "page.mdx"), join(root, "b", "page.mdx"),
-      ]);
-      assert.ok(error.diagnostics.every(d => d.location.line === 3 && d.frame));
-      return true;
-    });
-    await assert.rejects(discoverContent({ ...config, collectDiagnostics: false }, root),
-      error => error.diagnostics?.length === 1);
-  } finally {
-    await rm(root, { recursive: true, force: true });
-  }
+  const root = fileURLToPath(new URL("../fixtures/discovery/", import.meta.url));
+  const config = {
+    sources: { docs: { base: ".", include: ["*.mdx"], pageFiles: "all" } },
+    githubActionsAnnotations: false,
+  };
+  await assert.rejects(discoverContent(config, root), error => {
+    assert.ok(error instanceof MdxDiagnosticsError);
+    assert.equal(error.diagnostics.length, 2);
+    assert.deepEqual(error.diagnostics.map(d => d.location.file), [
+      join(root, "invalid-a.mdx"), join(root, "invalid-b.mdx"),
+    ]);
+    assert.ok(error.diagnostics.every(d => d.location.line === 3 && d.frame));
+    return true;
+  });
+  await assert.rejects(discoverContent({ ...config, collectDiagnostics: false }, root),
+    error => error.diagnostics?.length === 1);
 });
