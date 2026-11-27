@@ -12,12 +12,12 @@ const options = createMdxOptions({
 });
 
 for (const [fixture, code] of [
-  ["directives/invalid-attribute.mdx", "MDX_INVALID_DIRECTIVE_ATTRIBUTE"],
-  ["resolution/invalid-reference.mdx", "MDX_INVALID_COMPONENT_REFERENCE"],
-  ["resolution/missing-component.mdx", "MDX_COMPONENT_NOT_REGISTERED"],
+  ["invalid-attribute.mdx", "MDX_INVALID_DIRECTIVE_ATTRIBUTE"],
+  ["invalid-reference.mdx", "MDX_INVALID_COMPONENT_REFERENCE"],
+  ["missing-component.mdx", "MDX_COMPONENT_NOT_REGISTERED"],
 ]) {
   test("preview diagnostic: " + code, async () => {
-    const path = fileURLToPath(new URL("../fixtures/" + fixture, import.meta.url));
+    const path = fileURLToPath(new URL("../fixtures/diagnostics/" + fixture, import.meta.url));
     const source = await readFile(path, "utf8");
     await assert.rejects(compile({ value: source, path }, options), error => {
       assert.ok(error instanceof MdxDiagnosticError);
