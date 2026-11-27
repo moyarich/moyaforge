@@ -19,8 +19,9 @@ Install PreviewCodeEditor and configure its Monaco workers as described in [the 
 
 This example runs locally edited, trusted JavaScript only. It uses a per-run console proxy rather than replacing the browser's global console. Execution is not sandboxed; use an isolated runtime for untrusted code.
 
-::::preview-code[JavaScript console]{react replacements="portable"}
+::::preview-code[JavaScript console]{preview="Example.tsx" replacements="portable"}
 
+```tsx filename="Example.tsx"
 import { PreviewCodeEditor } from "../../../../src/components/PreviewCodeEditor/index.js";
 import {
   Console,
@@ -37,32 +38,38 @@ const source = [
   'console.error("Example error");',
 ].join("\n");
 
-<PreviewCodeEditor
-  title="JavaScript console"
-  outputLabel="Console"
-  files={[{ name: "example.js", language: "javascript", value: source }]}
-  runSource={(files) => {
-    const messages: ConsoleMessageData[] = [];
-    const events = createConsoleEventEmitter();
-    events.on("message", (message) => messages.push(message));
-    events.on("clear", () => { messages.length = 0; });
-    const output = createConsoleProxy({ events });
-    try {
-      new Function("console", files[0]?.value ?? "")(output);
-    } catch (error) {
-      output.error(error);
-    } finally {
-      events.removeAllListeners();
-    }
-    return messages;
-  }}
-  renderOutput={({ state, clear }) => (
-    <Console
-      messages={state.status === "success" ? state.output : []}
-      onClear={clear}
+export default function Example() {
+  return (
+    <PreviewCodeEditor
+      title="JavaScript console"
+      outputLabel="Console"
+      files={[{ name: "example.js", language: "javascript", value: source }]}
+      runSource={(files) => {
+        const messages: ConsoleMessageData[] = [];
+        const events = createConsoleEventEmitter();
+        events.on("message", (message) => messages.push(message));
+        events.on("clear", () => { messages.length = 0; });
+        const output = createConsoleProxy({ events });
+        try {
+          new Function("console", files[0]?.value ?? "")(output);
+        } catch (error) {
+          output.error(error);
+        } finally {
+          events.removeAllListeners();
+        }
+        return messages;
+      }}
+      renderOutput={({ state, clear }) => (
+        <Console
+          messages={state.status === "success" ? state.output : []}
+          onClear={clear}
+        />
+      )}
     />
-  )}
-/>
+  );
+}
+```
+
 ::::
 
 ## How it works

@@ -14,13 +14,19 @@ export const greeting = "Hello from the playground.";
 
 ### Import React components inline
 
-Use `{react}` to keep imports scoped to the preview. Named fences add source tabs.
+Select a named TSX fence to render its default export. Additional named fences add source tabs.
 
-:::preview-code[Inline React greeting]{react refresh}
+:::preview-code[Inline React greeting]{preview="Example.tsx" refresh}
 
+```tsx filename="Example.tsx"
 import Greeting from "./Greeting.tsx";
 
-<Greeting />
+export default function Example() {
+  return (
+    <Greeting />
+  );
+}
+```
 
 ```ts filename="message.ts"
 export const message = "Hello from a React component.";

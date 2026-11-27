@@ -41,9 +41,9 @@ The component receives compact=true, count=3, enabled=false, variant="outline", 
 
 Use MDX JSX for callbacks, React elements, spreads and other executable expressions. Directive attributes are declarative data only. Compiler-owned preview references, generated source props and directive metadata retain their special meaning and validation. Duplicate prop names and unsafe structural or executable props are rejected.
 
-## Inline React preview syntax
+## React preview syntax
 
-A `preview-code` block with the `react` flag is an isolated TSX example, not ordinary MDX. It supports TypeScript declarations, type imports, generics and assertions. End the snippet with a JSX expression, or provide a complete module with a default-exported React component. Imports and top-level declarations remain local to the preview. Named source fences remain separate source tabs. Ordinary MDX continues to use JavaScript expressions.
+Select a named TSX fence with `preview="Example.tsx"`. The fence must default-export a React component. TypeScript, JSX and sibling named dependencies use the existing Vite compilation pipeline. Ordinary MDX continues to use JavaScript expressions.
 
 ## Build diagnostics
 

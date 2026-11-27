@@ -23,26 +23,34 @@ npx @moyarich/moyaforge-cli@latest add resizable-panel
 
 Drag the boundary or focus it and press the arrow keys. Shift+Arrow moves in larger steps; Home and End reach the allowed limits.
 
-::::preview-code[Resizable navigation]{react}
+::::preview-code[Resizable navigation]{preview="Example.tsx"}
+
+```tsx filename="Example.tsx"
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../../../src/components/ResizablePanel/index.js";
 
-<ResizablePanelGroup
-  style={{ height: 260, border: "1px solid #8884", borderRadius: 8 }}
->
-  <ResizablePanel defaultSize={30} minSize={15} maxSize={55}>
-    <nav aria-label="Example navigation" style={{ padding: 20 }}>
-      <strong>Guide</strong>
-      <p>Getting started</p>
-      <p>Components</p>
-    </nav>
-  </ResizablePanel>
-  <ResizableHandle aria-label="Resize navigation" />
-  <ResizablePanel defaultSize={70} minSize={45}>
-    <div style={{ padding: 24 }}>
-      Your documentation, editor, or file explorer goes here.
-    </div>
-  </ResizablePanel>
-</ResizablePanelGroup>
+export default function Example() {
+  return (
+    <ResizablePanelGroup
+      style={{ height: 260, border: "1px solid #8884", borderRadius: 8 }}
+    >
+      <ResizablePanel defaultSize={30} minSize={15} maxSize={55}>
+        <nav aria-label="Example navigation" style={{ padding: 20 }}>
+          <strong>Guide</strong>
+          <p>Getting started</p>
+          <p>Components</p>
+        </nav>
+      </ResizablePanel>
+      <ResizableHandle aria-label="Resize navigation" />
+      <ResizablePanel defaultSize={70} minSize={45}>
+        <div style={{ padding: 24 }}>
+          Your documentation, editor, or file explorer goes here.
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
+```
+
 ::::
 
 ## Usage
