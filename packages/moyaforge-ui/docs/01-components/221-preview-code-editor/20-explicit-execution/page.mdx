@@ -7,19 +7,26 @@ description: Run a JSON parser with a configurable output renderer.
 
 Edit the JSON, then select Run. Invalid JSON is displayed as an error. Clear output returns to the initial idle state.
 
-::::preview-code[JSON parser]{react replacements="portable"}
+::::preview-code[JSON parser]{preview="Example.tsx" replacements="portable"}
 
+```tsx filename="Example.tsx"
 import { PreviewCodeEditor } from "../../../../src/components/PreviewCodeEditor/index.js";
 
-<PreviewCodeEditor
-  title="JSON parser"
-  files={[{ name: "input.json", language: "json", value: '{"ready":true}' }]}
-  runSource={(files) => JSON.parse(files[0]?.value ?? "")}
-  renderOutput={({ state }) => {
-    if (state.status === "success")
-      return <pre>{JSON.stringify(state.output, null, 2)}</pre>;
-    if (state.status === "error") return <p role="alert">{String(state.error)}</p>;
-    return <p>Edit JSON and select Run.</p>;
-  }}
-/>
+export default function Example() {
+  return (
+    <PreviewCodeEditor
+      title="JSON parser"
+      files={[{ name: "input.json", language: "json", value: '{"ready":true}' }]}
+      runSource={(files) => JSON.parse(files[0]?.value ?? "")}
+      renderOutput={({ state }) => {
+        if (state.status === "success")
+          return <pre>{JSON.stringify(state.output, null, 2)}</pre>;
+        if (state.status === "error") return <p role="alert">{String(state.error)}</p>;
+        return <p>Edit JSON and select Run.</p>;
+      }}
+    />
+  );
+}
+```
+
 ::::
