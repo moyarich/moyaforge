@@ -405,7 +405,7 @@ export function createPreviewCodePlugin({
 
     load: {
       filter: {
-        id: /^\0virtual:moyaforge-mdx\/(?:react-preview\/|preview-code-(?:components|sources)$)/,
+        id: /^\0virtual:moyaforge-mdx\/(?:react-preview\/|preview-example\/|preview-code-(?:components|sources)$)/,
       },
       async handler(id) {
         if (id.startsWith("\0" + codePreviewExampleModulePrefix)) {
