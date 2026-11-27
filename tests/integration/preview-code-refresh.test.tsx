@@ -28,10 +28,9 @@ test("the directive forwards the refresh flag to its renderer", async () => {
       createMdxOptions({
         componentMappings: {
           "preview-code": {
-            component: "PreviewCodeInline",
-            filesProp: "sourceFiles",
-            sourceProp: "code",
-            booleanProps: ["refresh"],
+            component: "PreviewCode",
+            directPreviewCode: true,
+            titleProp: "title",
           },
         },
       }),
