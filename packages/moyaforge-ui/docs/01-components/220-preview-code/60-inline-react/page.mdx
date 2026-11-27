@@ -40,3 +40,17 @@ import Greeting from "../30-inline-multiple-files/GreetingCard.tsx";
 ```
 
 ::::
+
+## TypeScript previews
+
+React previews support TypeScript annotations, type declarations, generics, and assertions. The preview body is compiled as TSX, so these features work without changing the surrounding MDX syntax. The final JSX expression renders the example, and the Code view retains the original TypeScript.
+
+::::preview-code[TypeScript example]{react}
+
+type Item = { name: string };
+const items: Item[] = [{ name: "Example" }];
+const identity = <T,>(value: T): T => value;
+
+<p>{identity(items[0].name) as string}</p>
+
+::::
