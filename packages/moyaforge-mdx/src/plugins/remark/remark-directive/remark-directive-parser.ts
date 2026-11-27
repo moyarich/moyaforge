@@ -88,9 +88,7 @@ export function remarkDirectiveParser(
 
       const native = /^[\w-]+(?:\[|\{|\s*$)/.test(tail);
       const header =
-        width >= 3 && native
-          ? undefined
-          : rules.map((rule) => rule(tail, width)).find(Boolean);
+        rules.map((rule) => rule(tail, width)).find(Boolean);
       if (!header) {
         if (width >= 3 && !native) stack.push(width);
         return line;

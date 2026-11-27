@@ -157,7 +157,7 @@ export function PreviewCodeEditor<T = unknown>({
         <div className="mf-preview-code-editor-source">{editor}</div>
       </PreviewSource>}
       {!runSource && renderOutput && <PreviewOutput>
-        {renderOutput({ state: execution, clear })}
+        {renderOutput()}
       </PreviewOutput>}
     </Preview>
   );
