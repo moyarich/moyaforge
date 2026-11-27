@@ -4,6 +4,8 @@ import type { DirectiveProps, directivePropAttribute } from "./directive-attribu
 export interface DirectiveHeader {
   title?: string;
   flags: string[];
+  /** Raw TSX captured before Markdown parsing; excludes source tabs and delimiters. */
+  reactBody?: string;
   props?: DirectiveProps;
   component?: string;
   preview?: string;

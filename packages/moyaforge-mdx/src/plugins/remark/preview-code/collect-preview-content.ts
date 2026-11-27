@@ -262,7 +262,7 @@ export function collectPreviewContent(
         ? sourceFromPreviewContainer(source, container)
         : undefined;
     const body =
-      fromContainer ??
+      (inlineReact ? header?.reactBody : undefined) ?? fromContainer ??
       groups
         .map((nodes) => {
           const start = nodes[0]?.position?.start.offset;

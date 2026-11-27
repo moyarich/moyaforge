@@ -25,6 +25,8 @@ export function remarkDirectiveParser(
     file.data.inlinePreviewAssets = inlineAssets.assets;
     const stack: number[] = [];
     let reactFenceWidth: number | undefined;
+    let reactBody: string[] | undefined;
+    let reactHeader: DirectiveHeader | undefined;
     let codeFence: string | undefined;
     const normalized = lines.map((_originalLine, index) => {
       let line = inlineAssets.lines[index];
@@ -56,17 +58,22 @@ export function remarkDirectiveParser(
       if (reactFenceWidth !== undefined) {
         if (new RegExp(`^ {0,3}:{${reactFenceWidth},}\\s*$`).test(line)) {
           reactFenceWidth = undefined;
+          if (reactHeader && reactBody) reactHeader.reactBody = reactBody.join("").trim();
+          reactHeader = undefined;
+          reactBody = undefined;
         } else {
           // Keep named source directives visible to the Markdown parser.
           // All other React body text is opaque, preserving authored offsets.
           if (!/^ {0,3}:{2,}\s*preview-code-sources(?=\[|\{|\s|$)/.test(line) && !/^ {0,3}:{2,}\s*$/.test(line)) {
-            return line.replace(/\S/g, "x");
+            reactBody?.push(_originalLine);
+            return line.trim() ? line.replace(/[^\r\n]/g, "x") : line;
           }
         }
       } else {
         const reactOpener = previewOpening(line);
         if (reactOpener?.react) {
           reactFenceWidth = reactOpener.width;
+          reactBody = [];
         }
       }
 
@@ -96,10 +103,12 @@ export function remarkDirectiveParser(
       const { type, ...metadata } = header;
       const marker = `mf-header-${headers.size}`;
       headers.set(marker, metadata);
+      if (type === "preview-code" && metadata.flags.includes("react")) reactHeader = metadata;
       const opener =
         indent + ":".repeat(Math.max(3, width)) + " " + type + " " + marker;
       return opener.padEnd(line.length - newline.length) + newline;
     });
+    if (reactHeader) file.fail("Unclosed React preview directive.");
     const insertions: { offset: number; length: number }[] = [];
     let normalizedOffset = 0;
     normalized.forEach((line, index) => {

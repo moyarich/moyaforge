@@ -98,7 +98,7 @@ export function createInlineReactModules() {
         return `const id=${JSON.stringify(key)}; const css=${JSON.stringify(example.source)}; if (typeof document !== "undefined" && !document.getElementById(id)) { const style=document.createElement("style"); style.id=id; style.textContent=css; document.head.append(style); } export default css;`;
       }
       if (["tsx", "jsx", "ts", "js"].includes(format)) {
-        const { code } = await transformWithOxc(example.source, filename, {
+        const { code } = await transformWithOxc(example.source, example.options.reactBody ? example.authoredFile + ".preview.tsx" : filename, {
           lang: format as "tsx" | "jsx" | "ts" | "js",
           jsx: { runtime: "automatic" },
         });
