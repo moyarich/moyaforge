@@ -38,7 +38,7 @@ const compileMdx = mdx(createMdxOptions({
     card: { component: "Card", titleProp: "title" },
     "preview-code": {
       component: "PreviewCode",
-        directPreviewCode: true,
+      directPreviewCode: true,
       titleProp: "title",
       localSources: true,
       registerInlineReact: codePreview.inlineReact.register,
