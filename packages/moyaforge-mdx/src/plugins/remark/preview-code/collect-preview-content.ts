@@ -1,3 +1,5 @@
+import { directiveDiagnostic } from "../../../diagnostics/directive-diagnostic.js";
+import { resolve, dirname } from "node:path";
 import { directivePropAttribute } from "../remark-directive/directive-attributes.js";
 import { parseImportsExports } from "parse-imports-exports";
 import type { InlinePreviewOptions } from "./inline-preview-options.js";
@@ -68,16 +70,20 @@ export function collectPreviewContent(
         header.component,
       )
     )
-      throw new Error(
-        `Invalid preview-code component: ${header.component}. Use a relative .tsx/.jsx file under a registered component root; append #ExportName for a named export.`,
-      );
+      throw directiveDiagnostic(new Error(`Invalid preview-code component: ${header.component}`), source, filePath ?? "<input>", container?.position?.start.offset, "preview-code", {
+        code: "MDX_INVALID_COMPONENT_REFERENCE", phase: "resolve", attribute: "component",
+        expected: "Relative .tsx or .jsx path, optionally followed by #ExportName",
+        suggestion: 'Use component="./Example.tsx" or component="./Example.tsx#Example".',
+      });
     const component =
       filePath &&
       selected.resolvePreviewCodeComponent?.(header.component, filePath);
     if (!component)
-      throw new Error(
-        `Unregistered preview component: ${header.component}. Register its directory in createPreviewCode({ componentRoots: [...] }), or use a sibling .tsx/.jsx example. Check the path and casing.`,
-      );
+      throw directiveDiagnostic(new Error(`Unregistered preview component: ${header.component}`), source, filePath ?? "<input>", container?.position?.start.offset, "preview-code", {
+        code: "MDX_COMPONENT_NOT_REGISTERED", phase: "resolve", attribute: "component",
+        related: filePath ? [{ file: resolve(dirname(filePath), header.component.split("#")[0]) }] : undefined,
+        suggestion: "Check the path and casing, or register the containing directory in createPreviewCodePlugin({ componentRoots: [...] }).",
+      });
     if (direct) {
       example = importInlineReactExample(file, "virtual:moyaforge-mdx/preview-example/" + encodeURIComponent(component));
     } else {

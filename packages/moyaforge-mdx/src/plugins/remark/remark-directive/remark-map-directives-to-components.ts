@@ -1,3 +1,5 @@
+import { directiveDiagnostic } from "../../../diagnostics/directive-diagnostic.js";
+import { MdxDiagnosticError } from "../../../diagnostics/create-diagnostic.js";
 import {
   directiveHeader,
   directiveTitle,
@@ -72,7 +74,20 @@ function transform<Mapping extends DirectiveComponent>(
     const parsedTitle = directiveTitle(first);
     const authoredHeader = node.directiveHeader ?? directiveHeader(first, file);
     const isPreview = type === "preview-code" || type === "preview-code-sources";
-    const header = isPreview ? previewHeader(authoredHeader) : authoredHeader;
+    let header: ReturnType<typeof directiveHeader>;
+    try {
+      header = isPreview ? previewHeader(authoredHeader) : authoredHeader;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const attribute = /Invalid preview-code (\w+) attribute/.exec(message)?.[1];
+      throw directiveDiagnostic(error, source, filePath ?? "<input>", node.position?.start.offset, type, {
+        code: "MDX_INVALID_DIRECTIVE_ATTRIBUTE",
+        phase: "directive",
+        attribute,
+        expected: attribute ? "A quoted string" : undefined,
+        suggestion: attribute ? `Use ${attribute}="value".` : undefined,
+      });
+    }
     if (parsedTitle !== undefined) children.shift();
     const title = header
       ? header.flags.includes("no-title")
@@ -107,7 +122,9 @@ function transform<Mapping extends DirectiveComponent>(
       if (index < 0) attributes.push(attribute);
       else attributes[index] = attribute;
     }
-    const content = definition
+    let content: Node[];
+    try {
+      content = definition
       ? transformContent(
           definition,
           children,
@@ -119,6 +136,12 @@ function transform<Mapping extends DirectiveComponent>(
           node,
         )
       : children;
+    } catch (error) {
+      if (error instanceof MdxDiagnosticError) throw error;
+      throw directiveDiagnostic(error, source, filePath ?? "<input>", node.position?.start.offset, type, {
+        code: "MDX_DIRECTIVE_FAILED", phase: "directive",
+      });
+    }
     return jsx(
       selected.component,
       content.map((child) =>
