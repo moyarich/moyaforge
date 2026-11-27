@@ -121,6 +121,9 @@ export const codePreviewSourceVirtualModuleId =
   "virtual:moyaforge-mdx/preview-code-sources";
 
 /** Name used to identify the Vite preview-code integration plugin. */
+/** Import a registered example as a component without a runtime provider adapter. */
+export const codePreviewExampleModulePrefix = "virtual:moyaforge-mdx/preview-example/";
+
 export const codePreviewPluginName = "moyaforge-mdx:preview-code";
 
 const componentModuleId = `\0${codePreviewComponentVirtualModuleId}`;
@@ -381,6 +384,9 @@ export function createPreviewCodePlugin({
     },
 
     resolveId(id, importer) {
+      if (id.startsWith(codePreviewExampleModulePrefix)) {
+        return "\0" + id;
+      }
       const siblingId = inlineReact.resolveImport(id, importer);
       if (siblingId) return siblingId;
       const inlineId = inlineReact.resolve(id);
@@ -402,6 +408,16 @@ export function createPreviewCodePlugin({
         id: /^\0virtual:moyaforge-mdx\/(?:react-preview\/|preview-code-(?:components|sources)$)/,
       },
       async handler(id) {
+        if (id.startsWith("\0" + codePreviewExampleModulePrefix)) {
+          const reference = decodeURIComponent(id.slice(1 + codePreviewExampleModulePrefix.length));
+          const hash = reference.lastIndexOf("#");
+          const key = hash < 0 ? reference : reference.slice(0, hash);
+          const exportName = hash < 0 ? "default" : reference.slice(hash + 1);
+          const path = modules.get(key);
+          if (!path || !componentFilePattern.test(path) || !/^[A-Za-z_$][\w$]*$/.test(exportName))
+            throw new Error("Unknown preview component: " + reference);
+          return "export { " + exportName + " as default } from " + JSON.stringify(normalizePath(path)) + ";";
+        }
         if (inlineReact.importer(id)) return inlineReact.load(id);
         if (id === componentModuleId) {
           const entries = Array.from(modules)

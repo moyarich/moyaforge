@@ -61,6 +61,7 @@ export function collectPreviewContent(
     throw new Error(
       "A {react} preview takes its component and source from the directive body.",
     );
+  let example: Node | undefined;
   if (header?.component) {
     if (
       !/^(?:\.\/|\.\.\/)+(?:[\w-]+\/)*[\w-]+(?:\.[\w-]+)*\.(?:tsx|jsx)(?:#[A-Za-z_$][\w$]*)?$/.test(
@@ -77,11 +78,15 @@ export function collectPreviewContent(
       throw new Error(
         `Unregistered preview component: ${header.component}. Register its directory in createPreviewCode({ componentRoots: [...] }), or use a sibling .tsx/.jsx example. Check the path and casing.`,
       );
-    attributes.push({
-      type: "mdxJsxAttribute",
-      name: "component",
-      value: component,
-    });
+    if (direct) {
+      example = importInlineReactExample(file, "virtual:moyaforge-mdx/preview-example/" + encodeURIComponent(component));
+    } else {
+      attributes.push({
+        type: "mdxJsxAttribute",
+        name: "component",
+        value: component,
+      });
+    }
   }
 
   const files: PreviewFile[] = [];
@@ -299,6 +304,7 @@ export function collectPreviewContent(
       ];
     }
   }
+  if (example) return [example];
   const assets = file.data.inlinePreviewAssets ?? [];
   return content.flatMap((child): Node[] => {
     // The parser restores positions to offsets in the unmodified MDX source.
