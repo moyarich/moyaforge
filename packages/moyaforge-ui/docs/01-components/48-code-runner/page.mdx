@@ -1,0 +1,40 @@
+---
+title: Code Runner
+description: Run application-provided code or transformations with your own editor and output renderer.
+---
+
+# Code Runner
+
+Use CodeRunner for interactive API examples, formatters, parsers or code playgrounds. It supplies a resizable source and output workspace, Run, Reset and Clear actions, and Ctrl/Cmd + Enter. Your application decides what runs and how results are displayed.
+
+## Interactive example
+
+<PreviewCode component="./Example.tsx" />
+
+## Output renderer
+
+`renderOutput` receives a discriminated state: idle, running, success with typed output, or error with the thrown value. It also receives a clear callback. Render text, tables, diagnostics, a console component or anything else. No console or editor runtime dependency is imposed.
+
+```tsx
+import { CodeRunner } from "@moyarich/moyaforge-ui/components/CodeRunner";
+import "@moyarich/moyaforge-ui/components/CodeRunner/styles.css";
+
+<CodeRunner
+  initialSource="hello"
+  runSource={(source) => source.toUpperCase()}
+  renderOutput={({ state }) =>
+    state.status === "success" ? <pre>{state.output}</pre> :
+    state.status === "error" ? <p>{String(state.error)}</p> : null
+  }
+/>;
+```
+
+## Custom editor and execution
+
+Provide `renderEditor` to substitute Monaco, another editor or a custom input. It receives source, onSourceChange and run. The default editor is a textarea. Set direction to vertical for a stacked layout.
+
+Execution may be synchronous or asynchronous. Every run receives an AbortSignal; starting another run, clearing output or unmounting aborts the previous signal and ignores stale results. The executor must cooperate with cancellation to stop its work. CodeRunner does not evaluate code, sandbox execution or intercept global console calls. Use a worker or isolated runtime for untrusted code.
+
+## Styling
+
+Override public CSS variables such as `--mf-code-runner-min-height` and `--mf-code-runner-output-padding`, along with EditorContainer and ResizablePanel variables.
