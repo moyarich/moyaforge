@@ -1,0 +1,71 @@
+---
+title: Console output
+description: Capture JavaScript console messages in an editable example using the standalone Console package.
+---
+
+# Console output
+
+Edit the JavaScript and select **Run** or press Ctrl/Cmd + Enter. The standalone Console package displays logs, nested values, tables, warnings and errors. Clear output from either the preview toolbar or the console.
+
+## Installation
+
+```sh
+npm install @moyarich/console
+```
+
+Install PreviewCodeEditor and configure its Monaco workers as described in [the editor setup](/ui/components/preview-code-editor). The MoyaForge playground already includes the Console package.
+
+## Interactive example
+
+This example runs locally edited, trusted JavaScript only. It uses a per-run console proxy rather than replacing the browser's global console. Execution is not sandboxed; use an isolated runtime for untrusted code.
+
+::::preview-code[JavaScript console]{react replacements="portable"}
+
+import { PreviewCodeEditor } from "../../../../src/components/PreviewCodeEditor/index.js";
+import {
+  Console,
+  createConsoleEventEmitter,
+  createConsoleProxy,
+  type ConsoleMessageData,
+} from "@moyarich/console";
+import "@moyarich/console/styles.css";
+
+const source = [
+  'console.log("Hello", { ready: true, nested: { count: 2 } });',
+  'console.table([{ name: "Alice", score: 10 }, { name: "Bob", score: 20 }]);',
+  'console.warn("Example warning");',
+  'console.error("Example error");',
+].join("\n");
+
+<PreviewCodeEditor
+  title="JavaScript console"
+  files={[{ name: "example.js", language: "javascript", value: source }]}
+  runSource={(files) => {
+    const messages: ConsoleMessageData[] = [];
+    const events = createConsoleEventEmitter();
+    events.on("message", (message) => messages.push(message));
+    events.on("clear", () => { messages.length = 0; });
+    const output = createConsoleProxy({ events });
+    try {
+      new Function("console", files[0]?.value ?? "")(output);
+    } catch (error) {
+      output.error(error);
+    } finally {
+      events.removeAllListeners();
+    }
+    return messages;
+  }}
+  renderOutput={({ state, clear }) => (
+    <Console
+      messages={state.status === "success" ? state.output : []}
+      onClear={clear}
+    />
+  )}
+/>
+::::
+
+## How it works
+
+Each Run creates a fresh message collection and console proxy. The execution function returns the captured messages, and the output renderer passes them to Console. Runtime exceptions are logged without discarding earlier messages. Clear output resets the execution state. This example captures synchronous JavaScript output only; delayed callbacks and asynchronous execution require a host-managed runtime.
+
+See the [Console documentation](https://moyarich.github.io/console/) for capture, transports and custom rendering.
