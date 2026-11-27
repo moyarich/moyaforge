@@ -22,6 +22,16 @@ npx @moyarich/moyaforge-cli@latest add code-block
 
 The CLI installs component source from the MoyaForge registry. Components own their CSS imports, and user modifications are preserved unless `--overwrite` is provided.
 
+```text
+src/components/
+├── ui/      # Component source and component-local CSS
+├── hooks/   # Shared React hooks
+├── utils/   # Shared utilities
+└── styles/  # Shared CSS imported by components
+```
+
+Shared files are installed automatically when required. Custom UI destinations keep the shared directories as siblings, so relative imports continue to work.
+
 ## Import generated components
 
 The generated Vite and TypeScript configs resolve `@/` to your project's
@@ -39,5 +49,5 @@ TypeScript config loads the MDX virtual module declarations from
 
 See the [CLI documentation](docs/page.mdx) for setup and command options.
 
-- [Initialize and scaffold a project](docs/init/page.mdx)
-- [Install components](docs/add/page.mdx)
+- [Initialize and scaffold a project](docs/10-init/page.mdx)
+- [Install components](docs/20-add/page.mdx)

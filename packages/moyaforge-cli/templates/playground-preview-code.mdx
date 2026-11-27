@@ -12,24 +12,37 @@ export const greeting = "Hello from the playground.";
 
 :::
 
-### Import React components inline
+### Render a TSX example with shared CSS
 
-Select a named TSX fence to render its default export. Additional named fences add source tabs.
+Select a named TSX fence to render its default export. Named CSS and TypeScript fences can be imported by that module; all named files appear in the Code view.
 
 :::preview-code[Inline React greeting]{preview="Example.tsx" refresh}
 
 ```tsx filename="Example.tsx"
 import Greeting from "./Greeting.tsx";
+import { message } from "./message.ts";
+import "./example.css";
 
 export default function Example() {
   return (
-    <Greeting />
+    <div className="starter-preview-greeting">
+      <Greeting />
+      <p>{message}</p>
+    </div>
   );
 }
 ```
 
 ```ts filename="message.ts"
-export const message = "Hello from a React component.";
+export const message: string = "Hello from a React component.";
+```
+
+```css filename="example.css"
+.starter-preview-greeting {
+  padding: 1rem;
+  border: 1px solid currentColor;
+  border-radius: 0.5rem;
+}
 ```
 
 :::
