@@ -51,16 +51,11 @@ export function collectPreviewContent(
   filePath?: string,
   container?: Node,
 ) {
-  const inlineReact = header?.flags.includes("react");
   const direct = selected.directPreviewCode === true;
 
-  if (header?.preview && (inlineReact || header.component || header.code))
+  if (header?.preview && (header.component || header.code))
     throw new Error(
-      "preview-code preview cannot be combined with react, component, or code.",
-    );
-  if (inlineReact && (header?.component || header?.code))
-    throw new Error(
-      "A {react} preview takes its component and source from the directive body.",
+      "preview-code preview cannot be combined with component or code.",
     );
   let example: Node | undefined;
   if (header?.component) {
@@ -242,7 +237,7 @@ export function collectPreviewContent(
       name: "replacementPreset",
       value: replacements,
     });
-  if (direct || selected.sourceProp || inlineReact) {
+  if (direct || selected.sourceProp) {
     const groups: Node[][] = [];
     let group: Node[] = [];
     for (const child of children) {
@@ -258,11 +253,11 @@ export function collectPreviewContent(
     // File-backed source directives and named source fences continue to
     // use the filtered child ranges, so extra source tabs stay separate.
     const fromContainer =
-      !inlineReact && content.length === children.length
+      content.length === children.length
         ? sourceFromPreviewContainer(source, container)
         : undefined;
     const body =
-      (inlineReact ? header?.reactBody : undefined) ?? fromContainer ??
+      fromContainer ??
       groups
         .map((nodes) => {
           const start = nodes[0]?.position?.start.offset;
@@ -272,10 +267,10 @@ export function collectPreviewContent(
             : source.slice(start, end);
         })
         .join("\n\n");
-    const bodySource = header?.preview || (hasLocalSources && !inlineReact) ? "" : body;
+    const bodySource = header?.preview || hasLocalSources ? "" : body;
     if (direct) {
       const sourceFiles = bodySource || !files.length
-        ? [{ label: inlineReact ? "Example.tsx" : "Example.mdx", code: bodySource, language: inlineReact ? "tsx" : "mdx" }, ...files]
+        ? [{ label: "Example.mdx", code: bodySource, language: "mdx" }, ...files]
         : files;
       attributes.push(directivePropAttribute("files", sourceFiles.map(f => ({ label: f.label, code: f.code, ...(f.language ? { language: f.language } : {}) }))));
     }
@@ -283,26 +278,8 @@ export function collectPreviewContent(
       attributes.push({
         type: "mdxJsxAttribute",
         name: selected.sourceProp,
-        value: header?.preview || (hasLocalSources && !inlineReact) ? "" : body,
+        value: header?.preview || hasLocalSources ? "" : body,
       });
-    if (inlineReact) {
-      if (!filePath || !selected.registerInlineReact)
-        throw new Error(
-          "{react} previews require the Vite code preview plugin.",
-        );
-      if (!body.trim())
-        throw new Error("A {react} preview requires a JSX body.");
-      return [
-        importInlineReactExample(
-          file,
-          selected.registerInlineReact(
-            body,
-            filePath,
-            { format: "tsx", filename: "preview.tsx", files, reactBody: true },
-          ),
-        ),
-      ];
-    }
   }
   if (example) return [example];
   const assets = file.data.inlinePreviewAssets ?? [];

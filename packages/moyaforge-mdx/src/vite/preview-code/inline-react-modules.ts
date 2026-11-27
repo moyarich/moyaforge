@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { posix } from "node:path";
 import { compile } from "@mdx-js/mdx";
-import { parseAst, transformWithOxc } from "vite";
+import { transformWithOxc } from "vite";
 import type { InlinePreviewOptions } from "../../plugins/remark/preview-code/inline-preview-options.js";
 
 const prefix = "virtual:moyaforge-mdx/react-preview/";
@@ -29,7 +29,6 @@ export function createInlineReactModules() {
             source,
             options.format,
             options.filename,
-            options.reactBody,
             options.files,
           ]),
         )
@@ -48,7 +47,6 @@ export function createInlineReactModules() {
           options: {
             ...options,
             filename: file.label,
-            reactBody: false,
             format: format as InlinePreviewOptions["format"],
           },
           siblings,
@@ -98,24 +96,12 @@ export function createInlineReactModules() {
         return `const id=${JSON.stringify(key)}; const css=${JSON.stringify(example.source)}; if (typeof document !== "undefined" && !document.getElementById(id)) { const style=document.createElement("style"); style.id=id; style.textContent=css; document.head.append(style); } export default css;`;
       }
       if (["tsx", "jsx", "ts", "js"].includes(format)) {
-        const { code } = await transformWithOxc(example.source, example.options.reactBody ? example.authoredFile + ".preview.tsx" : filename, {
-          lang: format as "tsx" | "jsx" | "ts" | "js",
-          jsx: { runtime: "automatic" },
-        });
-        if (!example.options.reactBody) return code;
-        const program = parseAst(code);
-        if (program.body.some(node => node.type === "ExportDefaultDeclaration" ||
-          (node.type === "ExportNamedDeclaration" && node.specifiers.some(specifier =>
-            specifier.exported.type === "Identifier" && specifier.exported.name === "default")))) return code;
-        const last = program.body.at(-1);
-        if (last?.type !== "ExpressionStatement")
-          throw new Error(`${example.authoredFile}: React preview requires a final JSX expression or a default export.`);
-        // Keep imports and declarations at module scope; evaluate the final
-        // expression inside a React component, not during module loading.
-        return code.slice(0, last.start) +
-          "export default function MoyaForgePreview() { return (" +
-          code.slice(last.expression.start, last.expression.end) +
-          "); }" + code.slice(last.end);
+        return (
+          await transformWithOxc(example.source, filename, {
+            lang: format as "tsx" | "jsx" | "ts" | "js",
+            jsx: { runtime: "automatic" },
+          })
+        ).code;
       }
       return String(
         await compile(
