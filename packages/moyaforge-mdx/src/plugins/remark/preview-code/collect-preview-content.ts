@@ -52,7 +52,7 @@ export function collectPreviewContent(
 ) {
   const inlineReact = header?.flags.includes("react");
   const direct = selected.directPreviewCode === true;
-  let bodySource = "";
+
   if (header?.preview && (inlineReact || header.component || header.code))
     throw new Error(
       "preview-code preview cannot be combined with react, component, or code.",
@@ -219,7 +219,7 @@ export function collectPreviewContent(
         : rendered),
     );
   }
-  if (selected.filesProp && files.length) {
+  if (!direct && selected.filesProp && files.length) {
     attributes.push({
       type: "mdxJsxAttribute",
       name: selected.filesProp,
@@ -262,14 +262,14 @@ export function collectPreviewContent(
             : source.slice(start, end);
         })
         .join("\n\n");
-    bodySource = header?.preview || (hasLocalSources && !inlineReact) ? "" : body;
+    const bodySource = header?.preview || (hasLocalSources && !inlineReact) ? "" : body;
     if (direct) {
       const sourceFiles = bodySource || !files.length
         ? [{ label: "Example.mdx", code: bodySource, language: "mdx" }, ...files]
         : files;
       attributes.push(directivePropAttribute("files", sourceFiles.map(f => ({ label: f.label, code: f.code, ...(f.language ? { language: f.language } : {}) }))));
     }
-    if (selected.sourceProp)
+    if (!direct && selected.sourceProp)
       attributes.push({
         type: "mdxJsxAttribute",
         name: selected.sourceProp,

@@ -30,11 +30,15 @@ export type PreviewFile = {
 export type Replacement = [from: string | RegExp, to: string];
 
 export type PreviewCodeProps = {
-  title: string;
+  title?: string;
   /** The first file is the "primary" one used for the copy button. */
   files: readonly PreviewFile[];
   /** Applied to every file, in order (e.g. rewrite repo-relative imports). */
   replacements?: readonly Replacement[];
+  /** Apply the built-in portable source import replacements. */
+  replacementPreset?: "portable";
+  /** Display the primary source as the preview, without executing it. */
+  sourceOnly?: boolean;
   /** Show a button that remounts the rendered example. Defaults to false. */
   refresh?: boolean;
   children: ReactNode;
@@ -53,9 +57,11 @@ export const CODE_REPLACEMENTS: Replacement[] = [
 ];
 
 export function PreviewCode({
-  title,
+  title = "Example",
   files,
-  replacements = [],
+  replacementPreset,
+  replacements = replacementPreset === "portable" ? CODE_REPLACEMENTS : [],
+  sourceOnly = false,
   refresh = false,
   children,
   output, outputLabel, defaultOutputOpen,
@@ -87,7 +93,13 @@ export function PreviewCode({
         </PreviewActions>
       </PreviewHeader>
 
-      <PreviewContent key={revision}>{children}</PreviewContent>
+      <PreviewContent key={revision}>
+        {sourceOnly ? (
+          <pre>
+            <HighlightedCode code={primary} language={processed[0].language ?? previewLanguage(processed[0].label)} />
+          </pre>
+        ) : children}
+      </PreviewContent>
 
       {processed.length > 1 ? (
         <PreviewSource asChild>
