@@ -1,10 +1,11 @@
 import "./PreviewCodeEditor.css";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { Play, RotateCcw, SquareTerminal } from "lucide-react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Play, RotateCcw } from "lucide-react";
 import {
   Preview, PreviewActions, PreviewCodeToggle, PreviewContent,
-  PreviewHeader, PreviewSource, PreviewTitle,
+  PreviewHeader, PreviewSource, PreviewTitle, PreviewOutput, PreviewOutputToggle,
 } from "../Preview/index.js";
+import { usePreview } from "../Preview/PreviewContext.js";
 import { MonacoEditorPanel } from "../MonacoEditorPanel/index.js";
 import type { MonacoEditorReactProps, MonacoFile } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 
@@ -60,8 +61,6 @@ export function PreviewCodeEditor<T = unknown>({
   const [initialFiles] = useState(() => files.map(file => ({ ...file })));
   const [currentFiles, setCurrentFiles] = useState(() => files.map(file => ({ ...file })));
   const [execution, setExecution] = useState<PreviewExecutionState<T>>({ status: "idle" });
-  const [outputOpen, setOutputOpen] = useState(defaultOutputOpen);
-  const outputId = useId();
   const active = useRef<AbortController | null>(null);
   useEffect(() => () => active.current?.abort(), []);
 
@@ -112,6 +111,7 @@ export function PreviewCodeEditor<T = unknown>({
   );
   return (
     <Preview title={title} source={usageSource ?? currentFiles[0]?.value}
+      outputLabel={outputLabel} defaultOutputOpen={defaultOutputOpen}
       onKeyDownCapture={event => {
         if (runSource && (event.ctrlKey || event.metaKey) && event.key === "Enter") {
           event.preventDefault();
@@ -123,9 +123,7 @@ export function PreviewCodeEditor<T = unknown>({
         <PreviewTitle>{title}</PreviewTitle>
         <PreviewActions>
           {!runSource && <PreviewCodeToggle />}
-          {renderOutput && <button type="button" className="mf-preview-action" aria-expanded={outputOpen} aria-controls={outputId} onClick={() => setOutputOpen(open => !open)}>
-            <SquareTerminal size={15} aria-hidden="true" />{outputOpen ? "Hide" : "Show"} {outputLabel}
-          </button>}
+          {renderOutput && <PreviewOutputToggle />}
           {runSource && <button type="button" className="mf-preview-action" onClick={() => void run()}>
             <Play size={15} aria-hidden="true" />Run
           </button>}
@@ -142,18 +140,12 @@ export function PreviewCodeEditor<T = unknown>({
       {runSource && renderOutput ? (
         <PreviewContent asChild>
           <div className="mf-preview-code-editor-workspace">
-            <ResizablePanelGroup direction={direction} key={direction}>
-              <ResizablePanel defaultSize={55} minSize={20} style={outputOpen ? undefined : { flexBasis: "100%", flexGrow: 1 }}>
-                <div className="mf-preview-code-editor-source">{editor}</div>
-              </ResizablePanel>
-              <ResizableHandle aria-label="Resize source and output" hidden={!outputOpen} />
-              <ResizablePanel defaultSize={45} minSize={20} hidden={!outputOpen}>
-                <section id={outputId} className="mf-preview-code-editor-output" aria-label={outputLabel} aria-busy={execution.status === "running"}>
-                  <p role="status">{execution.status === "running" ? "Running…" : execution.status === "error" ? "Execution failed" : execution.status === "success" ? "Run complete" : "Ready to run"}</p>
-                  {renderOutput({ state: execution, clear })}
-                </section>
-              </ResizablePanel>
-            </ResizablePanelGroup>
+            <ExecutionWorkspace direction={direction} editor={editor}>
+              <PreviewOutput className="mf-preview-code-editor-output" aria-busy={execution.status === "running"}>
+                <p role="status">{execution.status === "running" ? "Running…" : execution.status === "error" ? "Execution failed" : execution.status === "success" ? "Run complete" : "Ready to run"}</p>
+                {renderOutput({ state: execution, clear })}
+              </PreviewOutput>
+            </ExecutionWorkspace>
           </div>
         </PreviewContent>
       ) : (
@@ -164,9 +156,29 @@ export function PreviewCodeEditor<T = unknown>({
       {!runSource && <PreviewSource asChild>
         <div className="mf-preview-code-editor-source">{editor}</div>
       </PreviewSource>}
-      {!runSource && renderOutput && <section id={outputId} className="mf-preview-code-editor-output mf-preview-code-editor-live-output" aria-label={outputLabel} hidden={!outputOpen}>
+      {!runSource && renderOutput && <PreviewOutput>
         {renderOutput({ state: execution, clear })}
-      </section>}
+      </PreviewOutput>}
     </Preview>
+  );
+}
+
+/** Keep both panes mounted while the output is collapsed. */
+function ExecutionWorkspace({ direction, editor, children }: {
+  direction: "horizontal" | "vertical";
+  editor: ReactNode;
+  children: ReactNode;
+}) {
+  const { outputOpen } = usePreview();
+  return (
+    <ResizablePanelGroup direction={direction}>
+      <ResizablePanel defaultSize={55} minSize={20}>
+        <div className="mf-preview-code-editor-source">{editor}</div>
+      </ResizablePanel>
+      <ResizableHandle aria-label="Resize source and output" hidden={!outputOpen} />
+      <ResizablePanel defaultSize={45} minSize={20} hidden={!outputOpen}>
+        {children}
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 }

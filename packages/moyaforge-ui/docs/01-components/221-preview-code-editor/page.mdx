@@ -75,7 +75,7 @@ The renderer receives idle, running, success (typed output), or error state, plu
 
 Both preview modes accept `outputLabel` (for example, "Console") and `defaultOutputOpen`. The toolbar's Show/Hide action collapses the panel without clearing its contents or unmounting the renderer. In live mode, the output sits below the Preview/Code views and remains accessible while switching between them.
 
-For a live preview, pass a zero-argument `renderOutput` alongside `renderPreview`. The host owns the output state and capture mechanism; PreviewCodeEditor never intercepts the global console.
+For a live preview, pass a zero-argument `renderOutput` alongside `renderPreview`. The host owns the output state and capture mechanism; PreviewCodeEditor never intercepts the global console. Output visibility uses the shared [Preview output slots](/ui/components/preview#toggleable-output), also available in PreviewCode and PreviewInteractive.
 
 ```tsx
 <PreviewCodeEditor

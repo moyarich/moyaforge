@@ -14,16 +14,13 @@
 
 .mf-preview-code-editor-workspace { min-inline-size: 0; }
 .mf-preview-code-editor-output {
-  min-inline-size: 0;
-  padding: var(--mf-preview-padding, 1.5rem);
-  overflow-wrap: anywhere;
+  border-block-start: 0;
 }
-.mf-preview-code-editor-output > [role="status"] { margin-block-start: 0; font-size: 0.875rem; }
-
-.mf-preview-code-editor-workspace [hidden],
-.mf-preview-code-editor-live-output[hidden] {
+.mf-preview-code-editor-output > [role="status"] {
+  margin-block-start: 0;
+  font-size: 0.875rem;
+}
+.mf-preview-code-editor-workspace .mf-resizable-panel[hidden],
+.mf-preview-code-editor-workspace .mf-resizable-handle[hidden] {
   display: none;
-}
-.mf-preview-code-editor-live-output {
-  border-block-start: 1px solid var(--mf-preview-border, color-mix(in srgb, currentColor 15%, transparent));
 }

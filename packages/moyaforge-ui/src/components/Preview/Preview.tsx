@@ -17,6 +17,8 @@ import { PreviewCopyButton } from "./PreviewCopyButton.js";
 import { PreviewFooter } from "./PreviewFooter.js";
 import { PreviewHeader } from "./PreviewHeader.js";
 import { PreviewSource } from "./PreviewSource.js";
+import { PreviewOutput } from "./PreviewOutput.js";
+import { PreviewOutputToggle } from "./PreviewOutputToggle.js";
 import { PreviewTitle } from "./PreviewTitle.js";
 
 /** Source is supplied by the caller (or MDX tooling), not extracted from React children. */
@@ -28,6 +30,10 @@ export interface PreviewProps extends Omit<
   source?: string;
   language?: string;
   defaultView?: View;
+  /** Optional output for the shorthand composition. */
+  output?: ReactNode;
+  outputLabel?: string;
+  defaultOutputOpen?: boolean;
 }
 export function Preview({
   children,
@@ -35,12 +41,15 @@ export function Preview({
   source,
   language = "tsx",
   defaultView = "preview",
+  output, outputLabel = "Output", defaultOutputOpen = true,
   className,
   ...props
 }: PreviewProps) {
   const [view, setView] = useState<View>(defaultView);
   const contentId = useId();
-  const state: PreviewState = { view, setView, contentId, source };
+  const outputId = useId();
+  const [outputOpen, setOutputOpen] = useState(defaultOutputOpen);
+  const state: PreviewState = { view, setView, contentId, source, outputId, outputOpen, setOutputOpen, outputLabel };
   const hasSlots = Array.isArray(children)
     ? children.some((child) => isPreviewSlot(child))
     : isPreviewSlot(children);
@@ -59,10 +68,10 @@ export function Preview({
           <>
             <PreviewHeader>
               <PreviewTitle>{title}</PreviewTitle>
-              {source !== undefined && (
+              {(source !== undefined || output != null) && (
                 <PreviewActions>
-                  <PreviewCodeToggle />
-                  <PreviewCopyButton />
+                  {source !== undefined && <><PreviewCodeToggle /><PreviewCopyButton /></>}
+                  {output != null && <PreviewOutputToggle />}
                 </PreviewActions>
               )}
             </PreviewHeader>
@@ -70,6 +79,7 @@ export function Preview({
             {source !== undefined && (
               <PreviewSource code={source} language={language} />
             )}
+            {output != null && <PreviewOutput>{output}</PreviewOutput>}
           </>
         )}
       </section>
@@ -83,6 +93,8 @@ const slotComponents = new Set<unknown>([
   PreviewContent,
   PreviewSource,
   PreviewFooter,
+  PreviewOutput,
+  PreviewOutputToggle,
 ]);
 function isPreviewSlot(value: ReactNode): boolean {
   return (

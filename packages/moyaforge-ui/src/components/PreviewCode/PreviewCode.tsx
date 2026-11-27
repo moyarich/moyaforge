@@ -13,6 +13,8 @@ import {
   PreviewRefreshButton,
   PreviewContent,
   PreviewSource,
+  PreviewOutput,
+  PreviewOutputToggle,
 } from "../Preview/index.js";
 import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 
@@ -36,6 +38,9 @@ export type PreviewCodeProps = {
   /** Show a button that remounts the rendered example. Defaults to false. */
   refresh?: boolean;
   children: ReactNode;
+  output?: ReactNode;
+  outputLabel?: string;
+  defaultOutputOpen?: boolean;
 };
 
 /* ---------- Default replacement ---------- */
@@ -53,6 +58,7 @@ export function PreviewCode({
   replacements = [],
   refresh = false,
   children,
+  output, outputLabel, defaultOutputOpen,
 }: PreviewCodeProps) {
   const [revision, setRevision] = useState(0);
   if (!files.length)
@@ -66,7 +72,7 @@ export function PreviewCode({
   const primary = processed[0]?.code ?? "";
 
   return (
-    <Preview title={title} source={primary}>
+    <Preview title={title} source={primary} outputLabel={outputLabel} defaultOutputOpen={defaultOutputOpen}>
       <PreviewHeader>
         <PreviewTitle>{title}</PreviewTitle>
         <PreviewActions>
@@ -77,6 +83,7 @@ export function PreviewCode({
           )}
           <PreviewCodeToggle />
           <PreviewCopyButton />
+          {output != null && <PreviewOutputToggle />}
         </PreviewActions>
       </PreviewHeader>
 
@@ -107,6 +114,7 @@ export function PreviewCode({
           }
         />
       )}
+      {output != null && <PreviewOutput>{output}</PreviewOutput>}
     </Preview>
   );
 }
