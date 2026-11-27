@@ -17,7 +17,7 @@ export default function Example() {
     <PreviewCodeEditor
       title="JSON parser"
       files={[{ name: "input.json", language: "json", value: '{"ready":true}' }]}
-      runSource={(files) => JSON.parse(files[0]?.value ?? "") as unknown}
+      runSource={(files) => JSON.parse(files[0]?.value ?? "")}
       renderOutput={({ state }) => {
         if (state.status === "success")
           return <pre>{JSON.stringify(state.output, null, 2)}</pre>;
