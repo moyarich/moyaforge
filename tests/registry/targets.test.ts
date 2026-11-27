@@ -10,7 +10,7 @@ test("every registry target uses the canonical component or shared utility locat
     expect(item.files.length, item.name).toBeGreaterThan(0);
     for (const file of item.files) {
       expect(file.target, item.name).toMatch(
-        /^~\/src\/components\/(?:ui|utils)\//,
+        /^~\/src\/components\/(?:ui|utils|hooks)\//,
       );
       expect(file.target, item.name).not.toContain("/ui/components/");
       expect(file.target, item.name).not.toContain("/moyaforge/");

@@ -25,7 +25,7 @@ export function Card({
   return (
     <div
       {...props}
-      className={["mf-card", className].filter(Boolean).join(" ")}
+      className={["mf-card", `mf-card-${variant}`, compact && "mf-card-compact", className].filter(Boolean).join(" ")}
       data-variant={variant}
       data-compact={compact ? "" : undefined}
     >

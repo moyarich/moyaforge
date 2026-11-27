@@ -6,6 +6,7 @@ const monacoRoot = resolve(import.meta.dirname, "../../packages/moyaforge-monaco
 
 test("TypeFox workers use Vite URLs with monaco-languageclient's Worker metadata", async () => {
   const source = await readFile(resolve(monacoRoot, "src/workers/configureTypeFoxWorkers.ts"), "utf8");
+  const config = await readFile(resolve(monacoRoot, "src/workers/createMonacoVscodeWorkerConfig.ts"), "utf8");
   const packages = [
     "@codingame/monaco-vscode-editor-api/esm/vs/editor/editor.worker.js",
     "@codingame/monaco-vscode-standalone-typescript-language-features/worker",
@@ -14,11 +15,12 @@ test("TypeFox workers use Vite URLs with monaco-languageclient's Worker metadata
     "@codingame/monaco-vscode-standalone-html-language-features/worker",
   ];
   for (const worker of packages) {
-    expect(source).toContain(`${worker}?worker&url`);
+    expect(config).toContain(`${worker}?worker&url`);
   }
-  expect(source).toContain('import { useWorkerFactory, Worker }');
-  expect(source).toContain("new Worker(new URL(");
-  expect(source).toContain('type: "module"');
+  expect(source).toContain('useWorkerFactory');
+  expect(source).toContain('createMonacoVscodeWorkerConfig');
+  expect(config).toContain("new Worker(new URL(");
+  expect(config).toContain('type: "module"');
   expect(source).toContain("useWorkerFactory");
 });
 

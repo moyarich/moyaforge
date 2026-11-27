@@ -151,15 +151,15 @@ export async function planComponentInstallation({
       if (typeof file.path !== "string" || typeof targetPath !== "string")
         throw Error(`Unsupported registry file target: ${targetPath}`);
       const uiPrefix = `~/${defaultDirectory}/`;
-      const sharedPrefix = "~/src/components/utils/";
+      const shared = /^(?:~\/src\/components\/)(utils|hooks)\//.exec(targetPath);
       let destination: string;
       let suffix: string;
       if (targetPath.startsWith(uiPrefix)) {
         suffix = targetPath.slice(uiPrefix.length);
         destination = resolve(root, directory, suffix);
-      } else if (targetPath.startsWith(sharedPrefix)) {
-        suffix = targetPath.slice(sharedPrefix.length);
-        destination = resolve(root, directory, "..", "utils", suffix);
+      } else if (shared) {
+        suffix = targetPath.slice(shared[0].length);
+        destination = resolve(root, directory, "..", shared[1], suffix);
       } else {
         throw Error(`Unsupported registry file target: ${targetPath}`);
       }

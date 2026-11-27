@@ -12,16 +12,16 @@
   overflow-wrap: anywhere;
 }
 
-.mf-card[data-variant="filled"] {
+.mf-card.mf-card-filled {
   background: var(--mf-card-filled-background, color-mix(in srgb, currentColor 5%, transparent));
   border-color: transparent;
 }
 
-.mf-card[data-variant="ghost"] {
+.mf-card.mf-card-ghost {
   border-color: transparent;
 }
 
-.mf-card[data-compact] {
+.mf-card.mf-card-compact {
   --_mf-card-padding: var(--mf-card-compact-padding, 0.75rem);
   --_mf-card-gap: var(--mf-card-compact-gap, 0.5rem);
 }
