@@ -1337,11 +1337,6 @@
           "target": "~/src/components/ui/PreviewCode/PreviewCode.tsx"
         },
         {
-          "path": "packages/moyaforge-ui/src/components/PreviewCode/PreviewCodeInline.tsx",
-          "type": "registry:file",
-          "target": "~/src/components/ui/PreviewCode/PreviewCodeInline.tsx"
-        },
-        {
           "path": "packages/moyaforge-ui/src/components/PreviewCode/index.ts",
           "type": "registry:file",
           "target": "~/src/components/ui/PreviewCode/index.ts"

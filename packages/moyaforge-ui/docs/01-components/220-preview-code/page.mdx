@@ -334,6 +334,10 @@ strong {
 - [Counter preview in MDX](/ui/components/preview-code/counter-preview-in-mdx)
 - [Markdown file preview](/ui/components/preview-code/markdown-file-preview)
 
+## Migrating existing integrations
+
+`PreviewCodeInline` and `PreviewSources` have been removed. Register `PreviewCode` in the MDX provider and set `directPreviewCode: true` on the directive mapping, removing the old `sourceProp` and `filesProp` settings. Use the `files` array for explicit React source tabs. Existing Markdown directive syntax is unchanged.
+
 ## Styling
 
 Set `--mf-preview-border`, `--mf-preview-radius`, or `--mf-preview-padding` on a containing element to style the preview frame.
