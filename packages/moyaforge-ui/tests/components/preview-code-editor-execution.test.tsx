@@ -29,3 +29,16 @@ test("existing live preview remains available", () => {
   expect(html).toContain("Live: {}");
   expect(html).not.toContain("Clear output");
 });
+
+ test("live preview offers a collapsed configurable console without discarding its renderer", () => {
+  const html = renderToStaticMarkup(
+    <PreviewCodeEditor title="Live" files={files}
+      renderPreview={() => <button>Counter</button>}
+      renderOutput={() => <div>Captured logs</div>}
+      outputLabel="Console" defaultOutputOpen={false} />,
+  );
+  expect(html).toContain("Show Console");
+  expect(html).toContain('aria-expanded="false"');
+  expect(html).toContain("Captured logs");
+  expect(html).toContain('aria-label="Console" hidden=""');
+});

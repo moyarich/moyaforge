@@ -71,6 +71,25 @@ The renderer receives idle, running, success (typed output), or error state, plu
 
 [Try explicit execution](/ui/components/preview-code-editor/explicit-execution).
 
+## Toggle the output panel
+
+Both preview modes accept `outputLabel` (for example, "Console") and `defaultOutputOpen`. The toolbar's Show/Hide action collapses the panel without clearing its contents or unmounting the renderer. In live mode, the output sits below the Preview/Code views and remains accessible while switching between them.
+
+For a live preview, pass a zero-argument `renderOutput` alongside `renderPreview`. The host owns the output state and capture mechanism; PreviewCodeEditor never intercepts the global console.
+
+```tsx
+<PreviewCodeEditor
+  title="Interactive component"
+  files={files}
+  renderPreview={renderPreview}
+  renderOutput={() => <Console messages={messages} onClear={clear} />}
+  outputLabel="Console"
+  defaultOutputOpen={false}
+/>
+```
+
+[Try a live React console](/ui/components/preview-code-editor/live-console).
+
 ## Styling
 
 The component uses the Preview frame tokens, including `--mf-preview-padding`, and the Monaco editor tokens documented in [Monaco Editor React](/ui/components/monaco-editor-react).

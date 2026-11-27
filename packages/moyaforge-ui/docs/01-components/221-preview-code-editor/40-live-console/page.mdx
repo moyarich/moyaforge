@@ -1,0 +1,22 @@
+---
+title: Live console
+description: Toggle a console while interacting with an editable React preview.
+---
+
+# Live console
+
+Click the counter, then select **Show Console** to inspect the captured messages. Hide the console, click the counter again and reopen it: messages are retained. Switch to Code to edit the event handler and add your own console calls.
+
+The example uses the standalone Console package and a scoped console proxy. The host compiles trusted local source with Sucrase; it does not replace the global browser console or sandbox code.
+
+::::preview-code[Live React console]{component="./Example.tsx"}
+::preview-code-sources{files="./Example.tsx" replacements="portable"}
+::::
+
+## Installation
+
+```sh
+npm install @moyarich/console sucrase
+```
+
+Follow the PreviewCodeEditor installation and Monaco worker setup. The UI component itself does not require either dependency.

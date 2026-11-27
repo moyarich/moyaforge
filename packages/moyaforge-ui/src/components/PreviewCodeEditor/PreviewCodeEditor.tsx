@@ -1,6 +1,6 @@
 import "./PreviewCodeEditor.css";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Play, RotateCcw } from "lucide-react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { Play, RotateCcw, SquareTerminal } from "lucide-react";
 import {
   Preview, PreviewActions, PreviewCodeToggle, PreviewContent,
   PreviewHeader, PreviewSource, PreviewTitle,
@@ -29,6 +29,8 @@ interface PreviewCodeEditorBaseProps {
   height?: number | string;
   options?: MonacoEditorReactProps["options"];
   tools?: ReactNode;
+  outputLabel?: string;
+  defaultOutputOpen?: boolean;
   showBreadcrumbs?: boolean;
   renderBreadcrumbs?: (file: MonacoFile) => ReactNode;
 }
@@ -37,7 +39,7 @@ export type PreviewCodeEditorProps<T = unknown> = PreviewCodeEditorBaseProps & (
   | {
       renderPreview: (files: readonly MonacoFile[]) => ReactNode;
       runSource?: never;
-      renderOutput?: never;
+      renderOutput?: () => ReactNode;
       direction?: never;
     }
   | {
@@ -53,10 +55,13 @@ export function PreviewCodeEditor<T = unknown>({
   title, files, renderPreview, runSource, renderOutput, direction = "horizontal", usageSource,
   usageFileName = "PreviewCodeEditor.tsx", height = 320, options,
   tools, showBreadcrumbs = false, renderBreadcrumbs,
+  outputLabel = "Output", defaultOutputOpen = true,
 }: PreviewCodeEditorProps<T>) {
   const [initialFiles] = useState(() => files.map(file => ({ ...file })));
   const [currentFiles, setCurrentFiles] = useState(() => files.map(file => ({ ...file })));
   const [execution, setExecution] = useState<PreviewExecutionState<T>>({ status: "idle" });
+  const [outputOpen, setOutputOpen] = useState(defaultOutputOpen);
+  const outputId = useId();
   const active = useRef<AbortController | null>(null);
   useEffect(() => () => active.current?.abort(), []);
 
@@ -118,6 +123,9 @@ export function PreviewCodeEditor<T = unknown>({
         <PreviewTitle>{title}</PreviewTitle>
         <PreviewActions>
           {!runSource && <PreviewCodeToggle />}
+          {renderOutput && <button type="button" className="mf-preview-action" aria-expanded={outputOpen} aria-controls={outputId} onClick={() => setOutputOpen(open => !open)}>
+            <SquareTerminal size={15} aria-hidden="true" />{outputOpen ? "Hide" : "Show"} {outputLabel}
+          </button>}
           {runSource && <button type="button" className="mf-preview-action" onClick={() => void run()}>
             <Play size={15} aria-hidden="true" />Run
           </button>}
@@ -134,13 +142,13 @@ export function PreviewCodeEditor<T = unknown>({
       {runSource && renderOutput ? (
         <PreviewContent asChild>
           <div className="mf-preview-code-editor-workspace">
-            <ResizablePanelGroup direction={direction}>
-              <ResizablePanel defaultSize={55} minSize={20}>
+            <ResizablePanelGroup direction={direction} key={direction}>
+              <ResizablePanel defaultSize={55} minSize={20} style={outputOpen ? undefined : { flexBasis: "100%", flexGrow: 1 }}>
                 <div className="mf-preview-code-editor-source">{editor}</div>
               </ResizablePanel>
-              <ResizableHandle aria-label="Resize source and output" />
-              <ResizablePanel defaultSize={45} minSize={20}>
-                <section className="mf-preview-code-editor-output" aria-label="Output" aria-busy={execution.status === "running"}>
+              <ResizableHandle aria-label="Resize source and output" hidden={!outputOpen} />
+              <ResizablePanel defaultSize={45} minSize={20} hidden={!outputOpen}>
+                <section id={outputId} className="mf-preview-code-editor-output" aria-label={outputLabel} aria-busy={execution.status === "running"}>
                   <p role="status">{execution.status === "running" ? "Running…" : execution.status === "error" ? "Execution failed" : execution.status === "success" ? "Run complete" : "Ready to run"}</p>
                   {renderOutput({ state: execution, clear })}
                 </section>
@@ -156,6 +164,9 @@ export function PreviewCodeEditor<T = unknown>({
       {!runSource && <PreviewSource asChild>
         <div className="mf-preview-code-editor-source">{editor}</div>
       </PreviewSource>}
+      {!runSource && renderOutput && <section id={outputId} className="mf-preview-code-editor-output mf-preview-code-editor-live-output" aria-label={outputLabel} hidden={!outputOpen}>
+        {renderOutput({ state: execution, clear })}
+      </section>}
     </Preview>
   );
 }
