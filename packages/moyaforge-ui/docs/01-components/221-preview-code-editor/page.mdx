@@ -47,6 +47,49 @@ Pass the editable files and a renderer that consumes their current values:
 
 Provide `usageSource` when the Code view should include a read-only tab with the integration code. The editor displays that snippet first and uses it for the Preview copy action.
 
+## Run code and render output
+
+Use the same component for explicit execution instead of a live preview. Supply `runSource` and `renderOutput` in place of `renderPreview`.
+
+```tsx
+<PreviewCodeEditor
+  title="JSON parser"
+  files={[{ name: "input.json", language: "json", value: '{"ready":true}' }]}
+  runSource={(files) => JSON.parse(files[0]?.value ?? "") as unknown}
+  renderOutput={({ state }) => {
+    if (state.status === "success")
+      return <pre>{JSON.stringify(state.output, null, 2)}</pre>;
+    if (state.status === "error") return <p>{String(state.error)}</p>;
+    return <p>Edit JSON and select Run.</p>;
+  }}
+/>
+```
+
+The editor and output appear together in resizable panels. Run with the button or Ctrl/Cmd + Enter. Set `direction="vertical"` for stacked panels. The executor receives a snapshot of editable files (not the optional usage tab) and an AbortSignal. Synchronous and asynchronous results are supported. Starting a new run, clearing output, resetting code or unmounting aborts the previous signal and ignores stale results. Actual cancellation requires cooperation from the executor.
+
+The renderer receives idle, running, success (typed output), or error state, plus a clear callback. Use any React output component, including an external console. No console dependency is required. The host owns execution and sandboxing; this component does not evaluate code.
+
+[Try explicit execution](/ui/components/preview-code-editor/explicit-execution).
+
+## Toggle the output panel
+
+Both preview modes accept `outputLabel` (for example, "Console") and `defaultOutputOpen`. The toolbar's Show/Hide action collapses the panel without clearing its contents or unmounting the renderer. In live mode, the output sits below the Preview/Code views and remains accessible while switching between them.
+
+For a live preview, pass a zero-argument `renderOutput` alongside `renderPreview`. The host owns the output state and capture mechanism; PreviewCodeEditor never intercepts the global console. Output visibility uses the shared [Preview output slots](/ui/components/preview#toggleable-output), also available in PreviewCode and PreviewInteractive.
+
+```tsx
+<PreviewCodeEditor
+  title="Interactive component"
+  files={files}
+  renderPreview={renderPreview}
+  renderOutput={() => <Console messages={messages} onClear={clear} />}
+  outputLabel="Console"
+  defaultOutputOpen={false}
+/>
+```
+
+[Try a live React console](/ui/components/preview-code-editor/live-console).
+
 ## Styling
 
 The component uses the Preview frame tokens, including `--mf-preview-padding`, and the Monaco editor tokens documented in [Monaco Editor React](/ui/components/monaco-editor-react).
@@ -54,3 +97,4 @@ The component uses the Preview frame tokens, including `--mf-preview-padding`, a
 ## Examples
 
 - [Editable source with Monaco](/ui/components/preview-code-editor/editable-source-with-monaco) shows the integration code, worker setup, editable TSX and CSS, and a live renderer.
+- [Console output](/ui/components/preview-code-editor/console-output) demonstrates the standalone Console package as the output renderer, including structured messages, tables and runtime errors.

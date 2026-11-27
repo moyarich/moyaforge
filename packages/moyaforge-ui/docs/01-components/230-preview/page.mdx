@@ -70,6 +70,28 @@ Use `PreviewContent asChild` and `PreviewSource asChild` to compose one DOM-forw
 
 The `?raw` import is supported by Vite. Preview itself does not depend on Vite or MDX; other consumers can pass source strings. You can omit, reorder, or replace slots. The basic `<Preview source={source}>…</Preview>` shorthand still works.
 
+## Toggleable output
+
+Use the shared output slots to display logs, diagnostics, or any React content. Output visibility is independent of the Preview/Code view.
+
+```tsx
+import {
+  Preview, PreviewHeader, PreviewTitle, PreviewActions,
+  PreviewContent, PreviewOutput, PreviewOutputToggle,
+} from "@moyarich/moyaforge-ui/components/Preview";
+
+<Preview title="Example" outputLabel="Console" defaultOutputOpen={false}>
+  <PreviewHeader>
+    <PreviewTitle>Example</PreviewTitle>
+    <PreviewActions><PreviewOutputToggle /></PreviewActions>
+  </PreviewHeader>
+  <PreviewContent><Example /></PreviewContent>
+  <PreviewOutput><Console messages={messages} onClear={clear} /></PreviewOutput>
+</Preview>
+```
+
+For shorthand composition, use `<Preview output={output} outputLabel="Console">…</Preview>`. The output remains mounted while hidden; toggling does not clear it. The application owns message capture and rendering. Neither Console nor Monaco is required.
+
 ## Styling
 
 Use `--mf-preview-background`, `--mf-preview-border`, `--mf-preview-radius`,

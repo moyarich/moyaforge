@@ -1,0 +1,9 @@
+.mf-preview-output {
+  min-inline-size: 0;
+  padding: var(--mf-preview-output-padding, var(--_mf-preview-padding));
+  border-block-start: 1px solid var(--_mf-preview-border);
+  overflow-wrap: anywhere;
+}
+.mf-preview-output[hidden] {
+  display: none;
+}

@@ -73,6 +73,10 @@ For MDX demonstrations, compile and render the document in the consumer, then pa
 that result as children. Virtual registries and compiler setup stay outside this
 UI component.
 
+## Optional output
+
+Pass `output={<Console messages={messages} onClear={clear} />}`, `outputLabel="Console"` and `defaultOutputOpen={false}` to expose a toggleable output panel between the rendered preview and source files. Controls, metadata and highlighted source remain unchanged. The same [Preview output slots](/ui/components/preview#toggleable-output) are used without introducing Monaco or Console dependencies.
+
 ## Styling
 
 Public defaults are defined in `:root`. Override `--mf-preview-interactive-border`,

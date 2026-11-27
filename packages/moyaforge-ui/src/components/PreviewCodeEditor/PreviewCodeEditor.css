@@ -11,3 +11,16 @@
   --mf-editor-radius: 0;
   --mf-editor-border: transparent;
 }
+
+.mf-preview-code-editor-workspace { min-inline-size: 0; }
+.mf-preview-code-editor-output {
+  border-block-start: 0;
+}
+.mf-preview-code-editor-output > [role="status"] {
+  margin-block-start: 0;
+  font-size: 0.875rem;
+}
+.mf-preview-code-editor-workspace .mf-resizable-panel[hidden],
+.mf-preview-code-editor-workspace .mf-resizable-handle[hidden] {
+  display: none;
+}

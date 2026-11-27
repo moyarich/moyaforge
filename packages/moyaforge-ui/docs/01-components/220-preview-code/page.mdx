@@ -400,3 +400,7 @@ Add `{refresh}` to show a refresh button in the toolbar. It remounts the rendere
 ```
 
 Include `booleanProps: ["refresh"]` in your `preview-code` component mapping. With JSX, use `<PreviewCode title="Fade in" files={files} refresh>...</PreviewCode>`. Refresh is off by default.
+
+## Optional output
+
+Pass `output`, `outputLabel` and `defaultOutputOpen` to `PreviewCode` in React to display a persistent, toggleable output panel alongside the example and its source. These use the same [Preview output slots](/ui/components/preview#toggleable-output); the host owns logging and execution.

@@ -1,6 +1,7 @@
 import "./PreviewInteractive.css";
 import type { ReactNode } from "react";
 import { Settings2, PanelLeft, Code2 } from "lucide-react";
+import { Preview, PreviewHeader, PreviewActions, PreviewContent, PreviewOutput, PreviewOutputToggle } from "../Preview/index.js";
 import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 import {
   HighlightedCode,
@@ -35,6 +36,10 @@ export interface PreviewInteractiveProps {
   primaryFile?: string;
   /** Additional root class for instance styling. */
   className?: string;
+  /** Optional application-owned output, independent of source files. */
+  output?: ReactNode;
+  outputLabel?: string;
+  defaultOutputOpen?: boolean;
 }
 
 /** Reusable demo frame: configuration, rendered content, and highlighted source files. */
@@ -50,6 +55,7 @@ export function PreviewInteractive({
   sourceDescription = "Source files",
   primaryFile,
   className,
+  output, outputLabel, defaultOutputOpen,
 }: PreviewInteractiveProps) {
   const orderedFiles = Object.entries(files).sort(
     ([left], [right]) =>
@@ -78,14 +84,19 @@ export function PreviewInteractive({
       </section>
     );
   return (
-    <section
+    <Preview
       className={["preview-interactive", className].filter(Boolean).join(" ")}
-      aria-label={title}
+      title={title}
+      outputLabel={outputLabel}
+      defaultOutputOpen={defaultOutputOpen}
     >
-      <header className="preview-interactive-header">
-        <strong>{title}</strong>
-        {description != null && <p>{description}</p>}
-      </header>
+      <PreviewHeader className="preview-interactive-header">
+        <div>
+          <strong>{title}</strong>
+          {description != null && <p>{description}</p>}
+        </div>
+        {output != null && <PreviewActions><PreviewOutputToggle /></PreviewActions>}
+      </PreviewHeader>
       {(controlsContent || metadataContent) && (
         <div className="preview-interactive-configuration">
           {controlsContent && metadataContent ? (
@@ -114,6 +125,7 @@ export function PreviewInteractive({
           )}
         </div>
       )}
+      <PreviewContent asChild>
       <section
         className="preview-interactive-row"
         aria-label={`${title} result`}
@@ -125,6 +137,8 @@ export function PreviewInteractive({
         </div>
         {children}
       </section>
+      </PreviewContent>
+      {output != null && <PreviewOutput className="preview-interactive-row">{output}</PreviewOutput>}
       <section
         className="preview-interactive-row preview-interactive-code"
         aria-label={`${title} source`}
@@ -144,6 +158,6 @@ export function PreviewInteractive({
           ))}
         </CodeGroup>
       </section>
-    </section>
+    </Preview>
   );
 }

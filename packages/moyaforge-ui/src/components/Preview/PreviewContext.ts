@@ -5,6 +5,10 @@ export interface PreviewState {
   view: View;
   setView: (view: View) => void;
   contentId: string;
+  outputId: string;
+  outputOpen: boolean;
+  setOutputOpen: (open: boolean) => void;
+  outputLabel: string;
   source?: string;
 }
 export const PreviewContext = createContext<PreviewState | null>(null);

@@ -12,3 +12,6 @@ export type { PreviewCodeToggleProps } from "./PreviewCodeToggle.js";
 export type { PreviewSourceProps } from "./PreviewSource.js";
 
 export * from "./PreviewRefreshButton.js";
+
+export * from "./PreviewOutput.js";
+export * from "./PreviewOutputToggle.js";

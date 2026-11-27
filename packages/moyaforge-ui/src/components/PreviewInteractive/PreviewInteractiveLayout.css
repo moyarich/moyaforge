@@ -91,3 +91,13 @@
     border-top: 1px solid var(--mf-preview-interactive-border);
   }
 }
+
+/* Preserve the interactive frame's layout while sharing Preview state and slots. */
+.mf-preview.preview-interactive {
+  margin: 0;
+  --mf-preview-border: var(--mf-preview-interactive-border);
+}
+.preview-interactive-header.mf-preview-toolbar {
+  border-bottom: 0;
+  background: transparent;
+}
