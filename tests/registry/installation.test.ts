@@ -24,7 +24,7 @@ test("each registry item installs independently at its declared targets", async 
       expect(plan.files.length, item.name).toBeGreaterThan(0);
       for (const file of plan.files) {
         const target = relative(root, file.path).replaceAll("\\", "/");
-        expect(target, item.name).toMatch(/^src\/components\/(?:ui|utils|hooks)\//);
+        expect(target, item.name).toMatch(/^src\/components\/(?:ui|utils|hooks|styles)\//);
         expect(target, item.name).not.toContain("/ui/components/");
       }
       await applyPlan(plan, { root });

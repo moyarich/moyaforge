@@ -146,12 +146,12 @@ export async function planComponentInstallation({
     }
     for (const file of item.files ?? []) {
       // Component files follow the configured UI directory; sibling shared
-      // utilities remain siblings so relative imports continue to resolve.
+      // utilities, hooks and styles remain siblings so relative imports resolve.
       const targetPath = file.target;
       if (typeof file.path !== "string" || typeof targetPath !== "string")
         throw Error(`Unsupported registry file target: ${targetPath}`);
       const uiPrefix = `~/${defaultDirectory}/`;
-      const shared = /^(?:~\/src\/components\/)(utils|hooks)\//.exec(targetPath);
+      const shared = /^(?:~\/src\/components\/)(utils|hooks|styles)\//.exec(targetPath);
       let destination: string;
       let suffix: string;
       if (targetPath.startsWith(uiPrefix)) {
