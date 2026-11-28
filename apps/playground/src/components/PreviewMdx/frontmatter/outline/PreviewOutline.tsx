@@ -1,6 +1,7 @@
 import { PreviewSidebarGroup } from "../sidebar-group/PreviewSidebarGroup.js";
 import { VirtualPage } from "../../VirtualPage.js";
 import {
+  useEffect,
   useId,
   useRef,
   useState,
@@ -20,34 +21,15 @@ import {
   type TableOfContentsItem,
 } from "../../../../../../../packages/moyaforge-ui/src/components/TableOfContents/index.js";
 import { PreviewInteractive } from "../../../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
-import { articleSections, createFrontmatterDemo } from "../frontmatter-demo.js";
+import { createFrontmatterDemo } from "../frontmatter-demo.js";
+import { extractPageHeadings } from "../../../../../../../packages/moyaforge-mdx/src/content/headings.js";
 
-function createHeadings(prefix: string, file: string): TocHeading[] {
-  if (file !== "01-installation/page.md") {
-    const landing = file === "page.md";
-    return [
-      {
-        id: `${prefix}-${landing ? "guide" : "authoring"}`,
-        value: landing ? "Guide" : "Authoring",
-        depth: 1,
-      },
-    ];
-  }
-  const roots: TocHeading[] = [];
-  const stack: TocHeading[] = [];
-  for (const section of articleSections) {
-    const heading: TocHeading = {
-      id: `${prefix}-${section.id}`,
-      value: section.title,
-      depth: section.depth,
-      children: [],
-    };
-    while (stack.length && stack[stack.length - 1].depth >= heading.depth)
-      stack.pop();
-    (stack.at(-1)?.children ?? roots).push(heading);
-    stack.push(heading);
-  }
-  return roots;
+function prefixHeadings(headings: TocHeading[], prefix: string): TocHeading[] {
+  return headings.map((heading) => ({
+    ...heading,
+    id: `${prefix}-${heading.id}`,
+    children: prefixHeadings(heading.children ?? [], prefix),
+  }));
 }
 
 function flattenHeadings(
@@ -82,10 +64,19 @@ export default function PreviewOutline() {
   const { files, registry } = createFrontmatterDemo({ page: { toc } });
   const page = registry.byPath.get(currentPath)!;
   const filename = `${page.source}/${page.file}`;
-  const resolved = getTableOfContents(
-    createHeadings(prefix, page.file),
-    page.toc,
-  );
+  const source = files[filename];
+  const [headings, setHeadings] = useState<TocHeading[]>([]);
+  useEffect(() => {
+    let active = true;
+    setHeadings([]);
+    void extractPageHeadings(source, filename).then((result) => {
+      if (active) setHeadings(prefixHeadings(result, prefix));
+    });
+    return () => {
+      active = false;
+    };
+  }, [source, filename, prefix]);
+  const resolved = getTableOfContents(headings, page.toc);
   const placement = resolved.options.placement;
 
   function navigateToPage(path: string) {
