@@ -2,6 +2,14 @@
 
 Headless documentation framework helpers for React applications. The package provides routing, documentation links, framework config and content helpers without bundling the UI library.
 
+## Installation
+
+```sh
+npm install @moyarich/moyaforge @moyarich/moyaforge-mdx
+```
+
+For a ready-to-use project, see the [CLI guide](https://github.com/moyarich/moyaforge/tree/main/packages/moyaforge-cli).
+
 ## Public entry points
 
 - `@moyarich/moyaforge` — `defineMoyaForgeConfig`, content/navigation helpers, `RegistryRouteView`, and `HeadlessDocsRoutes`.
@@ -20,7 +28,7 @@ import { DocumentationLink } from "@moyarich/moyaforge/headless";
 // map MDX anchors to DocumentationLink in your MDX provider.
 ```
 
-## Package responsibilities
+## Related packages
 
 - `@moyarich/moyaforge-mdx` owns Markdown/MDX compilation, content discovery and Vite registry plugins.
 - `@moyarich/moyaforge-ui` supplies separately installable UI components and styles.
