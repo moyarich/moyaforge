@@ -1,0 +1,10 @@
+{
+  "extends": "./apps/playground/tsconfig.json",
+  "include": [
+    "docs/**/*",
+    "packages/*/docs/**/*",
+    "apps/playground/src/**/*",
+    "apps/playground/tests/**/*",
+    "apps/playground/*.ts"
+  ]
+}
