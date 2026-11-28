@@ -41,6 +41,21 @@ export interface PreviewComponentOptions {
   ) => string | undefined;
 }
 
+/**
+ * Collect source tabs and renderable nodes independently for one preview directive.
+ * Capture original authored ranges (including masked raw styles and scripts),
+ * while keeping named fences and local sources in separate tabs. Raw scripts
+ * remain source-only; reviewed raw CSS requires the host module registrar.
+ * @param selected - Host mapping and optional compiler/module resolution hooks.
+ * @param children - Parsed directive body nodes.
+ * @param header - Authored preview options.
+ * @param file - Compiler file carrying captured assets and generated imports.
+ * @param source - Original, unmodified authored document.
+ * @param attributes - Component attributes to populate with source metadata.
+ * @param filePath - Authored filename used for local references and diagnostics.
+ * @param container - Outer directive node used for full source-range recovery.
+ * @returns Nodes permitted to render in the live preview.
+ */
 export function collectPreviewContent(
   selected: PreviewComponentOptions,
   children: Node[],

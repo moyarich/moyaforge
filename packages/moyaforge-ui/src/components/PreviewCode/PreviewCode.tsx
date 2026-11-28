@@ -18,6 +18,7 @@ import {
 } from "../Preview/index.js";
 import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 
+/** Authored source tab; code is display text rather than a runtime module. */
 export type PreviewFile = {
   /** Tab label, e.g. "Example.tsx". Must be unique within a preview. */
   label: string;
@@ -29,6 +30,7 @@ export type PreviewFile = {
 /** [from, to]. Strings replace every occurrence; RegExps use their own flags. */
 export type Replacement = [from: string | RegExp, to: string];
 
+/** Live example children and their independently supplied source files. */
 export type PreviewCodeProps = {
   title?: string;
   /** The first file is the "primary" one used for the copy button. */
@@ -49,6 +51,7 @@ export type PreviewCodeProps = {
 
 /* ---------- Default replacement ---------- */
 
+/** Default portable import rewrites for displayed documentation snippets. */
 export const CODE_REPLACEMENTS: Replacement[] = [
   // any "../../.../src/components/<path>.js" -> "@/components/ui/<path>"
   [/(?:\.\.\/)+src\/components\/([^"']+?)\.js/g, "@/components/ui/$1"],
@@ -56,6 +59,11 @@ export const CODE_REPLACEMENTS: Replacement[] = [
   [/(["'])\.\.\/setup\1/g, "$1./setup$1"],
 ];
 
+/**
+ * Render live React children separately from the authored source tabs.
+ * Portable replacements affect displayed and copied code only, never the
+ * rendered component or its imports. The first file supplies the copy value.
+ */
 export function PreviewCode({
   title = "Example",
   files,
@@ -131,6 +139,7 @@ export function PreviewCode({
   );
 }
 
+/** Apply ordered display-only replacements without changing the original source. */
 export function applyReplacements(
   code: string,
   replacements: readonly Replacement[],

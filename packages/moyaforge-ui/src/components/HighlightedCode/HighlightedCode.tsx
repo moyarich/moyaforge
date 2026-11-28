@@ -96,6 +96,7 @@ function sourceSegments(code: string, lang: string): HighlightSegment[] {
   return segments;
 }
 
+/** Source text, grammar selection and optional reusable Shiki highlighter. */
 export interface HighlightedCodeProps {
   code: string;
   language?: string;
@@ -103,7 +104,12 @@ export interface HighlightedCodeProps {
   highlighter?: HighlighterCore;
 }
 
-/** Highlight source strings supplied at runtime, preserving their exact text. */
+/**
+ * Highlight runtime source as escaped React text, preserving exact line endings.
+ * MDX raw style/script bodies use CSS/JavaScript grammars without executing code.
+ * Browser regression tests should assert computed token colors inside the body,
+ * not merely the presence of highlighted tags or token spans.
+ */
 export function HighlightedCode({
   code,
   language = DEFAULT_LANGUAGE,

@@ -1,5 +1,6 @@
 import { previewOpening } from "../remark-directive/directive-attributes.js";
 
+/** A preview-local raw asset captured before MDX parses its contents. */
 export interface InlinePreviewAsset {
   /** Only preview-local raw style and script elements are transformed. */
   tag: "style" | "script";

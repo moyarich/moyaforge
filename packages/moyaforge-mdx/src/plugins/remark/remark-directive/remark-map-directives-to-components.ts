@@ -177,7 +177,11 @@ function transform<Mapping extends DirectiveComponent>(
   return node;
 }
 
-/** Transform only configured directives; all others remain generic HTML containers. */
+/**
+ * Map configured directive nodes to host MDX components; other directives remain
+ * generic HTML containers. Resolve nested components and transform preview content
+ * before emitting JSX, preserving the source information needed by the compiler.
+ */
 export function remarkRenderMappedDirectives<Mapping extends DirectiveComponent>(
   mappings: Record<string, Mapping>,
   transformContent: DirectiveContentTransform<Mapping> = (_mapping, children) => children,

@@ -120,10 +120,10 @@ export const codePreviewComponentVirtualModuleId =
 export const codePreviewSourceVirtualModuleId =
   "virtual:moyaforge-mdx/preview-code-sources";
 
-/** Name used to identify the Vite preview-code integration plugin. */
 /** Import a registered example as a component without a runtime provider adapter. */
 export const codePreviewExampleModulePrefix = "virtual:moyaforge-mdx/preview-example/";
 
+/** Name used to identify the Vite preview-code integration plugin. */
 export const codePreviewPluginName = "moyaforge-mdx:preview-code";
 
 const componentModuleId = `\0${codePreviewComponentVirtualModuleId}`;

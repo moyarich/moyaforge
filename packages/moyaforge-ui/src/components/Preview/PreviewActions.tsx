@@ -1,6 +1,7 @@
 import "./PreviewActions.css";
 import type { ComponentPropsWithoutRef } from "react";
 
+/** Group preview toolbar controls without owning their state. */
 export function PreviewActions({
   className,
   ...props

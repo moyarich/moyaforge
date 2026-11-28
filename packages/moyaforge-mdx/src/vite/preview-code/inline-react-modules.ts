@@ -6,6 +6,13 @@ import type { InlinePreviewOptions } from "../../plugins/remark/preview-code/inl
 
 const prefix = "virtual:moyaforge-mdx/react-preview/";
 
+/**
+ * Register isolated preview modules and their virtual sibling files for Vite.
+ * IDs incorporate the authored filename, source and selected file contents.
+ * Resolve sibling imports within the example, then allow the host to resolve
+ * other imports relative to the authored page. Load MDX through its compiler,
+ * JS/TS/JSX/TSX through Oxc, and CSS/JSON as generated modules.
+ */
 export function createInlineReactModules() {
   const modules = new Map<
     string,

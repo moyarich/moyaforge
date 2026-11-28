@@ -1,6 +1,7 @@
 import "./PreviewFooter.css";
 import type { ComponentPropsWithoutRef } from "react";
 
+/** Render the footer slot for supplementary preview content. */
 export function PreviewFooter({
   className,
   ...props

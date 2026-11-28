@@ -9,7 +9,11 @@ export type DirectiveHeaderRule = (
   width: number,
 ) => (DirectiveHeader & { type: string }) | undefined;
 
-/** Normalize supported container headers before MDX reads braces as expressions. */
+/**
+ * Normalize supported container headers before MDX reads braces as expressions.
+ * Preserve authored offsets across the parse-only transformation so source tabs
+ * and diagnostics refer to the original document, not the masked input.
+ */
 export function remarkDirectiveParser(
   this: Processor,
   rules: readonly DirectiveHeaderRule[],
