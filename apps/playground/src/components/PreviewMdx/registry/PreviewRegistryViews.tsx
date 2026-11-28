@@ -3,21 +3,19 @@ import "./PreviewRegistryViews.css";
 import { useState, type ChangeEvent } from "react";
 import { PreviewInteractive } from "../../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
 import { createVirtualRegistry } from "../virtual-registry.js";
+import { createFrontmatterFiles } from "../frontmatter/frontmatter-demo.js";
 import { PreviewFrontmatterSite } from "../frontmatter/PreviewFrontmatterSite.js";
 import type { NavigationMode } from "../../../../../../packages/moyaforge-mdx/src/registry/index.js";
 
 export default function PreviewRegistryViews() {
   const [source, setSource] = useState("docs");
   const [navigation, setNavigation] = useState<NavigationMode>("visible");
-  const { files, registry } = createVirtualRegistry({
-    [source]: {
-      "page.md":
-        "---\ntitle: Guide\nsidebar:\n  group: true\n  collapsible: true\n  defaultOpen: true\n---\n\n# Guide\n\nChoose a page in the sidebar to get started.\n",
-      "01-installation/page.md": `---\ntitle: Installation\nnavigation: ${navigation}\n---\n\n# Installation\n\nInstall dependencies and run your development server.\n`,
-      "02-authoring/page.md":
-        "---\ntitle: Authoring\n---\n\n# Authoring\n\nWrite one useful guide at a time.\n",
-    },
-  });
+  const documents = Object.fromEntries(
+    Object.entries(createFrontmatterFiles({ page: { navigation } })).map(
+      ([filename, content]) => [filename.slice("docs/".length), content],
+    ),
+  );
+  const { files, registry } = createVirtualRegistry({ [source]: documents });
   function updateSource(event: ChangeEvent<HTMLSelectElement>) {
     setSource(event.currentTarget.value);
   }
