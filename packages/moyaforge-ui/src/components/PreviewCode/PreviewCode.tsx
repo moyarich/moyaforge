@@ -22,6 +22,7 @@ import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 export type PreviewFile = {
   /** Tab label, e.g. "Example.tsx". Must be unique within a preview. */
   label: string;
+  /** Authored source text displayed in the tab and used for copying when primary. */
   code: string;
   /** Optional grammar override; otherwise inferred from the filename. */
   language?: string;
@@ -32,6 +33,7 @@ export type Replacement = [from: string | RegExp, to: string];
 
 /** Live example children and their independently supplied source files. */
 export type PreviewCodeProps = {
+  /** Preview heading and source group label. @default "Example" */
   title?: string;
   /** The first file is the "primary" one used for the copy button. */
   files: readonly PreviewFile[];
@@ -43,9 +45,13 @@ export type PreviewCodeProps = {
   sourceOnly?: boolean;
   /** Show a button that remounts the rendered example. Defaults to false. */
   refresh?: boolean;
+  /** Live example content, supplied independently from the displayed source. */
   children: ReactNode;
+  /** Optional application-owned output shown in a separate panel. */
   output?: ReactNode;
+  /** Label for the output panel and its toggle. */
   outputLabel?: string;
+  /** Initial visibility of the optional output panel. */
   defaultOutputOpen?: boolean;
 };
 
@@ -63,6 +69,13 @@ export const CODE_REPLACEMENTS: Replacement[] = [
  * Render live React children separately from the authored source tabs.
  * Portable replacements affect displayed and copied code only, never the
  * rendered component or its imports. The first file supplies the copy value.
+ * @throws If no source files are supplied or labels are duplicated.
+ * @example
+ * ```tsx
+ * <PreviewCode files={[{ label: "Example.tsx", code: "<button>Run</button>" }]}>
+ *   <button>Run</button>
+ * </PreviewCode>
+ * ```
  */
 export function PreviewCode({
   title = "Example",

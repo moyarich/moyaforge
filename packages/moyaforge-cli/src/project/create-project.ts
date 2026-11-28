@@ -6,6 +6,13 @@ import {
   type InstallOptions,
 } from "./install-plan.js";
 
+/**
+ * Scaffold a documentation project with the components required by its template.
+ * Combines configuration, starter files and component dependencies into one plan.
+ * @param options - Template, project location, search and installation controls.
+ * @returns A promise that resolves after the plan is reported or applied.
+ * @example await createProject({ template: "docs", dryRun: true });
+ */
 export async function createProject(options: InstallOptions): Promise<void> {
   const { root, registry, directory } = await resolveConsumer(options);
   const components = await planComponentInstallation({

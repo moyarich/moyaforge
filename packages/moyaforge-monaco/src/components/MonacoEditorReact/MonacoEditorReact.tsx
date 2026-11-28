@@ -4,7 +4,10 @@ import type { EditorProps, OnMount } from "@monaco-editor/react";
 import { MonacoFileSession, type MonacoFileSessionProps } from "../MonacoFileSession/MonacoFileSession.js";
 import { ReactMonacoSourceEditor } from "./ReactMonacoSourceEditor.js";
 
-/** Configuration for the headless editor runtime. */
+/**
+ * Multi-file workspace props combined with native React Monaco editor options.
+ * The workspace owns model paths, content, language and model disposal.
+ */
 export interface MonacoEditorReactProps extends Omit<
   MonacoFileSessionProps,
   "renderEditor"
@@ -12,7 +15,13 @@ export interface MonacoEditorReactProps extends Omit<
   // The file session owns model identity, content, language and disposal.
 }
 
-/** Optional real Monaco editor with independent models, file drafts and host-owned persistence. */
+/**
+ * Render a multi-file React Monaco editor with independent models and local drafts.
+ * Configure the host's Monaco runtime before mounting. The consumer owns
+ * persistence through file-change callbacks; models are disposed on unmount.
+ * @param props - Workspace files, active file, change callbacks and native editor settings.
+ * @throws If multiple files resolve to the same normalized model path.
+ */
 export function MonacoEditorReact({
   height = 320,
   width = "100%",

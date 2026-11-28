@@ -10,8 +10,11 @@ import { useWorkerFactory, type WorkerFactoryConfig } from "monaco-languageclien
 import { configureTypeScript } from "./configureTypeScript.js";
 import { createMonacoVscodeWorkerConfig } from "./createMonacoVscodeWorkerConfig.js";
 
+/** Worker factory configuration for the VS Code-compatible Monaco runtime. */
 export interface TypeFoxWorkerConfig extends WorkerFactoryConfig {
+  /** Optional TypeScript language-service configuration and extra declarations. */
   typescript?: {
+    /** Compiler options merged with the runtime's existing TypeScript defaults. */
     compilerOptions?: CompilerOptions;
     /** Declaration source keyed by its virtual file URI. */
     declarationLibraries?: Readonly<Record<string, string>>;

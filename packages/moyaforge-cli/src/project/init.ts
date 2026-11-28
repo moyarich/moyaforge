@@ -6,6 +6,13 @@ import {
 } from "./install-plan.js";
 import { createProject } from "./create-project.js";
 
+/**
+ * Initialize component registry configuration in an existing project.
+ * Supplying a template, mode or enabled search delegates to project scaffolding.
+ * @param options - Consumer project and installation controls.
+ * @returns A promise that resolves when initialization completes.
+ * @example await initializeProject({ cwd: ".", dryRun: true });
+ */
 export async function initializeProject(
   options: InstallOptions,
 ): Promise<void> {

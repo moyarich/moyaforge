@@ -12,7 +12,7 @@ import {
   type MonacoFileRenderProps,
 } from "../MonacoFileSession/MonacoFileSession.js";
 
-/** Configuration for the headless editor runtime. */
+/** Workspace props and native TypeFox editor options for a VS Code-compatible editor. */
 export interface MonacoEditorTypeFoxProps extends Omit<
   MonacoFileSessionProps,
   "renderEditor"
@@ -21,6 +21,7 @@ export interface MonacoEditorTypeFoxProps extends Omit<
   height?: number | string;
   /** Container width; defaults to 100%. */
   width?: number | string;
+  /** Monaco theme override; otherwise follows the surrounding editor theme. */
   theme?: string;
   /** Native Monaco construction options; file locks take precedence. */
   options?: editor.IStandaloneEditorConstructionOptions;
@@ -141,7 +142,13 @@ function TypeFoxEditor({
   );
 }
 
-/** Multi-file editor backed by TypeFox's Monaco and VS Code services. */
+/**
+ * Render a multi-file editor backed by TypeFox's Monaco and VS Code services.
+ * The host configures workers, and each workspace assigns unique virtual file
+ * URIs. File change callbacks allow the consumer to persist edits.
+ * @param props - Workspace files, TypeFox settings and editor lifecycle callbacks.
+ * @throws If files resolve to duplicate normalized model paths.
+ */
 export function MonacoEditorTypeFox({
   height = 320,
   width = "100%",

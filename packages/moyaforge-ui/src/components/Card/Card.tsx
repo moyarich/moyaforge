@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import "./Card.css";
 
+/** Card content, appearance and native div attributes (except the native title). */
 export interface CardProps extends Omit<ComponentPropsWithoutRef<"div">, "title"> {
   /** Optional card heading. */
   title?: ReactNode;
@@ -12,7 +13,14 @@ export interface CardProps extends Omit<ComponentPropsWithoutRef<"div">, "title"
   compact?: boolean;
 }
 
-/** A content card for React, Markdown and nested documentation examples. */
+/**
+ * Group related documentation content in a styled card with an optional header.
+ * Native div attributes are forwarded to the root element.
+ * @example
+ * ```tsx
+ * <Card title="Getting started" variant="filled">Install the package.</Card>
+ * ```
+ */
 export function Card({
   title,
   description,
