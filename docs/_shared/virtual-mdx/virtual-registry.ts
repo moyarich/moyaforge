@@ -15,7 +15,7 @@ import { validatePageFrontmatter } from "../../../packages/moyaforge-mdx/src/reg
  * @example
  * ```ts
  * const sources: VirtualSources = {
- *   guide: { "intro/page.md": "---\\ntitle: Introduction\\n---\\n# Introduction" },
+ *   guide: { "intro/page.md": "---\ntitle: Introduction\n---\n# Introduction" },
  * };
  * ```
  */
