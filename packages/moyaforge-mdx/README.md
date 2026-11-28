@@ -1,8 +1,14 @@
 # @moyarich/moyaforge-mdx
 
-Independent Markdown and MDX compiler conventions shared by Console, moyaForge, css-expand-collapse, and css-color-parser.
+Compile Markdown and MDX, discover documentation pages, and generate navigation and tables of contents for your site. Use the compiler independently or integrate it with Vite.
 
-This package does **not** depend on `@moyarich/console` or `@moyarich/moyaforge`.
+## Installation
+
+```sh
+npm install @moyarich/moyaforge-mdx @mdx-js/rollup
+```
+
+## Configure MDX
 
 ```ts
 import { createMdxOptions } from "@moyarich/moyaforge-mdx";
@@ -161,11 +167,11 @@ Input heading trees use `{ id, value, depth, children? }`, with anchor IDs suppl
 
 ## Internal link validation
 
-`validateInternalLinks(documents, registry, headings)` checks authored Markdown links against the normalized route inventory and extracted heading IDs. It returns structured diagnostics with source file, original href, and `missing-page`, `missing-anchor`, or `invalid-link` reason. Relative route URLs resolve from the page's canonical directory route. Relative Markdown source links resolve from the authored file location. External links, images, and fenced code are excluded. The helper is opt-in for consumers. The playground runs link checking in CI, including static `href` attributes on MDX anchor elements. Dynamic JSX expressions cannot be resolved statically.
+`validateInternalLinks(documents, registry, headings)` checks authored Markdown links against the normalized route inventory and extracted heading IDs. It returns structured diagnostics with source file, original href, and `missing-page`, `missing-anchor`, or `invalid-link` reason. Relative route URLs resolve from the page's canonical directory route. Relative Markdown source links resolve from the authored file location. External links, images, and fenced code are excluded. The helper is opt-in for consumers. Literal MDX anchor links are supported. Dynamic JSX expressions cannot be resolved statically.
 
 ## Validate links during checks
 
-`checkContentLinks(registryConfig, appRoot)` scans registered pages and invokes `validateInternalLinks` against their normalized routes and extracted heading IDs. It returns diagnostic objects suitable for CI reporting. `formatLinkIssues()` renders them for logs. The playground command `npm run check:links --workspace @moyarich/moyaforge-playground` loads its own `registry.config.ts` through Vite and exits with status 1 when invalid links are found. The root `npm run checks` includes this validation. These checks cover Markdown links and literal MDX `<a href="...">` links, including anchor targets and disabled pages. External URLs and dynamic JSX `href` expressions are not validated.
+`checkContentLinks(registryConfig, appRoot)` scans registered pages and invokes `validateInternalLinks` against their normalized routes and extracted heading IDs. It returns diagnostic objects suitable for CI reporting. `formatLinkIssues()` renders them for logs. Run this helper from your own check script and exit with a nonzero status when diagnostics are returned. These checks cover Markdown links and literal MDX `<a href="...">` links, including anchor targets and disabled pages. External URLs and dynamic JSX `href` expressions are not validated.
 
 ## MDX-aware heading discovery
 
@@ -188,8 +194,7 @@ sidebar:
 ```
 
 The heading opens the landing page; its adjacent disclosure button expands or
-collapses the child navigation independently. `sidebar.label` optionally overrides
-the section heading text; otherwise it uses `title`. `defaultOpen` defaults to
+collapses the child navigation independently. The section heading uses `title`. `defaultOpen` defaults to
 `true`, and `collapsible` defaults to `false`. Without `sidebar.group: true`, the
 source configuration supplies the section heading and the landing page remains
 an ordinary navigation item. Hidden or disabled pages cannot supply a linked
@@ -236,7 +241,7 @@ const options = createMdxOptions({
 });
 ```
 
-The Shiki rehype plugin runs after heading slugs and table-of-contents extraction, but before any additional host `additionalRehypePlugins`. It highlights **static** code blocks in the Markdown/MDX compile pipeline. Interactive editors, Monaco, terminal output, and runnable snippets should be rendered through their own MDX components rather than this static highlighter; avoid applying a second syntax highlighter to their output. This option does not enable highlighting in the playground unless that app opts in.
+The Shiki rehype plugin runs after heading slugs and table-of-contents extraction, but before any additional host `additionalRehypePlugins`. It highlights **static** code blocks in the Markdown/MDX compile pipeline. Interactive editors, Monaco, terminal output, and runnable snippets should be rendered through their own MDX components rather than this static highlighter; avoid applying a second syntax highlighter to their output.
 
 
 ### Vite client types

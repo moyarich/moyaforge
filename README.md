@@ -1,29 +1,58 @@
 # MoyaForge
 
-MoyaForge provides reusable infrastructure for repository-owned documentation sites,
-interactive playgrounds, MDX rendering, and GitHub Pages deployment.
+Build documentation sites and interactive playgrounds for your projects using React, Vite, Markdown and MDX. Keep your documentation, examples, branding and application code in your own repository.
 
-It does **not** own or generate the files that describe or showcase a consuming
-repository. Those files stay with that repository.
+[Explore the live playground](https://moyarich.github.io/moyaforge/) · [Read the guides](docs/page.mdx) · [Browse UI components](packages/moyaforge-ui/docs/page.mdx)
 
-## Package
+## Quick start
 
-`packages/moyaforge` is the reusable `@moyarich/moyaforge` package.
+Requires Node.js 24.11+ and npm. From your project directory:
 
-It provides:
+```sh
+npx @moyarich/moyaforge-cli@latest init --template docs
+npm run dev
+```
 
-- MoyaForge configuration helpers.
-- MDX compilation through `@mdx-js/mdx`.
-- A component registry for MDX components.
-- Consumer component registration.
-- Consumer overrides of MoyaForge-provided components.
-- Reusable documentation and playground infrastructure.
-- Console-backed output surfaces through `@moyarich/console`, with Console kept as the lower-level independent package.
+Choose a template for your project:
 
-MoyaForge components are defaults, not locked implementations. Consumers can
-register a component under the same MDX name to replace the built-in component.
+| Template | Use it for |
+| --- | --- |
+| `docs` | A documentation site |
+| `playground` | Interactive examples and demos |
+| `hybrid` | Documentation with a playground route |
+| `existing` | Adding MoyaForge to an existing React app |
 
-## Recommended consuming-repository layout
+Add `--search` when initializing a site to enable SQLite-backed search. See the [CLI guide](packages/moyaforge-cli/README.md) for options.
+
+## What you can do
+
+- Write Markdown and MDX pages with frontmatter, navigation and tables of contents.
+- Showcase interactive React examples and source code.
+- Install editable UI components and customize their styles.
+- Add documentation search and browser-based code editors.
+- Deploy your site to GitHub Pages.
+
+## Packages
+
+| Package | Purpose |
+| --- | --- |
+| [@moyarich/moyaforge](packages/moyaforge/README.md) | React documentation routing and configuration |
+| [@moyarich/moyaforge-cli](packages/moyaforge-cli/README.md) | Scaffold sites and install components |
+| [@moyarich/moyaforge-mdx](packages/moyaforge-mdx/README.md) | Markdown/MDX compilation and content discovery |
+| [@moyarich/moyaforge-ui](packages/moyaforge-ui/README.md) | React documentation components and styles |
+| [@moyarich/moyaforge-monaco](packages/moyaforge-monaco/README.md) | Monaco and TypeFox editor integrations |
+| [@moyarich/moyaforge-search-sqlite](packages/moyaforge-search-sqlite/README.md) | SQLite-backed search |
+
+## Install editable components
+
+```sh
+npx @moyarich/moyaforge-cli@latest init
+npx @moyarich/moyaforge-cli@latest add code-block
+```
+
+Components and required styles are copied into your project. You can edit them without changing MoyaForge itself. Existing modifications are preserved unless you request `--overwrite`.
+
+## Organize your documentation
 
 ```text
 apps/
@@ -87,97 +116,15 @@ jobs:
 The reusable workflow installs dependencies, configures GitHub Pages, runs the caller's
 documentation build, uploads the caller's output directory, and deploys it.
 
-## Console package installation
+## Try the CLI from GitHub
 
-MoyaForge consumes the published `@moyarich/console@^0.1.0` package from the public npm registry. Console is an independent, lower-level dependency, and its `@moyarich/console-core` dependency is installed automatically.
-
-```sh
-npm install @moyarich/moyaforge @moyarich/console
-```
-
-The repository's `.npmrc` routes `@moyarich` packages to the public npm registry. Public package installation does not require a GitHub Packages token or extra Actions permissions.
-
-## Component registry maintenance
-
-The installable UI source of truth is `packages/moyaforge-ui/src/components/`.
-`bin/build-registry.ts` generates `registry.json` for component installs.
-Components import their own CSS. Component-local styles stay beside their source;
-shared stylesheets, hooks and utilities install into sibling `styles/`, `hooks/`
-and `utils/` directories. The registry includes these files through the importing
-component's source graph, without requiring separate stylesheet installation. The manifest is committed to this repository.
-
-To regenerate locally before submitting a PR:
-
-```sh
-npm ci --ignore-scripts --include=optional
-npm run registry:build
-npm run registry:check
-npx --yes shadcn@4.21.5 registry validate ./registry.json
-```
-
-Include changes to `registry.json` in the same PR as
-the source changes. CI checks registry freshness on pull requests.
-
-The [Build component registry](.github/workflows/build-component-registry.yml)
-workflow also runs automatically when relevant source, generator, or dependency
-files change on `main`. To run it manually, open **Actions → Build component
-registry → Run workflow**, select the branch, and run it. It checks out the
-selected branch's latest tip, regenerates and validates the registry, and only
-commits if generated files changed. The bot commit stages **only**
-`registry.json`; a clean run creates no commit.
-
-The workflow uses the default `GITHUB_TOKEN` with `contents: write` and a
-normal non-force push. Repository branch protection must permit the
-`github-actions[bot]` push for generated changes; the workflow does **not**
-bypass protection. A rejected push is a failure to resolve through the normal
-PR process. Runs are serialized per branch, and a concurrent update cannot be
-overwritten with a force push. Validation failures stop before any commit.
-There are no npm tokens or publish steps in this workflow.
-
-## Repository workflows
-
-This npm-workspace repository follows the Console release model and consumes workflow definitions from [moyarich/reusable-workflows](https://github.com/moyarich/reusable-workflows) at `main`.
-
-- **CI:** build, test, typecheck, and inspect the publishable MoyaForge package; separately build the private playground.
-- **Release Drafter:** draft package-specific GitHub Releases from changes to `packages/**`.
-- **Release package:** manually select a package and version resolution strategy; defaults to a dry run.
-- **Publish npm package:** manually publish the public npm package; defaults to a dry run. Configure the repository secret `_NPM_TOKEN` for live npm publication.
-- **Reset / Restore:** manual, dry-run-first release recovery for package-scoped releases and tags.
-- **Pages:** deploy `apps/playground/dist` to GitHub Pages via the shared reusable Pages workflow.
-- **Self-heal:** fix formatting and synchronize the npm lockfile on non-`main` branches.
-
-Local setup and testing instructions live in [Development](docs/04-development/page.mdx). The private playground renders repository-owned [Docs](docs/page.mdx) and the [UI component gallery](packages/moyaforge-ui/docs/page.mdx); component examples stay with their component documentation. Public package changelogs and release drafts are reserved for user-facing package behavior; workflow and test maintenance is documented under Development.
-
-The committed root `package-lock.json` is maintained by the shared lockfile self-heal workflow. Publishable packages live under `packages/`. `apps/playground` remains private and must not be selected for releases.
-
-The GitHub Pages site is built from the private `apps/playground` workspace; package releases target the four publishable workspaces under `packages/` (the UI framework, MDX tooling, SQLite search adapter, and CLI).
-
-## Content discovery vs. component installation
-
-`apps/playground/registry.config.ts` configures authored Markdown/MDX content sources, their navigation, and lazy page loading. The root `registry.json` describes **installable React component source**, generated from `packages/moyaforge-ui/src/components` for the native CLI and shadcn. They are separate registries and cannot be interchanged. See [registry architecture](README-registry.md) and [UI component examples](packages/moyaforge-ui/docs/page.mdx).
-
-## CLI and editable components
-
-The separate `@moyarich/moyaforge-cli` package initializes consumer applications
-and installs editable components from this repository. The React framework stays
-publicly available on npm; it no longer owns the CLI executable.
-
-See [CLI installation and publishing](packages/moyaforge-cli/README.md) and
-[registry architecture](README-registry.md). These commands require the matching
-CLI/framework releases to be published; merging source alone does not publish npm packages.
-
-## Run the CLI directly from GitHub (unpublished source)
-
-The repository root prepares a self-contained CLI package when npm installs
-this Git repository. From a separate consumer repository:
+To try the default branch instead of a published CLI release:
 
 ```sh
 npm exec --yes --package=github:moyarich/moyaforge -- moyaforge init --template playground --search
 npm run dev
 ```
 
-This uses the GitHub default branch, not the published npm CLI. The root
-`prepare` hook builds the CLI workspace and bundles its compiled executable
-and templates. Node.js 24.11+ and npm are required. See the
-[development guide](docs/04-development/page.mdx#running-directly-from-github)
-for local-path, link, and tarball alternatives.
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for repository setup, tests, registry maintenance and release workflows.
