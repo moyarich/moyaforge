@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type ReactNode } from "react";
-import { PreviewInteractive } from "../../../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
+import { PreviewInteractive } from "../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
 import {
   buildFrontmatterRegistry,
   createFrontmatterFiles,

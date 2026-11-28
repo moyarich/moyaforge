@@ -1,5 +1,5 @@
 import { PreviewSidebarGroup } from "../sidebar-group/PreviewSidebarGroup.js";
-import { VirtualPage } from "../../VirtualPage.js";
+import { VirtualPage } from "../../../../_shared/virtual-mdx/VirtualPage.js";
 import {
   useEffect,
   useId,
@@ -11,18 +11,18 @@ import {
 import type {
   TocOptions,
   TocSetting,
-} from "../../../../../../../packages/moyaforge-mdx/src/registry/index.js";
+} from "../../../../../packages/moyaforge-mdx/src/registry/index.js";
 import {
   getTableOfContents,
   type TocHeading,
-} from "../../../../../../../packages/moyaforge-mdx/src/navigation/toc/index.js";
+} from "../../../../../packages/moyaforge-mdx/src/navigation/toc/index.js";
 import {
   TableOfContents,
   type TableOfContentsItem,
-} from "../../../../../../../packages/moyaforge-ui/src/components/TableOfContents/index.js";
-import { PreviewInteractive } from "../../../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
+} from "../../../../../packages/moyaforge-ui/src/components/TableOfContents/index.js";
+import { PreviewInteractive } from "../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
 import { createFrontmatterDemo } from "../frontmatter-demo.js";
-import { extractPageHeadings } from "../../../../../../../packages/moyaforge-mdx/src/content/headings.js";
+import { extractPageHeadings } from "../../../../../packages/moyaforge-mdx/src/content/headings.js";
 
 function prefixHeadings(headings: TocHeading[], prefix: string): TocHeading[] {
   return headings.map((heading) => ({

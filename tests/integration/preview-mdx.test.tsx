@@ -2,9 +2,9 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test } from "vitest";
 import { readFileSync } from "node:fs";
-import { createFrontmatterDemo } from "../../apps/playground/src/components/PreviewMdx/frontmatter/frontmatter-demo.js";
+import { createFrontmatterDemo } from "../../docs/02-mdx/10-markdown-and-mdx/examples/frontmatter-demo.js";
 import { extractPageHeadings } from "../../packages/moyaforge-mdx/src/content/headings.js";
-import { createVirtualRegistry } from "../../apps/playground/src/components/PreviewMdx/virtual-registry.js";
+import { createVirtualRegistry } from "../../docs/_shared/virtual-mdx/virtual-registry.js";
 import { PreviewInteractive } from "../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
 
 test("virtual registries support multiple sources and source-relative documents", () => {
@@ -60,7 +60,7 @@ test("metadata shares resizable configuration with controls and stays outside th
 
 test("virtual pages render their Markdown body rather than frontmatter or placeholder content", async () => {
   const { compileVirtualPage } =
-    await import("../../apps/playground/src/components/PreviewMdx/compile-virtual-page.js");
+    await import("../../docs/_shared/virtual-mdx/compile-virtual-page.js");
   const { default: Content } = await compileVirtualPage(
     "---\ntitle: Metadata name\n---\n\n# Actual article\n\nA **working** example.\n\n- First step\n- Second step\n",
     "guide/page.md",
@@ -77,7 +77,7 @@ test("virtual pages render their Markdown body rather than frontmatter or placeh
 
 test("virtual MDX bodies can render supplied React components", async () => {
   const { compileVirtualPage } =
-    await import("../../apps/playground/src/components/PreviewMdx/compile-virtual-page.js");
+    await import("../../docs/_shared/virtual-mdx/compile-virtual-page.js");
   const { default: Content } = await compileVirtualPage(
     "# MDX article\n\n<Notice />",
     "page.mdx",
@@ -100,7 +100,7 @@ test("interactive frontmatter previews preserve the authored example bodies", as
   for (const [filename, source] of Object.entries(files)) {
     const authored = readFileSync(
       new URL(
-        `../../apps/playground/src/components/PreviewMdx/frontmatter/examples/${filename}`,
+        `../../docs/02-mdx/10-markdown-and-mdx/examples/documents/${filename}`,
         import.meta.url,
       ),
       "utf8",

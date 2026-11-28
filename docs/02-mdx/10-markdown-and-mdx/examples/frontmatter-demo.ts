@@ -1,9 +1,9 @@
 import { parse, stringify } from "yaml";
-import guide from "./examples/docs/page.md?raw";
-import installation from "./examples/docs/01-installation/page.md?raw";
-import authoring from "./examples/docs/02-authoring/page.md?raw";
-import type { PageFrontmatter } from "../../../../../../packages/moyaforge-mdx/src/registry/index.js";
-import { createVirtualRegistry } from "../virtual-registry.js";
+import guide from "./documents/docs/page.md?raw";
+import installation from "./documents/docs/01-installation/page.md?raw";
+import authoring from "./documents/docs/02-authoring/page.md?raw";
+import type { PageFrontmatter } from "../../../../packages/moyaforge-mdx/src/registry/index.js";
+import { createVirtualRegistry } from "../../../_shared/virtual-mdx/virtual-registry.js";
 
 /** Update YAML only; the authored Markdown body stays unchanged. */
 function updateFrontmatter(source: string, overrides: PageFrontmatter): string {

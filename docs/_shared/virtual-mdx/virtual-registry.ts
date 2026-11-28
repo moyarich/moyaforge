@@ -3,8 +3,8 @@ import {
   buildPageRegistry,
   type PageInput,
   type TocSetting,
-} from "../../../../../packages/moyaforge-mdx/src/registry/index.js";
-import { validatePageFrontmatter } from "../../../../../packages/moyaforge-mdx/src/registry/validate-page-frontmatter.js";
+} from "../../../packages/moyaforge-mdx/src/registry/index.js";
+import { validatePageFrontmatter } from "../../../packages/moyaforge-mdx/src/registry/validate-page-frontmatter.js";
 
 /** Source keys mapped to source-relative Markdown or MDX documents. */
 export type VirtualSources = Readonly<

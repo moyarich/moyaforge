@@ -1,11 +1,11 @@
-import "../frontmatter/FrontmatterDemos.css";
+import "../../../../02-mdx/10-markdown-and-mdx/examples/FrontmatterDemos.css";
 import "./PreviewRegistryViews.css";
 import { useState, type ChangeEvent } from "react";
-import { PreviewInteractive } from "../../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
-import { createVirtualRegistry } from "../virtual-registry.js";
-import { createFrontmatterFiles } from "../frontmatter/frontmatter-demo.js";
-import { PreviewFrontmatterSite } from "../frontmatter/PreviewFrontmatterSite.js";
-import type { NavigationMode } from "../../../../../../packages/moyaforge-mdx/src/registry/index.js";
+import { PreviewInteractive } from "../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
+import { createVirtualRegistry } from "../../../../_shared/virtual-mdx/virtual-registry.js";
+import { createFrontmatterFiles } from "../../../../02-mdx/10-markdown-and-mdx/examples/frontmatter-demo.js";
+import { PreviewFrontmatterSite } from "../../../../02-mdx/10-markdown-and-mdx/examples/PreviewFrontmatterSite.js";
+import type { NavigationMode } from "../../../../../packages/moyaforge-mdx/src/registry/index.js";
 
 export default function PreviewRegistryViews() {
   const [source, setSource] = useState("docs");
