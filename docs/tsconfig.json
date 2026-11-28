@@ -1,4 +1,0 @@
-{
-  "extends": "../apps/playground/tsconfig.json",
-  "include": ["**/*.ts", "**/*.tsx"]
-}
