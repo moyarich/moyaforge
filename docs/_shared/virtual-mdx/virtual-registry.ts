@@ -6,12 +6,42 @@ import {
 } from "../../../packages/moyaforge-mdx/src/registry/index.js";
 import { validatePageFrontmatter } from "../../../packages/moyaforge-mdx/src/registry/validate-page-frontmatter.js";
 
-/** Source keys mapped to source-relative Markdown or MDX documents. */
+/**
+ * In-memory documents grouped by registry source key.
+ *
+ * Each source maps relative document filenames to their complete Markdown or
+ * MDX text, including optional YAML frontmatter.
+ *
+ * @example
+ * ```ts
+ * const sources: VirtualSources = {
+ *   guide: { "intro/page.md": "---\ntitle: Introduction\n---\n# Introduction" },
+ * };
+ * ```
+ */
 export type VirtualSources = Readonly<
   Record<string, Readonly<Record<string, string>>>
 >;
 
-/** Build an isolated page registry without files, discovery, or application routes. */
+/**
+ * Build an isolated page registry from in-memory documentation sources.
+ *
+ * Parses and validates each document's leading YAML frontmatter before passing
+ * page inputs to the normal registry builder. No filesystem discovery or
+ * application route registration is performed.
+ *
+ * @param sources - Documents grouped by source key and relative filename.
+ * @param options - Registry options; toc supplies the registry-level table-of-contents setting.
+ * @returns The original document text keyed by source/filename, together with the built registry.
+ * @throws If frontmatter is unterminated, contains invalid YAML, or fails page metadata validation.
+ * @example
+ * ```ts
+ * const { files, registry } = createVirtualRegistry({
+ *   guide: { "intro/page.md": "# Introduction" },
+ * });
+ * const source = files["guide/intro/page.md"];
+ * ```
+ */
 export function createVirtualRegistry(
   sources: VirtualSources,
   options: { toc?: TocSetting } = {},

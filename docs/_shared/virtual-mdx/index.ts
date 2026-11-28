@@ -1,3 +1,4 @@
+/** Shared in-memory registry and document rendering helpers for runnable documentation examples. */
 export {
   createVirtualRegistry,
   type VirtualSources,
