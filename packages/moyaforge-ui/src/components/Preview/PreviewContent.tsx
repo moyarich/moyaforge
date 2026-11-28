@@ -28,6 +28,7 @@ function Slot({ children, asChild, ...props }: SlotProps) {
   });
 }
 
+/** Render the live example slot using the parent preview's visibility state. */
 export function PreviewContent({
   asChild = false,
   className,

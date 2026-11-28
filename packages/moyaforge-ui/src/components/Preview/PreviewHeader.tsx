@@ -1,6 +1,7 @@
 import "./PreviewHeader.css";
 import type { ComponentPropsWithoutRef } from "react";
 
+/** Render the preview toolbar containing title and actions. */
 export function PreviewHeader({
   className,
   ...props

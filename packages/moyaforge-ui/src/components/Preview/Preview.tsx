@@ -35,6 +35,10 @@ export interface PreviewProps extends Omit<
   outputLabel?: string;
   defaultOutputOpen?: boolean;
 }
+/**
+ * Coordinate the live view, source view, output and refresh state for preview slots.
+ * Source is explicitly supplied by the caller; React children are not serialized.
+ */
 export function Preview({
   children,
   title = "Component preview",

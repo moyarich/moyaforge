@@ -1,6 +1,7 @@
 import "./PreviewTitle.css";
 import type { ComponentPropsWithoutRef } from "react";
 
+/** Render the title slot in the preview toolbar. */
 export function PreviewTitle({
   className,
   ...props

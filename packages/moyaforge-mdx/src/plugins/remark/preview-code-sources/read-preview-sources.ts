@@ -16,6 +16,12 @@ export interface PreviewFile {
 const previewFilePattern =
   /^\.\/[\w-]+(?:\.[\w-]+)*\.(?:mdx?|tsx|jsx|ts|js|css|json)$/;
 
+/**
+ * Read a UTF-8 source tab from the authored MDX file's own directory.
+ * Only supported ./ filenames are accepted; realpath checks reject symlinks
+ * escaping that directory. The optional language overrides tab highlighting.
+ * @throws If the MDX filename is absent, the reference is invalid, or reading fails.
+ */
 export function readPreviewFile(
   reference: string,
   filePath: string | undefined,
@@ -38,6 +44,7 @@ export function readPreviewFile(
   };
 }
 
+/** Read comma-separated local source tabs in authored order and retain the replacement preset. */
 export function readPreviewSources(
   child: DirectiveNode,
   file: VFile,

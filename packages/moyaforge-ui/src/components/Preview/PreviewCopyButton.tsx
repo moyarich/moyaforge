@@ -4,6 +4,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import { CopyButton } from "../CopyButton/CopyButton.js";
 import { usePreview } from "./PreviewContext.js";
 
+/** Copy the explicit code override or the source supplied by the parent preview. */
 export function PreviewCopyButton(
   props: Omit<
     ComponentPropsWithoutRef<typeof CopyButton>,

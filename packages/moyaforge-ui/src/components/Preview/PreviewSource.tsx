@@ -10,6 +10,7 @@ import {
 import { HighlightedCode } from "../HighlightedCode/HighlightedCode.js";
 import { usePreview } from "./PreviewContext.js";
 
+/** Source slot options, including an optional custom child or raw code string. */
 export interface PreviewSourceProps extends Omit<
   ComponentPropsWithoutRef<"pre">,
   "children"
@@ -20,6 +21,7 @@ export interface PreviewSourceProps extends Omit<
   code?: string;
   language?: string;
 }
+/** Render the Code view, highlighting supplied text when no custom child is provided. */
 export function PreviewSource({
   asChild = false,
   children,

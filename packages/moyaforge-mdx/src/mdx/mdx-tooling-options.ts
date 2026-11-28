@@ -26,7 +26,7 @@ import {
   remarkMapFilePreviewDirectives,
 } from "../plugins/remark/preview-code/remark-map-file-preview-directives.js";
 
-/** Host-specific remark/rehype plugins are supplied by each consuming app. */
+/** Host options for the shared MDX pipeline; plugin ordering preserves authored source before directive mapping and extracts headings before highlighting. */
 export interface MdxToolingOptions {
   additionalRemarkPlugins?: PluggableList;
   /** Optional mapping from ::: directives to host MDX components. */
