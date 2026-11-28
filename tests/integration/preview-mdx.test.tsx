@@ -1,6 +1,9 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test } from "vitest";
+import { readFileSync } from "node:fs";
+import { createFrontmatterDemo } from "../../apps/playground/src/components/PreviewMdx/frontmatter/frontmatter-demo.js";
+import { extractPageHeadings } from "../../packages/moyaforge-mdx/src/content/headings.js";
 import { createVirtualRegistry } from "../../apps/playground/src/components/PreviewMdx/virtual-registry.js";
 import { PreviewInteractive } from "../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
 
@@ -88,4 +91,26 @@ test("virtual MDX bodies can render supplied React components", async () => {
     }),
   );
   expect(markup).toContain("<aside>Rendered component</aside>");
+});
+
+test("interactive frontmatter previews preserve the authored example bodies", async () => {
+  const { files, registry } = createFrontmatterDemo({
+    page: { title: "Custom setup", navigation: "hidden" },
+  });
+  for (const [filename, source] of Object.entries(files)) {
+    const authored = readFileSync(
+      new URL(
+        `../../apps/playground/src/components/PreviewMdx/frontmatter/examples/${filename}`,
+        import.meta.url,
+      ),
+      "utf8",
+    );
+    const body = (value: string) =>
+      value.replace(/^---\r?\n[\s\S]*?\r?\n---/, "");
+    expect(body(source)).toBe(body(authored));
+    expect(await extractPageHeadings(source, filename)).toEqual(
+      await extractPageHeadings(authored, filename),
+    );
+  }
+  expect(registry.byPath.get("/docs/custom-setup")?.navigation).toBe("hidden");
 });
