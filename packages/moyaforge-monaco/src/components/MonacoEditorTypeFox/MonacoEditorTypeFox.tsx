@@ -21,6 +21,7 @@ export interface MonacoEditorTypeFoxProps extends Omit<
   height?: number | string;
   /** Container width; defaults to 100%. */
   width?: number | string;
+  /** Optional Monaco theme; omit to follow the host appearance. */
   theme?: string;
   /** Native Monaco construction options; file locks take precedence. */
   options?: editor.IStandaloneEditorConstructionOptions;

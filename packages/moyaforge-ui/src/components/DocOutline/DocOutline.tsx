@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode, type RefObject } from "react";
 import type { TableOfContentsItem } from "../TableOfContents/TableOfContents.js";
 import { headingIdFromHash } from "../../utils/heading-fragment.js";
 
+/** A heading tree entry whose id matches an anchor in the rendered article. */
 export interface DocHeading {
   id: string;
   value: string;
@@ -10,14 +11,21 @@ export interface DocHeading {
   children?: DocHeading[];
 }
 
+/** Configure heading discovery, disclosure and optional router-aware links. */
 export interface DocOutlineProps {
   /** Build-time heading tree; avoids scanning the DOM for headings. */
   headings?: readonly DocHeading[];
+  /** Enable a disclosure button. @default false */
   collapsible?: boolean;
+  /** Initial disclosure state. @default true */
   defaultOpen?: boolean;
+  /** Article root for DOM heading discovery; defaults to main. */
   rootRef?: RefObject<HTMLElement | null>;
+  /** CSS selector for DOM heading discovery. @default "h2[id], h3[id]" */
   selector?: string;
+  /** Visible and accessible outline label. @default "On this page" */
   title?: string;
+  /** Additional outline class. */
   className?: string;
   /** Host-controlled links for router-specific heading navigation. */
   renderLink?: (item: TableOfContentsItem, active: boolean) => ReactNode;

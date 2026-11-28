@@ -2,6 +2,7 @@ import "./SidebarHeader.css";
 import { createElement } from "react";
 import type { PolymorphicProps } from "../Page/index.js";
 
+/** Render the sidebar header; defaults to a header element. */
 export function SidebarHeader({
   as = "header",
   children,

@@ -2,20 +2,29 @@ import "./VersionPicker.css";
 import { useId } from "react";
 import { ChevronDown } from "lucide-react";
 
+/** Display label and stable value for one documentation version. */
 export interface VersionOption {
+  /** Visible heading. @default "Documentation" */
   label: string;
   value: string;
 }
 
+/** Controlled version selection and optional labels. */
 export interface VersionPickerProps {
+  /** Available versions in display order. */
   versions: readonly VersionOption[];
+  /** Currently selected version value. */
   current: string;
   label?: string;
+  /** Accessible name. @default "Documentation version" */
   selectLabel?: string;
+  /** Additional root class. */
   className?: string;
+  /** Called with the selected value; the host updates current and handles navigation. */
   onChange?: (value: string) => void;
 }
 
+/** Display the current version; provide multiple versions and onChange to enable selection. */
 export function VersionPicker({
   versions,
   current,

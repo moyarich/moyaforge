@@ -5,14 +5,23 @@ import {
 import type { MonacoFile } from "@moyarich/moyaforge-monaco/components/MonacoEditorReact";
 import { EditorPanel, type EditorPanelProps } from "../EditorPanel/index.js";
 
+/** EditorPanel file controls plus TypeFox Monaco and language-service settings. */
 export interface TypeFoxEditorPanelProps extends Omit<EditorPanelProps<MonacoFile>, "renderEditor"> {
+  /** Editor height; defaults to 320. */
   height?: MonacoEditorTypeFoxProps["height"];
+  /** Editor width; defaults to 100%. */
   width?: MonacoEditorTypeFoxProps["width"];
+  /** Optional Monaco theme; omit for automatic theme. */
   theme?: MonacoEditorTypeFoxProps["theme"];
+  /** Native editor construction options. */
   options?: MonacoEditorTypeFoxProps["options"];
+  /** Host VS Code API configuration, including worker setup. */
   vscodeApiConfig?: MonacoEditorTypeFoxProps["vscodeApiConfig"];
+  /** Optional language client configuration. */
   languageClientConfig?: MonacoEditorTypeFoxProps["languageClientConfig"];
+  /** Called when the editor starts. */
   onReady?: MonacoEditorTypeFoxProps["onReady"];
+  /** Called when the runtime reports an error. */
   onError?: MonacoEditorTypeFoxProps["onError"];
 }
 

@@ -4,11 +4,15 @@ import { reconcileFileDrafts } from "./reconcileFileDrafts.js";
 
 /** Source file and optional model metadata supplied by the host. */
 export interface MonacoFile {
+  /** Unique file name used for draft identity and selection. */
   name: string;
+  /** Initial or host-updated text. */
   value: string;
   /** Explicit native language ID; omit to infer from the model URI and content. */
   language?: string;
+  /** Optional unique model path; defaults to name in editor runtimes. */
   path?: string;
+  /** Prevent editing this file. */
   readOnly?: boolean;
 }
 /** Selected file draft and change callback passed to a headless renderer. */
@@ -20,6 +24,7 @@ export interface MonacoFileRenderProps {
 }
 /** Host-controlled file selection and editor rendering configuration. */
 export interface MonacoFileSessionProps {
+  /** Source files with unique names. */
   files: readonly MonacoFile[];
   /** Selected file name; defaults to the first file. */
   activeFile?: string;
@@ -28,6 +33,7 @@ export interface MonacoFileSessionProps {
   readOnly?: boolean;
   /** Render the selected file using the supplied draft state. */
   renderEditor: (props: MonacoFileRenderProps) => ReactNode;
+  /** Additional root class. */
   className?: string;
 }
 

@@ -7,15 +7,25 @@ import {
   type ComponentPropsWithoutRef,
 } from "react";
 
+/** Clipboard content, optional feedback callback and native button props. */
 export interface CopyButtonProps extends Omit<
   ComponentPropsWithoutRef<"button">,
   "value"
 > {
+  /** Value converted to text when copied. */
   value?: unknown;
+  /** Read text at click time; takes precedence over value. */
   getValue?: () => string;
+  /** Optional leading icon. */
   icon?: ReactNode;
+  /** Called after a successful clipboard write. */
   onCopy?: () => void;
 }
+/**
+ * Copy text to the clipboard and announce success or failure.
+ * @example
+ * <CopyButton value="npm install">Copy command</CopyButton>
+ */
 export function CopyButton({
   value,
   getValue,

@@ -11,9 +11,11 @@ import { useTabs } from "./TabsContext.js";
 
 /** Overflow controls for a tab strip. */
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
+  /** Enable overflow scrolling and controls. @default true */
   tabsScroll?: boolean;
 }
 
+/** Wrap TabsTrigger children in a keyboard-navigable tab strip with optional overflow controls. */
 export function TabsList({
   children,
   className,

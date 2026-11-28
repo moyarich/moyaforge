@@ -22,6 +22,7 @@ import { CodeGroup, CodeTab } from "../CodeGroup/index.js";
 export type PreviewFile = {
   /** Tab label, e.g. "Example.tsx". Must be unique within a preview. */
   label: string;
+  /** Authored text displayed in this source tab. */
   code: string;
   /** Optional grammar override; otherwise inferred from the filename. */
   language?: string;
@@ -32,6 +33,7 @@ export type Replacement = [from: string | RegExp, to: string];
 
 /** Live example children and their independently supplied source files. */
 export type PreviewCodeProps = {
+  /** Visible heading. @default "Example" */
   title?: string;
   /** The first file is the "primary" one used for the copy button. */
   files: readonly PreviewFile[];
@@ -43,9 +45,13 @@ export type PreviewCodeProps = {
   sourceOnly?: boolean;
   /** Show a button that remounts the rendered example. Defaults to false. */
   refresh?: boolean;
+  /** Live React example; files are not executed by this component. */
   children: ReactNode;
+  /** Optional host-owned output region. */
   output?: ReactNode;
+  /** Label for the output region and toggle. */
   outputLabel?: string;
+  /** Initial visibility of the output region. */
   defaultOutputOpen?: boolean;
 };
 

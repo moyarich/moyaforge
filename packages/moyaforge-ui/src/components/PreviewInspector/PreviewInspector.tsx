@@ -1,13 +1,19 @@
 import type { ReactNode } from "react";
 import "./PreviewInspector.css";
 
+/** Caller-owned preview surface, toolbar, inspector and footer slots. */
 export interface PreviewInspectorProps {
   /** The preview surface, including any viewport controls owned by the caller. */
   children: ReactNode;
+  /** Optional controls above the preview surface. */
   toolbar?: ReactNode;
+  /** Optional side panel for inspecting or editing settings. */
   inspector?: ReactNode;
+  /** Optional content below the preview and inspector. */
   footer?: ReactNode;
+  /** Additional root class. */
   className?: string;
+  /** Accessible name. @default "Inspector preview" */
   label?: string;
 }
 

@@ -1,15 +1,25 @@
 import "./EditPageLink.css";
 import type { ComponentPropsWithoutRef } from "react";
 
+/** GitHub repository location and link presentation. */
 export interface EditPageLinkProps extends Omit<
   ComponentPropsWithoutRef<"a">,
   "href"
 > {
+  /** GitHub owner/repo or its full GitHub URL. */
   repository: string;
+  /** Repository-relative source filename. */
   path: string;
+  /** Branch to edit. @default "main" */
   branch?: string;
+  /** Visible link text. @default "Edit this page ↗" */
   label?: string;
 }
+/**
+ * Link to the GitHub editor for a source file; invalid repository/path values render nothing.
+ * @example
+ * <EditPageLink repository="owner/repo" path="docs/page.mdx" />
+ */
 export function EditPageLink({
   repository,
   path,

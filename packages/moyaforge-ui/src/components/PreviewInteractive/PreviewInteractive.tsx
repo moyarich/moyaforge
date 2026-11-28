@@ -13,6 +13,7 @@ import {
   ResizableHandle,
 } from "../ResizablePanel/index.js";
 
+/** Configure a live documentation demo with independent authored source files. */
 export interface PreviewInteractiveProps {
   /** Accessible name and visible heading for this example. */
   title: string;
@@ -38,7 +39,9 @@ export interface PreviewInteractiveProps {
   className?: string;
   /** Optional application-owned output, independent of source files. */
   output?: ReactNode;
+  /** Label for the optional output region. */
   outputLabel?: string;
+  /** Initial visibility of the output region. */
   defaultOutputOpen?: boolean;
 }
 

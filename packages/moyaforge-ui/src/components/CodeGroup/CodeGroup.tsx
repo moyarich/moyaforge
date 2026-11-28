@@ -16,10 +16,18 @@ import {
   type ReactNode,
 } from "react";
 
+/** Options for a keyboard-accessible group of CodeTab children. */
 export interface CodeGroupProps {
+  /** Direct CodeTab children, in display order. */
   children: ReactNode;
+  /** Accessible tab list name. @default "Code examples" */
   label?: string;
 }
+/**
+ * Display alternative code snippets as tabs; copying uses the selected panel.
+ * @example
+ * <CodeGroup><CodeTab label="npm"><pre>npm install</pre></CodeTab></CodeGroup>
+ */
 export function CodeGroup({
   children,
   label = "Code examples",

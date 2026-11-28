@@ -1,10 +1,15 @@
 import "./DocsShellFocused.css";
 import type { ReactNode } from "react";
 
+/** Content and optional named slots for the documentation shell. */
 export interface DocsShellFocusedProps {
+  /** Article body. */
   children: ReactNode;
+  /** Default article heading. */
   title?: string;
+  /** Supporting text beneath the title. */
   subtitle?: string;
+  /** Destination for the default back link. */
   backHref?: string;
   /** Undefined uses the default heading; null intentionally removes it. */
   header?: ReactNode;
@@ -12,6 +17,7 @@ export interface DocsShellFocusedProps {
   navigation?: ReactNode;
   /** Undefined or null omits this optional slot. */
   articleActions?: ReactNode;
+  /** Optional content below the article. */
   footer?: ReactNode;
 }
 

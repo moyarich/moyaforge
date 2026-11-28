@@ -2,17 +2,24 @@ import "./SidebarOutline.css";
 import "./SidebarItem.css";
 import type { ReactNode } from "react";
 
+/** A nested outline node; omit id for a non-selectable parent. */
 export interface SidebarOutlineItem {
   id?: string;
   label: string;
   children?: readonly SidebarOutlineItem[];
 }
 
+/** Controlled outline selection and label rendering. */
 export interface SidebarOutlineProps {
+  /** Nested items to display. */
   items: readonly SidebarOutlineItem[];
+  /** Selected item ID. */
   value?: string;
+  /** Remove this prefix from default labels. */
   labelPrefix?: string;
+  /** Called with the selected item ID. */
   onChange: (id: string) => void;
+  /** Override the label rendering. */
   renderLabel?: (item: SidebarOutlineItem) => ReactNode;
 }
 
@@ -23,6 +30,7 @@ function getLabel(item: SidebarOutlineItem, labelPrefix?: string) {
   return item.label;
 }
 
+/** Render nested outline buttons; the host handles navigation in onChange. */
 export function SidebarOutline({
   items,
   value,

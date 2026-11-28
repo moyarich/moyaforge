@@ -2,10 +2,12 @@ import { SidebarScrollArea } from "./SidebarScrollArea.js";
 import { Navigation } from "./Navigation.js";
 import type { ReactNode, HTMLAttributes } from "react";
 import type { SidebarNavigationNode } from "./types.js";
+/** A simple navigation link for the flat pages fallback. */
 export interface SourcePage {
   url: string;
   title: string;
 }
+/** A source group with nested page nodes and optional disclosure settings. */
 export interface DocumentationGroup {
   source: string;
   page?: { path: string; title: string; icon?: string };
@@ -15,6 +17,7 @@ export interface DocumentationGroup {
   nodes: SidebarNavigationNode[];
 }
 
+/** Configure grouped, flat or custom navigation and optional sidebar slots. */
 export interface SidebarV1Props extends HTMLAttributes<HTMLElement> {
   /** Used only when the children slot is undefined. */
   groups?: readonly DocumentationGroup[];
@@ -30,6 +33,7 @@ export interface SidebarV1Props extends HTMLAttributes<HTMLElement> {
   label?: ReactNode;
   version?: ReactNode;
 }
+/** Render the documentation sidebar with independent scrolling; children override groups and pages. */
 export function SidebarV1({
   groups,
   pages = [],
