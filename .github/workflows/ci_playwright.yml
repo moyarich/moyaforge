@@ -4,6 +4,13 @@ on:
     paths:
       - ".github/workflows/ci_playwright.yml"
       - "playwright.config.ts"
+      - "playwright.playground.config.ts"
+      - "tests/playground-navigation/**"
+      - "package.json"
+      - "package-lock.json"
+      - "docs/**"
+      - "packages/moyaforge-ui/docs/**"
+      - "packages/moyaforge-mdx/**"
       - "packages/moyaforge-monaco/**"
       - "packages/moyaforge-ui/src/components/MonacoEditor*/**"
       - "packages/moyaforge-ui/docs/01-components/200-monaco-editor-react/**"

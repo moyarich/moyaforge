@@ -34,7 +34,8 @@
     "registry:build": "node scripts/build-registry/build-registry-cli.ts",
     "registry:check": "node scripts/build-registry/build-registry-cli.ts --check",
     "test:cli:browser": "playwright test --project=cli-consumer",
-    "prepare": "npm run build --workspace @moyarich/moyaforge-cli"
+    "prepare": "npm run build --workspace @moyarich/moyaforge-cli",
+    "test:playground:navigation": "playwright test --config playwright.playground.config.ts"
   },
   "dependencies": {
     "commander": "^15.1.0"
