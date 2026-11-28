@@ -3,7 +3,13 @@ import { resolve } from "node:path";
 import { discoverContent, type ContentSourcesConfig } from "./discovery.js";
 import { validateInternalLinks, type LinkIssue } from "./links.js";
 
-/** Build/CI entrypoint using the exact same config, routes and TOC IDs as discovery. */
+/**
+ * Check authored internal links using the same discovery configuration as the site.
+ * @param config - Content sources and discovery options.
+ * @param root - Application root used to resolve source directories.
+ * @returns A promise resolving to all link issues; an empty array means no issues were found.
+ * @throws If content discovery or file reading fails.
+ */
 export async function checkContentLinks(
   config: ContentSourcesConfig,
   root: string,
@@ -23,7 +29,11 @@ export async function checkContentLinks(
   return validateInternalLinks(documents, registry, headings);
 }
 
-/** Human-readable, deterministic diagnostic output for build logs. */
+/**
+ * Format link issues for terminal and CI logs in input order.
+ * @param issues - Link validation results.
+ * @returns One file, reason and href per line; an empty string for no issues.
+ */
 export function formatLinkIssues(issues: readonly LinkIssue[]): string {
   return issues
     .map(({ file, href, reason }) => `${file}: ${reason}: ${href}`)

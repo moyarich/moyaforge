@@ -8,9 +8,10 @@ export interface ContentManifestEntry extends RegistryPage {
 }
 
 /**
- * Join the MDX-owned route registry with its compiler-derived headings.
- * Only routable pages are published. Entries use the registry's deterministic
- * ordering, keeping hidden-but-routable pages available to deep links.
+ * Join routable registry pages with their compiler-derived heading trees.
+ * Preserves registry order and includes hidden routes; disabled pages are omitted.
+ * @param content - Discovered registry and headings keyed by source/filename.
+ * @returns Canonical page records with headings, using an empty array when none exist.
  */
 export function createContentManifest({
   registry,

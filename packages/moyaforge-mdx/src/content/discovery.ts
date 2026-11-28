@@ -35,7 +35,13 @@ export interface ContentSourcesConfig {
   githubActionsAnnotations?: boolean;
 }
 
-/** Parse authored YAML exactly once without requiring compiled MDX JavaScript exports. */
+/**
+ * Read leading YAML frontmatter without compiling or evaluating MDX.
+ * @param text - Complete authored Markdown or MDX text.
+ * @param filename - Source filename included in validation errors.
+ * @returns Parsed metadata, or an empty object when frontmatter is absent or null.
+ * @throws If the block is unterminated, invalid YAML, or not an object.
+ */
 export function parsePageFrontmatter(
   text: string,
   filename: string,
@@ -67,7 +73,14 @@ export interface DiscoveredContent {
   metadata: Record<string, Record<string, unknown>>;
 }
 
-/** Collect normalized metadata at build time; never import compiled page components. */
+/**
+ * Discover configured documentation files and build their normalized registry.
+ * Reads source text, extracts headings and loads configured JSON metadata without importing page components.
+ * @param config - Named content sources, TOC defaults and diagnostic settings.
+ * @param root - Directory against which source bases are resolved.
+ * @returns Registry, original page inputs, heading trees and source metadata.
+ * @throws If a source directory, page, metadata file or registry is invalid.
+ */
 export async function discoverContent(
   config: ContentSourcesConfig,
   root: string,
@@ -166,7 +179,14 @@ export async function discoverContent(
   };
 }
 
-/** Share one build-time discovery across registry, routing and search consumers. */
+/**
+ * Share a cached discovery promise between build-time consumers.
+ * Concurrent get calls reuse the same discovery; failed discovery clears the cache.
+ * @param config - Content source configuration.
+ * @param root - Application root for resolving content directories.
+ * @returns A get/invalidate pair for reading and refreshing discovery.
+ * @example const discovery = createContentDiscovery(config, root);
+ */
 export function createContentDiscovery(
   config: ContentSourcesConfig,
   root: string,
