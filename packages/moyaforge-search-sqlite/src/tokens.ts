@@ -1,9 +1,21 @@
-/** Unicode-aware tokens shared by indexing and searching. */
+/**
+ * Split text into lowercase Unicode letter and number tokens.
+ * @param text - Text to tokenize.
+ * @returns Tokens in input order, including repeated words.
+ * @example words("Hello, world!") // ["hello", "world"]
+ */
 export function words(text: string): string[] {
   return text.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
 }
 
-/** Allow one typo or transposition for title words. */
+/**
+ * Test whether a query token is within one edit or adjacent transposition of a word.
+ * Queries shorter than four characters are not eligible.
+ * @param query - Query token.
+ * @param word - Indexed title token.
+ * @returns Whether the tokens satisfy the near-match rule.
+ * @example nearWord("seach", "search") // true
+ */
 export function nearWord(query: string, word: string): boolean {
   if (query.length < 4 || Math.abs(query.length - word.length) > 1)
     return false;

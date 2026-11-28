@@ -35,7 +35,14 @@ function anchors(nodes: readonly TocHeading[]): Set<string> {
   return ids;
 }
 
-/** Validate authored Markdown links against normalized routable pages and extracted IDs. */
+/**
+ * Validate internal Markdown links, definitions and literal MDX anchor hrefs.
+ * Checks registered routes and heading IDs; skips external URLs and non-page file links.
+ * @param documents - Authored documents with source keys and optional absolute filenames.
+ * @param registry - Normalized page registry used to resolve targets.
+ * @param headings - Heading trees keyed by source/filename.
+ * @returns Issues identifying missing pages, missing anchors or invalid links.
+ */
 export function validateInternalLinks(
   documents: readonly LinkDocument[],
   registry: PageRegistry,

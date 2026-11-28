@@ -10,16 +10,27 @@ import {
   reportPlan,
 } from "../registry/registry.js";
 
+/** Controls how CLI operations resolve, preview and modify a consumer project. */
 export interface InstallOptions {
+  /** Consumer project directory. Defaults to the current working directory. */
   cwd?: string;
+  /** Registry URL or local registry path; overrides the consumer configuration. */
   registry?: string;
+  /** Component destination directory; overrides the consumer configuration. */
   directory?: string;
+  /** Scaffolding mode: source files or package-based integration. */
   mode?: "source" | "package";
+  /** Starter template used when creating a project. */
   template?: "docs" | "hybrid" | "playground" | "existing";
+  /** Include search support when scaffolding. */
   search?: boolean;
+  /** Report planned changes without writing files or installing dependencies. */
   dryRun?: boolean;
+  /** Include file diffs in the plan report. */
   diff?: boolean;
+  /** Permit replacing existing files. */
   overwrite?: boolean;
+  /** Set to false to skip npm dependency installation. */
   install?: boolean;
 }
 

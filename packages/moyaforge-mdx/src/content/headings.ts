@@ -14,8 +14,12 @@ import { VFile } from "vfile";
 import type { TocHeading } from "../navigation/toc/index.js";
 
 /**
- * Extract headings using the same rehype-slug + rehype-extract-toc combination
- * used by the MDX compiler, without evaluating the page component.
+ * Extract compiler-compatible nested headings without evaluating MDX.
+ * Uses rehype-slug and rehype-extract-toc to preserve the rendered anchor IDs.
+ * @param markdownSource - Complete Markdown or MDX source.
+ * @param filename - Source path used in diagnostics. Defaults to page.md.
+ * @returns A promise resolving to the nested heading tree.
+ * @throws MdxDiagnosticError when parsing or transformation fails.
  */
 export async function extractPageHeadings(
   markdownSource: string,

@@ -10,7 +10,14 @@ const defaults: ResolvedTocOptions = {
   defaultOpen: true,
 };
 
-/** A page's explicit false overrides even an enabled project default. */
+/**
+ * Resolve page-level or project-level TOC settings against built-in defaults.
+ * An explicit page setting replaces the project setting rather than merging with it. False disables placement.
+ * @param page - Page override, when supplied.
+ * @param project - Project fallback, when supplied.
+ * @returns Complete TOC options; defaults to right placement, depths 2–3 and label On this page.
+ * @example resolveTocOptions(false, true).placement // 'none'
+ */
 export function resolveTocOptions(
   page?: TocSetting,
   project?: TocSetting,

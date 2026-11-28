@@ -18,7 +18,13 @@ export type {
   RegistryPluginOptions,
 } from "./options.js";
 
-/** Expose discovered MDX pages through Vite's virtual module convention. */
+/**
+ * Expose discovered Markdown and MDX pages through Vite virtual modules.
+ * Provides eager and lazy page registries and route metadata. Source changes
+ * invalidate cached discovery and trigger a full reload during development.
+ * @param options - Content registry, application root and optional shared discovery/publication settings.
+ * @returns A Vite plugin to include in the application's plugins array.
+ */
 export function mdxRegistryPlugin({
   registry,
   root,

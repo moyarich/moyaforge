@@ -13,7 +13,12 @@ export interface DirectiveComponent
   extends ComponentMapping, PreviewComponentOptions, NestedDirectiveOptions {}
 export type DirectiveComponentMap = Record<string, DirectiveComponent>;
 
-/** Compose directive handlers for the default MDX compiler. */
+/**
+ * Map authored directives to host MDX components using the shared preview and nested-directive handlers.
+ * Collects preview content where configured and inserts generated inline React imports at the beginning of the document.
+ * @param mappings - Directive names mapped to component and preview configuration.
+ * @returns A remark transformer that modifies the Markdown AST in place.
+ */
 export function remarkMapDirectivesToComponents(
   mappings: DirectiveComponentMap,
 ) {

@@ -3,7 +3,14 @@ import type { TocHeading, ResolvedTocOptions } from "./toc.types.js";
 import { resolveTocOptions } from "./resolve-toc-options.js";
 import { filterTableOfContents } from "./filter-table-of-contents.js";
 
-/** Return display-ready TOC state, suppressing empty heading trees automatically. */
+/**
+ * Resolve TOC settings and filter headings for rendering.
+ * Automatically sets placement to none when there are no displayable headings.
+ * @param headings - Original compiler-derived heading tree.
+ * @param page - Optional page-level setting.
+ * @param project - Fallback project-level setting.
+ * @returns Resolved display options and filtered headings.
+ */
 export function getTableOfContents(
   headings: readonly TocHeading[],
   page?: TocSetting,

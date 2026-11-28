@@ -20,9 +20,9 @@ function languageFromClass(value: unknown): string | undefined {
 }
 
 /**
- * Attach normalized code language metadata at compile time instead of
- * discovering it from rendered React children.
- * Run before syntax highlighting, which may replace the code element.
+ * Annotate pre elements with data-language derived from their code child's language-* class.
+ * Preserves existing language annotations. Run before syntax highlighting replaces code elements.
+ * @returns A rehype transformer that mutates the HTML tree in place.
  */
 export function rehypeAnnotateCodeBlocks() {
   return (tree: Element) => {

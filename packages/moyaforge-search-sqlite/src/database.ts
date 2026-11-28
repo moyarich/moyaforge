@@ -1,13 +1,26 @@
 import type { Database, SqlJsStatic } from "sql.js";
 import { words, nearWord } from "./tokens.js";
 
+/** Searchable text and stable identifier for a documentation page. */
 export interface IndexedDocument {
+  /** Unique document key returned by search queries. */
   key: string;
+  /** Page title, weighted most strongly in search ranking. */
   title: string;
+  /** Short page summary, weighted above body text. */
   description: string;
+  /** Searchable document body text. */
   body: string;
 }
 
+/**
+ * Build a SQLite search index from documentation text.
+ * Indexes unique tokens per field and closes the temporary database after export.
+ * @param SQL - Initialized sql.js runtime.
+ * @param documents - Documents with unique keys.
+ * @returns Serialized SQLite database bytes.
+ * @throws If database creation or insertion fails, including duplicate keys.
+ */
 export function buildSearchDatabase(
   SQL: SqlJsStatic,
   documents: Iterable<IndexedDocument>,
@@ -50,6 +63,14 @@ export function buildSearchDatabase(
   }
 }
 
+/**
+ * Search an open documentation index using token prefixes and near-title matches.
+ * Every query token must match. Title matches receive higher scores than
+ * description or body matches; equal scores are ordered by document key.
+ * @param db - Open database built by buildSearchDatabase.
+ * @param query - Search text; punctuation-only or empty input returns no results.
+ * @returns Matching document keys in descending relevance order.
+ */
 export function querySearchDatabase(db: Database, query: string): string[] {
   const terms = words(query);
   if (!terms.length) return [];

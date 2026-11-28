@@ -43,11 +43,12 @@ export interface MdxToolingOptions {
 }
 
 /**
- * Shared MDX compiler conventions, independent of any specific application.
- * Additional remark plugins run after the default Markdown plugins.
- * Compiled frontmatter exports are optional: registry discovery owns YAML metadata.
- * Optional Shiki highlighting runs after slug/TOC extraction and before host rehype plugins.
- * Only supply Shiki for static prose code blocks; exclude Monaco/runnable components.
+ * Create shared MDX compiler options independent of any application.
+ * Includes directive parsing, frontmatter, GFM, heading slugs and TOC exports. Optional highlighting runs after heading extraction; additional host plugins run after the corresponding default pipeline.
+ * @param options - Host directive mappings, preview settings and additional compiler plugins.
+ * @returns MDX provider import source and ordered remark/rehype plugin lists.
+ * @remarks Only enable inline preview styles for trusted, reviewed content. Use highlighting for static prose rather than runnable Monaco examples.
+ * @example const mdxOptions = createMdxOptions({ exportFrontmatter: true });
  */
 export function createMdxOptions({
   additionalRemarkPlugins = [],

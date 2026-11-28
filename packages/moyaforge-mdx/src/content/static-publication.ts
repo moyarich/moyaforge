@@ -9,7 +9,14 @@ export interface StaticPublicationOptions {
   includeHidden?: boolean;
 }
 
-/** Reuse canonical route/heading metadata; do not parse content or invent slugs. */
+/**
+ * Generate static publication metadata, a search index and llms.txt from canonical routes.
+ * Hidden pages are excluded unless requested; disabled pages are never published.
+ * @param manifest - Canonical page records with headings.
+ * @param options - Public HTTP(S) origin, optional title and hidden-page policy.
+ * @returns Metadata with absolute URLs, searchIndex and llmsTxt.
+ * @throws If the origin is invalid, non-HTTP(S), or contains a query or fragment.
+ */
 export function createStaticPublication(
   manifest: readonly ContentManifestEntry[],
   options: StaticPublicationOptions,

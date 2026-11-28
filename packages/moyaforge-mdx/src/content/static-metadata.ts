@@ -20,8 +20,10 @@ function flattenHeadings(
 }
 
 /**
- * Produce stable, JSON-serializable metadata without leaking the source
- * navigation tree or disabled pages. Hidden routes remain reachable.
+ * Produce portable JSON-serializable metadata for routable pages.
+ * Flattens heading trees, excludes disabled pages and retains hidden routes.
+ * @param manifest - Canonical page records with headings.
+ * @returns Metadata records sorted by route path.
  */
 export function createStaticPageMetadata(
   manifest: readonly ContentManifestEntry[],

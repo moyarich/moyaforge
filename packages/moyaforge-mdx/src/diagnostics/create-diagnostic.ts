@@ -12,6 +12,13 @@ type ErrorDetails = {
   place?: { end?: { line?: number; column?: number } };
 };
 
+/**
+ * Normalize an exception into a structured MDX diagnostic.
+ * Preserves existing MdxDiagnosticError diagnostics; otherwise merges location and plugin details with context.
+ * @param error - Original exception or arbitrary thrown value.
+ * @param context - Diagnostic code, phase, source location and optional authored text.
+ * @returns Structured diagnostic, including a code frame when source and line are available.
+ */
 export function createDiagnostic(error: unknown, context: DiagnosticContext): Diagnostic {
   if (error instanceof MdxDiagnosticError) return error.diagnostic;
   const details = (typeof error === "object" && error !== null ? error : {}) as ErrorDetails;

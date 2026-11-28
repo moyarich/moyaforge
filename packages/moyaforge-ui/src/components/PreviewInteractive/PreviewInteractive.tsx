@@ -13,6 +13,7 @@ import {
   ResizableHandle,
 } from "../ResizablePanel/index.js";
 
+/** Content and layout options for an interactive documentation example. */
 export interface PreviewInteractiveProps {
   /** Accessible name and visible heading for this example. */
   title: string;
@@ -38,11 +39,22 @@ export interface PreviewInteractiveProps {
   className?: string;
   /** Optional application-owned output, independent of source files. */
   output?: ReactNode;
+  /** Label for the output panel and its toggle. */
   outputLabel?: string;
+  /** Initial visibility of the optional output panel. */
   defaultOutputOpen?: boolean;
 }
 
-/** Reusable demo frame: configuration, rendered content, and highlighted source files. */
+/**
+ * Present a live example, optional controls and metadata, and highlighted source tabs.
+ * Source text is displayed rather than evaluated; the caller owns interactive state.
+ * @example
+ * ```tsx
+ * <PreviewInteractive title="Button" files={{ "Example.tsx": "<button>Run</button>" }}>
+ *   <button>Run</button>
+ * </PreviewInteractive>
+ * ```
+ */
 export function PreviewInteractive({
   title,
   description,

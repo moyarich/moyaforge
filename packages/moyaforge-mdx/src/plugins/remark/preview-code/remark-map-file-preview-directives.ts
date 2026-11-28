@@ -27,7 +27,13 @@ type Node = {
 };
 type Attribute = DirectiveAttribute;
 
-/** Parse a deliberately small, declarative file reference format. No dynamic execution. */
+/**
+ * Convert declarative preview directives into host-resolved MDX component elements.
+ * Requires a relative JSX/TSX example reference and optionally accepts a separate source reference; does not execute referenced files.
+ * @param options - Component name (default PreviewDirective) and optional host reference resolver.
+ * @returns A remark transformer that replaces preview directives in the AST.
+ * @throws During transformation if references are invalid, duplicate, missing or rejected by the resolver.
+ */
 export function remarkMapFilePreviewDirectives({
   component = "PreviewDirective",
   resolveReference,

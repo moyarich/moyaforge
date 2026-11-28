@@ -1,4 +1,11 @@
-/** Render a bounded excerpt from the original authored text, not generated MDX. */
+/**
+ * Render a bounded excerpt of authored text around a diagnostic location.
+ * Includes up to two surrounding lines on either side and a caret at the requested column.
+ * @param source - Original authored text.
+ * @param line - One-based line number.
+ * @param column - One-based column, defaulting to 1.
+ * @returns Formatted excerpt, or undefined when the line is invalid.
+ */
 export function createCodeFrame(source: string, line: number, column = 1): string | undefined {
   const lines = source.split(/\r\n|\n|\r/);
   if (!Number.isInteger(line) || line < 1 || line > lines.length) return;

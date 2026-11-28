@@ -9,8 +9,10 @@ export interface SourceLinkOptions {
 }
 
 /**
- * Rewrite Markdown links targeting real .md/.mdx source files into public
- * registry routes. The authored links remain usable when browsing GitHub.
+ * Rewrite links to registered Markdown or MDX source files into public route paths.
+ * Preserves query strings and fragments; leaves unresolved targets, external links and nonliteral attributes unchanged.
+ * @param options - Source configuration, root directory and normalized routes.
+ * @returns A remark transformer that updates links, definitions and literal MDX anchor hrefs.
  */
 export function remarkRewriteSourceLinks({
   config,
