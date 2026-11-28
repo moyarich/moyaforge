@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
+/** Optional header and footer slots plus native aside attributes. */
 export interface DocOutlineShellProps extends HTMLAttributes<HTMLElement> {
   header?: ReactNode;
   footer?: ReactNode;

@@ -1,15 +1,23 @@
 import "./DocsShellWide.css";
 import type { ReactNode } from "react";
 
+/** Content and optional named slots for the documentation shell. */
 export interface DocsShellWideProps {
+  /** Main workspace content. */
   children: ReactNode;
   /** Undefined uses the shell default; null removes it. */
   header?: ReactNode;
+  /** Optional controls below the header. */
   toolbar?: ReactNode;
+  /** Replace the default navigation list; null hides it. */
   navigation?: ReactNode;
+  /** Optional right-hand inspector. */
   inspector?: ReactNode;
+  /** Optional content below the workspace. */
   footer?: ReactNode;
+  /** Text used by the default header. */
   title?: string;
+  /** Links used by the default navigation list. */
   navigationItems?: readonly { label: string; href: string }[];
 }
 

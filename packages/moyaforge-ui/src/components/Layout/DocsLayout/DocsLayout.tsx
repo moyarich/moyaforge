@@ -23,6 +23,7 @@ export interface DocsLayoutHeading {
   children?: readonly DocsLayoutHeading[];
 }
 
+/** Host-supplied pages, current URL, article content and optional layout overrides. */
 export interface DocsLayoutProps {
   pages: readonly DocsLayoutPage[];
   currentUrl?: string;

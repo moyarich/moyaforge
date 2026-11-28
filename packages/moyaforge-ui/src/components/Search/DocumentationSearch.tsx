@@ -3,19 +3,27 @@ import { Search } from "lucide-react";
 import { isKeyHotkey } from "is-hotkey";
 import { useEffect, useRef, useState } from "react";
 
+/** A navigable search result with a route path and visible label. */
 export interface DocumentationSearchResult {
   path: string;
   label: string;
 }
 
+/** Provide an asynchronous search function and optional navigation and shortcut settings. */
 export interface DocumentationSearchProps {
+  /** Return matching pages asynchronously for the current query. */
   search: (query: string) => Promise<readonly DocumentationSearchResult[]>;
+  /** Handle plain result clicks with a host router; omit for native links. */
   onNavigate?: (path: string) => void;
+  /** Optional keyboard shortcut or list of shortcuts to focus search. */
   hotkey?: string | readonly string[];
+  /** Visible shortcut hint. */
   kbd?: string;
+  /** Show results as an overlay or inline. @default "overlay" */
   resultsPosition?: "overlay" | "inline";
 }
 
+/** Render documentation search with asynchronous results; the host supplies the search implementation. */
 export function DocumentationSearch({
   search,
   onNavigate,

@@ -26,13 +26,19 @@ export interface PreviewProps extends Omit<
   ComponentPropsWithoutRef<"section">,
   "title"
 > {
+  /** Visible heading for the shorthand composition. */
   title?: string;
+  /** Text used by the source view and copy action. */
   source?: string;
+  /** Syntax grammar for the shorthand source view. @default "tsx" */
   language?: string;
+  /** Initial live or code view. */
   defaultView?: View;
   /** Optional output for the shorthand composition. */
   output?: ReactNode;
+  /** Label for the output region and toggle. */
   outputLabel?: string;
+  /** Initial visibility of the output region. */
   defaultOutputOpen?: boolean;
 }
 /**

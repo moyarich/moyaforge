@@ -12,6 +12,7 @@ import {
 } from "react";
 
 interface PanelContext {
+  /** Panel arrangement. @default "horizontal" */
   direction: "horizontal" | "vertical";
   sizes: Record<string, number>;
   resize: (sizes: Record<string, number>) => void;
@@ -25,8 +26,10 @@ function usePanels() {
     );
   return context;
 }
+/** Layout orientation and optional callback for percentage sizes keyed by panel ID. */
 export interface ResizablePanelGroupProps extends HTMLAttributes<HTMLDivElement> {
   direction?: "horizontal" | "vertical";
+  /** Receives updated sizes by panel ID after resizing. */
   onLayoutChange?: (sizes: Record<string, number>) => void;
 }
 /** Direct children should alternate panels and handles. Sizes are percentages. */
@@ -64,11 +67,16 @@ export function ResizablePanelGroup({
     </PanelContext.Provider>
   );
 }
+/** Initial and allowed panel sizes in percentages. */
 export interface ResizablePanelProps extends HTMLAttributes<HTMLDivElement> {
+  /** Initial size in percent. @default 50 */
   defaultSize?: number;
+  /** Minimum size in percent. @default 0 */
   minSize?: number;
+  /** Maximum size in percent. @default 100 */
   maxSize?: number;
 }
+/** Place a panel directly inside ResizablePanelGroup; sizes must satisfy 0 ≤ minSize ≤ defaultSize ≤ maxSize ≤ 100. */
 export function ResizablePanel({
   defaultSize = 50,
   minSize = 0,
@@ -107,10 +115,12 @@ export function ResizablePanel({
     />
   );
 }
+/** Native separator attributes and an accessible name. */
 export interface ResizableHandleProps extends HTMLAttributes<HTMLDivElement> {
   /** Accessible name describing the panels being resized. */
   "aria-label"?: string;
 }
+/** Resize the two adjacent panels with pointer or keyboard input; place between direct panel siblings. */
 export function ResizableHandle({
   className,
   onKeyDown,

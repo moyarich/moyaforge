@@ -1,17 +1,24 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import "./CustomBlock.css";
 
+/** Semantic callout options and native div attributes. */
 export interface CustomBlockProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
   "title"
 > {
   /** Arbitrary semantic admonition type, supplied by the directive parser. */
   type?: string;
+  /** Optional heading displayed above the body. */
   title?: ReactNode;
+  /** Override the data attribute used for the semantic type. */
   "data-type"?: string;
 }
 
-/** A replaceable renderer for every ::: custom-block type. */
+/**
+ * Render a semantic documentation callout, including custom directive types.
+ * @example
+ * <CustomBlock type="warning" title="Before you continue">Back up your files.</CustomBlock>
+ */
 export function CustomBlock({
   type,
   title,

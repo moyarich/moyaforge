@@ -3,11 +3,16 @@ import { X } from "lucide-react";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import { useTabs } from "./TabsContext.js";
 
+/** Tab identity, optional icon and close action, plus native button attributes. */
 export interface TabsTriggerProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
+  /** Unique tab value matching its content panel. */
   value: string;
+  /** Optional leading icon. */
   icon?: ReactNode;
+  /** Render a close button and call this handler when clicked. */
   onClose?: () => void;
 }
+/** Select the matching TabsContent panel; optionally render a separate close button. */
 export function TabsTrigger({ value, icon, onClose, children, className, onClick, ...props }: TabsTriggerProps) {
   const tabs = useTabs();
   const active = value === tabs.value;

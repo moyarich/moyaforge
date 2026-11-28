@@ -6,16 +6,22 @@ import type {
   ReactNode,
 } from "react";
 
+/** Controlled search input options and native label attributes. */
 export interface SearchProps extends Omit<
   ComponentPropsWithoutRef<"label">,
   "onChange"
 > {
+  /** Controlled input text. */
   value?: string;
+  /** Receives native input change events. */
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  /** Leading icon; defaults to a search glyph. */
   icon?: ReactNode;
+  /** Additional native input attributes. */
   inputProps?: ComponentPropsWithoutRef<"input">;
 }
 
+/** Render a styled search input; pass value and onChange for controlled search. */
 export function Search({
   value,
   onChange,

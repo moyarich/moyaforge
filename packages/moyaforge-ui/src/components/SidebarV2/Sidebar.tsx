@@ -25,6 +25,7 @@ function SidebarRoot({ as = "nav", children, ...props }: PolymorphicProps) {
   );
 }
 
+/** Compose a sidebar using Sidebar.Header, Sidebar.Content, Sidebar.Section, Sidebar.Group, Sidebar.Item and Sidebar.Footer. */
 export const Sidebar = Object.assign(SidebarRoot, {
   Header: SidebarHeader,
   Content: SidebarContent,

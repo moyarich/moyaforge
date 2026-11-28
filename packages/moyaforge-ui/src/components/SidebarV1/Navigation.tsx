@@ -5,12 +5,14 @@ import { NavLink } from "react-router-dom";
 import type { SidebarNavigationNode } from "./types.js";
 import type { DocumentationGroup } from "./SidebarV1.js";
 
+/** Groups and optional host-controlled navigation selection. */
 export interface NavigationProps {
   groups: readonly DocumentationGroup[];
   onNavigate?: () => void;
   /** Controlled selection for embedded navigation; otherwise uses the router location. */
   currentUrl?: string;
 }
+/** Render grouped documentation links; requires a router unless currentUrl is supplied. */
 export function Navigation({
   groups,
   onNavigate,

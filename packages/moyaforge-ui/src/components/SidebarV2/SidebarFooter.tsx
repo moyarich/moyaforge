@@ -2,6 +2,7 @@ import "./SidebarFooter.css";
 import { createElement } from "react";
 import type { PolymorphicProps } from "../Page/index.js";
 
+/** Render the sidebar footer; defaults to a footer element. */
 export function SidebarFooter({
   as = "footer",
   children,

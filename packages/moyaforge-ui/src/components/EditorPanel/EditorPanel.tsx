@@ -5,31 +5,50 @@ import { CopyButton } from "../CopyButton/CopyButton.js";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../Tabs/index.js";
 import { EditorContainer, EditorToolbar, EditorTools, EditorBreadcrumbs, EditorContent } from "../EditorContainer/index.js";
 
+/** A named source file; name must identify the file uniquely within the panel. */
 export interface EditorPanelFile {
+  /** Unique file name used by tabs and selection. */
   name: string;
+  /** Initial or host-updated file text. */
   value: string;
+  /** Optional path displayed in breadcrumbs. */
   path?: string;
+  /** Prevent editing (per file or across the panel). */
   readOnly?: boolean;
 }
+/** Current draft files and change callback supplied to the host editor renderer. */
 export interface EditorPanelRenderProps<T extends EditorPanelFile> {
+  /** Files in tab order. */
   files: readonly T[];
+  /** Controlled active file; omit to let the panel select it. */
   activeFile: T;
+  /** Called with the file name, new draft text and file record. */
   onFileChange: (name: string, value: string) => void;
   readOnly: boolean;
 }
+/** Configure file tabs, controlled selection, editing, saving and a custom editor renderer. */
 export interface EditorPanelProps<T extends EditorPanelFile> {
   files: readonly T[];
   activeFile?: string;
+  /** Initial uncontrolled selection; defaults to the first file. */
   defaultActiveFile?: string;
+  /** Called when a file tab is selected. */
   onActiveFileChange?: (name: string, file: T) => void;
   onFileChange?: (name: string, value: string, file: T) => void;
+  /** Optional save action; enables the Save button and Ctrl/Cmd+S. */
   onSave?: (name: string, value: string, file: T) => void;
   readOnly?: boolean;
+  /** Show the copy action. @default true */
   showCopyButton?: boolean;
+  /** Show path breadcrumbs. @default false */
   showBreadcrumbs?: boolean;
+  /** Override the displayed file breadcrumbs. */
   renderBreadcrumbs?: (file: T) => ReactNode;
+  /** Additional toolbar actions. */
   tools?: ReactNode;
+  /** Render the editor using the current file state and update callback. */
   renderEditor: (props: EditorPanelRenderProps<T>) => ReactNode;
+  /** Additional container class. */
   className?: string;
 }
 

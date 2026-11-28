@@ -11,12 +11,14 @@ import type { MonacoEditorReactProps, MonacoFile } from "@moyarich/moyaforge-mon
 
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "../ResizablePanel/index.js";
 
+/** Discriminated result of a caller-owned preview execution. */
 export type PreviewExecutionState<T> =
   | { status: "idle" }
   | { status: "running" }
   | { status: "success"; output: T }
   | { status: "error"; error: unknown };
 
+/** Execution status and reset action supplied to the output renderer. */
 export interface PreviewExecutionOutputProps<T> {
   state: PreviewExecutionState<T>;
   clear: () => void;
@@ -36,6 +38,7 @@ interface PreviewCodeEditorBaseProps {
   renderBreadcrumbs?: (file: MonacoFile) => ReactNode;
 }
 
+/** Choose either live renderPreview mode or explicit runSource and renderOutput mode. */
 export type PreviewCodeEditorProps<T = unknown> = PreviewCodeEditorBaseProps & (
   | {
       renderPreview: (files: readonly MonacoFile[]) => ReactNode;
