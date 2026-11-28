@@ -8,7 +8,7 @@ export default {
       include: ["**/*.{md,mdx}"],
       pageFiles: "all",
       // Keep standalone developer .md pages, but not repository README files.
-      exclude: ["**/{README,readme}.{md,mdx}"],
+      exclude: ["**/{README,readme}.{md,mdx}", "**/examples/**", "_shared/**"],
       navigation: { label: "Guide", order: 1 },
     },
     ui: {

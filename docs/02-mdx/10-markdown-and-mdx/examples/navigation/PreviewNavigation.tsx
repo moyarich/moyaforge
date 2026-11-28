@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
-import type { NavigationMode } from "../../../../../../../packages/moyaforge-mdx/src/registry/index.js";
-import { PreviewInteractive } from "../../../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
+import type { NavigationMode } from "../../../../../packages/moyaforge-mdx/src/registry/index.js";
+import { PreviewInteractive } from "../../../../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
 import { createFrontmatterDemo } from "../frontmatter-demo.js";
 import { PreviewFrontmatterSite } from "../PreviewFrontmatterSite.js";
 

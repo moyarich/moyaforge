@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { VirtualPage } from "../VirtualPage.js";
+import { VirtualPage } from "../../../_shared/virtual-mdx/VirtualPage.js";
 import { PreviewSidebarGroup } from "./sidebar-group/PreviewSidebarGroup.js";
 import type { FrontmatterDemo } from "./frontmatter-demo.js";
 

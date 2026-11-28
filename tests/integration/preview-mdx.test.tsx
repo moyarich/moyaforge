@@ -1,7 +1,10 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, test } from "vitest";
-import { createVirtualRegistry } from "../../apps/playground/src/components/PreviewMdx/virtual-registry.js";
+import { readFileSync } from "node:fs";
+import { createFrontmatterDemo } from "../../docs/02-mdx/10-markdown-and-mdx/examples/frontmatter-demo.js";
+import { extractPageHeadings } from "../../packages/moyaforge-mdx/src/content/headings.js";
+import { createVirtualRegistry } from "../../docs/_shared/virtual-mdx/virtual-registry.js";
 import { PreviewInteractive } from "../../packages/moyaforge-ui/src/components/PreviewInteractive/index.js";
 
 test("virtual registries support multiple sources and source-relative documents", () => {
@@ -57,7 +60,7 @@ test("metadata shares resizable configuration with controls and stays outside th
 
 test("virtual pages render their Markdown body rather than frontmatter or placeholder content", async () => {
   const { compileVirtualPage } =
-    await import("../../apps/playground/src/components/PreviewMdx/compile-virtual-page.js");
+    await import("../../docs/_shared/virtual-mdx/compile-virtual-page.js");
   const { default: Content } = await compileVirtualPage(
     "---\ntitle: Metadata name\n---\n\n# Actual article\n\nA **working** example.\n\n- First step\n- Second step\n",
     "guide/page.md",
@@ -74,7 +77,7 @@ test("virtual pages render their Markdown body rather than frontmatter or placeh
 
 test("virtual MDX bodies can render supplied React components", async () => {
   const { compileVirtualPage } =
-    await import("../../apps/playground/src/components/PreviewMdx/compile-virtual-page.js");
+    await import("../../docs/_shared/virtual-mdx/compile-virtual-page.js");
   const { default: Content } = await compileVirtualPage(
     "# MDX article\n\n<Notice />",
     "page.mdx",
@@ -88,4 +91,26 @@ test("virtual MDX bodies can render supplied React components", async () => {
     }),
   );
   expect(markup).toContain("<aside>Rendered component</aside>");
+});
+
+test("interactive frontmatter previews preserve the authored example bodies", async () => {
+  const { files, registry } = createFrontmatterDemo({
+    page: { title: "Custom setup", navigation: "hidden" },
+  });
+  for (const [filename, source] of Object.entries(files)) {
+    const authored = readFileSync(
+      new URL(
+        `../../docs/02-mdx/10-markdown-and-mdx/examples/documents/${filename}`,
+        import.meta.url,
+      ),
+      "utf8",
+    );
+    const body = (value: string) =>
+      value.replace(/^---\r?\n[\s\S]*?\r?\n---/, "");
+    expect(body(source)).toBe(body(authored));
+    expect(await extractPageHeadings(source, filename)).toEqual(
+      await extractPageHeadings(authored, filename),
+    );
+  }
+  expect(registry.byPath.get("/docs/custom-setup")?.navigation).toBe("hidden");
 });

@@ -1,7 +1,7 @@
 import "./PreviewSidebarGroup.css";
 import { useState, type MouseEvent, type ReactNode } from "react";
-import { buildDocumentationGroups } from "../../../../../../../packages/moyaforge-mdx/src/navigation/tree/index.js";
-import { SidebarV1 } from "../../../../../../../packages/moyaforge-ui/src/components/SidebarV1/index.js";
+import { buildDocumentationGroups } from "../../../../../packages/moyaforge-mdx/src/navigation/tree/index.js";
+import { SidebarV1 } from "../../../../../packages/moyaforge-ui/src/components/SidebarV1/index.js";
 import type { FrontmatterDemo } from "../frontmatter-demo.js";
 
 /** Render the real sidebar from this example's isolated registry. */
