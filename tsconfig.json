@@ -1,4 +1,15 @@
 {
   "extends": "./apps/playground/tsconfig.json",
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": [
+    "docs/**/*.ts",
+    "docs/**/*.tsx",
+    "packages/*/docs/**/*.ts",
+    "packages/*/docs/**/*.tsx",
+    "apps/playground/src/**/*.ts",
+    "apps/playground/src/**/*.tsx",
+    "apps/playground/tests/**/*.ts",
+    "apps/playground/tests/**/*.tsx",
+    "apps/playground/registry.config.ts",
+    "apps/playground/vite.config.ts"
+  ]
 }
