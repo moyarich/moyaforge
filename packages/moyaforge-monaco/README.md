@@ -2,6 +2,14 @@
 
 Headless Monaco React and TypeFox editor runtimes, with models and application-level worker integration. Reusable tabs, toolbar, breadcrumbs and actions live in `@moyarich/moyaforge-ui`.
 
+## Installation
+
+```sh
+npm install @moyarich/moyaforge-monaco
+```
+
+Choose React Monaco for a standalone editor or TypeFox for VS Code service integration. Install the optional peer dependencies required by your chosen runtime.
+
 ## Package entry points
 
 | Import suffix | Purpose |
@@ -61,7 +69,7 @@ await initializeMonacoVscodeRuntime();
 createRoot(document.getElementById("root")!).render(<App />);
 ```
 
-The [shared initializer](./src/runtime/initializeMonacoVscodeRuntime.ts) installs
+The shared initializer installs
 one VS Code-compatible worker factory, points `@monaco-editor/react` at the
 same Monaco instance used by TypeFox, and starts VS Code services. It caches
 the initialization promise. Call only this initializer when mounting both
