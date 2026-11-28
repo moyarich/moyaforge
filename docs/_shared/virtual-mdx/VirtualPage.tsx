@@ -2,14 +2,37 @@ import { useEffect, useId, useState } from "react";
 import type { MDXComponents, MDXContent } from "mdx/types";
 import { compileVirtualPage } from "./compile-virtual-page.js";
 
+/** Input and rendering options for an isolated Markdown or MDX preview. */
 export interface VirtualPageProps {
+  /** Trusted document text, optionally beginning with YAML frontmatter. */
   source: string;
+  /** Document path used for diagnostics and Markdown/MDX format selection. */
   filename: string;
+  /** Prefix for generated heading IDs; defaults to a per-instance React ID followed by a hyphen. */
   headingPrefix?: string;
+  /** Optional MDX component overrides for elements rendered by the document. */
   components?: MDXComponents;
 }
 
-/** Render the actual body of a virtual document; metadata remains in the registry. */
+/**
+ * Render a trusted Markdown or MDX document without registering an application route.
+ *
+ * Compiles the body asynchronously whenever the source, filename, or heading
+ * prefix changes. YAML frontmatter is excluded from the rendered body; use
+ * createVirtualRegistry separately when navigation or page metadata is needed.
+ *
+ * @param props - Document text, filename, heading prefix, and component overrides.
+ * @returns The rendered document, a loading status, or an alert containing the compilation error.
+ * @remarks MDX evaluation can execute JavaScript. Never pass untrusted content.
+ * @example
+ * ```tsx
+ * <VirtualPage
+ *   source={"# Getting started"}
+ *   filename="page.md"
+ *   headingPrefix="demo-"
+ * />
+ * ```
+ */
 export function VirtualPage({
   source,
   filename,
