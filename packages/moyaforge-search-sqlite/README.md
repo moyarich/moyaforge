@@ -1,8 +1,14 @@
 # @moyarich/moyaforge-search-sqlite
 
-Independent SQLite-backed search primitives for documentation playgrounds.
+Add searchable documentation to your site using SQLite. Use the core API with your own documents or the Vite integration to index Markdown and MDX pages automatically. You control the search UI and navigation.
 
-No dependency on `@moyarich/moyaforge` or `@moyarich/console`. The package currently declares `@moyarich/moyaforge-mdx` as a dependency; the core search implementation does not use its compiler. The core indexing/query API does not require a framework or Vite. Applications own their search UI and routing; the optional Vite adapter handles configured source discovery, HMR notifications, development database serving, and production asset generation. The package does not compile MDX into React components.
+## Installation
+
+```sh
+npm install @moyarich/moyaforge-search-sqlite sql.js
+```
+
+## Search your own documents
 
 ```ts
 import initSqlJs from "sql.js";
@@ -28,7 +34,7 @@ try {
 }
 ```
 
-The API preserves Console's prefix matching and fuzzy-title semantics. The database is generated in memory; the consuming build integration decides where or whether to emit it.
+Search supports prefix matching and fuzzy title matching. The database is generated in memory; the consuming build integration decides where or whether to emit it.
 
 ## Optional Vite integration
 
@@ -51,11 +57,11 @@ the `moyaforge-search:updated` custom HMR event and reload their databases.
 Vite is an optional peer dependency and is not required to use core indexing
 or querying functions.
 
-The Vite adapter indexes canonical `page.md` and `page.mdx` files only, even when configured source globs include other Markdown files such as `README.md` or `notes.mdx`. This keeps its searchable documents aligned with MoyaForge content-page discovery without introducing a dependency on the MDX workspace package.
+The Vite adapter indexes canonical `page.md` and `page.mdx` files only, even when configured source globs include other Markdown files such as `README.md` or `notes.mdx`. This keeps its searchable documents aligned with MoyaForge content-page discovery.
 
 ## Authoring, visibility and validation
 
-Content discovery by the optional Vite adapter accepts configured source roots and glob patterns, but indexes only `page.md` and `page.mdx`. YAML frontmatter is parsed with the `yaml` parser; quoted values work, duplicate keys or malformed YAML produce source-path errors, and `navigation: disabled` excludes a page. Hidden pages remain searchable. The adapter intentionally has no dependency on the MoyaForge UI or MDX packages.
+Content discovery by the optional Vite adapter accepts configured source roots and glob patterns, but indexes only `page.md` and `page.mdx`. YAML frontmatter is parsed with the `yaml` parser; quoted values work, duplicate keys or malformed YAML produce source-path errors, and `navigation: disabled` excludes a page. Hidden pages remain searchable.
 
 When using the Vite plugin, import `databaseUrl` from `virtual:moyaforge-search/database` rather than hardcoding `/assets/search.sqlite`: development uses `/__moyaforge_search.sqlite` and production uses a content-hashed asset under the configured Vite base path. Reload the client database upon `moyaforge-search:updated` during development to avoid stale results.
 
