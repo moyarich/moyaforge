@@ -51,6 +51,12 @@ The `frontmatter/` folder owns the guide's fixtures, controls, and sidebar/outli
 renderers. Import those demos through its `index.ts` so their stylesheet loads.
 Keep new subject-specific demos separate from the shared frame and registry.
 
+Author the shared example documents in `frontmatter/examples/docs/`. Import
+those files with Vite's `?raw` suffix instead of copying their contents into
+TypeScript. Interactive controls override only YAML metadata; source tabs and
+rendering consume the same resulting documents. Extract outlines from those
+same documents instead of maintaining a separate heading list.
+
 `VirtualPage` renders a virtual document's Markdown or MDX body. It strips YAML
 from the rendered output, supports GFM, and generates scoped heading anchors.
 Pass `source`, `filename`, and optional `components` for MDX JSX. Source code
